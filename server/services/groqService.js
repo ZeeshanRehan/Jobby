@@ -118,7 +118,7 @@ const resumeData = {
       date: "Mar 2023 – Aug 2023",
       bullets: [
         "Organized outreach programs and community initiatives as part of a student-led NGO.",
-        "Coordinated with volunteers, managed logistics, and contributed to event planning for freshmen.",
+        "Coordinated with volunteers, managed logistics, and contributed to event planning for freshmen. ",
       ],
     },
   ],
