@@ -5,6 +5,8 @@ const groq = new Groq({
 });
 
 // ─── Structured Resume (Source of Truth) ────────────────────────────────────
+// This object is the single source of truth for all resume content.
+// pdfService.js reads this directly — keep it accurate and up to date.
 
 const resumeData = {
   name: "Zeshan Rehan",
@@ -17,6 +19,7 @@ const resumeData = {
   },
   education: {
     school: "Rowan University",
+    location: "Glassboro, New Jersey",
     degree: "B.S. in Computer Science",
     graduation: "May 2026",
     coursework: [
@@ -49,6 +52,7 @@ const resumeData = {
   experience: [
     {
       company: "InvolveMINT Inc.",
+      location: "Hybrid, Develop For Good",
       role: "Design Manager",
       startDate: "Oct 2025",
       endDate: "Present",
@@ -60,6 +64,7 @@ const resumeData = {
     },
     {
       company: "Rowan University Housing Department",
+      location: "Glassboro, New Jersey",
       role: "Housing Preparation Assistant (HPA)",
       startDate: "May 2025",
       endDate: "Sept 2025",
@@ -76,6 +81,7 @@ const resumeData = {
       startDate: "Nov 2024",
       endDate: "Dec 2024",
       stack: ["MERN stack"],
+      links: { demo: "#", github: "#" }, // replace # with real URLs
       bullets: [
         "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
         "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
@@ -88,9 +94,31 @@ const resumeData = {
       startDate: "Jun 2025",
       endDate: "Jul 2025",
       stack: ["React.js", "Node.js", "Express", "MongoDB", "GPT-4"],
+      links: { demo: "#", github: "#" }, // replace # with real URLs
       bullets: [
         "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
         "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+      ],
+    },
+  ],
+  activities: [
+    {
+      org: "SkillSwap — Temple University",
+      location: "Glassboro, New Jersey",
+      role: "Team Lead",
+      date: "September 2025",
+      bullets: [
+        "Awarded 3rd place in OwlHacks at Temple University for SkillSwap in the Philly Local Innovation track, recognized for its impact-driven approach to community skill sharing.",
+      ],
+    },
+    {
+      org: "Pahal (Non-Profit Organization), LPU",
+      location: "Punjab, India",
+      role: "Secretary",
+      date: "Mar 2023 – Aug 2023",
+      bullets: [
+        "Organized outreach programs and community initiatives as part of a student-led NGO.",
+        "Coordinated with volunteers, managed logistics, and contributed to event planning for freshmen. ",
       ],
     },
   ],
