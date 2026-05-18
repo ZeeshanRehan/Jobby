@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{NAME}} — Resume</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Georgia", serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 36pt 48pt;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ───────────────────────────────────────────────── */
+    .header { text-align: center; margin-bottom: 12pt; }
+
+    .header h1 {
+      font-family: "Georgia", serif;
+      font-size: 20pt;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 5pt;
+    }
+
+    .contact {
+      font-size: 9pt;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4pt 12pt;
+    }
+
+    .contact a { color: #1a1a1a; text-decoration: none; }
+
+    /* ── Section ──────────────────────────────────────────────── */
+    .section { margin-bottom: 11pt; }
+
+    .section-title {
+      font-size: 10pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 2pt;
+      margin-bottom: 7pt;
+    }
+
+    /* ── Summary ──────────────────────────────────────────────── */
+    .summary { font-size: 10pt; color: #222; }
+
+    /* ── Education ────────────────────────────────────────────── */
+    .edu-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .edu-school { font-weight: bold; }
+    .edu-degree { font-style: italic; font-size: 10pt; }
+    .edu-date   { font-size: 9.5pt; color: #444; white-space: nowrap; }
+
+    .coursework {
+      font-size: 9pt;
+      color: #444;
+      margin-top: 3pt;
+    }
+
+    /* ── Skills ───────────────────────────────────────────────── */
+    .skills-row {
+      font-size: 9.5pt;
+      margin-bottom: 3pt;
+      line-height: 1.5;
+    }
+
+    .skills-row strong { margin-right: 4pt; }
+
+    /* ── Experience & Projects ────────────────────────────────── */
+    .entry { margin-bottom: 9pt; }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .entry-title   { font-weight: bold; font-size: 10.5pt; }
+    .entry-role    { font-style: italic; font-size: 10pt; }
+    .entry-date    { font-size: 9.5pt; color: #444; white-space: nowrap; }
+    .entry-stack   { font-size: 9pt; color: #555; margin: 1pt 0 3pt; }
+
+    .entry ul {
+      padding-left: 14pt;
+      margin-top: 3pt;
+    }
+
+    .entry ul li {
+      font-size: 10pt;
+      margin-bottom: 2.5pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <div class="header">
+    <h1>{{NAME}}</h1>
+    <div class="contact">
+      <span>{{EMAIL}}</span>
+      <span>{{PHONE}}</span>
+      <a href="https://{{PORTFOLIO}}">{{PORTFOLIO}}</a>
+      <a href="https://linkedin.com/in/{{LINKEDIN_SLUG}}">LinkedIn</a>
+      <a href="https://github.com/{{GITHUB}}">GitHub</a>
+    </div>
+  </div>
+
+  <!-- ── Summary (omitted if empty) ────────────────────────── -->
+  {{SUMMARY_BLOCK}}
+
+  <!-- ── Education ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-school">{{EDU_SCHOOL}}</div>
+        <div class="edu-degree">{{EDU_DEGREE}}</div>
+      </div>
+      <div class="edu-date">{{EDU_GRAD}}</div>
+    </div>
+    <div class="coursework"><strong>Coursework:</strong> {{EDU_COURSEWORK}}</div>
+  </div>
+
+  <!-- ── Skills ─────────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Skills</div>
+    {{SKILLS_BLOCK}}
+  </div>
+
+  <!-- ── Experience ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Experience</div>
+    {{EXPERIENCE_BLOCK}}
+  </div>
+
+  <!-- ── Projects ───────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+    {{PROJECTS_BLOCK}}
+  </div>
+
+</body>
+</html>
