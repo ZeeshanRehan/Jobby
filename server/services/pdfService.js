@@ -8,15 +8,15 @@ const TEMPLATE_PATH = path.join(__dirname, "../templates/resume.html");
 // Each function takes structured data and returns an HTML string chunk.
 // These replace the {{BLOCK}} tokens in resume.html.
 
-function buildSummaryBlock(summary) {
-  if (!summary) return "";
-  return `
-    <div class="section">
-      <div class="section-title">Summary</div>
-      <div class="summary">${summary}</div>
-    </div>
-  `;
-}
+// function buildSummaryBlock(summary) {
+//   if (!summary) return "";
+//   return `
+//     <div class="section">
+//       <div class="section-title">Summary</div>
+//       <div class="summary">${summary}</div>
+//     </div>
+//   `;
+// }
 
 function buildSkillsBlock(baseSkills, skillsToAdd) {
   // Merge skillsToAdd into programming row (deduped, lowercased compare)
@@ -105,7 +105,7 @@ function buildHtml(resumeData, tailored) {
 
   // Block replacements (dynamic HTML chunks)
   html = html
-    .replace("{{SUMMARY_BLOCK}}",    buildSummaryBlock(tailoredSummary))
+    // .replace("{{SUMMARY_BLOCK}}",    buildSummaryBlock(tailoredSummary))
     .replace("{{SKILLS_BLOCK}}",     buildSkillsBlock(skills, skillsToAdd))
     .replace("{{EXPERIENCE_BLOCK}}", buildExperienceBlock(experience, tailoredExperience))
     .replace("{{PROJECTS_BLOCK}}",   buildProjectsBlock(projects, tailoredProjects));
@@ -117,6 +117,12 @@ function buildHtml(resumeData, tailored) {
 
 async function generateResumePdf(resumeData, tailored) {
   const html = buildHtml(resumeData, tailored);
+
+  // Verify template exists before spinning up Chromium — 
+// Puppeteer launch is expensive, fail fast if template is missing
+if (!fs.existsSync(TEMPLATE_PATH)) {
+  throw new Error(`Resume template not found at: ${TEMPLATE_PATH}`);
+}
 
   const browser = await puppeteer.launch({
     headless: "new",

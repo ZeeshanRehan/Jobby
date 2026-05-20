@@ -150,6 +150,9 @@ STRICT RULES:
      Include things the candidate may have touched but never listed.
      Also include adjacent skills worth studying to close the gap.
      Be generous — this list is for candidate awareness, not all need to go on resume.
+     skillsToAdd must be clean tool/technology names only. 
+     No compound phrases, no made-up specializations.
+    "Visual Basic" yes. "Git workflow management" no.
 
 4. EXPERIENCE tailoring:
    - For each role, only reword existing bullets using JD language.
@@ -222,7 +225,7 @@ async function tailorResume(jobDescription, jobUrl) {
     model: "llama-3.3-70b-versatile",
     temperature: 0.15,
     messages: [
-      {
+      { 
         role: "system",
         content:
           "You are an expert ATS resume tailoring assistant. You output valid JSON only. No markdown, no backticks, no preamble. You never invent experience. You only reword what exists.",

@@ -6,43 +6,54 @@ const { uploadPdf }                = require("../services/uploadService");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  try {
-    const { jobDescription, jobUrl } = req.body;
+  // ─── Step 1: AI Tailoring ─────────────────────────────────────────────────
+// Send jobDescription + jobUrl to Groq. Returns structured JSON with
+// tailoredExperience, tailoredProjects, skillsToAdd, warnings.
+// Fails if Groq API is down, key is invalid, or response isn't valid JSON.
+let tailored;
+try {
+  tailored = await tailorResume(jobDescription, jobUrl);
+} catch (err) {
+  console.error("[Step 1 - Groq] Failed:", err.message);
+  return res.status(500).json({
+    success: false,
+    step: "ai_tailoring",
+    error: "AI tailoring failed — check Groq API key or model availability",
+  });
+}
 
-    if (!jobDescription) {
-      return res.status(400).json({
-        success: false,
-        error: "jobDescription is required",
-      });
-    }
+// ─── Step 2: PDF Generation ───────────────────────────────────────────────
+// Puppeteer renders the HTML resume template with tailored data injected.
+// Fails if Chromium dependencies are missing on VPS or template file not found.
+let pdfBuffer;
+try {
+  pdfBuffer = await generateResumePdf(resumeData, tailored);
+} catch (err) {
+  console.error("[Step 2 - PDF] Failed:", err.message);
+  return res.status(500).json({
+    success: false,
+    step: "pdf_generation",
+    error: "PDF generation failed — check Puppeteer/Chromium setup on VPS",
+  });
+}
 
-    // Step 1 — Groq tailors the resume
-    const tailored = await tailorResume(jobDescription, jobUrl);
+// ─── Step 3: Upload to Supabase ───────────────────────────────────────────
+// Uploads PDF buffer to Supabase Storage bucket "Resumes".
+// Filename is timestamped to prevent collisions on concurrent requests.
+// Fails if SUPABASE_URL/ANON_KEY are wrong or bucket permissions are off.
+let downloadUrl;
+try {
+  const filename = `resume_${Date.now()}.pdf`;
+  downloadUrl = await uploadPdf(pdfBuffer, filename);
+} catch (err) {
+  console.error("[Step 3 - Upload] Failed:", err.message);
+  return res.status(500).json({
+    success: false,
+    step: "upload",
+    error: "Supabase upload failed — check bucket name, URL, and anon key permissions",
+  });
+}
 
-    // Step 2 — Puppeteer renders tailored data + resumeData into a PDF buffer
-    const pdfBuffer = await generateResumePdf(resumeData, tailored);
-
-    // Step 3 — Upload buffer to Supabase, get back a signed URL
-    // Filename uses timestamp so concurrent requests never collide
-    const filename    = `resume_${Date.now()}.pdf`;
-    const downloadUrl = await uploadPdf(pdfBuffer, filename);
-
-    // Step 4 — Return everything to the client
-    res.json({
-      success: true,
-      jobUrl,
-      downloadUrl,
-      result: tailored,
-    });
-
-  } catch (error) {
-    console.error("Tailor resume error:", error.message, error.stack);
-
-    res.status(500).json({
-      success: false,
-      error: "Failed to tailor resume",
-    });
-  }
 });
 
 module.exports = router;
