@@ -118,7 +118,6 @@ const resumeData = {
       date: "Mar 2023 – Aug 2023",
       bullets: [
         "Organized community outreach programs and initiatives for a student-led NGO at LPU.",
-        "Coordinated volunteers, managed logistics, and led event planning for 100+ freshmen.",
       ],
     },
   ],
@@ -161,55 +160,61 @@ STRICT RULES:
    RULE 4 IS ABSOLUTE — BULLET APPENDING IS FORBIDDEN
    ══════════════════════════════════════════════════════════════
    Every tailored bullet MUST end at the same natural stopping
-   point as the original. The word count may decrease but NEVER
-   increase beyond replacing existing words in place.
+   point as the original. NEVER add anything after the last word
+   of the original bullet. NEVER increase the bullet's length by
+   adding new clauses, phrases, or verb groups at the end.
 
-   YOU MAY: swap or substitute words inside the existing sentence.
-   YOU MAY NOT: add any new clause, phrase, or word after the
-   original bullet's last word.
+   ── HOW TO INJECT KEYWORDS ──────────────────────────────────
 
-   SPECIFICALLY BANNED — never appear at the end of a bullet:
-     * "and [anything]"
-     * "and developing [keyword]"
-     * "and applying [keyword]"
-     * "and utilizing [keyword]"
-     * "utilizing [keyword]"
-     * any new verb phrase not in the original
+   PRIORITY 1 — Tech-list swap (preferred method):
+   When a bullet already contains a technology list ("using X, Y, Z"
+   or "with X, Y, and Z"), this is your swap zone. Replace or add
+   the JD technology INSIDE that existing list.
 
-   CONCRETE EXAMPLES:
+   ORIGINAL: "Built a platform using React.js, Node.js, Express,
+   MongoDB, and GPT-4, allowing users to describe feelings and
+   receive curated YouTube song recommendations."
+   JD wants: Java
 
-   ORIGINAL: "Assisted in preparing 500+ residential units for incoming
-   students by managing room assignments and verifying occupancy data
-   using internal housing management systems."
+   ✓ CORRECT: "Built a platform using React.js, Node.js, Java,
+   MongoDB, and GPT-4, allowing users to describe feelings and
+   receive curated YouTube song recommendations."
+   (Swapped Express for Java inside the existing tech list —
+   sentence length and ending identical.)
 
-   ✗ FORBIDDEN: "...verifying occupancy data using internal housing
-   management systems and applying knowledge of back-end code
-   development with Python and Java."
-   (New clause tacked on after the original ending — NEVER do this.)
+   PRIORITY 2 — Inline word/phrase substitution:
+   Replace a generic word or phrase mid-sentence with the JD
+   keyword. The sentence must end in the same place.
 
-   ✓ ALLOWED: "...verifying occupancy data and system integrity using
-   internal housing management systems."
-   (Keyword woven into the middle; sentence ends where original ended.)
+   ORIGINAL: "Redesigned inquiry, response, and negotiation flows
+   using Figma, React-based prototypes, and structured UX templates
+   for 100+ active small businesses on the platform."
+   JD wants: TypeScript
 
-   ---
-
-   ORIGINAL: "Redesigned inquiry, response, and negotiation flows using
-   Figma, React-based prototypes, and structured UX templates for 100+
-   active small businesses on the platform."
-
-   ✗ FORBIDDEN: "...for 100+ active small businesses on the platform
-   and developing front-end code with HTML and JavaScript."
-   (Appended clause — NEVER do this.)
-
-   ✓ ALLOWED: "Redesigned inquiry, response, and negotiation flows
-   using Figma, React-based prototypes, and JavaScript-driven UX
+   ✓ CORRECT: "Redesigned inquiry, response, and negotiation flows
+   using Figma, TypeScript-based prototypes, and structured UX
    templates for 100+ active small businesses on the platform."
-   (Keyword injected in the middle; ending unchanged.)
+   (Swapped "React-based" for "TypeScript-based" mid-sentence.)
 
-   ---
+   PRIORITY 3 — Skills section only:
+   If no natural inline swap exists in any bullet, add the keyword
+   to skillsToAdd and leave every bullet UNCHANGED.
 
-   IF YOU CANNOT weave a keyword naturally into the middle of a
-   bullet without appending: return the original bullet UNCHANGED.
+   ── WHAT IS ALWAYS FORBIDDEN ────────────────────────────────
+
+   ✗ NEVER append ", and [anything]" after the original ending.
+   ✗ NEVER append " and developing/applying/utilizing [keyword]".
+   ✗ NEVER add any new verb phrase after the bullet's last word.
+   ✗ NEVER touch any number — every metric stays character-exact.
+
+   EXAMPLE OF FORBIDDEN OUTPUT:
+   ORIGINAL: "...verifying occupancy data using internal housing
+   management systems."
+   ✗ BAD: "...using internal housing management systems and applying
+   knowledge of back-end code with Python and Java."
+   (New clause after the original ending — this is always wrong.)
+
+   IF NO SWAP EXISTS: return the original bullet word-for-word.
    When in doubt — return the original unchanged.
    ══════════════════════════════════════════════════════════════
 
