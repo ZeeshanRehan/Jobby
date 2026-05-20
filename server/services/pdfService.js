@@ -39,9 +39,8 @@ function buildSkillsBlock(baseSkills, skillsToAdd) {
 
 function buildExperienceBlock(experienceList, tailoredExperience) {
   return experienceList.map((job) => {
-    // Use tailored bullets if present, else fall back to originals
     const bullets = tailoredExperience[job.company] || job.bullets;
-    const bulletHtml = bullets.map((b) => `<li>${b}</li>`).join("\n");
+    const bulletHtml = bullets.map((b) => `<li>● ${b}</li>`).join("\n");
 
     return `
       <div class="entry">
@@ -52,6 +51,7 @@ function buildExperienceBlock(experienceList, tailoredExperience) {
           </div>
           <div class="entry-date">${job.startDate} – ${job.endDate}</div>
         </div>
+        <div class="entry-location">${job.location}</div>
         <ul>${bulletHtml}</ul>
       </div>
     `;
@@ -61,10 +61,7 @@ function buildExperienceBlock(experienceList, tailoredExperience) {
 function buildProjectsBlock(projectsList, tailoredProjects) {
   return projectsList.map((proj) => {
     const bullets = tailoredProjects[proj.name] || proj.bullets;
-    const bulletHtml = bullets.map((b) => `<li>${b}</li>`).join("\n");
-    const stackLine = proj.stack?.length
-      ? `<div class="entry-stack">${proj.stack.join(", ")}</div>`
-      : "";
+    const bulletHtml = bullets.map((b) => `<li>● ${b}</li>`).join("\n");
 
     return `
       <div class="entry">
@@ -75,7 +72,26 @@ function buildProjectsBlock(projectsList, tailoredProjects) {
           </div>
           <div class="entry-date">${proj.startDate} – ${proj.endDate}</div>
         </div>
-        ${stackLine}
+        <ul>${bulletHtml}</ul>
+      </div>
+    `;
+  }).join("\n");
+}
+
+function buildActivitiesBlock(activitiesList) {
+  return activitiesList.map((item) => {
+    const bulletHtml = item.bullets.map((b) => `<li>● ${b}</li>`).join("\n");
+
+    return `
+      <div class="entry">
+        <div class="entry-header">
+          <div>
+            <span class="entry-title">${item.org}</span> —
+            <span class="entry-role">${item.role}</span>
+          </div>
+          <div class="entry-date">${item.date}</div>
+        </div>
+        <div class="entry-location">${item.location}</div>
         <ul>${bulletHtml}</ul>
       </div>
     `;
@@ -87,15 +103,15 @@ function buildProjectsBlock(projectsList, tailoredProjects) {
 function buildHtml(resumeData, tailored) {
   let html = fs.readFileSync(TEMPLATE_PATH, "utf-8");
 
-  const { contact, education, skills, experience, projects } = resumeData;
+  const { contact, education, skills, experience, projects, activities } = resumeData;
   const { tailoredSummary, skillsToAdd, tailoredExperience, tailoredProjects } = tailored;
 
   // Simple token replacement for scalar fields
   html = html
-    .replace("{{NAME}}",           resumeData.name)
+    .replaceAll("{{NAME}}",           resumeData.name)
     .replace("{{EMAIL}}",          contact.email)
     .replace("{{PHONE}}",          contact.phone)
-    .replace("{{PORTFOLIO}}",      contact.portfolio)
+    .replaceAll("{{PORTFOLIO}}",      contact.portfolio)
     .replace("{{LINKEDIN_SLUG}}",  contact.linkedin)
     .replace("{{GITHUB}}",         contact.github)
     .replace("{{EDU_SCHOOL}}",     education.school)
@@ -108,7 +124,8 @@ function buildHtml(resumeData, tailored) {
     // .replace("{{SUMMARY_BLOCK}}",    buildSummaryBlock(tailoredSummary))
     .replace("{{SKILLS_BLOCK}}",     buildSkillsBlock(skills, skillsToAdd))
     .replace("{{EXPERIENCE_BLOCK}}", buildExperienceBlock(experience, tailoredExperience))
-    .replace("{{PROJECTS_BLOCK}}",   buildProjectsBlock(projects, tailoredProjects));
+    .replace("{{PROJECTS_BLOCK}}",   buildProjectsBlock(projects, tailoredProjects))
+    .replace("{{ACTIVITIES_BLOCK}}",  buildActivitiesBlock(activities));
 
   return html;
 }

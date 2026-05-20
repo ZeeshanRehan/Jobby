@@ -149,10 +149,12 @@ STRICT RULES:
    - skillsToAdd: JD keywords and tools not in the resume but worth adding.
      Include things the candidate may have touched but never listed.
      Also include adjacent skills worth studying to close the gap.
-     Be generous — this list is for candidate awareness, not all need to go on resume.
-     skillsToAdd must be clean tool/technology names only. 
-     No compound phrases, no made-up specializations.
-    "Visual Basic" yes. "Git workflow management" no.
+   - Clean tool/technology names ONLY.
+   - NO compound phrases, suffixes, or descriptors of any kind.
+   - Banned words in skillsToAdd: "design", "workflow", "management", 
+     "development", "RESTful", "practices", "principles", "architecture".
+   - Good: "Visual Basic", "Prisma", "Kafka"
+   - Bad: "RESTful API design", "Git workflow", "system architecture"
 
 4. EXPERIENCE tailoring:
    - For each role, only reword existing bullets using JD language.

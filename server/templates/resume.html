@@ -10,11 +10,11 @@
 
     body {
       font-family: "Georgia", serif;
-      font-size: 10.5pt;
-      line-height: 1.45;
+      font-size: 9.5pt;
+      line-height: 1.35;
       color: #1a1a1a;
       background: #fff;
-      padding: 36pt 48pt;
+      padding: 16pt 28pt;
       max-width: 780px;
       margin: 0 auto;
     }
@@ -43,16 +43,16 @@
     .contact a { color: #1a1a1a; text-decoration: none; }
 
     /* ── Section ──────────────────────────────────────────────── */
-    .section { margin-bottom: 11pt; }
+    .section { margin-bottom: 7pt; }
 
     .section-title {
-      font-size: 10pt;
+      font-size: 9.5pt;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       border-bottom: 1px solid #1a1a1a;
       padding-bottom: 2pt;
-      margin-bottom: 7pt;
+      margin-bottom: 5pt;
     }
 
     /* ── Summary ──────────────────────────────────────────────── */
@@ -85,7 +85,7 @@
     .skills-row strong { margin-right: 4pt; }
 
     /* ── Experience & Projects ────────────────────────────────── */
-    .entry { margin-bottom: 9pt; }
+    .entry { margin-bottom: 7pt; }
 
     .entry-header {
       display: flex;
@@ -93,20 +93,27 @@
       align-items: baseline;
     }
 
+    .entry-location {
+    font-size: 9pt;
+    color: #555;
+    margin-bottom: 1pt;
+  }
+
     .entry-title   { font-weight: bold; font-size: 10.5pt; }
     .entry-role    { font-style: italic; font-size: 10pt; }
     .entry-date    { font-size: 9.5pt; color: #444; white-space: nowrap; }
     .entry-stack   { font-size: 9pt; color: #555; margin: 1pt 0 3pt; }
 
-    .entry ul {
-      padding-left: 14pt;
-      margin-top: 3pt;
-    }
 
-    .entry ul li {
-      font-size: 10pt;
-      margin-bottom: 2.5pt;
-    }
+.entry ul {
+  padding-left: 14pt;
+  margin-top: 2pt;
+}
+
+.entry ul li {
+  font-size: 9.5pt;
+  margin-bottom: 2pt;
+}
   </style>
 </head>
 <body>
@@ -124,7 +131,7 @@
   </div>
 
   <!-- ── Summary (omitted if empty) ────────────────────────── -->
-  {{SUMMARY_BLOCK}}
+  <!-- {{SUMMARY_BLOCK}} -->
 
   <!-- ── Education ──────────────────────────────────────────── -->
   <div class="section">
@@ -155,6 +162,12 @@
   <div class="section">
     <div class="section-title">Projects</div>
     {{PROJECTS_BLOCK}}
+  </div>
+
+  <!-- ── Activities & Leadership ────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">Activities & Leadership</div>
+    {{ACTIVITIES_BLOCK}}
   </div>
 
 </body>
