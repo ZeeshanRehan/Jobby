@@ -159,17 +159,33 @@ STRICT RULES:
 4. ══════════════════════════════════════════════════════════════
    RULE 4 IS ABSOLUTE — BULLET APPENDING IS FORBIDDEN
    ══════════════════════════════════════════════════════════════
-   Every tailored bullet MUST end at the same natural stopping
-   point as the original. NEVER add anything after the last word
-   of the original bullet. NEVER increase the bullet's length by
-   adding new clauses, phrases, or verb groups at the end.
 
-   ── HOW TO INJECT KEYWORDS ──────────────────────────────────
+   ── MANDATORY REWRITING ─────────────────────────────────────
 
-   PRIORITY 1 — Tech-list swap (preferred method):
-   When a bullet already contains a technology list ("using X, Y, Z"
-   or "with X, Y, and Z"), this is your swap zone. Replace or add
-   the JD technology INSIDE that existing list.
+   If the JD mentions any specific technology, language, or
+   framework, you MUST rewrite at least 2-3 bullets that contain
+   existing tech mentions. Returning bulletsReworded as an empty
+   array when the JD has tech requirements is a FAILURE.
+
+   Actively scan every bullet for tech lists ("using X, Y, Z",
+   "with X, Y, and Z", "built on X"). When you find one, that is
+   your injection point — swap or add the most relevant JD tech
+   INSIDE that list.
+
+   EXAMPLE:
+   JD mentions: Java, Kubernetes, Docker
+   ORIGINAL bullet: "Built a scalable platform using React.js,
+   Node.js, Express, MongoDB, and GPT-4..."
+   ✓ REWRITE: "Built a scalable platform using React.js, Node.js,
+   and Java, MongoDB, and GPT-4..."
+   ✗ WRONG: bulletsReworded: []   ← this is a failure
+
+   ── HOW TO INJECT ───────────────────────────────────────────
+
+   METHOD 1 — Tech-list swap (use first):
+   Find a bullet with an inline tech list. Replace one item in
+   that list with the JD technology, or insert it naturally into
+   the list. The sentence must end exactly where the original ended.
 
    ORIGINAL: "Built a platform using React.js, Node.js, Express,
    MongoDB, and GPT-4, allowing users to describe feelings and
@@ -179,26 +195,25 @@ STRICT RULES:
    ✓ CORRECT: "Built a platform using React.js, Node.js, Java,
    MongoDB, and GPT-4, allowing users to describe feelings and
    receive curated YouTube song recommendations."
-   (Swapped Express for Java inside the existing tech list —
-   sentence length and ending identical.)
+   (Swapped Express for Java inside the list — ending unchanged.)
 
-   PRIORITY 2 — Inline word/phrase substitution:
-   Replace a generic word or phrase mid-sentence with the JD
-   keyword. The sentence must end in the same place.
+   METHOD 2 — Inline word/phrase substitution:
+   Replace a generic descriptor mid-sentence with the JD keyword.
+   Sentence must end in the same place.
 
-   ORIGINAL: "Redesigned inquiry, response, and negotiation flows
-   using Figma, React-based prototypes, and structured UX templates
-   for 100+ active small businesses on the platform."
+   ORIGINAL: "Redesigned flows using Figma, React-based prototypes,
+   and structured UX templates for 100+ active small businesses."
    JD wants: TypeScript
 
-   ✓ CORRECT: "Redesigned inquiry, response, and negotiation flows
-   using Figma, TypeScript-based prototypes, and structured UX
-   templates for 100+ active small businesses on the platform."
-   (Swapped "React-based" for "TypeScript-based" mid-sentence.)
+   ✓ CORRECT: "Redesigned flows using Figma, TypeScript-based
+   prototypes, and structured UX templates for 100+ active small
+   businesses."
+   (Swapped "React-based" for "TypeScript-based" — ending unchanged.)
 
-   PRIORITY 3 — Skills section only:
-   If no natural inline swap exists in any bullet, add the keyword
-   to skillsToAdd and leave every bullet UNCHANGED.
+   METHOD 3 — Skills section only (last resort):
+   Only fall back here if genuinely no tech list or swappable phrase
+   exists anywhere in the bullet set. Do not use this as an excuse
+   to skip rewriting.
 
    ── WHAT IS ALWAYS FORBIDDEN ────────────────────────────────
 
@@ -208,14 +223,9 @@ STRICT RULES:
    ✗ NEVER touch any number — every metric stays character-exact.
 
    EXAMPLE OF FORBIDDEN OUTPUT:
-   ORIGINAL: "...verifying occupancy data using internal housing
-   management systems."
-   ✗ BAD: "...using internal housing management systems and applying
-   knowledge of back-end code with Python and Java."
-   (New clause after the original ending — this is always wrong.)
-
-   IF NO SWAP EXISTS: return the original bullet word-for-word.
-   When in doubt — return the original unchanged.
+   ORIGINAL: "...verifying occupancy data using internal systems."
+   ✗ BAD: "...using internal systems and applying Python and Java."
+   (New clause after the original ending — always wrong.)
    ══════════════════════════════════════════════════════════════
 
 5. PROJECTS tailoring:
