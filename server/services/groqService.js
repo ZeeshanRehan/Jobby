@@ -151,28 +151,67 @@ STRICT RULES:
      Also include adjacent skills worth studying to close the gap.
    - Clean tool/technology names ONLY.
    - NO compound phrases, suffixes, or descriptors of any kind.
-   - Banned words in skillsToAdd: "design", "workflow", "management", 
+   - Banned words in skillsToAdd: "design", "workflow", "management",
      "development", "RESTful", "practices", "principles", "architecture".
+   - Also banned: "APIs" — too vague. Use specific names only (e.g. "Stripe", "Twilio").
    - Good: "Visual Basic", "Prisma", "Kafka"
-   - Bad: "RESTful API design", "Git workflow", "system architecture"
+   - Bad: "RESTful API design", "Git workflow", "system architecture", "APIs"
 
-4. EXPERIENCE tailoring:
-   - For each role, only reword existing bullets using JD language.
-   - Keep the same meaning, same metrics, same structure.
-   - If a role has no relevance to the JD, return its bullets unchanged.
-   - Subtle keyword injection only — max 1-2 words changed per bullet.
-   - Weave keywords into the middle of the sentence, replacing or substituting
-     existing words — NEVER add anything after the bullet's original closing thought.
-   - ABSOLUTE BAN — clause tacking:
-     * Never append ", and [anything]" to the end of a bullet.
-     * Never append " and [verb]ing..." to the end of a bullet.
-     * Never add any new phrase, clause, or continuation after where the
-       original bullet ended. The bullet must end where the original ended.
-     * If you cannot inject a keyword without appending, skip that bullet.
-   - Examples of FORBIDDEN output:
-     * "...pipeline, and developing front-end code with HTML"
-     * "...assignments and utilizing Application Program Interfaces (APIs)"
-     * "...reducing requests by 35%, and applying Agile methodologies"
+4. ══════════════════════════════════════════════════════════════
+   RULE 4 IS ABSOLUTE — BULLET APPENDING IS FORBIDDEN
+   ══════════════════════════════════════════════════════════════
+   Every tailored bullet MUST end at the same natural stopping
+   point as the original. The word count may decrease but NEVER
+   increase beyond replacing existing words in place.
+
+   YOU MAY: swap or substitute words inside the existing sentence.
+   YOU MAY NOT: add any new clause, phrase, or word after the
+   original bullet's last word.
+
+   SPECIFICALLY BANNED — never appear at the end of a bullet:
+     * "and [anything]"
+     * "and developing [keyword]"
+     * "and applying [keyword]"
+     * "and utilizing [keyword]"
+     * "utilizing [keyword]"
+     * any new verb phrase not in the original
+
+   CONCRETE EXAMPLES:
+
+   ORIGINAL: "Assisted in preparing 500+ residential units for incoming
+   students by managing room assignments and verifying occupancy data
+   using internal housing management systems."
+
+   ✗ FORBIDDEN: "...verifying occupancy data using internal housing
+   management systems and applying knowledge of back-end code
+   development with Python and Java."
+   (New clause tacked on after the original ending — NEVER do this.)
+
+   ✓ ALLOWED: "...verifying occupancy data and system integrity using
+   internal housing management systems."
+   (Keyword woven into the middle; sentence ends where original ended.)
+
+   ---
+
+   ORIGINAL: "Redesigned inquiry, response, and negotiation flows using
+   Figma, React-based prototypes, and structured UX templates for 100+
+   active small businesses on the platform."
+
+   ✗ FORBIDDEN: "...for 100+ active small businesses on the platform
+   and developing front-end code with HTML and JavaScript."
+   (Appended clause — NEVER do this.)
+
+   ✓ ALLOWED: "Redesigned inquiry, response, and negotiation flows
+   using Figma, React-based prototypes, and JavaScript-driven UX
+   templates for 100+ active small businesses on the platform."
+   (Keyword injected in the middle; ending unchanged.)
+
+   ---
+
+   IF YOU CANNOT weave a keyword naturally into the middle of a
+   bullet without appending: return the original bullet UNCHANGED.
+   When in doubt — return the original unchanged.
+   ══════════════════════════════════════════════════════════════
 
 5. PROJECTS tailoring:
    - Same rules as experience. Reword only, never invent.
@@ -189,7 +228,16 @@ STRICT RULES:
    - Flag JD requirements with zero coverage in the resume.
    - Be specific. Max 4 items, max 12 words each.
 
-8. Return valid JSON only. No markdown. No backticks. No explanation.
+8. changesMade:
+   - skillsAdded: the exact list you put in skillsToAdd.
+   - bulletsReworded: only bullets you actually changed.
+     For each changed bullet include:
+       "section": the company or project name (exact key from tailoredExperience/tailoredProjects)
+       "original": the original bullet text from the base resume
+       "tailored": the reworded bullet you produced
+     Do NOT include bullets that are identical to the original.
+
+9. Return valid JSON only. No markdown. No backticks. No explanation.
 
 BASE RESUME:
 ${JSON.stringify(resumeData, null, 2)}
@@ -226,7 +274,17 @@ Return JSON with EXACTLY this shape — no extra fields, no missing fields:
       "reworded bullet 2"
     ]
   },
-  "warnings": ["warning 1", "warning 2"]
+  "warnings": ["warning 1", "warning 2"],
+  "changesMade": {
+    "skillsAdded": ["skill1", "skill2"],
+    "bulletsReworded": [
+      {
+        "section": "InvolveMINT Inc.",
+        "original": "original bullet text",
+        "tailored": "tailored bullet text"
+      }
+    ]
+  }
 }
 `.trim();
 }
