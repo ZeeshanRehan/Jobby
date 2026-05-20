@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jobby</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 13px;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      width: 320px;
+      padding: 20px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      color: #3b82f6;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: #444;
+      margin-bottom: 16px;
+    }
+
+    .url-label {
+      font-size: 11px;
+      color: #666;
+      background: #161616;
+      border: 1px solid #222;
+      border-radius: 4px;
+      padding: 6px 8px;
+      margin-bottom: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button:hover:not(:disabled) { background: #2563eb; }
+    button:disabled { background: #1e3a5f; color: #556; cursor: not-allowed; }
+
+    .btn-secondary {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      color: #888;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover:not(:disabled) { background: #1e1e1e; }
+
+    .hidden { display: none !important; }
+
+    /* ── Loading ─────────────────────────────────────────────────── */
+    .loading-center { text-align: center; padding: 10px 0 4px; }
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #1e1e1e;
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-step { font-size: 12px; color: #888; }
+
+    /* ── Success ─────────────────────────────────────────────────── */
+    .success-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .success-icon {
+      width: 22px;
+      height: 22px;
+      background: #052e16;
+      border: 1px solid #14532d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4ade80;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .success-title { font-size: 13px; font-weight: 600; }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 5px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 12px;
+    }
+
+    .stat-row:last-of-type { border-bottom: none; }
+    .stat-label { color: #666; }
+    .stat-value { color: #e0e0e0; font-weight: 500; }
+
+    .skills-list {
+      font-size: 11px;
+      color: #3b82f6;
+      margin-top: 4px;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .download-status {
+      font-size: 11px;
+      color: #4ade80;
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+
+    .warnings-block {
+      margin-top: 12px;
+      background: #130f00;
+      border: 1px solid #2e2100;
+      border-radius: 4px;
+      padding: 8px 10px;
+    }
+
+    .warnings-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #a16207;
+      margin-bottom: 5px;
+    }
+
+    .warnings-list { list-style: none; }
+
+    .warnings-list li {
+      font-size: 11px;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    .warnings-list li::before { content: "⚠ "; }
+
+    /* ── Error ───────────────────────────────────────────────────── */
+    .error-step-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #3f0f0f;
+      color: #f87171;
+      border-radius: 3px;
+      padding: 2px 7px;
+      margin-bottom: 10px;
+    }
+
+    .error-msg {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Idle ──────────────────────────────────────────────────────────────── -->
+  <div id="state-idle">
+    <div class="brand">Jobby</div>
+    <div class="brand-sub">AI Resume Tailoring</div>
+    <div class="url-label" id="current-url">Loading...</div>
+    <button id="btn-tailor">Tailor Resume</button>
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────────────────── -->
+  <div id="state-loading" class="hidden">
+    <div class="brand">Jobby</div>
+    <div class="brand-sub">AI Resume Tailoring</div>
+    <div class="loading-center">
+      <div class="spinner"></div>
+      <div class="loading-step" id="loading-step">Scraping job description...</div>
+    </div>
+  </div>
+
+  <!-- ── Success ───────────────────────────────────────────────────────────── -->
+  <div id="state-success" class="hidden">
+    <div class="brand">Jobby</div>
+    <div class="brand-sub">AI Resume Tailoring</div>
+    <div class="success-header">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Resume tailored &amp; downloaded</div>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Bullets reworded</span>
+      <span class="stat-value" id="bullets-count">—</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Skills added</span>
+      <span class="stat-value" id="skills-count">—</span>
+    </div>
+    <div class="skills-list" id="skills-list"></div>
+    <div id="warnings-block" class="warnings-block hidden">
+      <div class="warnings-title">Coverage Gaps</div>
+      <ul class="warnings-list" id="warnings-list"></ul>
+    </div>
+    <div class="download-status" id="download-status"></div>
+    <button class="btn-secondary" id="btn-reset">Tailor Another</button>
+  </div>
+
+  <!-- ── Error ─────────────────────────────────────────────────────────────── -->
+  <div id="state-error" class="hidden">
+    <div class="brand">Jobby</div>
+    <div class="brand-sub">AI Resume Tailoring</div>
+    <div class="error-step-badge" id="error-step"></div>
+    <div class="error-msg" id="error-msg"></div>
+    <button id="btn-retry" style="margin-top: 14px;">Retry</button>
+    <button class="btn-secondary" id="btn-back">Go Back</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
