@@ -161,7 +161,18 @@ STRICT RULES:
    - Keep the same meaning, same metrics, same structure.
    - If a role has no relevance to the JD, return its bullets unchanged.
    - Subtle keyword injection only — max 1-2 words changed per bullet.
-   - Weave keywords into the middle of bullets naturally — never append   them as a clause at the end.
+   - Weave keywords into the middle of the sentence, replacing or substituting
+     existing words — NEVER add anything after the bullet's original closing thought.
+   - ABSOLUTE BAN — clause tacking:
+     * Never append ", and [anything]" to the end of a bullet.
+     * Never append " and [verb]ing..." to the end of a bullet.
+     * Never add any new phrase, clause, or continuation after where the
+       original bullet ended. The bullet must end where the original ended.
+     * If you cannot inject a keyword without appending, skip that bullet.
+   - Examples of FORBIDDEN output:
+     * "...pipeline, and developing front-end code with HTML"
+     * "...assignments and utilizing Application Program Interfaces (APIs)"
+     * "...reducing requests by 35%, and applying Agile methodologies"
 
 5. PROJECTS tailoring:
    - Same rules as experience. Reword only, never invent.
