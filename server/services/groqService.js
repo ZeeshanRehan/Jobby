@@ -117,8 +117,8 @@ const resumeData = {
       role: "Secretary",
       date: "Mar 2023 – Aug 2023",
       bullets: [
-        "Organized outreach programs and community initiatives as part of a student-led NGO.",
-        "Coordinated with volunteers, managed logistics, and contributed to event planning for freshmen. ",
+        "Organized community outreach programs and initiatives for a student-led NGO at LPU.",
+        "Coordinated volunteers, managed logistics, and led event planning for 100+ freshmen.",
       ],
     },
   ],
