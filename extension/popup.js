@@ -1,6 +1,7 @@
 // ─── Constants ───────────────────────────────────────────────────────────────
 const API_URL    = "http://178.105.161.45:3000/tailor-resume";
 const TIMEOUT_MS = 120_000; // Groq + Puppeteer can take 30-60s
+const STORAGE_KEY = "lastResult";
 
 // ─── DOM References ───────────────────────────────────────────────────────────
 const stateIdle    = document.getElementById("state-idle");
@@ -13,9 +14,13 @@ const elLoadingStep   = document.getElementById("loading-step");
 const elBulletsCount  = document.getElementById("bullets-count");
 const elSkillsCount   = document.getElementById("skills-count");
 const elSkillsList    = document.getElementById("skills-list");
+const elChangesBlock  = document.getElementById("changes-block");
+const elChangesCount  = document.getElementById("changes-count");
+const elChangesList   = document.getElementById("changes-list");
 const elWarningsBlock = document.getElementById("warnings-block");
 const elWarningsList  = document.getElementById("warnings-list");
 const elDownloadStatus = document.getElementById("download-status");
+const elRestoredNote  = document.getElementById("restored-note");
 const elErrorStep     = document.getElementById("error-step");
 const elErrorMsg      = document.getElementById("error-msg");
 
@@ -38,6 +43,74 @@ function showError(step, message) {
   elErrorStep.textContent = step;
   elErrorMsg.textContent  = message;
   showState(stateError);
+}
+
+// ─── Success Renderer ─────────────────────────────────────────────────────────
+// isRestored = true when loading from storage rather than a fresh API call
+function renderSuccess(data, isRestored = false) {
+  const bulletsReworded = data.bulletsReworded || [];
+  const skillsAdded     = data.skillsAdded     || [];
+  const warnings        = data.warnings        || [];
+
+  elBulletsCount.textContent = bulletsReworded.length;
+  elSkillsCount.textContent  = skillsAdded.length;
+  elSkillsList.textContent   = skillsAdded.length > 0 ? skillsAdded.join(", ") : "";
+
+  // ── Bullet changes collapsible ───────────────────────────────────────────
+  if (bulletsReworded.length > 0) {
+    elChangesCount.textContent = bulletsReworded.length;
+    elChangesList.innerHTML = bulletsReworded.map(({ section, original, tailored }) => `
+      <div class="change-entry">
+        <div class="change-section-label">${section}</div>
+        <div class="change-row">
+          <span class="change-badge before-badge">Before</span>
+          <span class="change-text">${original}</span>
+        </div>
+        <div class="change-row">
+          <span class="change-badge after-badge">After</span>
+          <span class="change-text after-text">${tailored}</span>
+        </div>
+      </div>
+    `).join("");
+    elChangesBlock.classList.remove("hidden");
+  } else {
+    elChangesBlock.classList.add("hidden");
+  }
+
+  // ── Warnings ─────────────────────────────────────────────────────────────
+  if (warnings.length > 0) {
+    elWarningsList.innerHTML = warnings.map((w) => `<li>${w}</li>`).join("");
+    elWarningsBlock.classList.remove("hidden");
+  } else {
+    elWarningsBlock.classList.add("hidden");
+  }
+
+  // ── Download / restore note ───────────────────────────────────────────────
+  if (isRestored) {
+    elDownloadStatus.textContent = "";
+    elRestoredNote.textContent   = "Showing last session — click Tailor Another to start fresh";
+  } else {
+    elDownloadStatus.textContent = "✓ Saved as resume_tailored.pdf";
+    elRestoredNote.textContent   = "";
+  }
+
+  showState(stateSuccess);
+}
+
+// ─── Storage ──────────────────────────────────────────────────────────────────
+async function saveResult(bulletsReworded, skillsAdded, warnings) {
+  await chrome.storage.local.set({
+    [STORAGE_KEY]: { bulletsReworded, skillsAdded, warnings, savedAt: Date.now() },
+  });
+}
+
+async function clearResult() {
+  await chrome.storage.local.remove(STORAGE_KEY);
+}
+
+async function loadSavedResult() {
+  const stored = await chrome.storage.local.get(STORAGE_KEY);
+  return stored[STORAGE_KEY] || null;
 }
 
 // ─── Scraping ─────────────────────────────────────────────────────────────────
@@ -173,8 +246,8 @@ async function runTailoring() {
   elLoadingStep.textContent = "Downloading resume...";
 
   const { downloadUrl, result } = apiData;
-  const changesMade = result.changesMade || { skillsAdded: [], bulletsReworded: [] };
-  const warnings    = result.warnings    || [];
+  const changesMade     = result.changesMade || { skillsAdded: [], bulletsReworded: [] };
+  const warnings        = result.warnings    || [];
   const { skillsAdded, bulletsReworded } = changesMade;
 
   try {
@@ -184,18 +257,9 @@ async function runTailoring() {
     return;
   }
 
-  // ── Step 4: Show Success ──────────────────────────────────────────────────
-  elBulletsCount.textContent  = bulletsReworded.length;
-  elSkillsCount.textContent   = skillsAdded.length;
-  elSkillsList.textContent    = skillsAdded.length > 0 ? skillsAdded.join(", ") : "";
-  elDownloadStatus.textContent = "✓ Saved as resume_tailored.pdf";
-
-  if (warnings.length > 0) {
-    elWarningsList.innerHTML = warnings.map((w) => `<li>${w}</li>`).join("");
-    elWarningsBlock.classList.remove("hidden");
-  }
-
-  showState(stateSuccess);
+  // ── Step 4: Persist and show success ─────────────────────────────────────
+  await saveResult(bulletsReworded, skillsAdded, warnings);
+  renderSuccess({ bulletsReworded, skillsAdded, warnings }, false);
 }
 
 // ─── Event Listeners ──────────────────────────────────────────────────────────
@@ -203,8 +267,11 @@ btnTailor.addEventListener("click", runTailoring);
 
 btnRetry.addEventListener("click", runTailoring);
 
-btnReset.addEventListener("click", () => {
+btnReset.addEventListener("click", async () => {
+  await clearResult();
+  elChangesBlock.classList.add("hidden");
   elWarningsBlock.classList.add("hidden");
+  elChangesList.innerHTML  = "";
   elWarningsList.innerHTML = "";
   showState(stateIdle);
 });
@@ -218,4 +285,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   currentTab = tab;
   elCurrentUrl.textContent = tab?.url || "No URL detected";
+
+  // Restore last result if present — saves the user from re-tailoring on every popup open
+  const saved = await loadSavedResult();
+  if (saved) {
+    renderSuccess(saved, true);
+  }
 });

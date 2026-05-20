@@ -3,7 +3,7 @@
   "name": "Jobby",
   "version": "1.0.0",
   "description": "AI-powered resume tailoring for job applications",
-  "permissions": ["activeTab", "tabs", "downloads", "scripting"],
+  "permissions": ["activeTab", "tabs", "downloads", "scripting", "storage"],
   "host_permissions": [
     "http://178.105.161.45:3000/*",
     "<all_urls>"

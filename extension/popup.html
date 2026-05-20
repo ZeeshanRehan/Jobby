@@ -9,10 +9,10 @@
     body {
       font-family: system-ui, -apple-system, sans-serif;
       font-size: 13px;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      width: 320px;
-      padding: 20px;
+      background: #0c0c0c;
+      color: #d8d8d8;
+      width: 340px;
+      padding: 22px;
     }
 
     .brand {
@@ -25,18 +25,18 @@
 
     .brand-sub {
       font-size: 11px;
-      color: #444;
-      margin-bottom: 16px;
+      color: #555;
+      margin-bottom: 18px;
     }
 
     .url-label {
       font-size: 11px;
-      color: #666;
-      background: #161616;
-      border: 1px solid #222;
-      border-radius: 4px;
-      padding: 6px 8px;
-      margin-bottom: 14px;
+      color: #888;
+      background: #141414;
+      border: 1px solid #242424;
+      border-radius: 5px;
+      padding: 7px 10px;
+      margin-bottom: 16px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -44,11 +44,11 @@
 
     button {
       width: 100%;
-      padding: 10px;
+      padding: 11px;
       background: #3b82f6;
       color: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 7px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
@@ -56,21 +56,21 @@
     }
 
     button:hover:not(:disabled) { background: #2563eb; }
-    button:disabled { background: #1e3a5f; color: #556; cursor: not-allowed; }
+    button:disabled { background: #1a2f4a; color: #3a5070; cursor: not-allowed; }
 
     .btn-secondary {
-      background: #161616;
-      border: 1px solid #2a2a2a;
-      color: #888;
-      margin-top: 8px;
+      background: #141414;
+      border: 1px solid #272727;
+      color: #999;
+      margin-top: 10px;
     }
 
-    .btn-secondary:hover:not(:disabled) { background: #1e1e1e; }
+    .btn-secondary:hover:not(:disabled) { background: #1a1a1a; color: #bbb; }
 
     .hidden { display: none !important; }
 
-    /* ── Loading ─────────────────────────────────────────────────── */
-    .loading-center { text-align: center; padding: 10px 0 4px; }
+    /* ── Loading ──────────────────────────────────────────────────── */
+    .loading-center { text-align: center; padding: 16px 0 8px; }
 
     .spinner {
       width: 30px;
@@ -78,27 +78,27 @@
       border: 3px solid #1e1e1e;
       border-top-color: #3b82f6;
       border-radius: 50%;
-      margin: 0 auto 12px;
+      margin: 0 auto 14px;
       animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .loading-step { font-size: 12px; color: #888; }
+    .loading-step { font-size: 12px; color: #777; }
 
-    /* ── Success ─────────────────────────────────────────────────── */
+    /* ── Success ──────────────────────────────────────────────────── */
     .success-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 14px;
+      gap: 9px;
+      margin-bottom: 16px;
     }
 
     .success-icon {
       width: 22px;
       height: 22px;
-      background: #052e16;
-      border: 1px solid #14532d;
+      background: #051a0d;
+      border: 1px solid #0f3d1f;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -109,82 +109,199 @@
       flex-shrink: 0;
     }
 
-    .success-title { font-size: 13px; font-weight: 600; }
+    .success-title { font-size: 13px; font-weight: 600; color: #e0e0e0; }
+
+    .stats-block {
+      background: #111;
+      border: 1px solid #202020;
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
 
     .stat-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      padding: 5px 0;
-      border-bottom: 1px solid #1a1a1a;
+      align-items: center;
+      padding: 9px 12px;
       font-size: 12px;
     }
 
-    .stat-row:last-of-type { border-bottom: none; }
-    .stat-label { color: #666; }
-    .stat-value { color: #e0e0e0; font-weight: 500; }
+    .stat-row + .stat-row { border-top: 1px solid #1c1c1c; }
+
+    .stat-label { color: #777; }
+    .stat-value { color: #e0e0e0; font-weight: 600; }
 
     .skills-list {
       font-size: 11px;
-      color: #3b82f6;
-      margin-top: 4px;
+      color: #4a90d9;
       line-height: 1.6;
       word-break: break-word;
+      padding: 0 2px;
+      margin-bottom: 10px;
+      min-height: 0;
     }
 
-    .download-status {
+    /* ── Changes (collapsible) ────────────────────────────────────── */
+    details.changes-section {
+      border: 1px solid #202020;
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    details.changes-section summary {
+      padding: 9px 12px;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: #aaa;
+      background: #111;
+    }
+
+    details.changes-section summary::-webkit-details-marker { display: none; }
+
+    .summary-left { display: flex; align-items: center; gap: 8px; }
+
+    .changes-count-badge {
+      background: #0f2340;
+      color: #4a90d9;
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .summary-arrow {
+      font-size: 13px;
+      color: #444;
+      transition: transform 0.15s;
+      display: inline-block;
+    }
+
+    details.changes-section[open] .summary-arrow { transform: rotate(90deg); }
+
+    .changes-list {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #0c0c0c;
+    }
+
+    .change-entry {
+      background: #111;
+      border: 1px solid #1c1c1c;
+      border-radius: 5px;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .change-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #444;
+    }
+
+    .change-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .change-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .before-badge { background: #2a1010; color: #8b2e2e; }
+    .after-badge  { background: #0a1f10; color: #2d7a3a; }
+
+    .change-text {
       font-size: 11px;
-      color: #4ade80;
-      text-align: center;
-      margin-top: 12px;
-      margin-bottom: 4px;
+      color: #666;
+      line-height: 1.55;
     }
 
+    .change-text.after-text { color: #aaa; }
+
+    /* ── Warnings ─────────────────────────────────────────────────── */
     .warnings-block {
-      margin-top: 12px;
-      background: #130f00;
-      border: 1px solid #2e2100;
-      border-radius: 4px;
-      padding: 8px 10px;
+      background: #110e00;
+      border: 1px solid #2a2000;
+      border-radius: 7px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
     }
 
     .warnings-title {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #a16207;
-      margin-bottom: 5px;
+      letter-spacing: 0.07em;
+      color: #9a6c00;
+      margin-bottom: 6px;
     }
 
     .warnings-list { list-style: none; }
 
     .warnings-list li {
       font-size: 11px;
-      color: #78350f;
-      line-height: 1.5;
+      color: #6e5200;
+      line-height: 1.55;
     }
 
+    .warnings-list li + li { margin-top: 3px; }
     .warnings-list li::before { content: "⚠ "; }
 
-    /* ── Error ───────────────────────────────────────────────────── */
+    /* ── Download status ──────────────────────────────────────────── */
+    .download-status {
+      font-size: 11px;
+      color: #3a9a5c;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+
+    .restored-note {
+      font-size: 10px;
+      color: #444;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+
+    /* ── Error ────────────────────────────────────────────────────── */
     .error-step-badge {
       display: inline-block;
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      background: #3f0f0f;
-      color: #f87171;
-      border-radius: 3px;
-      padding: 2px 7px;
-      margin-bottom: 10px;
+      background: #3a0f0f;
+      color: #e05555;
+      border-radius: 4px;
+      padding: 3px 8px;
+      margin-bottom: 12px;
     }
 
     .error-msg {
       font-size: 12px;
       color: #999;
-      line-height: 1.55;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -212,24 +329,44 @@
   <div id="state-success" class="hidden">
     <div class="brand">Jobby</div>
     <div class="brand-sub">AI Resume Tailoring</div>
+
     <div class="success-header">
       <div class="success-icon">✓</div>
       <div class="success-title">Resume tailored &amp; downloaded</div>
     </div>
-    <div class="stat-row">
-      <span class="stat-label">Bullets reworded</span>
-      <span class="stat-value" id="bullets-count">—</span>
+
+    <div class="stats-block">
+      <div class="stat-row">
+        <span class="stat-label">Bullets reworded</span>
+        <span class="stat-value" id="bullets-count">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Skills added</span>
+        <span class="stat-value" id="skills-count">—</span>
+      </div>
     </div>
-    <div class="stat-row">
-      <span class="stat-label">Skills added</span>
-      <span class="stat-value" id="skills-count">—</span>
-    </div>
+
     <div class="skills-list" id="skills-list"></div>
+
+    <details id="changes-block" class="changes-section hidden">
+      <summary>
+        <span class="summary-left">
+          View Changes
+          <span class="changes-count-badge" id="changes-count"></span>
+        </span>
+        <span class="summary-arrow">›</span>
+      </summary>
+      <div id="changes-list" class="changes-list"></div>
+    </details>
+
     <div id="warnings-block" class="warnings-block hidden">
       <div class="warnings-title">Coverage Gaps</div>
       <ul class="warnings-list" id="warnings-list"></ul>
     </div>
+
     <div class="download-status" id="download-status"></div>
+    <div class="restored-note" id="restored-note"></div>
+
     <button class="btn-secondary" id="btn-reset">Tailor Another</button>
   </div>
 
