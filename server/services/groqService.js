@@ -221,6 +221,16 @@ STRICT RULES:
    ✗ NEVER append " and developing/applying/utilizing [keyword]".
    ✗ NEVER add any new verb phrase after the bullet's last word.
    ✗ NEVER touch any number — every metric stays character-exact.
+   ✗ NEVER replace a specific technology with a more generic one.
+     Specificity must stay equal or increase — never decrease.
+     React is more specific than JavaScript. Swapping "React-based"
+     to "JavaScript-based" is a downgrade — forbidden.
+     Only swap when the replacement is equally or more specific.
+     If no JD tech is specific enough to replace a mention, leave
+     that bullet untouched.
+     BAD:  "React-based prototypes" → "JavaScript-based prototypes"
+     GOOD: "React-based prototypes" → "Vue-based prototypes"
+           (Vue is a specific framework, same specificity tier.)
 
    EXAMPLE OF FORBIDDEN OUTPUT:
    ORIGINAL: "...verifying occupancy data using internal systems."
@@ -240,7 +250,13 @@ STRICT RULES:
    - Never use the word "metric". Write the number naturally in context.
 
 7. warnings:
-   - Flag JD requirements with zero coverage in the resume.
+   - Flag JD requirements with ZERO coverage in the resume.
+   - Before adding a warning, search the entire resume: skills
+     section, all bullets, and all projects. If the technology or
+     a close equivalent appears anywhere, do NOT warn about it.
+   - Example: do not warn "No experience with C#" if ASP.NET or
+     C# already appears in the skills section.
+   - Only genuine gaps with no related coverage belong here.
    - Be specific. Max 4 items, max 12 words each.
 
 8. changesMade:
