@@ -106,6 +106,40 @@ These are non-negotiable — never relax them:
 
 ---
 
+## Current Build Status
+
+### V1 — Complete
+- POST /tailor-resume endpoint ✅
+- Groq tailoring with prompt rules ✅
+- Keyword injection into skills ✅
+- Inline tech swaps in bullets ✅
+- changesMade field in response ✅
+- Puppeteer PDF — single page, ATS-safe ✅
+- Activities & Leadership section ✅
+- Supabase upload + signed URL ✅
+- Chrome extension — scrape, tailor, download ✅
+- Popup state persistence ✅
+- Coverage gaps warnings ✅
+
+### V2 — In Progress
+- [ ] server/data/profile.js — profileData object
+- [ ] server/routes/profile.js — GET /profile endpoint
+- [ ] server/server.js — mount /profile route
+- [ ] autofill/adapters/greenhouse.json
+- [ ] autofill/adapters/lever.json
+- [ ] autofill/adapters/ashby.json
+- [ ] extension/autofill.js — DOM execution layer
+- [ ] extension/popup.js — autofill trigger + coverage report
+- [ ] extension/popup.html — autofill button + coverage UI
+- [ ] extension/manifest.json — declare autofill.js injectable
+- [ ] automation/autofill/index.js — V3 Playwright stub
+- [ ] automation/autofill/session.js — V3 cookie management stub
+
+### Last Session Cutoff
+Update this manually at end of each session with exactly where you stopped.
+
+---
+
 ## Deployment
 ```bash
 # From local
@@ -123,3 +157,22 @@ cd ~/Jobby && git pull && pm2 restart all && pm2 logs
 - **V3 cron/** — job board scrapers, will call same tailoring pipeline programmatically
 - **V4 dashboard/** — reads `resumeData` and application tracking data, likely React frontend
 - Don't couple new code to Express internals — services should stay independently callable
+
+---
+
+## V2 Build Notes & Gotchas
+
+- GET /profile needs API key protection — add x-api-key header check,
+  same JOBBY_API_KEY in .env, don't expose profile data openly
+- CORS must allow chrome-extension:// origins — add to Express CORS config
+  before first extension test or requests will silently fail
+- Adapter selectors go stale — if a selector matches 0 elements on page,
+  flag as "stale" in coverage report, not "unknown"
+- Supabase signed URLs expire in 1hr — for V3 compatibility store a
+  permanent public URL or VPS path alongside the signed URL
+- Use Groq for unknown field resolution instead of keyword matching —
+  more resilient to varied phrasing across job boards
+- DataTransfer file upload is finicky — test on real Greenhouse page
+  before considering it done
+- Don't build autofill logic into the extension — keep it as a VPS service
+  the extension calls so V3 reuses the same service headlessly
