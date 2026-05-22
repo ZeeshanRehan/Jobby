@@ -1,0 +1,16 @@
+{
+  "platform": "greenhouse",
+  "version": "2026-05-22-001",
+  "detect": ["boards.greenhouse.io", "job.greenhouse.io"],
+  "fields": {
+    "firstName": { "selector": "#first_name", "type": "text", "source": "identity.firstName" },
+    "lastName":  { "selector": "#last_name",  "type": "text", "source": "identity.lastName" },
+    "email":     { "selector": "#email",      "type": "text", "source": "contact.email" },
+    "phone":     { "selector": "#phone",      "type": "text", "source": "contact.phone" },
+    "resume":    { "selector": "input[name='resume']", "type": "file", "uploadStrategy": "native", "source": "pdf" },
+    "linkedin":  { "selector": "input[name*='linkedin'], input[id*='linkedin']", "type": "text", "source": "contact.linkedinUrl" },
+    "website":   { "selector": "input[name*='website'], input[id*='website']", "type": "text", "source": "contact.portfolioUrl" }
+  },
+  "dryRunBlockSelector": "input[type='submit'], button[type='submit']",
+  "steps": []
+}
