@@ -34,6 +34,7 @@ app.use("/tailor-resume", tailorRoute);
 
 app.use("/profile",          apiKeyAuth, profileRoute);
 app.use("/adapters",         apiKeyAuth, adaptersRoute);
+app.use("/adapter",          apiKeyAuth, adaptersRoute);
 app.use("/ai-resolve-field", apiKeyAuth, aiFallbackRoute);
 app.use("/apply",            apiKeyAuth, applyRoute);
 
