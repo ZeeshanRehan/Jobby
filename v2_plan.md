@@ -1,318 +1,741 @@
-# Jobby V2 — Autofill Engine Plan
+# Jobby V2 — Autofill Engine Plan (Final, Milestone-Based)
+
+> This plan is the source of truth for V2. Read fully before building.
+> V2 is broken into 7 milestones. Each milestone = one Claude Code session.
+> User tests between each milestone. Do NOT proceed if tests fail.
+
+---
 
 ## Context
 
-V1 delivers a tailored PDF resume on one click. V2 closes the loop: take that PDF and the user's profile data and fill the job application form automatically. The design constraint is that V2 is not a standalone feature — it's one layer of a three-layer autonomous pipeline:
+V1 delivers a tailored PDF resume on one click. V2 closes the loop: take that PDF and the user's profile data and fill the job application form automatically.
 
-- **V1:** Tailor resume → PDF → signed URL (done)
-- **V2:** Extension autofills form in the user's live browser session (this plan)
-- **V3:** Cron finds job → hands URL to the same pipeline → Playwright runs headlessly on VPS, no human involved
+**V2 is one layer of a three-layer autonomous pipeline:**
+- V1: Tailor resume → PDF → signed URL ✅ done
+- V2: Extension autofills form in user's live browser session ← this plan
+- V3: Cron finds job → hands URL to same pipeline → Playwright runs headlessly on VPS, no human
 
-Every architecture decision must serve that end state. Don't build V2 in a way that has to be rebuilt for V3.
-
----
-
-## Approach Decision: Rule-Based Adapters + AI Fallback
-
-Three options evaluated:
-
-| Approach | Speed | Resilience to DOM changes | Best for |
-|---|---|---|---|
-| Rule-based (hardcoded selectors) | Fast | Brittle | Known stable platforms |
-| AI-driven (LLM identifies fields) | Slow, expensive | Resilient | Unknown/dynamic platforms |
-| **Hybrid (recommended)** | Fast for known, fallback for unknown | Good | Personal tool scaling to autonomy |
-
-**Decision: Hybrid.**
-- Platforms with known stable DOM (Greenhouse, Lever, Ashby): hardcoded JSON adapters — zero LLM overhead, deterministic, fast
-- Unknown platforms: send field context to Groq for field identification (same API key already in use)
-- This gives V3 resilience without paying LLM cost on every run
+**Critical principle:** Every architecture decision must serve V3. Do not build V2 in a way that has to be rebuilt for V3.
 
 ---
 
-## Platform Priority (V2 scope)
+## V2 Scope
 
-| Platform | Complexity | Volume | V2? |
-|---|---|---|---|
-| Greenhouse | Low — standard HTML form, single-page | High among startups | ✅ Build first |
-| Lever | Low — nearly identical to Greenhouse | High among startups | ✅ Build second |
-| Ashby | Low — simple, modern, well-structured | Medium | ✅ Build third |
-| LinkedIn Easy Apply | High — multi-step SPA, anti-bot measures, dynamic questions | Very high | ⏸ Defer (architecture must accommodate) |
-| Workday | Very high — enterprise, iframe nesting, session state, anti-bot | High (enterprise co's) | ❌ Skip V2 |
+**Behavior:** User browses to job posting → clicks Jobby extension → tailor + autofill happens → user reviews and clicks submit themselves.
 
-**Why skip LinkedIn for V2:** LinkedIn's anti-automation measures (rate limiting, bot detection, SPA navigation) make it a dedicated engineering effort. The stable trio (Greenhouse + Lever + Ashby) covers ~50-60% of tech/startup applications. Ship that first.
+**In scope:** Greenhouse adapter (rule-based), Groq AI fallback (text-only) for unknown fields, profile data caching, application logging, idempotency, dry run mode, coverage reports.
 
-**Why keep LinkedIn in the architecture:** The platform adapter schema must allow LinkedIn to be added later without restructuring anything.
+**Out of scope:** Autonomous submission (V3), cron-based job discovery (V3), session management on VPS (V3), CAPTCHA solving, vision-based AI inference, Lever/Ashby adapters, cover letter generation, multi-user support.
 
 ---
 
-## Architecture
+## Architecture Decision
 
-### The Core Principle: Separate Knowledge from Execution
+### Separate knowledge from execution
 
-The autofill logic has two layers:
-1. **Knowledge layer** — which fields exist, what selectors to use, what data fills them (platform-specific, shared)
-2. **Execution layer** — how to fill them (DOM manipulation for extension, Playwright API for V3)
+Autofill logic has two layers:
+1. **Knowledge layer** — adapters, profileData, AI fallback rules (shared across V2/V3)
+2. **Execution layer** — DOM manipulation (V2) vs Playwright API (V3)
 
-These must be separate. The knowledge layer is reusable. The execution layer is environment-specific.
+These MUST be separate. Knowledge is reusable. Execution is environment-specific.
 
-### File Structure
+### AI-primary with rule-based fast path
+
+- **Tier 1 (fast path):** Greenhouse rule-based adapter — covers stable platforms, $0 inference cost
+- **Tier 2 (AI inference):** Everything else — Groq for field identification in V2, swaps to Claude vision in V3
+- **Tier 3 (manual prompt):** Field AI can't confidently answer → ask user in popup, save for next time
+
+### Caching strategy
+
+| Data | Storage | Refresh |
+|---|---|---|
+| profileData | chrome.storage.local | Version check on popup open |
+| Adapters list | chrome.storage.local | Version check on popup open |
+| applied_urls | chrome.storage.local | After each successful autofill |
+| Last 5 tailored PDFs | chrome.storage.local | LRU |
+| Current scraped JD | Extension memory | Per-session |
+
+---
+
+## File Structure
 
 ```
 server/
   data/
-    profile.js           ← NEW: standard answers for application fields (auth, salary, city, etc.)
+    profile.js
+    applications.json
+    applied_urls.json
+    adapters/
+      greenhouse.json
+    resumes/                ← permanent PDF storage on VPS
   routes/
-    profile.js           ← NEW: GET /profile endpoint — serves profileData to extension
-  server.js              ← MODIFIED: mount /profile route
-
-autofill/                ← NEW directory: shared knowledge layer
-  adapters/
-    greenhouse.json      ← field selectors + data map for Greenhouse
-    lever.json           ← field selectors + data map for Lever
-    ashby.json           ← field selectors + data map for Ashby
-  schema.md              ← adapter format documentation
+    profile.js
+    adapters.js
+    apply.js
+    ai-fallback.js
+  services/
+    applicationLogger.js
+    idempotencyService.js
+    permanentStorage.js
+    apiKeyAuth.js
+  server.js                 ← MODIFIED
 
 extension/
-  autofill.js            ← NEW: DOM execution layer (loaded as content script)
-  manifest.json          ← MODIFIED: declare autofill.js as injectable
-  popup.js               ← MODIFIED: add autofill trigger after success
-  popup.html             ← MODIFIED: add "Autofill" button + status to success state
+  cache/
+    profile.js
+    adapters.js
+    history.js
+  autofill.js
+  popup.html                ← MODIFIED
+  popup.js                  ← MODIFIED
+  manifest.json             ← MODIFIED
 
-automation/              ← V3 skeleton (stubs only in V2)
+automation/                 ← V3 skeleton, stubs only
   autofill/
-    index.js             ← STUB: Playwright execution layer (placeholder for V3)
-    session.js           ← STUB: cookie import/export for VPS session management
+    index.js
+    session.js
+
+test-postings.md
 ```
 
-### Adapter Schema (autofill/adapters/*.json)
+---
+
+## Data Schemas
+
+### profileData (server/data/profile.js)
+
+```javascript
+const profileData = {
+  identity: {
+    firstName: "Zeshan",
+    lastName: "Rehan",
+    middleName: "",
+    preferredName: "",
+    pronouns: "he/him",
+  },
+  contact: {
+    email: "zeeshanrehan12345@gmail.com",
+    phone: "+1-856-526-2323",
+    linkedinUrl: "https://linkedin.com/in/Zeshan Rehan",
+    githubUrl: "https://github.com/ZeeshanRehan",
+    portfolioUrl: "https://imzeshan.com",
+    address: {
+      street: "",
+      city: "Glassboro",
+      state: "NJ",
+      zip: "08028",
+      country: "US",
+    },
+  },
+  workAuthorization: {
+    citizenStatus: "us_citizen",
+    requiresSponsorshipNow: false,
+    requiresSponsorshipFuture: false,
+  },
+  education: [{
+    school: "Rowan University",
+    degree: "Bachelor's",
+    major: "Computer Science",
+    minor: "",
+    gpa: "",
+    startDate: "Sept 2022",
+    endDate: "May 2026",
+    expectedGraduation: "May 2026",
+    location: "Glassboro, NJ",
+  }],
+  demographics: {
+    gender: "decline_to_answer",
+    race: "decline_to_answer",
+    ethnicity: "decline_to_answer",
+    veteranStatus: "decline_to_answer",
+    disabilityStatus: "decline_to_answer",
+  },
+  preferences: {
+    salaryExpectation: "Open to discussion",
+    availableStartDate: "Immediately",
+    willingToRelocate: true,
+    willingToTravel: true,
+    remotePreference: "flexible",
+  },
+  voluntaryDisclosure: {
+    howDidYouHear: "LinkedIn",
+    referrerName: "",
+    previousEmployee: false,
+  },
+  defaultAnswers: {},
+};
+
+module.exports = { profileData };
+```
+
+**Rules:**
+- Demographics default `decline_to_answer` — never auto-fill without consent
+- Salary, references, demographics: ONLY profileData, never AI-generated
+- `defaultAnswers` populated over time as user answers unknown questions
+
+### applications.json structure
+
+```javascript
+[
+  {
+    applicationId: "uuid-v4",
+    timestamp: "ISO timestamp",
+    jobUrl: "normalized URL",
+    jobTitle: "scraped from page",
+    company: "scraped from page",
+    platform: "greenhouse",
+    status: "filled_dry_run",
+    mode: "dry_run",
+    resumeUrl: "Supabase signed URL",
+    resumeLocalPath: "/root/Jobby/server/data/resumes/uuid.pdf",
+    changesMade: { /* full Groq object */ },
+    keywordsInjected: [],
+    coverageReport: {
+      filled: [], skipped: [], unknown: [], stale: [], errors: []
+    },
+  }
+]
+```
+
+### applied_urls.json
+
+Normalized URL → timestamp map. Normalization: lowercase, no query params, no trailing slash.
+
+### Adapter schema (server/data/adapters/greenhouse.json)
 
 ```json
 {
   "platform": "greenhouse",
-  "detect": ["job.greenhouse.io", "boards.greenhouse.io"],
+  "version": "2026-05-22-001",
+  "detect": ["boards.greenhouse.io", "job.greenhouse.io"],
   "fields": {
-    "firstName":   { "selector": "#first_name",           "type": "text",   "source": "profile.firstName" },
-    "lastName":    { "selector": "#last_name",            "type": "text",   "source": "profile.lastName" },
-    "email":       { "selector": "#email",                "type": "text",   "source": "contact.email" },
-    "phone":       { "selector": "#phone",                "type": "text",   "source": "contact.phone" },
-    "resume":      { "selector": "input[name='resume']",  "type": "file",   "source": "pdf" },
-    "linkedin":    { "selector": "#linkedin_profile",     "type": "text",   "source": "contact.linkedinUrl" },
-    "website":     { "selector": "#website",              "type": "text",   "source": "contact.portfolio" }
+    "firstName": { "selector": "#first_name", "type": "text", "source": "identity.firstName" },
+    "lastName":  { "selector": "#last_name",  "type": "text", "source": "identity.lastName" },
+    "email":     { "selector": "#email",      "type": "text", "source": "contact.email" },
+    "phone":     { "selector": "#phone",      "type": "text", "source": "contact.phone" },
+    "resume":    { "selector": "input[name='resume']", "type": "file", "uploadStrategy": "native", "source": "pdf" },
+    "linkedin":  { "selector": "input[name*='linkedin'], input[id*='linkedin']", "type": "text", "source": "contact.linkedinUrl" },
+    "website":   { "selector": "input[name*='website'], input[id*='website']", "type": "text", "source": "contact.portfolioUrl" }
   },
-  "steps": [],
-  "dryRunBlockSelector": "#submit_app"
+  "dryRunBlockSelector": "input[type='submit'], button[type='submit']",
+  "steps": []
 }
 ```
 
-The `source` field is a dotted path into a merged data object `{ ...resumeData, ...profileData, pdf: File }`. The execution layer resolves the path, looks up the value, fills the field.
+---
 
-This schema is importable in both the extension (fetch as JSON) and Node.js (require).
+## API Endpoints
 
-### Data Layer (server/data/profile.js)
+All require `x-api-key` header matching `JOBBY_API_KEY` in `.env`.
 
-New file — separate from resumeData per user preference.
+| Endpoint | Purpose |
+|---|---|
+| `GET /profile` | Returns full profileData |
+| `GET /profile/version` | Timestamp for cache invalidation |
+| `GET /adapters/list` | All platform detect patterns + versions |
+| `GET /adapter/:platform` | Full adapter JSON |
+| `POST /ai-resolve-field` | Groq resolution for unknown field |
+| `POST /apply` | Orchestrates tailor + PDF + adapter prep |
+| `POST /apply/log` | Finalizes application after autofill |
+| `POST /profile/answer` | Saves user-provided answer to defaultAnswers |
 
-```js
-const profileData = {
-  firstName: "Zeshan",
-  lastName: "Rehan",
-  location: { city: "Glassboro", state: "NJ", country: "US", zip: "08028" },
-  workAuthorization: {
-    authorized: true,
-    requiresSponsorship: false,
-    answer: "Authorized to work in the US — no sponsorship required",
-  },
-  salary:       { preference: "Open to discussion" },
-  availability: { startDate: "Immediately", noticePeriod: "2 weeks" },
-  defaultAnswers: {
-    // keyword → answer for free-text questions not mappable to structured fields
-    "sponsorship": "No",
-    "authorized":  "Yes",
-    "heard about": "LinkedIn",
-    "relocate":    "Yes",
-  },
-};
-module.exports = { profileData };
-```
+### POST /ai-resolve-field
 
-Exposed via `GET /profile` — extension fetches once per session and caches in memory.
+- **Request:** `{ label, fieldType, contextHtml, options? }`
+- **Response:** `{ answer, confidence: "high"|"medium"|"low", reasoning }`
+- **Rules:** Never answers demographics/salary/references — returns `low` confidence with reason "sensitive field, ask user"
 
-### Extension Autofill Flow (extension/autofill.js)
+### POST /apply
 
-Content script injected on demand (same pattern as content.js). Called after tailoring succeeds.
+- **Request:** `{ jobUrl, jobDescription, mode }`
+- **Logic:**
+  1. Idempotency check — if URL applied to already, return `{ alreadyApplied: true, existingRecord }`
+  2. Tailor resume via V1 service
+  3. Generate PDF via V1 service
+  4. Upload to Supabase + save permanent copy to `server/data/resumes/`
+  5. Detect platform from URL
+  6. Load adapter
+  7. Create application record (status: "tailored")
+  8. Return `{ applicationId, resumeUrl, resumeLocalPath, adapter, profileData, applicationRecord }`
 
-```
-popup.js: user clicks "Autofill"
-  → fetch /profile
-  → fetch adapter JSON for detected platform
-  → sendMessage(tabId, { type: "RUN_AUTOFILL", adapter, profile, resumeData, downloadUrl })
-  → autofill.js receives message
-  → fetch PDF blob from downloadUrl
-  → for each field in adapter.fields:
-      resolve source path → get value → fill field
-  → for resume field: DataTransfer + File + dispatchEvent
-  → in dry-run mode: block submit button, don't click it
-  → sendResponse({ filled: [...], skipped: [...], unknown: [...] })
-popup.js: render field coverage report
-```
+### POST /apply/log
 
-### V3 Bridge (architecture, not V2 implementation)
-
-The V3 pipeline is:
-```
-Cron (automation/scraper.js)
-  → detects new job on configured board
-  → POSTs { jobUrl } to /queue-application (new V3 endpoint)
-  → Playwright (automation/autofill/index.js):
-      1. Loads profileData + resumeData from server/data/
-      2. Calls tailorResume(jobDescription) → same V1 Groq service
-      3. Generates PDF → same V1 pdfService
-      4. Loads adapter for detected platform
-      5. Playwright fills form using adapter selectors (same JSON, different execution API)
-      6. In dry-run: page.screenshot() → saves to Supabase
-      7. In live mode: page.click(dryRunBlockSelector)
-
-Session management (automation/autofill/session.js):
-  - Extension exports cookies for greenhouse.io, lever.co, ashby.com
-  - POSTs to POST /store-cookies { domain, cookies }
-  - Playwright loads cookies from VPS storage before opening each page
-  - When cookies expire (401 response), extension re-exports on next use
-```
-
-**This is the V2→V3 bridge.** V2 builds the extension side of cookie export. V3 consumes it.
+- **Request:** `{ applicationId, status, coverageReport, errors }`
+- **Logic:** Updates application record + adds URL to applied_urls.json
 
 ---
 
-## The Hard Problems
+## Non-Negotiables
 
-### 1. File Upload
-- **Extension:** `DataTransfer` API — fetch PDF blob, create `File`, assign to `input.files`, dispatch `change` event. Works on standard `<input type="file">`. Custom upload UIs (Dropzone) need platform-specific click simulation.
-- **Playwright:** `page.setInputFiles(selector, filePath)` — simpler. Download PDF to temp file first.
-- **Risk:** Greenhouse/Lever use standard file inputs. Workday does not — irrelevant for V2.
-
-### 2. Multi-Step Forms
-- Lever and some Ashby forms are single-page. Greenhouse is mostly single-page.
-- If multi-step needed: adapter `steps[]` array defines selector + next-button per step. Extension/Playwright iterates steps array.
-- In dry-run mode: advance through all steps but stop before the final submit.
-
-### 3. Custom Dropdowns and Non-Standard Inputs
-- Native `<select>`: set `.value`, dispatch `change`.
-- Custom dropdown (click-to-open list): requires click simulation — adapter marks field as `"type": "custom-select"` with `openSelector` + `optionSelector`.
-- For V2 (Greenhouse/Lever/Ashby): native selects only. Custom dropdown handling is V3 scope.
-
-### 4. SSO / OAuth Login Walls
-- Detect: if clicking "Apply" redirects to an SSO/OAuth page, abort immediately.
-- Detection signal: redirect to `accounts.google.com`, `login.microsoftonline.com`, or URL change to a non-job-board domain.
-- Response: show "Login required — complete login then retry autofill" in popup.
-
-### 5. CAPTCHAs
-- Detection: look for known CAPTCHA iframe selectors (`iframe[src*='recaptcha']`, `iframe[src*='hcaptcha']`).
-- V2: detect, pause, show "CAPTCHA detected — please solve, then click Resume" in popup.
-- V3: use a solving service (2captcha/anticaptcha) or abandon and log the failure.
-
-### 6. Fields Jobby Doesn't Have Data For
-- Every unrecognized field gets flagged in the coverage report (`unknown: ['customQuestion1']`).
-- `defaultAnswers` in profile.js handles common keyword-matching questions.
-- AI fallback: for unknown fields with visible label text, send `{ label, fieldType }` to Groq → get a suggested answer → fill with `[AI-suggested]` prefix so user can review.
-- Never submit without human review in V2.
+1. **Follow CLAUDE.md conventions exactly**
+2. **Dry run always on in V2** — no submit ever clickable from autofill
+3. **Demographics, salary, references never AI-resolved** — profileData only
+4. **All endpoints require x-api-key**
+5. **CORS allows chrome-extension://**
+6. **All data writes go through services** — never direct file writes from routes
+7. **Coverage report mandatory** — every autofill returns one, even on failure
+8. **Idempotency check before tailoring** — saves Groq tokens
+9. **profileData schema authoritative** — adapters reference by path, never invent shapes
+10. **Pause and report after each milestone** — user must test before next starts
 
 ---
 
-## Testing Strategy
+# MILESTONES
 
-### Dry-Run Mode (V2 default, always on)
-- `dryRunBlockSelector` in adapter: inject `pointer-events: none; opacity: 0.4` onto the submit button
-- Remove the selector from the DOM event listener — button becomes visually and functionally inert
-- Log a clear message in popup: "Form filled — submit button disabled (dry run)"
-
-### Field Coverage Report
-Every autofill run returns:
-```js
-{
-  filled:   ['firstName', 'lastName', 'email', 'phone', 'resume'],
-  skipped:  ['salary'],          // source had no value
-  unknown:  ['q1_custom_text'],  // selector not in adapter + AI fallback not triggered
-  errors:   ['linkedin: selector not found on this page version'],
-}
-```
-Shown in popup. Logged to console for debugging.
-
-### Integration Testing Per Platform
-- Keep a list of known stable job posting URLs for Greenhouse/Lever/Ashby
-- Test autofill against them before shipping
-- Check: all expected fields filled, resume attached, submit button blocked
-
-### Not Testing
-- Don't try to unit test DOM selectors — they only fail in a real browser. Test integration only.
-- Don't submit real applications during testing — use dedicated test job postings or personal test accounts.
+Each milestone = one Claude Code session. User tests after each. Do not skip ahead.
 
 ---
 
-## ROI Analysis
+## Milestone 1 — Data Layer + Server Endpoints
 
-**What gets you 80% coverage with 20% effort:**
-- Greenhouse adapter alone: ~30-40% of tech startup applications
-- Greenhouse + Lever: ~50-60%
-- Add Ashby: ~60-65%
-- These three have simple, stable forms. An adapter is a few hours of work each.
-- Total V2 effort for 3 adapters: ~2-3 days of focused work
+**Goal:** All VPS-side infrastructure for V2. No extension changes yet.
 
-**What's hard and worth deferring:**
-- LinkedIn Easy Apply: 2-3x harder than Greenhouse, anti-bot measures, SPA navigation — worth it for V3 when Playwright handles it
-- Workday: enterprise-grade complexity, iframe hell, session state — V3 only
-- CAPTCHA automation: ethical/TOS issues, reliability problems — use human-in-loop for V2
+### Build steps
 
-**Rabbit holes to avoid:**
-- Building a general-purpose form filler: over-engineered for V2. Adapters per platform are faster to build and more reliable.
-- Browser fingerprint spoofing for anti-bot bypass: unnecessary for V2 (user's own browser). V3 will use Playwright stealth.
-- Cover letter generation: different problem, different scope. Don't bundle with autofill.
-- Resume parsing from PDF: data already lives in resumeData. No need to reverse-engineer the PDF.
+1. `server/data/profile.js` with full schema above
+2. `server/data/applications.json` as empty array `[]`
+3. `server/data/applied_urls.json` as empty object `{}`
+4. `server/data/adapters/greenhouse.json` with schema above
+5. `server/data/resumes/` directory (empty)
+6. `server/services/applicationLogger.js` — append/read applications.json
+7. `server/services/idempotencyService.js` — normalize URL, check/add to applied_urls.json
+8. `server/services/permanentStorage.js` — save PDF buffer to `server/data/resumes/{uuid}.pdf`
+9. `server/services/apiKeyAuth.js` — Express middleware checking x-api-key header
+10. `server/routes/profile.js` — GET /profile, GET /profile/version
+11. `server/routes/adapters.js` — GET /adapters/list, GET /adapter/:platform
+12. `server/routes/ai-fallback.js` — POST /ai-resolve-field
+13. `server/routes/apply.js` — POST /apply, POST /apply/log
+14. Modify `server/server.js`: mount routes, CORS for chrome-extension://*, apply auth middleware
+15. Generate `JOBBY_API_KEY` via `openssl rand -hex 32`, add to `.env`
+16. `git add . && git commit -m "M1: data layer and server endpoints"`
+17. `pm2 restart all`
+
+**Pause and report:** What was built, list of tests for user.
+
+### USER TESTING — Milestone 1
+
+All tests via Thunder Client. Each MUST pass before Milestone 2.
+
+#### Test 1.1 — Auth rejection
+- `GET http://178.105.161.45:3000/profile` with NO x-api-key header
+- Expected: 401 Unauthorized
+- **If fails:** auth middleware not wired
+
+#### Test 1.2 — Get profile
+- `GET /profile` with `x-api-key: <your key>`
+- Expected: 200 with `{ version, data: { identity, contact, ... } }`
+- Verify: all schema fields present, demographics default `decline_to_answer`
+
+#### Test 1.3 — Get version
+- `GET /profile/version` with x-api-key
+- Expected: 200 with `{ version: "timestamp" }`
+
+#### Test 1.4 — Adapters list
+- `GET /adapters/list` with x-api-key
+- Expected: 200 with array containing greenhouse entry, detect array, version
+
+#### Test 1.5 — Greenhouse adapter
+- `GET /adapter/greenhouse` with x-api-key
+- Expected: 200 with full adapter, all 7 fields
+
+#### Test 1.6 — AI field resolution
+- `POST /ai-resolve-field` body:
+  ```json
+  { "label": "Are you willing to relocate?", "fieldType": "radio", "options": ["Yes", "No"] }
+  ```
+- Expected: 200 with `{ answer: "Yes", confidence: "high", reasoning }`
+
+#### Test 1.7 — AI sensitive field protection
+- `POST /ai-resolve-field` body:
+  ```json
+  { "label": "What is your race?", "fieldType": "select" }
+  ```
+- Expected: `{ confidence: "low", reasoning: "sensitive field, ask user" }`
+- **If fails:** sensitive field guardrails broken — CRITICAL
+
+#### Test 1.8 — Apply orchestration
+- `POST /apply` body:
+  ```json
+  {
+    "jobUrl": "https://boards.greenhouse.io/test/jobs/123",
+    "jobDescription": "Looking for a Java engineer with Kubernetes...",
+    "mode": "dry_run"
+  }
+  ```
+- Expected: 200 with applicationId, resumeUrl, resumeLocalPath, adapter, profileData, applicationRecord
+- Verify: PDF exists at resumeLocalPath, applications.json has new entry
+
+#### Test 1.9 — Idempotency
+- Repeat Test 1.8 with same URL
+- Expected: `{ alreadyApplied: true, existingRecord }`
+- Verify: applied_urls.json contains normalized URL
+
+#### Test 1.10 — Apply log
+- `POST /apply/log` with applicationId from 1.8:
+  ```json
+  {
+    "applicationId": "<uuid>",
+    "status": "filled_dry_run",
+    "coverageReport": { "filled": ["firstName"], "skipped": [], "unknown": [], "stale": [], "errors": [] },
+    "errors": []
+  }
+  ```
+- Expected: 200 success, applications.json record updated
+
+**Stop if any test fails. Fix before Milestone 2.**
 
 ---
 
-## Build Order
+## Milestone 2 — Extension Cache Layer
 
-1. **`server/data/profile.js`** — profileData object with all standard answers
-2. **`server/routes/profile.js`** + mount in server.js — `GET /profile` endpoint
-3. **`autofill/adapters/greenhouse.json`** — first adapter, establish schema
-4. **`extension/autofill.js`** — DOM execution layer (handles text, select, file types)
-5. **`extension/popup.html` + `popup.js`** — "Autofill" button in success state, coverage report UI
-6. **Test against a real Greenhouse posting in dry-run mode**
-7. **`autofill/adapters/lever.json`** — second adapter (minimal delta from Greenhouse)
-8. **`autofill/adapters/ashby.json`** — third adapter
-9. **`automation/autofill/index.js` (stub)** + **`automation/autofill/session.js` (stub)** — V3 skeleton
-10. **Cookie export from extension** — `POST /store-cookies` endpoint + extension sends cookies for target domains
+**Goal:** Extension fetches and caches profile + adapters locally with version checks.
+
+### Build steps
+
+1. `extension/cache/profile.js`:
+   - `getProfile()` — reads chrome.storage.local
+   - `refreshProfile()` — calls VPS, writes to cache
+   - `checkVersion()` — version check + conditional refetch
+2. `extension/cache/adapters.js`:
+   - Same pattern for adapters
+   - `findAdapterForUrl(url)` — matches URL against detect patterns
+3. `extension/cache/history.js`:
+   - `isUrlApplied(url)` / `markUrlApplied(url, timestamp)`
+   - `savePdfReference(applicationId, url)` LRU of last 5
+4. Modify `extension/manifest.json`: add `"storage"` permission, hardcode JOBBY_API_KEY constant
+5. Modify `extension/popup.js`:
+   - On open, load profile + adapters from cache
+   - Fire version checks in background
+   - Show detected platform
+6. `git add . && git commit -m "M2: extension cache layer"`
+
+**Pause and report.**
+
+### USER TESTING — Milestone 2
+
+#### Test 2.1 — First load fetches from VPS
+- Open Chrome dev tools → Application → chrome.storage.local
+- Clear storage
+- Click extension icon
+- Verify: profile and adapters appear in storage with version timestamps
+
+#### Test 2.2 — Cache hit on second load
+- Close popup, open Network tab
+- Click extension icon
+- Verify: only `/profile/version` and `/adapters/list` version calls fire — NOT full data
+
+#### Test 2.3 — Version invalidation
+- On VPS, edit `server/data/profile.js` (change pronouns to "she/her" for test)
+- Restart pm2 (version timestamp updates)
+- Open popup
+- Verify: full profile re-fetched, cache updated
+- Reset profile change
+
+#### Test 2.4 — Platform detection
+- Navigate to a Greenhouse job posting
+- Open popup → verify shows "greenhouse"
+- Navigate to google.com → open popup → verify "platform not supported"
+
+#### Test 2.5 — Already-applied warning UI
+- Manually add a test URL to `applied_urls.json` on VPS
+- Refresh extension cache
+- Navigate to that URL
+- Open popup → verify "Already applied" warning shown
+
+**Stop if any fails.**
 
 ---
 
-## Critical Files
+## Milestone 3 — Autofill Execution (Rule-Based Only)
 
-| File | Status | Role |
-|---|---|---|
-| `server/data/profile.js` | Create | Standard application answers |
-| `server/routes/profile.js` | Create | Serves profileData via GET /profile |
-| `server/server.js` | Modify | Mount /profile route |
-| `autofill/adapters/greenhouse.json` | Create | Greenhouse field map |
-| `autofill/adapters/lever.json` | Create | Lever field map |
-| `autofill/adapters/ashby.json` | Create | Ashby field map |
-| `extension/autofill.js` | Create | DOM execution layer |
-| `extension/popup.js` | Modify | Add autofill trigger, coverage report render |
-| `extension/popup.html` | Modify | Add Autofill button + coverage UI to success state |
-| `extension/manifest.json` | Modify | Declare autofill.js as injectable |
-| `automation/autofill/index.js` | Create (stub) | V3 Playwright execution layer placeholder |
-| `automation/autofill/session.js` | Create (stub) | V3 cookie management placeholder |
+**Goal:** Autofill fills standard text fields on Greenhouse via adapter selectors. NO AI, NO file upload yet.
+
+### Build steps
+
+1. Create `extension/autofill.js`:
+   - `resolveSourcePath(source, profileData, extras)` — resolves "identity.firstName"
+   - `fillTextField(element, value)` — input/textarea with proper events
+   - `fillSelect(element, value)` — native select
+   - `fillRadio(element, value)` / `fillCheckbox(element, value)`
+   - `executeFieldFill(field, profileData, extras)` — dispatches by type
+   - `runAutofill(adapter, profileData, extras)` — main entry, iterates adapter.fields, builds coverage report
+   - Stale detection: 0 elements = add to stale array
+2. Modify `extension/popup.js`:
+   - Add "Autofill" button to success state
+   - On click, fetch profile + adapter from cache
+   - Send message to autofill.js with `{ adapter, profileData, extras: { pdf: null } }`
+   - Receive coverage report, display
+3. Modify `extension/popup.html`:
+   - Autofill button matching existing design
+   - Coverage report container (collapsible sections)
+4. Modify `extension/manifest.json`: declare autofill.js as content script
+5. `git add . && git commit -m "M3: rule-based autofill"`
+
+**Skip:** file upload, AI fallback, dry run blocker, user prompts.
+
+**Pause and report.**
+
+### USER TESTING — Milestone 3
+
+Use a real Greenhouse posting (e.g., boards.greenhouse.io/anthropic).
+
+#### Test 3.1 — Tailor still works
+- Click "Tailor Resume" first
+- Verify PDF downloads, success state shows changesMade
+- **If fails:** V1 regressed — CRITICAL
+
+#### Test 3.2 — Autofill button appears
+- After tailor success, verify Autofill button visible + enabled
+
+#### Test 3.3 — Standard text fields fill
+- Click Autofill
+- On Greenhouse page verify:
+  - First name shows "Zeshan"
+  - Last name shows "Rehan"
+  - Email shows your email
+  - Phone shows your phone
+  - LinkedIn URL fills (if field exists)
+
+#### Test 3.4 — Coverage report displays
+- Popup shows coverage report with:
+  - "Filled" section listing successful fields
+  - "Skipped" for fields with no source value
+  - "Stale" section empty if selectors match
+
+#### Test 3.5 — Stale detection
+- On VPS, edit adapter to use `#nonexistent_field` for firstName
+- Refresh extension cache
+- Run autofill
+- Verify firstName appears in "Stale" section
+- Reset adapter
+
+#### Test 3.6 — Second Greenhouse posting
+- Navigate to different Greenhouse posting
+- Run full flow
+- Verify same fields fill correctly
+
+**Stop if any fails.**
 
 ---
 
-## Verification
+## Milestone 4 — File Upload + Dry Run Blocker
 
-1. Load extension in Chrome dev mode
-2. Navigate to a real Greenhouse job posting (logged in)
-3. Click "Tailor Resume" → wait for success screen
-4. Click "Autofill"
-5. Verify: all text fields filled (first name, last name, email, phone)
-6. Verify: resume PDF attached to file input
-7. Verify: Submit button is visually disabled and non-clickable
-8. Verify: Coverage report shows correct filled/skipped/unknown breakdown
-9. Repeat for Lever and Ashby
-10. Check that `GET /profile` returns the expected JSON from the server
+**Goal:** Resume PDF attaches. Submit button disabled.
+
+### Build steps
+
+1. In `extension/autofill.js`:
+   - `fillFileNative(element, pdfBlob, filename)` — DataTransfer + File + change event
+   - executeFieldFill now dispatches `file` type to fillFileNative
+   - `applyDryRunBlock(adapter)` — finds dryRunBlockSelector, applies pointer-events:none + opacity:0.4, removes click handlers
+2. In `extension/popup.js`:
+   - Before RUN_AUTOFILL message, fetch PDF blob from resumeUrl
+   - Pass to autofill.js in extras: `{ pdf: blob, pdfFilename: "resume_tailored.pdf" }`
+   - After autofill, show "Submit disabled (dry run) — click 'Allow submit' to enable"
+   - Add "Allow submit" button that messages autofill.js to remove block
+3. `git add . && git commit -m "M4: file upload and dry run blocker"`
+
+**Pause and report.**
+
+### USER TESTING — Milestone 4
+
+#### Test 4.1 — Resume attaches
+- Run full flow on Greenhouse posting
+- After Autofill, verify resume filename appears next to upload field
+
+#### Test 4.2 — Coverage report includes resume
+- Verify "resume" in "Filled" section of coverage report
+
+#### Test 4.3 — Submit button disabled
+- Look at Greenhouse submit button — verify grayed/faded
+- Try clicking — verify nothing happens, form does NOT submit
+- **If fails:** CRITICAL, do not proceed
+
+#### Test 4.4 — Allow submit
+- Click "Allow submit" in popup
+- Verify button returns to normal, clickable
+- DO NOT actually submit — just verify clickable
+
+#### Test 4.5 — Inspect attached file
+- Right-click resume field → inspect
+- Verify `files` property on input has the PDF
+
+**Stop if any fails.**
+
+---
+
+## Milestone 5 — AI Fallback + User Prompts
+
+**Goal:** Unknown fields hit Groq. Low-confidence prompts user. Answers saved.
+
+### Build steps
+
+1. In `extension/autofill.js`:
+   - After processing adapter.fields, scan page for additional form fields not in adapter
+   - For each unknown:
+     - Extract label (label[for], aria-label, placeholder, preceding text)
+     - Extract field type, options
+     - Extract nearby context (parent text)
+     - POST to /ai-resolve-field via popup.js relay
+     - If `confidence === "high"`: fill (with [AI] prefix for text fields, plain for radios/selects)
+     - If `confidence !== "high"`: add to needsUserInput, don't fill
+2. In `extension/popup.js`:
+   - Render needsUserInput as inline question UI
+   - User types → Save button
+   - On save: fill field on page, POST to `/profile/answer`
+3. In `server/routes/profile.js`:
+   - Add POST `/profile/answer` — accepts `{ keyword, answer }`, appends to defaultAnswers
+   - NOTE: This is the only profile mutation in V2. Full editing is V4.
+4. `git add . && git commit -m "M5: AI fallback and user prompts"`
+
+**Pause and report.**
+
+### USER TESTING — Milestone 5
+
+#### Test 5.1 — AI resolves general questions
+- Find Greenhouse posting with custom questions
+- Run autofill
+- Verify auth-style question gets AI-resolved (high confidence)
+- Verify open-ended question goes to needsUserInput
+
+#### Test 5.2 — Sensitive fields NOT AI-answered
+- Find demographics field (gender select, race select)
+- Run autofill
+- Verify appears in needsUserInput, NOT auto-filled
+- **If fails:** CRITICAL
+
+#### Test 5.3 — User prompt + save
+- Type answer to question in needsUserInput
+- Click Save
+- Verify field on page fills with answer
+- Verify answer saved to defaultAnswers (check chrome.storage or VPS)
+
+#### Test 5.4 — Saved answer reused
+- Find another posting with same question
+- Run autofill
+- Verify question now AI-resolves from saved defaultAnswer
+
+**Stop if any fails.**
+
+---
+
+## Milestone 6 — End-to-End Integration
+
+**Goal:** Full flow works on 3+ real Greenhouse postings without issues.
+
+### Build steps
+
+1. Create `test-postings.md` in repo root with 3-5 verified Greenhouse URLs (user provides)
+2. No code changes unless bugs surface — hardening only
+3. `git add . && git commit -m "M6: integration test notes"`
+
+### USER TESTING — Milestone 6
+
+Run full flow on at least 3 different Greenhouse postings.
+
+#### Test 6.1 — Happy path posting #1
+- Tailor → Autofill → review → coverage report
+- Note: fields filled, AI-resolved, user prompts, errors
+
+#### Test 6.2 — Happy path posting #2 (different company)
+- Same as 6.1
+- Note: DOM variance, stale selectors
+
+#### Test 6.3 — Happy path posting #3 (different role)
+- Same as 6.1
+
+#### Test 6.4 — Idempotency in real flow
+- Try Tailor on a URL already applied
+- Verify warning shown, override available
+
+#### Test 6.5 — Network failure handling
+- Disable network briefly during tailor/autofill
+- Verify clear error message, no silent fail
+
+#### Test 6.6 — applications.json populated
+- Inspect `server/data/applications.json` on VPS
+- Verify every test has complete record with all fields
+
+Fix any issues before Milestone 7.
+
+---
+
+## Milestone 7 — V3 Stubs + Documentation
+
+**Goal:** V3 skeleton in place. CLAUDE.md updated. V2 complete.
+
+### Build steps
+
+1. Create `automation/autofill/index.js`:
+   - Module skeleton with TODO comments
+   - Function signature `executeAutofillHeadless(adapter, profileData, pdfPath, jobUrl)` — empty body
+   - Comment: "V3 will use Playwright. Field filling logic mirrors extension/autofill.js but uses page.fill() etc."
+2. Create `automation/autofill/session.js`:
+   - Module skeleton
+   - Function signatures: `exportCookies(domain)`, `importCookies(domain)`, `isSessionValid(domain)`
+   - TODO placeholders
+3. Update `CLAUDE.md`:
+   - Mark V2 checklist as ✅ complete
+   - Add "V2 Lessons Learned" section: weird DOM quirks, selectors that broke, file upload edge cases hit
+   - Add V3 next steps under "Future Modules"
+4. `git add . && git commit -m "M7: V3 stubs, V2 complete"`
+5. `pm2 restart all`
+
+### USER TESTING — Milestone 7
+
+#### Test 7.1 — V3 stubs exist
+- Verify `automation/autofill/index.js` and `session.js` exist
+- Verify syntactically valid (require in node repl)
+
+#### Test 7.2 — CLAUDE.md current
+- Read CLAUDE.md
+- Verify V2 checklist updated
+- Verify lessons learned reflects real bugs found
+
+#### Test 7.3 — Final regression
+- Run full Milestone 6 happy path one more time
+- Verify nothing broke during M7 changes
+
+---
+
+## Definition of Done
+
+V2 complete when:
+- ✅ All 7 milestones passed user testing
+- ✅ test-postings.md exists with 3+ verified URLs
+- ✅ applications.json has real records from tests
+- ✅ V3 stubs in place
+- ✅ CLAUDE.md updated with V2 lessons
+
+V2 NOT done if:
+- ❌ Anything auto-submits
+- ❌ Lever or Ashby adapters present (V3)
+- ❌ Vision-based AI present (V3)
+- ❌ Cron logic anywhere (V3)
+- ❌ Any milestone test was skipped or failed
+
+---
+
+## Required Infrastructure
+
+Already have:
+- ✅ Groq API key
+- ✅ VPS with 40-80GB storage
+- ✅ Supabase + bucket
+- ✅ PM2 + GitHub deploy
+
+Need to generate:
+- ⚠️ `JOBBY_API_KEY` — `openssl rand -hex 32`, add to `.env`
+
+Nothing else needed for V2. Everything is code.
+
+---
+
+## V3 Infrastructure (Plant Seed, Not Needed Yet)
+
+When V3 begins:
+- Anthropic API key (vision/computer-use)
+- Optional: 2captcha account
+- Dedicated automation accounts (LinkedIn, etc.)
+- Optional: residential proxy if anti-bot becomes issue
+- SSL cert + subdomain for VPS (do before V3 for clean architecture)
