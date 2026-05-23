@@ -33,11 +33,23 @@ const elPlatformLine   = document.getElementById("platform-line");
 const elPlatformName   = document.getElementById("platform-name");
 const elAlreadyApplied = document.getElementById("already-applied");
 
+const stateAutofill    = document.getElementById("state-autofill");
+const elAfFilledCount  = document.getElementById("af-filled-count");
+const elAfStaleCount   = document.getElementById("af-stale-count");
+const elAfErrorsCount  = document.getElementById("af-errors-count");
+const elAfStaleBlock   = document.getElementById("af-stale-block");
+const elAfStaleList    = document.getElementById("af-stale-list");
+const elAfErrorsBlock  = document.getElementById("af-errors-block");
+const elAfErrorsList   = document.getElementById("af-errors-list");
+
+const btnAutofill      = document.getElementById("btn-autofill");
+const btnAutofillBack  = document.getElementById("btn-autofill-back");
+
 // ─── State Management ─────────────────────────────────────────────────────────
 let currentTab = null;
 
 function showState(state) {
-  [stateIdle, stateLoading, stateSuccess, stateError].forEach((s) =>
+  [stateIdle, stateLoading, stateSuccess, stateError, stateAutofill].forEach((s) =>
     s.classList.add("hidden")
   );
   state.classList.remove("hidden");
@@ -203,6 +215,109 @@ async function callTailorApi(jobDescription, jobUrl) {
   return data;
 }
 
+// ─── Autofill API ─────────────────────────────────────────────────────────────
+async function callApplyApi(jobDescription, jobUrl) {
+  const controller = new AbortController();
+  const timeoutId  = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/apply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+      body: JSON.stringify({ jobUrl, jobDescription, mode: "dry_run" }),
+      signal: controller.signal,
+    });
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (err.name === "AbortError") {
+      throw { step: "network", message: "Request timed out after 2 minutes" };
+    }
+    throw { step: "network", message: `Connection failed: ${err.message}` };
+  }
+
+  clearTimeout(timeoutId);
+
+  if (!response.ok) {
+    let detail = `Server returned ${response.status}`;
+    try {
+      const body = await response.json();
+      if (body.error) detail = body.error;
+    } catch (_) {}
+    throw { step: "api", message: detail };
+  }
+
+  return response.json();
+}
+
+// Fetches the resume PDF and returns it as a base64 dataURL
+// Done in the popup (not the content script) to avoid Supabase CORS issues
+async function fetchResumeAsDataUrl(resumeUrl) {
+  const res  = await fetch(resumeUrl);
+  const blob = await res.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("FileReader failed"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Injects autofill.js then sends FILL_FORM — returns the coverage report
+async function injectAndFill(tabId, adapter, profileData, resumePdf) {
+  try {
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["autofill.js"] });
+  } catch (err) {
+    throw { step: "injection", message: `Cannot inject into this page: ${err.message}` };
+  }
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject({ step: "autofill", message: "Autofill timed out — page may have navigated" });
+    }, 10_000);
+
+    chrome.tabs.sendMessage(
+      tabId,
+      { type: "FILL_FORM", adapter, profileData, resumePdf },
+      (response) => {
+        clearTimeout(timeout);
+        if (chrome.runtime.lastError) {
+          reject({ step: "autofill", message: chrome.runtime.lastError.message });
+          return;
+        }
+        resolve(response?.report || { filled: [], stale: [], skipped: [], errors: [] });
+      }
+    );
+  });
+}
+
+// ─── Autofill Success Renderer ────────────────────────────────────────────────
+function renderAutofillSuccess(report) {
+  const { filled = [], stale = [], errors = [] } = report;
+
+  elAfFilledCount.textContent = filled.length;
+  elAfStaleCount.textContent  = stale.length;
+  elAfErrorsCount.textContent = errors.length;
+
+  if (stale.length > 0) {
+    elAfStaleList.innerHTML = stale.map((f) => `<li>${f}</li>`).join("");
+    elAfStaleBlock.classList.remove("hidden");
+  } else {
+    elAfStaleBlock.classList.add("hidden");
+  }
+
+  if (errors.length > 0) {
+    elAfErrorsList.innerHTML = errors
+      .map(({ field, message }) => `<li>${field}: ${message}</li>`)
+      .join("");
+    elAfErrorsBlock.classList.remove("hidden");
+  } else {
+    elAfErrorsBlock.classList.add("hidden");
+  }
+
+  showState(stateAutofill);
+}
+
 // ─── Download ─────────────────────────────────────────────────────────────────
 async function downloadResume(downloadUrl) {
   return new Promise((resolve, reject) => {
@@ -217,6 +332,91 @@ async function downloadResume(downloadUrl) {
       }
     );
   });
+}
+
+// ─── Autofill Flow ────────────────────────────────────────────────────────────
+async function runAutofill() {
+  const { id: tabId, url: tabUrl } = currentTab;
+
+  showState(stateLoading);
+  elLoadingStep.textContent = "Scraping job description...";
+
+  // ── Step 1: Scrape ────────────────────────────────────────────────────────
+  let jobDescription;
+  try {
+    jobDescription = await scrapeCurrentTab(tabId);
+  } catch (err) {
+    showError("scraping", err.message);
+    return;
+  }
+
+  // ── Step 2: Tailor + generate PDF ────────────────────────────────────────
+  elLoadingStep.textContent = "Tailoring & generating resume...";
+
+  let applyData;
+  try {
+    applyData = await callApplyApi(jobDescription, tabUrl);
+  } catch (err) {
+    showError(err.step, err.message);
+    return;
+  }
+
+  if (applyData.alreadyApplied) {
+    showError("already applied", "This URL is already on record. Click Back to continue.");
+    return;
+  }
+
+  const { applicationId, resumeUrl, adapter, profileData } = applyData;
+
+  if (!adapter) {
+    showError("adapter", "No adapter found for this job board — autofill is not supported here.");
+    return;
+  }
+
+  // ── Step 3: Fetch PDF as dataURL (popup context avoids CORS issues) ───────
+  elLoadingStep.textContent = "Preparing resume...";
+
+  let resumePdf;
+  try {
+    resumePdf = await fetchResumeAsDataUrl(resumeUrl);
+  } catch (err) {
+    showError("resume fetch", `Could not load resume PDF: ${err.message}`);
+    return;
+  }
+
+  // ── Step 4: Inject autofill.js and fill fields ────────────────────────────
+  elLoadingStep.textContent = "Filling form...";
+
+  let report;
+  try {
+    report = await injectAndFill(tabId, adapter, profileData, resumePdf);
+  } catch (err) {
+    showError(err.step, err.message);
+    return;
+  }
+
+  // ── Step 5: Log coverage report (fire and forget) ─────────────────────────
+  fetch(`${API_BASE}/apply/log`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+    body: JSON.stringify({
+      applicationId,
+      status: "filled",
+      coverageReport: {
+        filled:  report.filled,
+        skipped: report.skipped || [],
+        unknown: [],
+        stale:   report.stale,
+        errors:  report.errors,
+      },
+    }),
+  }).catch(() => {});
+
+  // ── Step 6: Persist ───────────────────────────────────────────────────────
+  await markUrlApplied(tabUrl, applicationId);
+  await savePdfReference(applicationId, resumeUrl);
+
+  renderAutofillSuccess(report);
 }
 
 // ─── Main Flow ────────────────────────────────────────────────────────────────
@@ -268,6 +468,8 @@ async function runTailoring() {
 
 // ─── Event Listeners ──────────────────────────────────────────────────────────
 btnTailor.addEventListener("click", runTailoring);
+btnAutofill.addEventListener("click", runAutofill);
+btnAutofillBack.addEventListener("click", () => showState(stateIdle));
 
 btnRetry.addEventListener("click", runTailoring);
 

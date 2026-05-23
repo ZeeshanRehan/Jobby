@@ -318,6 +318,56 @@
       margin-bottom: 10px;
     }
 
+    /* ── Autofill success ─────────────────────────────────────────── */
+    .autofill-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .autofill-header-text { display: flex; flex-direction: column; gap: 3px; }
+
+    .mode-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      background: #0f2340;
+      color: #4a90d9;
+      border-radius: 3px;
+      padding: 2px 6px;
+    }
+
+    .errors-block {
+      background: #1a0505;
+      border: 1px solid #3a1010;
+      border-radius: 7px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .errors-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #a03030;
+      margin-bottom: 6px;
+    }
+
+    .errors-list { list-style: none; }
+
+    .errors-list li {
+      font-size: 11px;
+      color: #7a3030;
+      line-height: 1.55;
+    }
+
+    .errors-list li + li { margin-top: 3px; }
+    .errors-list li::before { content: "✕ "; }
+
     /* ── Error ────────────────────────────────────────────────────── */
     .error-step-badge {
       display: inline-block;
@@ -354,6 +404,7 @@
     <div class="url-label" id="current-url">Loading...</div>
     <div id="already-applied" class="already-applied hidden">Already applied — tailoring again will create a new record</div>
     <button id="btn-tailor">Tailor Resume</button>
+    <button id="btn-autofill" class="btn-secondary" style="margin-top:10px;">Autofill Form</button>
   </div>
 
   <!-- ── Loading ───────────────────────────────────────────────────────────── -->
@@ -419,6 +470,47 @@
     <div class="error-msg" id="error-msg"></div>
     <button id="btn-retry" style="margin-top: 14px;">Retry</button>
     <button class="btn-secondary" id="btn-back">Go Back</button>
+  </div>
+
+  <!-- ── Autofill Success ───────────────────────────────────────────────────── -->
+  <div id="state-autofill" class="hidden">
+    <div class="brand">Jobby</div>
+    <div class="brand-sub">AI Resume Tailoring</div>
+
+    <div class="autofill-header">
+      <div class="success-icon">✓</div>
+      <div class="autofill-header-text">
+        <div class="success-title">Form filled</div>
+        <span class="mode-badge">dry run</span>
+      </div>
+    </div>
+
+    <div class="stats-block">
+      <div class="stat-row">
+        <span class="stat-label">Fields filled</span>
+        <span class="stat-value" id="af-filled-count">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Stale selectors</span>
+        <span class="stat-value" id="af-stale-count">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Errors</span>
+        <span class="stat-value" id="af-errors-count">—</span>
+      </div>
+    </div>
+
+    <div id="af-stale-block" class="warnings-block hidden">
+      <div class="warnings-title">Stale Selectors</div>
+      <ul class="warnings-list" id="af-stale-list"></ul>
+    </div>
+
+    <div id="af-errors-block" class="errors-block hidden">
+      <div class="errors-title">Errors</div>
+      <ul class="errors-list" id="af-errors-list"></ul>
+    </div>
+
+    <button class="btn-secondary" id="btn-autofill-back">Back</button>
   </div>
 
   <script src="config.js"></script>
