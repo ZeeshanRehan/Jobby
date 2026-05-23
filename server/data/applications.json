@@ -249,5 +249,204 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "d37e441f-66f4-4e66-8833-bfed551ba2da",
+    "timestamp": "2026-05-23T21:24:02.993Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7868163?gh_jid=7868163",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d37e441f-66f4-4e66-8833-bfed551ba2da.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMzdlNDQxZi02NmY0LTRlNjYtODgzMy1iZmVkNTUxYmEyZGEucGRmIiwiaWF0IjoxNzc5NTcxNDQyLCJleHAiOjE3Nzk1NzUwNDJ9.840LSwBzb0JM-pgSdKPbLmISz_GI89_AosnVQz6zv_w",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d37e441f-66f4-4e66-8833-bfed551ba2da.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Claude",
+        "MCP",
+        "Code Sandbox",
+        "Storybook",
+        "WCAG"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, TypeScript-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Claude",
+      "MCP",
+      "Code Sandbox",
+      "Storybook",
+      "WCAG"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_66207721",
+        "#question_66207722",
+        "#question_66207727",
+        "#question_66207728",
+        "#question_66207729"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "Github profile",
+        "In 2-3 sentences, what excites you about this position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national base pay range for this role is $105,800 - $158,800 CAD. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "Due to current team needs, we are only considering candidates based in the BC or Ontario. Please confirm you're based in BC or Ontario.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "7cb5c76d-51f2-46f0-8a19-b5453724fd5f",
+    "timestamp": "2026-05-23T21:52:23.482Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7809234?gh_jid=7809234",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7cb5c76d-51f2-46f0-8a19-b5453724fd5f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83Y2I1Yzc2ZC01MWYyLTQ2ZjAtOGExOS1iNTQ1MzcyNGZkNWYucGRmIiwiaWF0IjoxNzc5NTczMTQzLCJleHAiOjE3Nzk1NzY3NDN9.5g0Hqymp3bJFXwPcDE1C-nE672BtCe0wtpFQsiqpyMU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7cb5c76d-51f2-46f0-8a19-b5453724fd5f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, utilizing sales and customer success skills."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, improving sales conversion rates."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65540580",
+        "#question_65610433",
+        "#question_65540583",
+        "#question_65540584",
+        "#question_65540585",
+        "#question_65540586",
+        "#question_65540588"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "What is your preferred last name? If your legal last name and preferred last name are the same, please input your legal last name.",
+        "In 2-3 sentences, please tell us what excites you about the Enterprise SDR position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national pay for this role is $65,240.00 CAD base pay. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:",
+        "Greenhouse Interview Recording Policy (Candidate Evaluation and Training)"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "af6c26a2-8808-4d16-b4fe-1659b1dd1e4d",
+    "timestamp": "2026-05-23T22:56:05.422Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7769906?gh_jid=7769906",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_af6c26a2-8808-4d16-b4fe-1659b1dd1e4d.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hZjZjMjZhMi04ODA4LTRkMTYtYjRmZS0xNjU5YjFkZDFlNGQucGRmIiwiaWF0IjoxNzc5NTc2OTY1LCJleHAiOjE3Nzk1ODA1NjV9.E-9KZMbmEoHuTWgyxuJN65c59ZvdB2uVIt3IjwJHqvI",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/af6c26a2-8808-4d16-b4fe-1659b1dd1e4d.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Adaptive",
+        "Netsuite",
+        "Excel",
+        "Powerpoint"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Adaptive",
+      "Netsuite",
+      "Excel",
+      "Powerpoint"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65046863",
+        "#question_65046866",
+        "#question_65046867",
+        "#question_65046868",
+        "#question_65046869",
+        "#question_65046870"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "What is your preferred last name? If your legal last name and preferred last name are the same, please input your legal last name.",
+        "In 2-3 sentences, what excites you about this position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national pay range for this role is $128,300-175,000. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:",
+        "I identify my gender as:",
+        "I identify as transgender:",
+        "I identify my sexual orientation as:",
+        "I identify my ethnicity as (mark all that apply):",
+        "Veteran Status:",
+        "I have a physical disability:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
