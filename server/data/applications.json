@@ -181,5 +181,73 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "07aa4417-c3c9-4b53-a33d-5c5f2285b481",
+    "timestamp": "2026-05-23T18:05:30.969Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7891787?gh_jid=7891787",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_07aa4417-c3c9-4b53-a33d-5c5f2285b481.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wN2FhNDQxNy1jM2M5LTRiNTMtYTMzZC01YzVmMjI4NWI0ODEucGRmIiwiaWF0IjoxNzc5NTU5NTMwLCJleHAiOjE3Nzk1NjMxMzB9.J5rdZrVk3MJwvIzROpGGvrfsu_BDa-EQspO-jZ842rs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/07aa4417-c3c9-4b53-a33d-5c5f2285b481.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Streamlit",
+        "Retool",
+        "dbt",
+        "RAG",
+        "Snowflake",
+        "BigQuery",
+        "Airflow",
+        "Dagster"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, utilizing data modeling principles to inform the design."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, leveraging AI-powered interfaces to enhance user experience."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, which involved data modeling and analysis to optimize the process."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Streamlit",
+      "Retool",
+      "dbt",
+      "RAG",
+      "Snowflake",
+      "BigQuery",
+      "Airflow",
+      "Dagster"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
