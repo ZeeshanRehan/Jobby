@@ -18,34 +18,39 @@ function isSensitiveField(label) {
 }
 
 function buildFieldPrompt(label, fieldType, contextHtml, options) {
-  const { preferences, workAuthorization, voluntaryDisclosure, contact, education } = profileData;
+  const { preferences, workAuthorization, voluntaryDisclosure, contact, education, defaultAnswers } = profileData;
 
   // Pass safe slices only — demographics never reach this function
   const safeProfile = {
-    preferences,
-    workAuthorization,
-    voluntaryDisclosure,
     contact: {
       email: contact.email,
       phone: contact.phone,
       linkedinUrl: contact.linkedinUrl,
       portfolioUrl: contact.portfolioUrl,
     },
+    workAuthorization,
     education,
+    preferences,
+    voluntaryDisclosure,
+    defaultAnswers,
   };
 
   return `You are an AI assistant filling a job application form field.
 Return JSON only: { "answer": <string|null>, "confidence": "high"|"medium"|"low", "reasoning": <string> }
 
+LOOKUP ORDER:
+1. profile.contact / workAuthorization / education / preferences — direct match
+2. profile.defaultAnswers — find the semantically closest key and use its value
+3. If truly ambiguous with no safe default, return confidence "low"
+
 RULES:
-- Use profile data as the primary source; if the profile has no direct answer, pick the most defensible default
-- For legal agreement questions (non-compete, NDA, arbitration) where the profile is silent, default to "No"
-- For salary comfort questions ("are you comfortable with $X?"), default to "Yes"
-- For select/radio fields return exactly one of the provided options — never return text not in the options list
-- confidence "high" = direct answer from profile data
-- confidence "medium" = reasonable inference or clear defensible default
-- confidence "low" = genuine ambiguity — no profile data and no safe default exists
-- Never return "No information available" — always give a best-effort answer
+- For select/radio fields, your answer MUST exactly match one of the provided options (case-insensitive) — never return text outside the options list
+- For yes/no selects, map "Yes"/"No" answers to the closest matching option
+- For acknowledgement/consent fields, answer "Yes" or use the confirmation option
+- confidence "high" = direct answer from profile
+- confidence "medium" = matched via defaultAnswers or close inference
+- confidence "low" = genuinely cannot determine a reasonable answer
+- Never return "No information available" — if in doubt, pick the safest default from defaultAnswers
 
 Profile:
 ${JSON.stringify(safeProfile, null, 2)}

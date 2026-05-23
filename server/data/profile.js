@@ -59,7 +59,86 @@ const profileData = {
     referrerName: "",
     previousEmployee: false,
   },
-  defaultAnswers: {},
+  // ─── Default Answer Bank ────────────────────────────────────────────────────
+  // Groq uses these as a lookup when the profile has no direct answer.
+  // Keys describe the question theme; values are what to fill.
+  defaultAnswers: {
+    // ── Work Authorization ───────────────────────────────────────────────────
+    workAuthorizedUS:              "Yes",
+    workAuthorizedCanada:          "No",
+    workAuthorizedUK:              "No",
+    workAuthorizedAustralia:       "No",
+    requiresSponsorshipNow:        "No",
+    requiresSponsorshipFuture:     "No",
+    isUsCitizen:                   "Yes",
+    isPermanentResident:           "No",
+
+    // ── Location / Relocation ────────────────────────────────────────────────
+    willingToRelocate:             "Yes",
+    basedInOntario:                "No",
+    basedInUK:                     "No",
+    willingToWorkOnSite:           "Yes",
+    comfortableWithHybrid:         "Yes",
+    comfortableWithRemote:         "Yes",
+    willingToTravel:               "Yes",
+    comfortableWithTravelPercent:  "Yes",
+
+    // ── Compensation ─────────────────────────────────────────────────────────
+    salaryExpectation:             "$65,000 – $80,000 USD",
+    currentSalary:                 "$60,000 USD",
+    comfortableWithOfferedSalary:  "Yes",
+    openToCompensationDiscussion:  "Yes",
+    openToEquity:                  "Yes",
+
+    // ── Availability ─────────────────────────────────────────────────────────
+    noticePeriod:                  "2 weeks",
+    availableImmediately:          "Yes",
+    availableFullTime:             "Yes",
+    availableForOvertime:          "Yes",
+    availableOnWeekends:           "As needed",
+    expectedStartDate:             "2 weeks after offer",
+
+    // ── Legal / Agreements ───────────────────────────────────────────────────
+    subjectToNonCompete:           "No",
+    subjectToNonSolicitation:      "No",
+    subjectToConfidentialityAgreement: "No",
+    hasEmploymentRestrictions:     "No",
+    willingToSignNda:              "Yes",
+    willingToSignArbitration:      "Yes",
+    hasConflictOfInterest:         "No",
+
+    // ── Background & Conduct ─────────────────────────────────────────────────
+    hasBeenConvicted:              "No",
+    hasBeenTerminated:             "No",
+    agreedToBackgroundCheck:       "Yes",
+    agreedToDrugTest:              "Yes",
+    isPreviousEmployee:            "No",
+
+    // ── Education & Eligibility ──────────────────────────────────────────────
+    hasBachelorsDegree:            "Yes — Bachelor's in Computer Science (expected May 2026, Rowan University)",
+    hasDriversLicense:             "Yes",
+    isOver18:                      "Yes",
+    hasRelevantCertifications:     "No",
+
+    // ── Acknowledgements & Consents ──────────────────────────────────────────
+    agreeToTermsAndConditions:     "Yes",
+    agreeToPrivacyPolicy:          "Yes",
+    agreeToRecordingPolicy:        "Yes — Acknowledge",
+    consentToAiScreening:          "Yes",
+    agreeToEqualOpportunityPolicy: "Yes",
+
+    // ── Role Fit / Standard Soft Questions ───────────────────────────────────
+    openToLearning:                "Yes",
+    openToFeedback:                "Yes",
+    comfortableWithAmbiguity:      "Yes",
+    comfortableInFastPacedEnvironment: "Yes",
+    hasExperienceInEnterpriseAccounts: "Yes",
+    willingToUseAiTools:           "Yes",
+
+    // ── Sourcing ─────────────────────────────────────────────────────────────
+    howDidYouHear:                 "LinkedIn",
+    referredByEmployee:            "No",
+  },
 };
 
 module.exports = { profileData };
