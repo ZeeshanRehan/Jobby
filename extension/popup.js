@@ -298,7 +298,7 @@ async function injectAndFill(tabId, adapter, profileData, resumePdf) {
 // ─── AI Fallback ──────────────────────────────────────────────────────────────
 
 // Calls Groq via /ai-resolve-field for a single unknown field; returns answer string or null
-async function callAiResolveField(field) {
+async function callAiResolveField(field, contextHtml) {
   const controller = new AbortController();
   const timeoutId  = setTimeout(() => controller.abort(), 15_000);
 
@@ -306,7 +306,7 @@ async function callAiResolveField(field) {
     const response = await fetch(`${API_BASE}/ai-resolve-field`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
-      body: JSON.stringify(field),
+      body: JSON.stringify({ ...field, contextHtml }),
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
@@ -321,14 +321,14 @@ async function callAiResolveField(field) {
 
 // Batches unknown fields through Groq in groups of 3 to stay under TPM limits
 // Returns { resolved: [{ selector, value, fieldType }], failed: [label] }
-async function resolveUnknownFields(unknownFields) {
+async function resolveUnknownFields(unknownFields, contextHtml) {
   const resolved   = [];
   const failed     = [];
   const BATCH_SIZE = 3;
 
   for (let i = 0; i < unknownFields.length; i += BATCH_SIZE) {
     const batch   = unknownFields.slice(i, i + BATCH_SIZE);
-    const answers = await Promise.all(batch.map((f) => callAiResolveField(f)));
+    const answers = await Promise.all(batch.map((f) => callAiResolveField(f, contextHtml)));
 
     for (let j = 0; j < batch.length; j++) {
       if (answers[j] != null && answers[j] !== "") {
@@ -469,7 +469,7 @@ async function runAutofill() {
   if (unknownFields.length > 0) {
     elLoadingStep.textContent = "Resolving unknown fields...";
 
-    const { resolved, failed } = await resolveUnknownFields(unknownFields);
+    const { resolved, failed } = await resolveUnknownFields(unknownFields, jobDescription);
     unknownLabels = [...failed];
 
     if (resolved.length > 0) {

@@ -8,13 +8,16 @@ const router = express.Router();
 const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 function buildFieldPrompt(label, fieldType, contextHtml, options) {
-  const { preferences, workAuthorization, voluntaryDisclosure, contact, education, demographics, defaultAnswers } = profileData;
+  const {
+    contact, workAuthorization, education, preferences,
+    voluntaryDisclosure, demographics, bio, projects, defaultAnswers,
+  } = profileData;
 
   const safeProfile = {
     contact: {
-      email: contact.email,
-      phone: contact.phone,
-      linkedinUrl: contact.linkedinUrl,
+      email:        contact.email,
+      phone:        contact.phone,
+      linkedinUrl:  contact.linkedinUrl,
       portfolioUrl: contact.portfolioUrl,
     },
     workAuthorization,
@@ -22,37 +25,80 @@ function buildFieldPrompt(label, fieldType, contextHtml, options) {
     preferences,
     voluntaryDisclosure,
     demographics,
+    bio,
+    projects,
     defaultAnswers,
   };
 
-  return `You are an AI assistant filling a job application form field on behalf of the candidate.
-Return JSON only: { "answer": <string|null>, "confidence": "high"|"medium"|"low", "reasoning": <string> }
+  return `You are filling a job application form field on behalf of this candidate. Always produce an answer.
+Return JSON only: { "answer": <string>, "confidence": "high"|"medium"|"low", "reasoning": <string> }
 
-LOOKUP ORDER:
-1. profile.contact / workAuthorization / education / preferences — exact match
-2. profile.demographics — for gender, race, ethnicity, veteran, disability questions
-3. profile.defaultAnswers — semantic match on the closest key
-4. confidence "low" ONLY if genuinely no answer exists anywhere in the profile
+═══ LOOKUP ORDER ═══
+1. profile.contact / workAuthorization / education / preferences — for direct data fields
+2. profile.demographics — for gender, race, ethnicity, veteran status, disability
+3. profile.defaultAnswers — semantic match for yes/no, legal, location, consent, compensation questions
+4. profile.bio + profile.projects — for all open-ended / generative questions (see routing below)
 
-RULES:
-- ALWAYS produce an answer. "No information available" is never acceptable.
-- For select/radio: answer MUST match one of the provided options exactly (case-insensitive). If your answer is "Yes" find the option that means yes; if "No" find the option that means no.
-- For acknowledgement/consent/agree fields: always pick the affirmative/confirm option.
-- For demographic questions (gender, race, ethnicity, veteran, disability): use profile.demographics values and match to the closest available option.
-- For location/residency questions ("are you based in X city/region/country?"): answer "Yes" — candidate is willing to relocate and claims local presence to pass screening.
-- For work authorization: candidate is authorized in the US; for other countries answer "Yes" per defaultAnswers.
-- For salary questions: use defaultAnswers salary values; always confirm comfort with offered ranges.
+═══ OPEN-ENDED QUESTION ROUTING ═══
+Match the field label to the correct source and write a response accordingly:
+
+• "tell me about yourself" / "introduce yourself" / "about you" / "background":
+  → Use profile.bio.summary (2–3 sentences max unless field clearly wants more)
+
+• "walk me through your background" / "describe your experience" / longer background fields:
+  → Use profile.bio.careerNarrative
+
+• "why do you want to work here" / "what excites you about this role" / "why [company]" / "why are you interested":
+  → Read the job description context carefully. Write 2–3 sentences that:
+     (a) name something specific about what this company does or stands for
+     (b) connect it concretely to profile.bio.strengths or profile.projects
+     Never write generic enthusiasm — always tie to something real in the context.
+
+• "what is your proudest accomplishment" / "most impactful project" / "tell us about a project":
+  → Lead with PPST for healthcare/impact angle (deployed in 2 hospitals, thousands of patients)
+  → Lead with Jobby for AI/tech/automation angle
+  → Use profile.projects[n].highlights for specifics
+
+• "what are your strengths" / "what do you bring" / "why should we hire you":
+  → Pick 2–3 items from profile.bio.strengths most relevant to the field label context
+
+• "where do you see yourself in 5 years" / "career goals" / "long-term aspirations":
+  → Use profile.bio.careerGoal
+
+• "what motivates you" / "what are you passionate about" / "why did you get into this field":
+  → Use profile.bio.motivation
+
+• "describe a challenge you overcame" / "difficult project" / "obstacle you faced":
+  → Use profile.bio.challengeNarrative
+
+• "how do you work" / "describe your work style" / "team or independent":
+  → Use profile.bio.workStyle
+
+• "what skills do you bring" / "relevant experience for this role":
+  → Pull from profile.bio.strengths + most relevant project from profile.projects
+
+═══ HARD RULES ═══
+- ALWAYS produce a non-empty answer. Null is not acceptable unless the field is physically unanswerable.
+- For select/radio: answer MUST exactly match one of the provided options (case-insensitive). Map Yes/No to the matching option text.
+- For acknowledgement/consent/agree fields: always pick the affirmative option.
+- For demographics: use profile.demographics and match to the closest available option.
+- For US location questions ("are you based in [US city/state]?"): answer Yes — candidate can relocate anywhere in the US.
+- For non-US location questions (Canada, UK, Singapore, etc.): answer No per defaultAnswers.
+- For work authorization: Yes for US, No for other countries per defaultAnswers.
+- For salary: use defaultAnswers values; always confirm comfort with the offered range.
 - confidence "high" = pulled directly from profile fields
-- confidence "medium" = matched via defaultAnswers or demographics
-- confidence "low" = open-ended question requiring creative generation (e.g. "tell us about yourself")
+- confidence "medium" = matched from defaultAnswers, demographics, or generated from bio/projects
+- confidence "low" = used ONLY when there is truly nothing to draw from (rare)
+- Even at confidence "low", still produce the best possible answer — never return empty.
 
-Profile:
+═══ PROFILE ═══
 ${JSON.stringify(safeProfile, null, 2)}
 
-Field label: ${label}
-Field type: ${fieldType}
-${options ? `Options: ${JSON.stringify(options)}` : ""}
-${contextHtml ? `Context: ${contextHtml.slice(0, 500)}` : ""}`;
+═══ FIELD ═══
+Label: ${label}
+Type: ${fieldType}
+${options       ? `Options: ${JSON.stringify(options)}`           : ""}
+${contextHtml   ? `Job description context:\n${contextHtml.slice(0, 2000)}` : ""}`;
 }
 
 router.post("/", async (req, res) => {
@@ -65,7 +111,7 @@ router.post("/", async (req, res) => {
   try {
     const response = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      temperature: 0.1,
+      temperature: 0.15,
       messages: [
         {
           role: "system",
@@ -87,8 +133,8 @@ router.post("/", async (req, res) => {
       .trim();
 
     const parsed = JSON.parse(clean);
-    // Suppress low-confidence answers — let the user fill those manually
-    if (parsed.confidence === "low") parsed.answer = null;
+    // Only suppress if Groq explicitly returned null — low confidence still gets filled
+    if (!parsed.answer) parsed.answer = null;
     res.json(parsed);
   } catch (err) {
     console.error("[ai-resolve-field] Failed:", err.message);
