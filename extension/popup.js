@@ -29,6 +29,10 @@ const btnReset  = document.getElementById("btn-reset");
 const btnRetry  = document.getElementById("btn-retry");
 const btnBack   = document.getElementById("btn-back");
 
+const elPlatformLine   = document.getElementById("platform-line");
+const elPlatformName   = document.getElementById("platform-name");
+const elAlreadyApplied = document.getElementById("already-applied");
+
 // ─── State Management ─────────────────────────────────────────────────────────
 let currentTab = null;
 
@@ -285,6 +289,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   currentTab = tab;
   elCurrentUrl.textContent = tab?.url || "No URL detected";
+
+  if (tab?.url) {
+    // Show platform badge if adapter cache has a match for this URL
+    const adapter = await findAdapterForUrl(tab.url);
+    if (adapter) {
+      elPlatformName.textContent = adapter.platform;
+      elPlatformLine.classList.remove("hidden");
+    }
+
+    // Warn if user has already applied to this URL
+    const applied = await isUrlApplied(tab.url);
+    if (applied) {
+      elAlreadyApplied.classList.remove("hidden");
+    }
+
+    // Background version checks — fire and forget, never block the UI
+    checkVersion().catch(() => {});
+    checkAdapterVersions().catch(() => {});
+  }
 
   // Restore last result if present — saves the user from re-tailoring on every popup open
   const saved = await loadSavedResult();

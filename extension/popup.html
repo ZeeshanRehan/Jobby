@@ -284,6 +284,40 @@
       margin-bottom: 2px;
     }
 
+    /* ── Platform indicator ─────────────────────────────────────────── */
+    .platform-line {
+      font-size: 11px;
+      color: #555;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .platform-label { color: #444; }
+
+    .platform-badge {
+      background: #141414;
+      border: 1px solid #242424;
+      border-radius: 3px;
+      padding: 2px 7px;
+      color: #4a90d9;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    /* ── Already applied warning ─────────────────────────────────── */
+    .already-applied {
+      font-size: 11px;
+      color: #9a6c00;
+      background: #110e00;
+      border: 1px solid #2a2000;
+      border-radius: 5px;
+      padding: 7px 10px;
+      margin-bottom: 10px;
+    }
+
     /* ── Error ────────────────────────────────────────────────────── */
     .error-step-badge {
       display: inline-block;
@@ -307,11 +341,18 @@
 </head>
 <body>
 
-  <!-- ── Idle ──────────────────────────────────────────────────────────────── -->
+  <!-- ── Platform indicator (global — visible in all states) ──────────────── -->
+  <div id="platform-line" class="platform-line hidden">
+    <span class="platform-label">Platform</span>
+    <span id="platform-name" class="platform-badge"></span>
+  </div>
+
+    <!-- ── Idle ──────────────────────────────────────────────────────────────── -->
   <div id="state-idle">
     <div class="brand">Jobby</div>
     <div class="brand-sub">AI Resume Tailoring</div>
     <div class="url-label" id="current-url">Loading...</div>
+    <div id="already-applied" class="already-applied hidden">Already applied — tailoring again will create a new record</div>
     <button id="btn-tailor">Tailor Resume</button>
   </div>
 
@@ -380,6 +421,10 @@
     <button class="btn-secondary" id="btn-back">Go Back</button>
   </div>
 
+  <script src="config.js"></script>
+  <script src="cache/profile.js"></script>
+  <script src="cache/adapters.js"></script>
+  <script src="cache/history.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
