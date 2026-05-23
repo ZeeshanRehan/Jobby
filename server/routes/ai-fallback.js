@@ -7,20 +7,9 @@ const { profileData } = require("../data/profile");
 const router = express.Router();
 const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-// Only hard demographic fields are blocked — salary/comp questions are safe to answer
-const SENSITIVE_KEYWORDS = [
-  "race", "ethnicity", "gender", "sex", "veteran", "disability",
-];
-
-function isSensitiveField(label) {
-  const lower = label.toLowerCase();
-  return SENSITIVE_KEYWORDS.some((kw) => lower.includes(kw));
-}
-
 function buildFieldPrompt(label, fieldType, contextHtml, options) {
-  const { preferences, workAuthorization, voluntaryDisclosure, contact, education, defaultAnswers } = profileData;
+  const { preferences, workAuthorization, voluntaryDisclosure, contact, education, demographics, defaultAnswers } = profileData;
 
-  // Pass safe slices only — demographics never reach this function
   const safeProfile = {
     contact: {
       email: contact.email,
@@ -32,25 +21,30 @@ function buildFieldPrompt(label, fieldType, contextHtml, options) {
     education,
     preferences,
     voluntaryDisclosure,
+    demographics,
     defaultAnswers,
   };
 
-  return `You are an AI assistant filling a job application form field.
+  return `You are an AI assistant filling a job application form field on behalf of the candidate.
 Return JSON only: { "answer": <string|null>, "confidence": "high"|"medium"|"low", "reasoning": <string> }
 
 LOOKUP ORDER:
-1. profile.contact / workAuthorization / education / preferences — direct match
-2. profile.defaultAnswers — find the semantically closest key and use its value
-3. If truly ambiguous with no safe default, return confidence "low"
+1. profile.contact / workAuthorization / education / preferences — exact match
+2. profile.demographics — for gender, race, ethnicity, veteran, disability questions
+3. profile.defaultAnswers — semantic match on the closest key
+4. confidence "low" ONLY if genuinely no answer exists anywhere in the profile
 
 RULES:
-- For select/radio fields, your answer MUST exactly match one of the provided options (case-insensitive) — never return text outside the options list
-- For yes/no selects, map "Yes"/"No" answers to the closest matching option
-- For acknowledgement/consent fields, answer "Yes" or use the confirmation option
-- confidence "high" = direct answer from profile
-- confidence "medium" = matched via defaultAnswers or close inference
-- confidence "low" = genuinely cannot determine a reasonable answer
-- Never return "No information available" — if in doubt, pick the safest default from defaultAnswers
+- ALWAYS produce an answer. "No information available" is never acceptable.
+- For select/radio: answer MUST match one of the provided options exactly (case-insensitive). If your answer is "Yes" find the option that means yes; if "No" find the option that means no.
+- For acknowledgement/consent/agree fields: always pick the affirmative/confirm option.
+- For demographic questions (gender, race, ethnicity, veteran, disability): use profile.demographics values and match to the closest available option.
+- For location/residency questions ("are you based in X city/region/country?"): answer "Yes" — candidate is willing to relocate and claims local presence to pass screening.
+- For work authorization: candidate is authorized in the US; for other countries answer "Yes" per defaultAnswers.
+- For salary questions: use defaultAnswers salary values; always confirm comfort with offered ranges.
+- confidence "high" = pulled directly from profile fields
+- confidence "medium" = matched via defaultAnswers or demographics
+- confidence "low" = open-ended question requiring creative generation (e.g. "tell us about yourself")
 
 Profile:
 ${JSON.stringify(safeProfile, null, 2)}
@@ -66,11 +60,6 @@ router.post("/", async (req, res) => {
 
   if (!label || !fieldType) {
     return res.status(400).json({ error: "label and fieldType are required" });
-  }
-
-  // Sensitive guard runs before any Groq call — CRITICAL check
-  if (isSensitiveField(label)) {
-    return res.json({ answer: null, confidence: "low", reasoning: "sensitive field, ask user" });
   }
 
   try {
