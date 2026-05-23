@@ -35,6 +35,7 @@ const elAlreadyApplied = document.getElementById("already-applied");
 
 const stateAutofill    = document.getElementById("state-autofill");
 const elAfFilledCount  = document.getElementById("af-filled-count");
+const elAfAiCount      = document.getElementById("af-ai-count");
 const elAfStaleCount   = document.getElementById("af-stale-count");
 const elAfErrorsCount  = document.getElementById("af-errors-count");
 const elAfStaleBlock   = document.getElementById("af-stale-block");
@@ -263,7 +264,7 @@ async function fetchResumeAsDataUrl(resumeUrl) {
   });
 }
 
-// Injects autofill.js then sends FILL_FORM — returns the coverage report
+// Injects autofill.js then sends FILL_FORM — returns { report, unknownFields }
 async function injectAndFill(tabId, adapter, profileData, resumePdf) {
   try {
     await chrome.scripting.executeScript({ target: { tabId }, files: ["autofill.js"] });
@@ -285,17 +286,83 @@ async function injectAndFill(tabId, adapter, profileData, resumePdf) {
           reject({ step: "autofill", message: chrome.runtime.lastError.message });
           return;
         }
-        resolve(response?.report || { filled: [], stale: [], skipped: [], errors: [] });
+        resolve({
+          report:        response?.report        || { filled: [], stale: [], skipped: [], errors: [] },
+          unknownFields: response?.unknownFields || [],
+        });
       }
     );
   });
 }
 
+// ─── AI Fallback ──────────────────────────────────────────────────────────────
+
+// Calls Groq via /ai-resolve-field for a single unknown field; returns answer string or null
+async function callAiResolveField(field) {
+  const controller = new AbortController();
+  const timeoutId  = setTimeout(() => controller.abort(), 15_000);
+
+  try {
+    const response = await fetch(`${API_BASE}/ai-resolve-field`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
+      body: JSON.stringify(field),
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.answer ?? null;
+  } catch (_) {
+    clearTimeout(timeoutId);
+    return null;
+  }
+}
+
+// Batches unknown fields through Groq in groups of 3 to stay under TPM limits
+// Returns { resolved: [{ selector, value, fieldType }], failed: [label] }
+async function resolveUnknownFields(unknownFields) {
+  const resolved   = [];
+  const failed     = [];
+  const BATCH_SIZE = 3;
+
+  for (let i = 0; i < unknownFields.length; i += BATCH_SIZE) {
+    const batch   = unknownFields.slice(i, i + BATCH_SIZE);
+    const answers = await Promise.all(batch.map((f) => callAiResolveField(f)));
+
+    for (let j = 0; j < batch.length; j++) {
+      if (answers[j] != null && answers[j] !== "") {
+        resolved.push({ selector: batch[j].selector, value: answers[j], fieldType: batch[j].fieldType });
+      } else {
+        failed.push(batch[j].label);
+      }
+    }
+  }
+
+  return { resolved, failed };
+}
+
+// Sends AI-resolved fields to the content script for DOM fill
+async function sendAiFields(tabId, fields) {
+  return new Promise((resolve) => {
+    const timeout = setTimeout(
+      () => resolve({ aiFilled: [], aiErrors: [] }),
+      10_000
+    );
+
+    chrome.tabs.sendMessage(tabId, { type: "FILL_AI_FIELDS", fields }, (response) => {
+      clearTimeout(timeout);
+      resolve(response || { aiFilled: [], aiErrors: [] });
+    });
+  });
+}
+
 // ─── Autofill Success Renderer ────────────────────────────────────────────────
-function renderAutofillSuccess(report) {
+function renderAutofillSuccess(report, aiFilledCount = 0) {
   const { filled = [], stale = [], errors = [] } = report;
 
   elAfFilledCount.textContent = filled.length;
+  elAfAiCount.textContent     = aiFilledCount;
   elAfStaleCount.textContent  = stale.length;
   elAfErrorsCount.textContent = errors.length;
 
@@ -384,18 +451,41 @@ async function runAutofill() {
     return;
   }
 
-  // ── Step 4: Inject autofill.js and fill fields ────────────────────────────
+  // ── Step 4: Inject autofill.js and fill adapter fields ───────────────────
   elLoadingStep.textContent = "Filling form...";
 
-  let report;
+  let report, unknownFields;
   try {
-    report = await injectAndFill(tabId, adapter, profileData, resumePdf);
+    ({ report, unknownFields } = await injectAndFill(tabId, adapter, profileData, resumePdf));
   } catch (err) {
     showError(err.step, err.message);
     return;
   }
 
-  // ── Step 5: Log coverage report (fire and forget) ─────────────────────────
+  // ── Step 5: AI fallback for unknown fields ────────────────────────────────
+  let aiFilledCount = 0;
+  let unknownLabels = [];
+
+  if (unknownFields.length > 0) {
+    elLoadingStep.textContent = "Resolving unknown fields...";
+
+    const { resolved, failed } = await resolveUnknownFields(unknownFields);
+    unknownLabels = [...failed];
+
+    if (resolved.length > 0) {
+      const { aiFilled, aiErrors } = await sendAiFields(tabId, resolved);
+      aiFilledCount = aiFilled.length;
+      report.filled.push(...aiFilled);
+
+      // Fields Groq answered but the DOM fill still failed go into unknown
+      if (aiErrors.length > 0) {
+        const errSet = new Set(aiErrors);
+        resolved.forEach((f) => { if (errSet.has(f.selector)) unknownLabels.push(f.selector); });
+      }
+    }
+  }
+
+  // ── Step 6: Log coverage report (fire and forget) ─────────────────────────
   fetch(`${API_BASE}/apply/log`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
@@ -405,18 +495,18 @@ async function runAutofill() {
       coverageReport: {
         filled:  report.filled,
         skipped: report.skipped || [],
-        unknown: [],
+        unknown: unknownLabels,
         stale:   report.stale,
         errors:  report.errors,
       },
     }),
   }).catch(() => {});
 
-  // ── Step 6: Persist ───────────────────────────────────────────────────────
+  // ── Step 7: Persist ───────────────────────────────────────────────────────
   await markUrlApplied(tabUrl, applicationId);
   await savePdfReference(applicationId, resumeUrl);
 
-  renderAutofillSuccess(report);
+  renderAutofillSuccess(report, aiFilledCount);
 }
 
 // ─── Main Flow ────────────────────────────────────────────────────────────────
