@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "applicationId": "426518b0-8c7c-4ba4-af8a-ad57fb29681c",
+    "timestamp": "2026-05-23T17:33:32.491Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7926000?gh_jid=7926000",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_426518b0-8c7c-4ba4-af8a-ad57fb29681c.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80MjY1MThiMC04YzdjLTRiYTQtYWY4YS1hZDU3ZmIyOTY4MWMucGRmIiwiaWF0IjoxNzc5NTU3NjEyLCJleHAiOjE3Nzk1NjEyMTJ9.pPD1EgASikluD0NygD9I4v_Nr2rKH5Et3Dxw9DwYT-0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/426518b0-8c7c-4ba4-af8a-ad57fb29681c.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Zendesk"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, utilizing problem-solving skills to improve customer experience."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members, and providing excellent customer support."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Zendesk"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ca919733-d8b0-4392-8a14-3632aa489b2a",
+    "timestamp": "2026-05-23T17:34:53.911Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7895319?gh_jid=7895319",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ca919733-d8b0-4392-8a14-3632aa489b2a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jYTkxOTczMy1kOGIwLTQzOTItOGExNC0zNjMyYWE0ODliMmEucGRmIiwiaWF0IjoxNzc5NTU3NjkzLCJleHAiOjE3Nzk1NjEyOTN9.kTxx_mjt_0lmfNcgsg4hHJHA_98tMouMl4P1lvSOYHo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ca919733-d8b0-4392-8a14-3632aa489b2a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Pandas",
+        "Jupyter Notebooks",
+        "Excel"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Pandas",
+      "Jupyter Notebooks",
+      "Excel"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  }
+]
