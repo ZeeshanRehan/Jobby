@@ -5,8 +5,8 @@ AI-powered job application automation system. Personal use only for now.
 Target: reduce per-application time from 20-30 mins to under 60 seconds.
 
 ## Current Phase
-**V1 — AI Resume Tailoring** (active)
-- V2 → Chrome Extension + Autofill
+**V2 — Chrome Extension + Autofill** (active)
+- V1 → AI Resume Tailoring ✅ complete
 - V3 → Playwright browser automation + cron job scraper
 - V4 → Dashboard + analytics
 
@@ -27,17 +27,36 @@ Target: reduce per-application time from 20-30 mins to under 60 seconds.
 ```
 Jobby/
   server/
+    data/
+      profile.js         ← profileData object (single source of truth for autofill)
+      adapters/
+        greenhouse.json  ← field selectors + mapping for Greenhouse ATS
     routes/
       tailor.js          ← POST /tailor-resume, orchestrates the 3-step pipeline
+      profile.js         ← GET /profile (API key protected)
+      adapters.js        ← GET /adapters, GET /adapter (API key protected)
+      apply.js           ← POST /apply (API key protected)
+      ai-fallback.js     ← POST /ai-resolve-field, Groq fallback for unknown fields
     services/
       groqService.js     ← Groq AI tailoring logic + resumeData (source of truth)
       pdfService.js      ← Puppeteer HTML → PDF buffer renderer
       uploadService.js   ← Supabase Storage upload → signed URL
+      apiKeyAuth.js      ← Express middleware, x-api-key header check
     templates/
       resume.html        ← ATS-safe single-column HTML resume template
     server.js            ← Express setup, body parsers, route mounting
-    .env                 ← PORT, GROQ_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY
-  extension/             ← V2, not built yet
+    .env                 ← PORT, GROQ_API_KEY, SUPABASE_URL, SUPABASE_ANON_KEY, JOBBY_API_KEY
+  extension/
+    manifest.json        ← MV3, permissions, service worker declared
+    popup.html           ← Popup UI (tailor + autofill buttons, coverage UI)
+    popup.js             ← Popup logic — tailor trigger, autofill trigger, state persistence
+    content.js           ← Content script — JD scraping, DOM interaction
+    background.js        ← Service worker — message routing
+    config.js            ← VPS base URL, shared constants
+    cache/
+      profile.js         ← Cached profileData from /profile endpoint
+      adapters.js        ← Cached adapter map from /adapters endpoint
+      history.js         ← Application history cache
   automation/            ← V3, not built yet (Playwright, cron jobs)
   dashboard/             ← V4, not built yet
 ```
@@ -101,7 +120,6 @@ These are non-negotiable — never relax them:
 
 ## Active Issues (V1)
 - Groq still appending "and..." keyword clauses to bullet ends — prompt needs to be harder on this
-- `changesMade` field not yet added to Groq response shape
 - Resume still spilling to 2 pages on some JDs — padding/font tuning ongoing
 
 ---
@@ -122,21 +140,48 @@ These are non-negotiable — never relax them:
 - Coverage gaps warnings ✅
 
 ### V2 — In Progress
-- [ ] server/data/profile.js — profileData object
-- [ ] server/routes/profile.js — GET /profile endpoint
-- [ ] server/server.js — mount /profile route
-- [ ] autofill/adapters/greenhouse.json
-- [ ] autofill/adapters/lever.json
-- [ ] autofill/adapters/ashby.json
-- [ ] extension/autofill.js — DOM execution layer
-- [ ] extension/popup.js — autofill trigger + coverage report
-- [ ] extension/popup.html — autofill button + coverage UI
-- [ ] extension/manifest.json — declare autofill.js injectable
+
+**Server (complete)**
+- [x] server/data/profile.js — profileData object
+- [x] server/routes/profile.js — GET /profile (x-api-key protected)
+- [x] server/routes/adapters.js — GET /adapters + GET /adapter
+- [x] server/routes/apply.js — POST /apply
+- [x] server/routes/ai-fallback.js — POST /ai-resolve-field (Groq fallback)
+- [x] server/services/apiKeyAuth.js — middleware, JOBBY_API_KEY in .env
+- [x] server/server.js — all V2 routes mounted with auth
+- [x] CORS — chrome-extension:// origins allowed via cors({ origin: true })
+- [x] server/data/adapters/greenhouse.json — field selectors for Greenhouse ATS
+- [ ] server/data/adapters/lever.json — not yet written
+- [ ] server/data/adapters/ashby.json — not yet written
+
+**Extension (mostly complete)**
+- [x] extension/manifest.json — MV3, service worker, permissions
+- [x] extension/popup.html — autofill button + coverage UI
+- [x] extension/popup.js — autofill trigger + state persistence
+- [x] extension/content.js — JD scraping + DOM interaction
+- [x] extension/background.js — service worker / message routing
+- [x] extension/config.js — VPS URL + shared constants
+- [x] extension/cache/ — profile.js, adapters.js, history.js caching layer
+- [ ] extension/autofill.js — DOM execution layer (the actual field-fill logic)
+- [ ] extension/manifest.json — declare autofill.js as content_script (not done yet)
+
+**Automation stubs (not started)**
 - [ ] automation/autofill/index.js — V3 Playwright stub
 - [ ] automation/autofill/session.js — V3 cookie management stub
 
 ### Last Session Cutoff
-Update this manually at end of each session with exactly where you stopped.
+**Date:** 2026-05-23
+
+**Done this session:** Built M2 — extension cache layer. Created `extension/config.js` (API_BASE + API_KEY), `extension/cache/profile.js`, `extension/cache/adapters.js`, `extension/cache/history.js`. Updated `popup.html` with platform badge (outside all state divs, visible in all states) and already-applied warning (inside idle state). Updated `popup.js` to show platform badge, already-applied warning, and fire background version checks on every popup open. Committed as `bfaed71`.
+
+**What's missing / next up:**
+1. Run 5 M2 tests in Chrome (see test instructions in the M2 commit conversation) — ALL require Chrome on your machine
+2. `extension/autofill.js` — the DOM execution layer that reads adapter selectors and fills fields on the page (M3)
+3. Declare `autofill.js` as a `content_scripts` entry in `extension/manifest.json` (M3)
+4. `server/data/adapters/lever.json` and `ashby.json` — field selector maps for Lever and Ashby ATS
+5. `automation/` stubs — low priority, only needed when starting V3
+
+**Known risk:** DataTransfer file upload for resume attach is finicky — test on a real Greenhouse page before calling it done.
 
 ---
 
