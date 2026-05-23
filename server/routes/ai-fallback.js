@@ -7,10 +7,9 @@ const { profileData } = require("../data/profile");
 const router = express.Router();
 const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-// Demographics, salary, and professional references are never AI-resolved
+// Only hard demographic fields are blocked — salary/comp questions are safe to answer
 const SENSITIVE_KEYWORDS = [
   "race", "ethnicity", "gender", "sex", "veteran", "disability",
-  "salary", "compensation", "wage", "references",
 ];
 
 function isSensitiveField(label) {
@@ -39,11 +38,14 @@ function buildFieldPrompt(label, fieldType, contextHtml, options) {
 Return JSON only: { "answer": <string|null>, "confidence": "high"|"medium"|"low", "reasoning": <string> }
 
 RULES:
-- Only answer using the profile data — never invent information
-- For radio/select fields, return exactly one of the provided options (matched case-sensitively)
-- confidence "high" = clear direct answer in profile data
-- confidence "medium" = reasonable inference from profile
-- confidence "low" = no clear match
+- Use profile data as the primary source; if the profile has no direct answer, pick the most defensible default
+- For legal agreement questions (non-compete, NDA, arbitration) where the profile is silent, default to "No"
+- For salary comfort questions ("are you comfortable with $X?"), default to "Yes"
+- For select/radio fields return exactly one of the provided options — never return text not in the options list
+- confidence "high" = direct answer from profile data
+- confidence "medium" = reasonable inference or clear defensible default
+- confidence "low" = genuine ambiguity — no profile data and no safe default exists
+- Never return "No information available" — always give a best-effort answer
 
 Profile:
 ${JSON.stringify(safeProfile, null, 2)}
@@ -90,7 +92,10 @@ router.post("/", async (req, res) => {
       .replace(/\s*```$/i, "")
       .trim();
 
-    res.json(JSON.parse(clean));
+    const parsed = JSON.parse(clean);
+    // Suppress low-confidence answers — let the user fill those manually
+    if (parsed.confidence === "low") parsed.answer = null;
+    res.json(parsed);
   } catch (err) {
     console.error("[ai-resolve-field] Failed:", err.message);
     res.status(500).json({ error: "AI field resolution failed", details: err.message });
