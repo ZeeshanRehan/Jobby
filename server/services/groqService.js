@@ -1,8 +1,6 @@
-const Groq = require("groq-sdk");
+const Anthropic = require("@anthropic-ai/sdk");
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // ─── Structured Resume (Source of Truth) ────────────────────────────────────
 // This object is the single source of truth for all resume content.
@@ -323,29 +321,23 @@ Return JSON with EXACTLY this shape — no extra fields, no missing fields:
 // ─── Main Service Function ───────────────────────────────────────────────────
 
 async function tailorResume(jobDescription, jobUrl) {
-  const response = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+  const response = await anthropic.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 4096,
     temperature: 0.15,
+    system:
+      "You are an expert ATS resume tailoring assistant. You output valid JSON only. No markdown, no backticks, no preamble. You never invent experience. You only reword what exists.",
     messages: [
-      { 
-        role: "system",
-        content:
-          "You are an expert ATS resume tailoring assistant. You output valid JSON only. No markdown, no backticks, no preamble. You never invent experience. You only reword what exists.",
-      },
-      {
-        role: "user",
-        content: buildPrompt(jobDescription, jobUrl),
-      },
+      { role: "user", content: buildPrompt(jobDescription, jobUrl) },
     ],
   });
 
-  const content = response.choices[0]?.message?.content;
+  const content = response.content[0]?.text;
 
   if (!content) {
-    throw new Error("Empty response from Groq");
+    throw new Error("Empty response from Claude");
   }
 
-  // Strip any accidental markdown fences before parsing
   const clean = content
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/i, "")

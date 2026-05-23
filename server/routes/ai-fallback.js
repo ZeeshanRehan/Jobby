@@ -1,11 +1,11 @@
 // ─── AI Field Resolution Route ───────────────────────────────────────────────
 
 const express         = require("express");
-const Groq            = require("groq-sdk");
+const Anthropic       = require("@anthropic-ai/sdk");
 const { profileData } = require("../data/profile");
 
-const router = express.Router();
-const groq   = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const router    = express.Router();
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 function buildFieldPrompt(label, fieldType, contextHtml, options) {
   const {
@@ -109,23 +109,18 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 512,
       temperature: 0.15,
+      system: "You output valid JSON only. No markdown, no backticks, no preamble.",
       messages: [
-        {
-          role: "system",
-          content: "You output valid JSON only. No markdown, no backticks, no preamble.",
-        },
-        {
-          role: "user",
-          content: buildFieldPrompt(label, fieldType, contextHtml, options),
-        },
+        { role: "user", content: buildFieldPrompt(label, fieldType, contextHtml, options) },
       ],
     });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) throw new Error("Empty response from Groq");
+    const content = response.content[0]?.text;
+    if (!content) throw new Error("Empty response from Claude");
 
     const clean = content
       .replace(/^```(?:json)?\s*/i, "")
