@@ -95,5 +95,91 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "31bed2f2-23eb-44d4-802b-2b25a01f2cb3",
+    "timestamp": "2026-05-23T17:53:01.257Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7891753?gh_jid=7891753",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_31bed2f2-23eb-44d4-802b-2b25a01f2cb3.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMWJlZDJmMi0yM2ViLTQ0ZDQtODAyYi0yYjI1YTAxZjJjYjMucGRmIiwiaWF0IjoxNzc5NTU4NzgxLCJleHAiOjE3Nzk1NjIzODF9.hhGBUup2oeD6czLfBPKjOC1OF6uc0ZCbla3-1I6aNcg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/31bed2f2-23eb-44d4-802b-2b25a01f2cb3.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Pandas",
+        "Jupyter Notebooks",
+        "Excel"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Pandas",
+      "Jupyter Notebooks",
+      "Excel"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "acf81493-5468-485d-a33e-a87165fe0569",
+    "timestamp": "2026-05-23T17:57:26.576Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7729729?gh_jid=7729729",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_acf81493-5468-485d-a33e-a87165fe0569.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hY2Y4MTQ5My01NDY4LTQ4NWQtYTMzZS1hODcxNjVmZTA1NjkucGRmIiwiaWF0IjoxNzc5NTU5MDQ2LCJleHAiOjE3Nzk1NjI2NDZ9.OP_Fod7duE5OipphRFvKKrkZxvC15xGm2DnZeHEqTzw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/acf81493-5468-485d-a33e-a87165fe0569.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
