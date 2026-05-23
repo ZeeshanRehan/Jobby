@@ -17,6 +17,9 @@ async function getProfile() {
   return refreshProfile();
 }
 
+
+
+
 async function checkVersion() {
   const stored = await chrome.storage.local.get(PROFILE_KEY);
   const cached = stored[PROFILE_KEY];
