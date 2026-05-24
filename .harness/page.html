@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jobby combobox harness</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.3.1",
+      "react-dom": "https://esm.sh/react-dom@18.3.1",
+      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+      "react-select": "https://esm.sh/react-select@5.8.0?external=react,react-dom"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="ready" data-ready="0"></div>
+
+  <script type="module">
+    import React from "react";
+    import { createRoot } from "react-dom/client";
+    import Select from "react-select";
+
+    const h = React.createElement;
+
+    const yesNo = [{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }];
+    const countries = [
+      { value: "us", label: "United States" },
+      { value: "ca", label: "Canada" },
+      { value: "uk", label: "United Kingdom" },
+      { value: "in", label: "India" },
+    ];
+    const gender = [
+      { value: "m",  label: "Male" },
+      { value: "f",  label: "Female" },
+      { value: "nb", label: "Non-binary" },
+      { value: "na", label: "Prefer not to say" },
+    ];
+    // Reproduces the Greenhouse wording-mismatch case: canonical "South Asian / Indian"
+    // must map to this verbose option. Multi-select ("mark all that apply").
+    const ethnicity = [
+      { value: "sa",    label: "South Asian (inclusive of Bangladesh, Pakistan, India, and other countries)" },
+      { value: "ea",    label: "East Asian (inclusive of China, Japan, Korea, and other countries)" },
+      { value: "white", label: "White" },
+      { value: "black", label: "Black or African American" },
+      { value: "na",    label: "I don't wish to answer" },
+    ];
+
+    const timezones = [
+      { value: "et", label: "Eastern Time (US & Canada)" },
+      { value: "ct", label: "Central Time (US & Canada)" },
+      { value: "pt", label: "Pacific Time (US & Canada)" },
+    ];
+    const fruit = [
+      { value: "a", label: "Apple" },
+      { value: "b", label: "Banana" },
+      { value: "c", label: "Cherry" },
+    ];
+
+    function Field({ id, label, options, isMulti }) {
+      return h("div", { id: "field-" + id, style: { marginBottom: "16px" } },
+        h("label", { htmlFor: id, id: id + "-label" }, label),
+        h(Select, {
+          inputId: id,
+          classNamePrefix: "select",
+          options,
+          isMulti: !!isMulti,
+          "aria-labelledby": id + "-label",
+        })
+      );
+    }
+
+    function App() {
+      return h("div", null,
+        h(Field, { id: "country",   label: "Country", options: countries }),
+        h(Field, { id: "work-auth", label: "Are you authorized to work in the United States for any employer?", options: yesNo }),
+        h(Field, { id: "gender",    label: "I identify my gender as:", options: gender }),
+        h(Field, { id: "ethnicity", label: "I identify my ethnicity as (mark all that apply):", options: ethnicity, isMulti: true }),
+        h(Field, { id: "timezone",  label: "What is the Time Zone you most commonly operate in?", options: timezones }),
+        h(Field, { id: "neg",       label: "Negative test (no valid match)", options: fruit }),
+      );
+    }
+
+    createRoot(document.getElementById("root")).render(h(App));
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        document.getElementById("ready").setAttribute("data-ready", "1")
+      )
+    );
+  </script>
+</body>
+</html>

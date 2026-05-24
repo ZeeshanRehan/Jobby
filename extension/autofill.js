@@ -56,25 +56,47 @@ if (!window.__jobbyAutofillInjected) {
     el.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
+  // ─── Option Matching ────────────────────────────────────────────────────────
+  // Maps a resolved answer to the best option. Priority: exact → answer-in-option →
+  // option-in-answer (≥4 chars, blocks "no" ⊂ "not…") → token overlap, which bridges
+  // canonical answers and verbose options (e.g. "South Asian / Indian" → "South Asian
+  // (inclusive of Bangladesh, Pakistan, India…)"). Returns the best index, or -1.
+  const MATCH_STOP = new Set(["with", "that", "from", "your", "this", "have", "will", "other", "please", "than", "into", "they"]);
+
+  function bestOptionMatch(texts, answer) {
+    const lower = String(answer).toLowerCase().trim();
+    if (!lower) return -1;
+
+    let i = texts.findIndex((t) => t.toLowerCase().trim() === lower);
+    if (i >= 0) return i;
+    i = texts.findIndex((t) => t.toLowerCase().includes(lower));
+    if (i >= 0) return i;
+    i = texts.findIndex((t) => { const x = t.toLowerCase().trim(); return x.length >= 4 && lower.includes(x); });
+    if (i >= 0) return i;
+
+    // token overlap — pick the option sharing the most distinctive words, only if a clear winner
+    const tokens = lower.split(/[^a-z0-9]+/).filter((w) => w.length >= 4 && !MATCH_STOP.has(w));
+    if (!tokens.length) return -1;
+    let best = -1, bestScore = 0, tie = false;
+    texts.forEach((t, idx) => {
+      const tl = t.toLowerCase();
+      const score = tokens.reduce((n, w) => n + (tl.includes(w) ? 1 : 0), 0);
+      if (score > bestScore) { bestScore = score; best = idx; tie = false; }
+      else if (score === bestScore && score > 0) { tie = true; }
+    });
+    return (best >= 0 && bestScore > 0 && !tie) ? best : -1;
+  }
+
   // ─── Select Fill ──────────────────────────────────────────────────────────
-  // Priority: exact → answer-in-option → option-in-answer (min 4 chars, prevents "no" ⊂ "not…")
   function fillSelect(el, answer) {
-    const lower   = answer.toLowerCase().trim();
     const options = Array.from(el.options);
-
-    const match =
-      // 1. Exact match
-      options.find((o) => o.text.trim().toLowerCase() === lower || o.value.toLowerCase() === lower) ||
-      // 2. Answer is a substring of the option text (option is more verbose)
-      options.find((o) => o.text.trim().toLowerCase().includes(lower)) ||
-      // 3. Option text inside answer — only if option is ≥4 chars (blocks "no" ⊂ "not a protected veteran")
-      options.find((o) => {
-        const t = o.text.trim().toLowerCase();
-        return t.length >= 4 && lower.includes(t);
-      });
-
-    if (!match) return;
-    el.value = match.value;
+    let idx = bestOptionMatch(options.map((o) => o.text.trim()), answer);
+    if (idx < 0) {
+      const lower = String(answer).toLowerCase().trim();
+      idx = options.findIndex((o) => o.value.toLowerCase() === lower);
+    }
+    if (idx < 0) return;
+    el.value = options[idx].value;
     el.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
@@ -91,10 +113,16 @@ if (!window.__jobbyAutofillInjected) {
       && el.classList.contains("select__input");
   }
 
-  // Menu renders inline within the react-select container (not portaled)
+  // react-select links the input to its listbox via aria-controls — resolves the menu
+  // whether it renders inline or is portaled to <body>. We open one menu at a time
+  // (open → read → close serially), so the document-wide fallback is unambiguous.
   function findComboboxMenu(el) {
-    const container = el.closest('[class*="container"]') || el.closest(".select-shell");
-    return (container && container.querySelector(".select__menu")) || null;
+    const controls = el.getAttribute("aria-controls") || el.getAttribute("aria-owns");
+    if (controls) {
+      const byId = document.getElementById(controls);
+      if (byId) return byId;
+    }
+    return document.querySelector('.select__menu, [role="listbox"]') || null;
   }
 
   function readComboboxOptionEls(menu) {
@@ -105,7 +133,12 @@ if (!window.__jobbyAutofillInjected) {
     el.focus();
     el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     el.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
-    await sleep(350);
+    await sleep(200);
+    // react-select also opens on ArrowDown when focused — fallback if the synthetic click didn't take
+    if (el.getAttribute("aria-expanded") !== "true") {
+      el.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", code: "ArrowDown", keyCode: 40, which: 40, bubbles: true }));
+      await sleep(200);
+    }
   }
 
   // Closes without selecting; blur triggers react-select's closeMenuOnBlur
@@ -117,36 +150,40 @@ if (!window.__jobbyAutofillInjected) {
   // Opens the menu, captures the real option strings, closes it clean
   async function readComboboxOptions(el) {
     await openCombobox(el);
-    const options = readComboboxOptionEls(findComboboxMenu(el))
-      .map((o) => o.textContent.trim())
-      .filter(Boolean);
+    const menu      = findComboboxMenu(el);
+    const optionEls = readComboboxOptionEls(menu);
+    // discriminator: expanded=true + a menu in doc but opts=0 → find bug; expanded!=true → open bug
+    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" expanded=${el.getAttribute("aria-expanded")} controls=${el.getAttribute("aria-controls")} menusInDoc=${document.querySelectorAll('.select__menu, [role="listbox"]').length} menuFound=${!!menu} opts=${optionEls.length}`);
+    const options = optionEls.map((o) => o.textContent.trim()).filter(Boolean);
     closeCombobox(el);
     await sleep(60);
     return options;
   }
 
-  // Opens, matches answer against live options, clicks the match
+  // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select.
   async function fillCombobox(el, answer) {
     await openCombobox(el);
     const opts = readComboboxOptionEls(findComboboxMenu(el));
     if (opts.length === 0) { closeCombobox(el); return false; }
 
-    const lower = String(answer).toLowerCase().trim();
-    const pick =
-      opts.find((o) => o.textContent.trim().toLowerCase() === lower) ||
-      opts.find((o) => o.textContent.trim().toLowerCase().includes(lower)) ||
-      opts.find((o) => {
-        const t = o.textContent.trim().toLowerCase();
-        return t.length >= 4 && lower.includes(t);
-      });
-
-    if (!pick) { closeCombobox(el); return false; }
+    const texts = opts.map((o) => o.textContent.trim());
+    const idx   = bestOptionMatch(texts, answer);
+    if (idx < 0) { closeCombobox(el); return false; }
+    const pick  = opts[idx];
 
     pick.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     pick.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
     pick.click();
     await sleep(120);
-    return el.getAttribute("aria-expanded") === "false";
+
+    // verify the option now shows as a selected value — covers single (single-value) and multi (chip)
+    const vc    = el.closest('[class*="value-container"]');
+    const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
+    const ok    = shown.includes(texts[idx]);
+
+    // multi-select leaves the menu open after a pick — close it cleanly
+    if (el.getAttribute("aria-expanded") === "true") closeCombobox(el);
+    return ok || el.getAttribute("aria-expanded") === "false";
   }
 
   // ─── File Fill ────────────────────────────────────────────────────────────
@@ -216,7 +253,17 @@ if (!window.__jobbyAutofillInjected) {
     return unknownFields;
   }
 
+  // ─── Test Hook ────────────────────────────────────────────────────────────
+  // Exposes the DOM helpers so the local harness can drive them outside the extension
+  window.__jobbyAutofill = {
+    isReactSelectCombobox, findComboboxMenu, readComboboxOptionEls,
+    openCombobox, closeCombobox, readComboboxOptions, fillCombobox,
+    fillSelect, fillText, getLabelText, scanUnknownFields,
+  };
+
   // ─── Message Handler ──────────────────────────────────────────────────────
+  // Guarded so the file can be injected into a plain page (harness) where chrome is undefined
+  if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
     // ── FILL_FORM — adapter fields + unknown field scan ───────────────────
@@ -313,4 +360,5 @@ if (!window.__jobbyAutofillInjected) {
 
     return false;
   });
+  }
 }

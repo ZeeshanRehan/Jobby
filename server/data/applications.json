@@ -916,5 +916,212 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "94018c72-2282-48e9-9273-3b32ffbbba01",
+    "timestamp": "2026-05-24T05:55:33.344Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7704734?gh_jid=7704734",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_94018c72-2282-48e9-9273-3b32ffbbba01.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85NDAxOGM3Mi0yMjgyLTQ4ZTktOTI3My0zYjMyZmZiYmJhMDEucGRmIiwiaWF0IjoxNzc5NjAyMTMzLCJleHAiOjE3Nzk2MDU3MzN9.ujxef21DFnaqwtLiLenYsv3VDMFaQ7PG8y_ryAetJZs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/94018c72-2282-48e9-9273-3b32ffbbba01.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating ability to nurture long-term prospect relationships and deliver world-class experience through each interaction."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through strategic account prioritization and personalized outreach."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, demonstrating high accountability and ownership over responsibilities."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, showcasing ability to receive and implement feedback with strong work ethic and organizational skills."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, showcasing captivating communication skills and ability to authentically tell the SkillSwap story."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations, leveraging AI thoughtfully to enhance productivity and uncover smarter ways of working."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating ability to drive engagement and over-deliver on responsibilities."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "ce97e3ae-5364-4a7d-829e-01948a8b86c6",
+    "timestamp": "2026-05-24T05:55:46.554Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7704734?gh_jid=7704734",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ce97e3ae-5364-4a7d-829e-01948a8b86c6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jZTk3ZTNhZS01MzY0LTRhN2QtODI5ZS0wMTk0OGE4Yjg2YzYucGRmIiwiaWF0IjoxNzc5NjAyMTQ2LCJleHAiOjE3Nzk2MDU3NDZ9.AHRFN_YLEaBiDIqNqj1l2dDaOFo36m8MPrFwIFFx9O0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ce97e3ae-5364-4a7d-829e-01948a8b86c6.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation",
+        "Market research",
+        "Prospect research"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, driving pipeline and account prioritization for 100+ active small businesses."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, enabling personalized outreach and prospect nurturing."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through data-driven optimization."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, demonstrating accountability and organizational skills."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, showcasing a high standard of integrity and attention to detail."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, demonstrating self-starter mentality and creative problem-solving."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, showcasing excellent communication skills and ability to evangelize product value."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Launched a crypto alt-token $EAGLES as a form of currency amongst members.",
+          "tailored": "Launched a crypto alt-token $EAGLES as a form of currency amongst members, demonstrating innovative thinking and ability to discover new approaches to drive engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations through thoughtful AI leverage."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating ability to drive measurable results and optimize user experience."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation",
+      "Market research",
+      "Prospect research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64361981",
+        "#question_64361982",
+        "#question_64361984",
+        "#question_64361983",
+        "#question_64361993"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#country",
+        "#question_64361986",
+        "#question_64361987",
+        "#question_64361989",
+        "#question_64361990",
+        "#question_64361991",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#candidate-location",
+        "#question_64852015",
+        "#question_64361988",
+        "#question_64361992",
+        "#\\31 31"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]

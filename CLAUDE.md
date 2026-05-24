@@ -170,9 +170,51 @@ These are non-negotiable — never relax them:
 - [ ] automation/autofill/session.js — V3 cookie management stub
 
 ### Last Session Cutoff
-**Date:** 2026-05-24
+**Date:** 2026-05-24 (continued — combobox debugging session)
 
-**Done this session (M3 + AI fallback + Claude migration + combobox support):**
+**⚠️ Root cause of "same error still occurs":** the browser was running the PRE-combobox
+extension (commit `7c7601b`) — proven by console log line numbers. ALL of last session's
+combobox code had never executed. After reloading, detection ran but every combobox read
+`options=0`, so every dropdown answer was still being typed in as text (the original bug).
+
+**Done this (continued) session:**
+1. **Combobox menu-read fix** — `findComboboxMenu` used `el.closest('[class*="container"]')`,
+   which matched the inner `select__value-container`, not the menu. Rewrote to resolve the menu via
+   the input's `aria-controls` → `getElementById` (portal-proof) + document-wide
+   `.select__menu, [role=listbox]` fallback. Added an ArrowDown fallback in `openCombobox` if the
+   synthetic mousedown doesn't open the menu. Added a temporary `[Jobby] combobox-debug …` log line.
+2. **Option matching** — new shared `bestOptionMatch(texts, answer)`: exact → answer⊂option →
+   option⊂answer(≥4) → token-overlap (clear-winner only). Used by BOTH `fillSelect` and `fillCombobox`.
+   Bridges canonical answers and verbose options ("South Asian / Indian" → "South Asian (inclusive
+   of Bangladesh, Pakistan, India…)"). `fillCombobox` now verifies the pick renders as a selected
+   value (single OR multi chip) and closes the still-open menu after a multi-select pick.
+3. **Local test harness** (`.harness/`, untracked) — `puppeteer-core` + cached Chromium drives the
+   REAL `autofill.js` functions (exposed via `window.__jobbyAutofill`) against react-select@5 from
+   esm.sh. `node .harness/run.js` → 7/7 pass: detect, read options, single fill, multi-select
+   wording-match, substring, negative no-match. **LOCAL FIDELITY ONLY** — not Greenhouse's live build.
+4. **popup.js** — `runAutofill` wrapped so any uncaught rejection hits the error screen instead of
+   hanging silently on the spinner.
+5. **autofill.js** — chrome listener guarded (`typeof chrome`) so the file can inject into a plain
+   page; `window.__jobbyAutofill` exposes the DOM helpers for the harness.
+
+**⚠️ ALL of the above is UNCOMMITTED working-tree change (autofill.js, popup.js, .harness/).**
+
+**Deploy/test state:** VPS WAS redeployed this session (user confirmed); `ANTHROPIC_API_KEY` is
+present in `server/.env`. Extension changes are LOCAL — **reload the extension AND re-test on a
+FRESH Greenhouse form** to confirm the combobox fixes work live (harness validates mechanics only).
+
+**Next up (continued session):**
+1. **Real Greenhouse smoke test** of the combobox fixes — the harness cannot replace it.
+2. `candidate-location` async autocomplete — still reads 0 options (needs type-then-pick via MutationObserver).
+3. Server `ai-fallback.js` — extend the "answer must match an option verbatim" rule from select/radio
+   to combobox + fire whenever `options` are present (client now reads options correctly, so this just hardens it).
+4. True multi-VALUE fill (picking 2+ for "select all that apply") is deferred — single correct option works.
+5. React-fiber driver (Simplify-style) — Phase 2 reliability layer for hands-off V3 submit.
+6. Remove the `combobox-debug` log line once confirmed stable on a live form; decide whether to commit `.harness/`.
+
+---
+
+**Earlier the same day (M3 + AI fallback + Claude migration + combobox support):**
 1. **M3 autofill** — `autofill.js` DOM layer (adapter fill + unknown scan + AI fill), `popup.js` orchestration, `popup.html` autofill state. Resume DataTransfer upload confirmed working on real Greenhouse (`#resume` selector, not `input[name='resume']`).
 2. **AI fallback** — unknown fields scanned, resolved via `POST /ai-resolve-field`, batched 3-at-a-time. `fillSelect` got exact→substring fuzzy matching (min 4 chars on reverse-includes to stop "no" ⊂ "not…").
 3. **Local pre-resolver** — `localResolveField()` in `popup.js` answers ~75% of fields (demographics, yes/no, salary, location, acks, country) with ZERO API calls. This is what fixed the **429 TPM** errors — only genuinely open-ended questions now hit Claude.
@@ -180,8 +222,8 @@ These are non-negotiable — never relax them:
 5. **Claude migration** — both `groqService.js` (tailoring) and `ai-fallback.js` (field resolution) swapped Groq llama-3.3 → `claude-haiku-4-5-20251001` via `@anthropic-ai/sdk`. ~$0.043/app, ~$9-13 for 200-300 apps.
 6. **react-select combobox support (the big one)** — Greenhouse questions are react-select; options only mount when open. Verified via DevTools: `mousedown`+`mouseup` on the `input.select__input[role=combobox]` opens the menu, `mousedown`+`mouseup`+`click` on a `.select__option` selects it. `scanUnknownFields` is now async — opens each combobox to read real option strings for the resolver; `fillCombobox` opens→matches→clicks. Hardened with try/catch.
 
-**⚠️ DEPLOY STATE — do this before next test:**
-- **VPS not yet redeployed this session.** Server changes (Claude migration, profile bank) need: `cd ~/Jobby && git pull && cd server && npm install && cd .. && pm2 restart all`
+**DEPLOY STATE (historical — superseded above; VPS has since been redeployed):**
+- Server changes (Claude migration, profile bank) needed: `cd ~/Jobby && git pull && cd server && npm install && cd .. && pm2 restart all`
 - **`ANTHROPIC_API_KEY` must be added to `server/.env`** (get from console.anthropic.com) — Claude calls 401 without it.
 - Extension changes (autofill.js, popup.js) are local — **reload extension** in chrome://extensions.
 
