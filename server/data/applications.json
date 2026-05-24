@@ -1349,5 +1349,513 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "796b3d06-973e-43a9-b488-bbc2d6828b24",
+    "timestamp": "2026-05-24T16:37:31.749Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7660139003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_796b3d06-973e-43a9-b488-bbc2d6828b24.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83OTZiM2QwNi05NzNlLTQzYTktYjQ4OC1iYmMyZDY4MjhiMjQucGRmIiwiaWF0IjoxNzc5NjQwNjUxLCJleHAiOjE3Nzk2NDQyNTF9.hwbcEMMf8kN9RhQfAj-amKBJfS-oyl16c89g2vG3TKI",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/796b3d06-973e-43a9-b488-bbc2d6828b24.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Figma",
+        "Prototyping",
+        "Design Systems",
+        "AI-assisted Design",
+        "User Research",
+        "Interaction Design",
+        "Visual Design",
+        "Product Strategy",
+        "Mentorship",
+        "Cross-functional Leadership"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, establishing reusable design patterns and frameworks."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, high-fidelity prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating craft-first systems thinking."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, establishing foundational design patterns for community-driven platforms."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and AI-assisted design with GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Figma",
+      "Prototyping",
+      "Design Systems",
+      "AI-assisted Design",
+      "User Research",
+      "Interaction Design",
+      "Visual Design",
+      "Product Strategy",
+      "Mentorship",
+      "Cross-functional Leadership"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_29993646003",
+        "#question_29993647003",
+        "#question_29993648003",
+        "#question_29993649003",
+        "#question_29993651003",
+        "#question_29993652003",
+        "#question_29993653003",
+        "#question_29993655003",
+        "#question_29993657003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_29993650003",
+        "#question_29993654003",
+        "#question_29993656003",
+        "#question_29993659003",
+        "#question_30311469003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_29993658003"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ec5d0666-dcfb-4309-8907-89b6961e118e",
+    "timestamp": "2026-05-24T16:41:17.313Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7729943003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ec5d0666-dcfb-4309-8907-89b6961e118e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lYzVkMDY2Ni1kY2ZiLTQzMDktODkwNy04OWI2OTYxZTExOGUucGRmIiwiaWF0IjoxNzc5NjQwODc3LCJleHAiOjE3Nzk2NDQ0Nzd9.nNRCjx3G_Ag8hJNZ5Bpqw1LaPbvbqNv7vuhm46cDZFQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ec5d0666-dcfb-4309-8907-89b6961e118e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Figma",
+        "Adobe Creative Suite",
+        "Illustrator",
+        "Photoshop",
+        "InDesign",
+        "Sketch",
+        "Prototyping",
+        "Social Media Design",
+        "Typography",
+        "Brand Strategy",
+        "Marketing Collateral",
+        "Email Design",
+        "Landing Page Design",
+        "Presentation Design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Adobe Creative Suite-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Figma",
+      "Adobe Creative Suite",
+      "Illustrator",
+      "Photoshop",
+      "InDesign",
+      "Sketch",
+      "Prototyping",
+      "Social Media Design",
+      "Typography",
+      "Brand Strategy",
+      "Marketing Collateral",
+      "Email Design",
+      "Landing Page Design",
+      "Presentation Design"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30700228003",
+        "#question_30700229003",
+        "#question_30700230003",
+        "#question_30700231003",
+        "#question_30700233003",
+        "#question_30700234003",
+        "#question_30700235003",
+        "#question_30700237003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30727107003",
+        "#question_30700232003",
+        "#question_30700236003",
+        "#question_30700238003",
+        "#question_30700239003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "189be01b-e4c4-439e-adc3-c874fc472e77",
+    "timestamp": "2026-05-24T16:43:16.482Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7734361003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_189be01b-e4c4-439e-adc3-c874fc472e77.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xODliZTAxYi1lNGM0LTQzOWUtYWRjMy1jODc0ZmM0NzJlNzcucGRmIiwiaWF0IjoxNzc5NjQwOTk2LCJleHAiOjE3Nzk2NDQ1OTZ9.3PUJSvazBbYttBzroUoJEYNfq8S8p1EouY60gOGf2k8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/189be01b-e4c4-439e-adc3-c874fc472e77.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "After Effects",
+        "Motion design",
+        "Video production",
+        "Performance marketing",
+        "A/B testing",
+        "ROAS optimization",
+        "CTR optimization",
+        "CVR optimization",
+        "Asset adaptation",
+        "Production pipeline",
+        "Figma",
+        "Premiere Pro"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, motion design prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "After Effects",
+      "Motion design",
+      "Video production",
+      "Performance marketing",
+      "A/B testing",
+      "ROAS optimization",
+      "CTR optimization",
+      "CVR optimization",
+      "Asset adaptation",
+      "Production pipeline",
+      "Figma",
+      "Premiere Pro"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30739515003",
+        "#question_30739516003",
+        "#question_30770006003",
+        "#question_30770007003",
+        "#question_30739517003",
+        "#question_30739518003",
+        "#question_30739719003",
+        "#question_30739520003",
+        "#question_30739521003",
+        "#question_30739522003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30770008003",
+        "#question_30739519003",
+        "#question_30739523003",
+        "#question_30739524003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "b424359d-a8a3-40f4-8b4a-01d0460e78fb",
+    "timestamp": "2026-05-24T17:32:56.680Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7724699003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_b424359d-a8a3-40f4-8b4a-01d0460e78fb.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iNDI0MzU5ZC1hOGEzLTQwZjQtOGI0YS0wMWQwNDYwZTc4ZmIucGRmIiwiaWF0IjoxNzc5NjQzOTc2LCJleHAiOjE3Nzk2NDc1NzZ9.LsqXc2ZAmGNo2Oh5fIrfT9Dd2vBzx9Km1h13tL3Xcic",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/b424359d-a8a3-40f4-8b4a-01d0460e78fb.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kubernetes",
+        "Datadog",
+        "Grafana",
+        "Prometheus",
+        "GitLab CI",
+        "GitHub Actions",
+        "Bash",
+        "SLOs",
+        "SLIs",
+        "Error budgets",
+        "Incident management",
+        "Infrastructure as code",
+        "Observability",
+        "AI automation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Kubernetes-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Bash, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Kubernetes",
+      "Datadog",
+      "Grafana",
+      "Prometheus",
+      "GitLab CI",
+      "GitHub Actions",
+      "Bash",
+      "SLOs",
+      "SLIs",
+      "Error budgets",
+      "Incident management",
+      "Infrastructure as code",
+      "Observability",
+      "AI automation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "81f5354d-a77f-4961-a55d-42024c193929",
+    "timestamp": "2026-05-24T17:33:05.080Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7724699003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_81f5354d-a77f-4961-a55d-42024c193929.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84MWY1MzU0ZC1hNzdmLTQ5NjEtYTU1ZC00MjAyNGMxOTM5MjkucGRmIiwiaWF0IjoxNzc5NjQzOTg0LCJleHAiOjE3Nzk2NDc1ODR9.vp5hFibfCPIGf5U2wfzx2-gUyKSHFVxqNJIrXDhYU8M",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/81f5354d-a77f-4961-a55d-42024c193929.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kubernetes",
+        "Datadog",
+        "Prometheus",
+        "Grafana",
+        "GitLab CI",
+        "GitHub Actions",
+        "Bash",
+        "SLOs",
+        "SLIs",
+        "Error budgets",
+        "Incident management",
+        "Infrastructure as code",
+        "Self-healing infrastructure",
+        "Automated incident triage"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Kubernetes-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Bash, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Kubernetes",
+      "Datadog",
+      "Prometheus",
+      "Grafana",
+      "GitLab CI",
+      "GitHub Actions",
+      "Bash",
+      "SLOs",
+      "SLIs",
+      "Error budgets",
+      "Incident management",
+      "Infrastructure as code",
+      "Self-healing infrastructure",
+      "Automated incident triage"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30648398003",
+        "#question_30648399003",
+        "#question_30648400003",
+        "#question_30648402003",
+        "#question_30648403003",
+        "#question_30648404003",
+        "#question_30648405003",
+        "#question_30648407003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30648401003",
+        "#question_30648406003",
+        "#question_30648408003",
+        "#question_30648409003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ee4afca0-9e0b-4339-b77d-52dd3d826965",
+    "timestamp": "2026-05-24T17:35:11.444Z",
+    "jobUrl": "https://job-boards.greenhouse.io/embed/job_app?for=tenstorrent&token=4645584007&utm_source=jobright",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ee4afca0-9e0b-4339-b77d-52dd3d826965.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lZTRhZmNhMC05ZTBiLTQzMzktYjc3ZC01MmRkM2Q4MjY5NjUucGRmIiwiaWF0IjoxNzc5NjQ0MTExLCJleHAiOjE3Nzk2NDc3MTF9.9T2JXuFNPbXy2MDT7doAGyVENCjGopoz5XwtgIvqusw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ee4afca0-9e0b-4339-b77d-52dd3d826965.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "C++",
+        "C",
+        "RISC-V",
+        "Networking",
+        "Protocol Design",
+        "Synchronization",
+        "Collective Communication",
+        "Bare-metal Programming",
+        "Hardware-software Interaction",
+        "Distributed Systems",
+        "Performance Tuning",
+        "Interconnect Optimization"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, C++-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, C++, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "C++",
+      "C",
+      "RISC-V",
+      "Networking",
+      "Protocol Design",
+      "Synchronization",
+      "Collective Communication",
+      "Bare-metal Programming",
+      "Hardware-software Interaction",
+      "Distributed Systems",
+      "Performance Tuning",
+      "Interconnect Optimization"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_8227028007",
+        "#question_8227029007",
+        "#gender",
+        "#veteran_status",
+        "#disability_status",
+        "#question_10594935007",
+        "#hispanic_ethnicity"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#candidate-location"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]

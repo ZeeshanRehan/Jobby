@@ -13,7 +13,7 @@ const profileData = {
   contact: {
     email: "zeeshanrehan12345@gmail.com",
     phone: "+1-856-526-2323",
-    linkedinUrl: "https://linkedin.com/in/Zeshan Rehan",
+    linkedinUrl: "https://www.linkedin.com/in/zeshan-rehan-504ab0128/",
     githubUrl: "https://github.com/ZeeshanRehan",
     portfolioUrl: "https://imzeshan.com",
     address: {
