@@ -67,23 +67,37 @@ if (!window.__jobbyAutofillInjected) {
     const lower = String(answer).toLowerCase().trim();
     if (!lower) return -1;
 
-    let i = texts.findIndex((t) => t.toLowerCase().trim() === lower);
-    if (i >= 0) return i;
-    // forward-substring needs ≥3 chars so a short answer ("no") can't match inside a word ("Lebanon")
-    if (lower.length >= 3) {
-      i = texts.findIndex((t) => t.toLowerCase().includes(lower));
-      if (i >= 0) return i;
-    }
-    i = texts.findIndex((t) => { const x = t.toLowerCase().trim(); return x.length >= 4 && lower.includes(x); });
+    const lc = texts.map((t) => t.toLowerCase().trim());
+
+    // 1. exact
+    let i = lc.findIndex((t) => t === lower);
     if (i >= 0) return i;
 
-    // token overlap — pick the option sharing the most distinctive words, only if a clear winner
+    // 2. leading clause — "No, I do not have a disability" → "No"; "Yes, I am a veteran" → "Yes"
+    const head = lower.split(",")[0].trim();
+    if (head && head !== lower) {
+      i = lc.findIndex((t) => t === head);
+      if (i >= 0) return i;
+    }
+
+    // 3. answer ⊂ option — pick the SHORTEST containing option so "United States" lands on
+    //    "United States of America", not the first "...- Alabama" by list position
+    if (lower.length >= 3) {
+      let bi = -1, blen = Infinity;
+      lc.forEach((t, k) => { if (t.includes(lower) && t.length < blen) { blen = t.length; bi = k; } });
+      if (bi >= 0) return bi;
+    }
+
+    // 4. option ⊂ answer (≥4 chars, blocks "no" ⊂ "not…")
+    i = lc.findIndex((t) => t.length >= 4 && lower.includes(t));
+    if (i >= 0) return i;
+
+    // 5. token overlap — pick the option sharing the most distinctive words, only if a clear winner
     const tokens = lower.split(/[^a-z0-9]+/).filter((w) => w.length >= 4 && !MATCH_STOP.has(w));
     if (!tokens.length) return -1;
     let best = -1, bestScore = 0, tie = false;
-    texts.forEach((t, idx) => {
-      const tl = t.toLowerCase();
-      const score = tokens.reduce((n, w) => n + (tl.includes(w) ? 1 : 0), 0);
+    lc.forEach((t, idx) => {
+      const score = tokens.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0);
       if (score > bestScore) { bestScore = score; best = idx; tie = false; }
       else if (score === bestScore && score > 0) { tie = true; }
     });

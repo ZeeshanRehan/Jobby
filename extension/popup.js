@@ -337,8 +337,13 @@ function localResolveField(field, profileData) {
     return "No";
 
   // ── Location ────────────────────────────────────────────────────────────────
-  // Resolve country locally — keeps the 244-option country dropdown out of Claude
-  if (/\bcountry\b/.test(label))                   return "United States";
+  // Resolve country locally — keeps the big country dropdown out of Claude. Guard against
+  // work-status/eligibility labels that merely mention "country" (those need a real option pick).
+  // State-qualified so it also lands on dropdowns that split the US by state (e.g. Remote); on a
+  // plain dropdown the matcher's option-in-answer rule still resolves it to "United States".
+  if (/\bcountry\b/.test(label) &&
+      !/(status|eligib|visa|sponsor|citizen|authoriz|permanent\s+resident|refugee|work\s+permit)/.test(label))
+    return "United States of America - New Jersey";
   if (/\brelocate\b/.test(label))                  return "Yes";
   if (/based\s+in/.test(label) &&
       /canada|ontario|uk|united kingdom|singapore|australia|europe/.test(label))

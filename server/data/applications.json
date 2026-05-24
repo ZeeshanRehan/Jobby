@@ -1270,5 +1270,84 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "2bece7e6-7246-462c-a46d-d66c5e413556",
+    "timestamp": "2026-05-24T16:17:44.529Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7586693003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2bece7e6-7246-462c-a46d-d66c5e413556.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yYmVjZTdlNi03MjQ2LTQ2MmMtYTQ2ZC1kNjZjNWU0MTM1NTYucGRmIiwiaWF0IjoxNzc5NjM5NDY0LCJleHAiOjE3Nzk2NDMwNjR9.dq9OYSh03r6WlVMUzWj6ad1vjkefPJodMwkx4vsn6Ds",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2bece7e6-7246-462c-a46d-d66c5e413556.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "9391a440-c801-487b-b64e-5a4c5be86fcb",
+    "timestamp": "2026-05-24T16:17:47.694Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7586693003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_9391a440-c801-487b-b64e-5a4c5be86fcb.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85MzkxYTQ0MC1jODAxLTQ4N2ItYjY0ZS01YTRjNWJlODZmY2IucGRmIiwiaWF0IjoxNzc5NjM5NDY3LCJleHAiOjE3Nzk2NDMwNjd9.UpaOLgW31NSRHE09tx9Jem1-bGzBGZ0zv3Pf8vqgnss",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/9391a440-c801-487b-b64e-5a4c5be86fcb.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_29271297003",
+        "#question_29271298003",
+        "#question_29271299003",
+        "#question_29271300003",
+        "#question_29271302003",
+        "#question_29271303003",
+        "#question_29271304003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#question_29271305003",
+        "#question_29330050003",
+        "#question_29330051003",
+        "#question_30522545003",
+        "#question_29330052003",
+        "#question_30020690003",
+        "#question_30311331003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_29271301003",
+        "#\\34 017904003"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
