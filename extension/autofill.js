@@ -152,9 +152,9 @@ if (!window.__jobbyAutofillInjected) {
     await openCombobox(el);
     const menu      = findComboboxMenu(el);
     const optionEls = readComboboxOptionEls(menu);
+    const options   = optionEls.map((o) => o.textContent.trim()).filter(Boolean);
     // discriminator: expanded=true + a menu in doc but opts=0 → find bug; expanded!=true → open bug
-    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" expanded=${el.getAttribute("aria-expanded")} controls=${el.getAttribute("aria-controls")} menusInDoc=${document.querySelectorAll('.select__menu, [role="listbox"]').length} menuFound=${!!menu} opts=${optionEls.length}`);
-    const options = optionEls.map((o) => o.textContent.trim()).filter(Boolean);
+    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" expanded=${el.getAttribute("aria-expanded")} controls=${el.getAttribute("aria-controls")} menusInDoc=${document.querySelectorAll('.select__menu, [role="listbox"]').length} menuFound=${!!menu} opts=${optionEls.length} options=${JSON.stringify(options).slice(0, 300)}`);
     closeCombobox(el);
     await sleep(60);
     return options;
@@ -164,11 +164,11 @@ if (!window.__jobbyAutofillInjected) {
   async function fillCombobox(el, answer) {
     await openCombobox(el);
     const opts = readComboboxOptionEls(findComboboxMenu(el));
-    if (opts.length === 0) { closeCombobox(el); return false; }
+    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=-1 reason=no-options`); closeCombobox(el); return false; }
 
     const texts = opts.map((o) => o.textContent.trim());
     const idx   = bestOptionMatch(texts, answer);
-    if (idx < 0) { closeCombobox(el); return false; }
+    if (idx < 0) { console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=-1 reason=no-match answer=${JSON.stringify(String(answer))} options=${JSON.stringify(texts).slice(0, 300)}`); closeCombobox(el); return false; }
     const pick  = opts[idx];
 
     pick.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
@@ -177,13 +177,15 @@ if (!window.__jobbyAutofillInjected) {
     await sleep(120);
 
     // verify the option now shows as a selected value — covers single (single-value) and multi (chip)
+    const expandedAfter = el.getAttribute("aria-expanded");
     const vc    = el.closest('[class*="value-container"]');
     const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
     const ok    = shown.includes(texts[idx]);
+    console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=${idx} picked=${JSON.stringify(texts[idx])} expandedAfter=${expandedAfter} ok=${ok} shown=${JSON.stringify(shown).slice(0, 200)}`);
 
     // multi-select leaves the menu open after a pick — close it cleanly
-    if (el.getAttribute("aria-expanded") === "true") closeCombobox(el);
-    return ok || el.getAttribute("aria-expanded") === "false";
+    if (expandedAfter === "true") closeCombobox(el);
+    return ok || expandedAfter === "false";
   }
 
   // ─── File Fill ────────────────────────────────────────────────────────────

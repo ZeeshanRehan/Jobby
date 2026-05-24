@@ -1123,5 +1123,78 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "ebf2779f-4020-4d68-be4b-ffcc8065817b",
+    "timestamp": "2026-05-24T06:31:12.171Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7909444?gh_jid=7909444",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ebf2779f-4020-4d68-be4b-ffcc8065817b.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lYmYyNzc5Zi00MDIwLTRkNjgtYmU0Yi1mZmNjODA2NTgxN2IucGRmIiwiaWF0IjoxNzc5NjA0MjcyLCJleHAiOjE3Nzk2MDc4NzJ9.f8wqHxdDeo-LtVJ1Rr83HcTFxTc-6PJwHVTkfB-wmN4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ebf2779f-4020-4d68-be4b-ffcc8065817b.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Snowflake",
+        "Tableau",
+        "SQL",
+        "Attribution modeling",
+        "Bizible",
+        "Salesforce",
+        "Marketing analytics",
+        "Revenue operations",
+        "B2B marketing",
+        "Cursor",
+        "LLM"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Snowflake",
+      "Tableau",
+      "SQL",
+      "Attribution modeling",
+      "Bizible",
+      "Salesforce",
+      "Marketing analytics",
+      "Revenue operations",
+      "B2B marketing",
+      "Cursor",
+      "LLM"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#question_66672118",
+        "#question_66672119",
+        "#question_66672120",
+        "#question_66672123",
+        "#question_66672124",
+        "#question_66672125",
+        "#question_66672121",
+        "#question_66672128"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_66672122",
+        "#candidate-location",
+        "#question_66672126",
+        "#question_66672127",
+        "#question_66672131\\[\\]"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
