@@ -24,6 +24,14 @@ if (!window.__jobbyAutofillInjected) {
       const ancestor = el.closest("label");
       if (ancestor) text = ancestor.textContent;
     }
+    if (!text) {
+      // react-select associates labels via aria-labelledby, not label[for]
+      const labelledby = el.getAttribute("aria-labelledby");
+      if (labelledby) {
+        const lbl = document.getElementById(labelledby.split(" ")[0]);
+        if (lbl) text = lbl.textContent;
+      }
+    }
     if (!text) text = el.getAttribute("aria-label");
     if (!text) text = el.placeholder || null;
     return text ? text.replace(/\s+/g, " ").replace(/\*/g, "").trim() : null;
@@ -70,6 +78,77 @@ if (!window.__jobbyAutofillInjected) {
     el.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
+  // ─── React-Select Combobox ─────────────────────────────────────────────────
+  // Greenhouse questions render as react-select: an <input role="combobox"
+  // class="select__input"> whose options only mount in the DOM while open.
+  // Verified interaction: mousedown+mouseup on the input opens the menu;
+  // mousedown+mouseup+click on a .select__option selects it and closes the menu.
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function isReactSelectCombobox(el) {
+    return el instanceof HTMLInputElement
+      && el.getAttribute("role") === "combobox"
+      && el.classList.contains("select__input");
+  }
+
+  // Menu renders inline within the react-select container (not portaled)
+  function findComboboxMenu(el) {
+    const container = el.closest('[class*="container"]') || el.closest(".select-shell");
+    return (container && container.querySelector(".select__menu")) || null;
+  }
+
+  function readComboboxOptionEls(menu) {
+    return menu ? Array.from(menu.querySelectorAll(".select__option, [role='option']")) : [];
+  }
+
+  async function openCombobox(el) {
+    el.focus();
+    el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    el.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    await sleep(350);
+  }
+
+  // Closes without selecting; blur triggers react-select's closeMenuOnBlur
+  function closeCombobox(el) {
+    el.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", keyCode: 27, which: 27, bubbles: true }));
+    el.blur();
+  }
+
+  // Opens the menu, captures the real option strings, closes it clean
+  async function readComboboxOptions(el) {
+    await openCombobox(el);
+    const options = readComboboxOptionEls(findComboboxMenu(el))
+      .map((o) => o.textContent.trim())
+      .filter(Boolean);
+    closeCombobox(el);
+    await sleep(60);
+    return options;
+  }
+
+  // Opens, matches answer against live options, clicks the match
+  async function fillCombobox(el, answer) {
+    await openCombobox(el);
+    const opts = readComboboxOptionEls(findComboboxMenu(el));
+    if (opts.length === 0) { closeCombobox(el); return false; }
+
+    const lower = String(answer).toLowerCase().trim();
+    const pick =
+      opts.find((o) => o.textContent.trim().toLowerCase() === lower) ||
+      opts.find((o) => o.textContent.trim().toLowerCase().includes(lower)) ||
+      opts.find((o) => {
+        const t = o.textContent.trim().toLowerCase();
+        return t.length >= 4 && lower.includes(t);
+      });
+
+    if (!pick) { closeCombobox(el); return false; }
+
+    pick.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    pick.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    pick.click();
+    await sleep(120);
+    return el.getAttribute("aria-expanded") === "false";
+  }
+
   // ─── File Fill ────────────────────────────────────────────────────────────
   // Reconstructs a File from a base64 dataURL and attaches via DataTransfer
   function fillFile(el, dataUrl) {
@@ -95,31 +174,38 @@ if (!window.__jobbyAutofillInjected) {
     "search", "reset", "image",
   ]);
 
-  function scanUnknownFields(adapter, handledEls) {
+  // Async: combobox fields are opened to read their real options for the resolver
+  async function scanUnknownFields(adapter, handledEls) {
     const unknownFields = [];
 
-    document.querySelectorAll("input, textarea, select").forEach((el) => {
-      if (handledEls.has(el)) return;
-      if (el instanceof HTMLInputElement && SKIP_INPUT_TYPES.has(el.type)) return;
-      if (el.id && el.id.includes("recaptcha")) return;
+    for (const el of document.querySelectorAll("input, textarea, select")) {
+      if (handledEls.has(el)) continue;
+      const isCombobox = isReactSelectCombobox(el);
+      if (el instanceof HTMLInputElement && SKIP_INPUT_TYPES.has(el.type) && !isCombobox) continue;
+      if (el.id && el.id.includes("recaptcha")) continue;
 
       const label = getLabelText(el);
-      if (!label) return;
+      if (!label) continue;
 
       const selector = getUniqueSelector(el);
-      if (!selector) return;
+      if (!selector) continue;
 
-      const fieldType = el instanceof HTMLSelectElement   ? "select"
-                      : el instanceof HTMLTextAreaElement ? "textarea"
-                      : el.type || "text";
+      let fieldType, options = null;
+      if (isCombobox) {
+        fieldType = "combobox";
+        options   = await readComboboxOptions(el);
+      } else if (el instanceof HTMLSelectElement) {
+        fieldType = "select";
+        options   = Array.from(el.options).slice(1).map((o) => o.text.trim()).filter(Boolean);
+      } else if (el instanceof HTMLTextAreaElement) {
+        fieldType = "textarea";
+      } else {
+        fieldType = el.type || "text";
+      }
 
-      const options = el instanceof HTMLSelectElement
-        ? Array.from(el.options).slice(1).map((o) => o.text.trim()).filter(Boolean)
-        : null;
-
-      console.log(`[Jobby] unknown field — "${label}" (${fieldType}) selector="${selector}"`);
+      console.log(`[Jobby] unknown field — "${label}" (${fieldType}) selector="${selector}" options=${options ? options.length : 0}`);
       unknownFields.push({ selector, label, fieldType, options });
-    });
+    }
 
     return unknownFields;
   }
@@ -129,81 +215,93 @@ if (!window.__jobbyAutofillInjected) {
 
     // ── FILL_FORM — adapter fields + unknown field scan ───────────────────
     if (message.type === "FILL_FORM") {
-      const { adapter, profileData, resumePdf } = message;
-      const report      = { filled: [], stale: [], skipped: [], errors: [] };
-      const handledEls  = new WeakSet();
+      (async () => {
+        const { adapter, profileData, resumePdf } = message;
+        const report      = { filled: [], stale: [], skipped: [], errors: [] };
+        const handledEls  = new WeakSet();
 
-      console.log("[Jobby] FILL_FORM received, fields:", Object.keys(adapter.fields));
+        console.log("[Jobby] FILL_FORM received, fields:", Object.keys(adapter.fields));
 
-      for (const [fieldName, fieldDef] of Object.entries(adapter.fields)) {
-        const { selector, type, source } = fieldDef;
+        for (const [fieldName, fieldDef] of Object.entries(adapter.fields)) {
+          const { selector, type, source } = fieldDef;
 
-        const el = document.querySelector(selector);
-        if (!el) {
-          console.log(`[Jobby] stale — ${fieldName} selector "${selector}" matched nothing`);
-          report.stale.push(fieldName);
-          continue;
-        }
-
-        handledEls.add(el);
-        console.log(`[Jobby] found ${fieldName} (${type}) — el:`, el);
-
-        try {
-          if (type === "text") {
-            const value = resolvePath(profileData, source);
-            if (value == null || value === "") {
-              console.log(`[Jobby] skipped ${fieldName} — no value at path "${source}"`);
-              report.skipped.push(fieldName);
-              continue;
-            }
-            fillText(el, String(value));
-            console.log(`[Jobby] filled ${fieldName} =`, value);
-            report.filled.push(fieldName);
-          } else if (type === "file") {
-            fillFile(el, resumePdf);
-            console.log(`[Jobby] file attached for ${fieldName}`);
-            report.filled.push(fieldName);
-          } else {
-            console.log(`[Jobby] skipped ${fieldName} — unknown type "${type}"`);
-            report.skipped.push(fieldName);
+          const el = document.querySelector(selector);
+          if (!el) {
+            console.log(`[Jobby] stale — ${fieldName} selector "${selector}" matched nothing`);
+            report.stale.push(fieldName);
+            continue;
           }
-        } catch (err) {
-          console.error(`[Jobby] error on ${fieldName}:`, err);
-          report.errors.push({ field: fieldName, message: err.message });
-        }
-      }
 
-      const unknownFields = scanUnknownFields(adapter, handledEls);
-      console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length);
-      sendResponse({ report, unknownFields });
+          handledEls.add(el);
+          console.log(`[Jobby] found ${fieldName} (${type}) — el:`, el);
+
+          try {
+            if (type === "text") {
+              const value = resolvePath(profileData, source);
+              if (value == null || value === "") {
+                console.log(`[Jobby] skipped ${fieldName} — no value at path "${source}"`);
+                report.skipped.push(fieldName);
+                continue;
+              }
+              fillText(el, String(value));
+              console.log(`[Jobby] filled ${fieldName} =`, value);
+              report.filled.push(fieldName);
+            } else if (type === "file") {
+              fillFile(el, resumePdf);
+              console.log(`[Jobby] file attached for ${fieldName}`);
+              report.filled.push(fieldName);
+            } else {
+              console.log(`[Jobby] skipped ${fieldName} — unknown type "${type}"`);
+              report.skipped.push(fieldName);
+            }
+          } catch (err) {
+            console.error(`[Jobby] error on ${fieldName}:`, err);
+            report.errors.push({ field: fieldName, message: err.message });
+          }
+        }
+
+        const unknownFields = await scanUnknownFields(adapter, handledEls);
+        console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length);
+        sendResponse({ report, unknownFields });
+      })();
       return true;
     }
 
-    // ── FILL_AI_FIELDS — fill fields resolved by Groq ─────────────────────
+    // ── FILL_AI_FIELDS — fill fields resolved by the AI/local resolver ────
     if (message.type === "FILL_AI_FIELDS") {
-      const { fields } = message; // [{ selector, value, fieldType }]
-      const aiFilled = [];
-      const aiErrors = [];
+      (async () => {
+        const { fields } = message; // [{ selector, value, fieldType }]
+        const aiFilled = [];
+        const aiErrors = [];
 
-      for (const { selector, value, fieldType } of fields) {
-        const el = document.querySelector(selector);
-        if (!el) { aiErrors.push(selector); continue; }
-        try {
-          if (fieldType === "select") {
-            fillSelect(el, value);
-          } else {
-            fillText(el, value);
+        for (const { selector, value, fieldType } of fields) {
+          const el = document.querySelector(selector);
+          if (!el) { aiErrors.push(selector); continue; }
+          try {
+            let ok = true;
+            if (fieldType === "combobox") {
+              ok = await fillCombobox(el, value);
+            } else if (fieldType === "select") {
+              fillSelect(el, value);
+            } else {
+              fillText(el, value);
+            }
+            if (ok) {
+              console.log(`[Jobby] AI filled "${selector}" =`, value);
+              aiFilled.push(selector);
+            } else {
+              console.log(`[Jobby] AI fill no-match "${selector}" =`, value);
+              aiErrors.push(selector);
+            }
+          } catch (err) {
+            console.error(`[Jobby] AI fill error on "${selector}":`, err);
+            aiErrors.push(selector);
           }
-          console.log(`[Jobby] AI filled "${selector}" =`, value);
-          aiFilled.push(selector);
-        } catch (err) {
-          console.error(`[Jobby] AI fill error on "${selector}":`, err);
-          aiErrors.push(selector);
         }
-      }
 
-      console.log("[Jobby] AI fill done — filled:", aiFilled.length, "errors:", aiErrors.length);
-      sendResponse({ aiFilled, aiErrors });
+        console.log("[Jobby] AI fill done — filled:", aiFilled.length, "errors:", aiErrors.length);
+        sendResponse({ aiFilled, aiErrors });
+      })();
       return true;
     }
 

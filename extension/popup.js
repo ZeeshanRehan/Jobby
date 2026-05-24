@@ -275,7 +275,7 @@ async function injectAndFill(tabId, adapter, profileData, resumePdf) {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
       reject({ step: "autofill", message: "Autofill timed out — page may have navigated" });
-    }, 10_000);
+    }, 30_000);
 
     chrome.tabs.sendMessage(
       tabId,
@@ -444,7 +444,7 @@ async function sendAiFields(tabId, fields) {
   return new Promise((resolve) => {
     const timeout = setTimeout(
       () => resolve({ aiFilled: [], aiErrors: [] }),
-      10_000
+      30_000
     );
 
     chrome.tabs.sendMessage(tabId, { type: "FILL_AI_FIELDS", fields }, (response) => {
