@@ -448,5 +448,93 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "528bcce6-51fc-4736-9f31-b610a9e041c7",
+    "timestamp": "2026-05-24T00:03:33.626Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7846916?gh_jid=7846916",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_528bcce6-51fc-4736-9f31-b610a9e041c7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81MjhiY2NlNi01MWZjLTQ3MzYtOWYzMS1iNjEwYTllMDQxYzcucGRmIiwiaWF0IjoxNzc5NTgxMDEzLCJleHAiOjE3Nzk1ODQ2MTN9.8ixh5pfikcUj804kwh51X4ne-uBJf2Zotyo5a1r9ado",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/528bcce6-51fc-4736-9f31-b610a9e041c7.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "UX Writing",
+        "Content Strategy",
+        "Design Systems",
+        "Interaction Design",
+        "User Research",
+        "Accessibility",
+        "Information Architecture",
+        "Taxonomy Design",
+        "SaaS",
+        "AI Product Design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, UX writing, and structured content patterns for 100+ active small businesses on the platform, establishing scalable design system standards."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack AI-powered music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, designing intuitive content patterns that allow users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "UX Writing",
+      "Content Strategy",
+      "Design Systems",
+      "Interaction Design",
+      "User Research",
+      "Accessibility",
+      "Information Architecture",
+      "Taxonomy Design",
+      "SaaS",
+      "AI Product Design"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65972979",
+        "#question_65972980",
+        "#question_65972981",
+        "#question_66274632",
+        "#question_65972982",
+        "#question_65972985",
+        "#question_65972986",
+        "#question_65972987",
+        "#question_65972988",
+        "#question_65972989",
+        "#question_65972990",
+        "#question_65972991",
+        "#\\31 31",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35"
+      ],
+      "skipped": [],
+      "unknown": [
+        "I identify my gender as:",
+        "I identify my sexual orientation as:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
