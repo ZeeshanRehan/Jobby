@@ -307,6 +307,11 @@ const profileData = {
     consentToDataProcessing:                  "Yes",
     agreeToElectronicSignature:               "Yes",
 
+    // ── Additional personal ───────────────────────────────────────────────────
+    sexualOrientation:                        "Prefer not to say",
+    maritalStatus:                            "Prefer not to say",
+    nationality:                              "Indian",
+
     // ── Sourcing ──────────────────────────────────────────────────────────────
     howDidYouHear:                            "LinkedIn",
     referredByEmployee:                       "No",

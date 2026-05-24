@@ -49,15 +49,21 @@ if (!window.__jobbyAutofillInjected) {
   }
 
   // ─── Select Fill ──────────────────────────────────────────────────────────
-  // Tries exact match first, then falls back to substring containment in both directions
+  // Priority: exact → answer-in-option → option-in-answer (min 4 chars, prevents "no" ⊂ "not…")
   function fillSelect(el, answer) {
     const lower   = answer.toLowerCase().trim();
     const options = Array.from(el.options);
 
     const match =
+      // 1. Exact match
       options.find((o) => o.text.trim().toLowerCase() === lower || o.value.toLowerCase() === lower) ||
-      options.find((o) => o.text.trim().toLowerCase().includes(lower) || lower.includes(o.text.trim().toLowerCase())) ||
-      options.find((o) => o.value.toLowerCase().includes(lower) || lower.includes(o.value.toLowerCase()));
+      // 2. Answer is a substring of the option text (option is more verbose)
+      options.find((o) => o.text.trim().toLowerCase().includes(lower)) ||
+      // 3. Option text inside answer — only if option is ≥4 chars (blocks "no" ⊂ "not a protected veteran")
+      options.find((o) => {
+        const t = o.text.trim().toLowerCase();
+        return t.length >= 4 && lower.includes(t);
+      });
 
     if (!match) return;
     el.value = match.value;

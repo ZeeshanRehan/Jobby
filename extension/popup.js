@@ -297,7 +297,92 @@ async function injectAndFill(tabId, adapter, profileData, resumePdf) {
 
 // ─── AI Fallback ──────────────────────────────────────────────────────────────
 
-// Calls Groq via /ai-resolve-field for a single unknown field; returns answer string or null
+// Resolves common fields locally without an API call — handles ~75% of unknowns.
+// Returns an answer string or null if the field needs Claude.
+function localResolveField(field, profileData) {
+  const label = field.label.toLowerCase();
+  const { demographics, defaultAnswers, contact, workAuthorization } = profileData || {};
+  const da = defaultAnswers || {};
+
+  // ── Demographics ────────────────────────────────────────────────────────────
+  if (/\bgender\b/.test(label) && !/preference/.test(label))
+    return demographics?.gender ?? null;
+  if (/\brace\b/.test(label))
+    return demographics?.race ?? null;
+  if (/\bethnicit/.test(label))
+    return demographics?.ethnicity ?? null;
+  if (/\bveteran\b/.test(label))
+    return demographics?.veteranStatus ?? null;
+  if (/\bdisabilit/.test(label))
+    return demographics?.disabilityStatus ?? null;
+  if (/sexual\s+orientation/.test(label))
+    return da.sexualOrientation ?? "Prefer not to say";
+  if (/pronouns/.test(label))
+    return "He/Him";
+
+  // ── Contact / identity ──────────────────────────────────────────────────────
+  if (/linkedin/.test(label))            return contact?.linkedinUrl ?? null;
+  if (/github/.test(label))              return contact?.githubUrl   ?? null;
+  if (/\bwebsite\b|\bportfolio\b/.test(label)) return contact?.portfolioUrl ?? null;
+  if (/preferred\s+first\s+name/.test(label))  return contact ? (profileData.identity?.firstName ?? null) : null;
+  if (/preferred\s+last\s+name/.test(label))   return contact ? (profileData.identity?.lastName  ?? null) : null;
+
+  // ── Work authorization ──────────────────────────────────────────────────────
+  if (/(authorized|eligible|right)\s+to\s+work/.test(label) && /canada/i.test(label))
+    return da.workAuthorizedCanada ?? "No";
+  if (/(authorized|eligible|right)\s+to\s+work/.test(label))
+    return da.workAuthorizedUS ?? "Yes";
+  if (/(visa|sponsorship)\s*(required|needed|now|future)?/i.test(label) ||
+      /(require|need)\s+(visa|sponsorship)/i.test(label))
+    return "No";
+
+  // ── Location ────────────────────────────────────────────────────────────────
+  if (/\brelocate\b/.test(label))                  return "Yes";
+  if (/based\s+in/.test(label) &&
+      /canada|ontario|uk|united kingdom|singapore|australia|europe/.test(label))
+    return "No";
+  if (/based\s+in/.test(label))                    return "Yes";
+  if (/time\s+zone/.test(label))                   return "Eastern Time";
+
+  // ── Legal / agreements ──────────────────────────────────────────────────────
+  if (/non.?compete/.test(label))                  return "No";
+  if (/non.?solicitation/.test(label))             return "No";
+  if (/confidentiality\s+agreement/.test(label))   return "No";
+  if (/employment\s+restriction/.test(label))      return "No";
+  if (/background\s+check/.test(label))            return "Yes";
+  if (/drug\s+test/.test(label))                   return "Yes";
+  if (/criminal\s+(record|conviction|history)/.test(label)) return "No";
+  if (/felony/.test(label))                        return "No";
+  if (/terminated|fired\s+for\s+cause/.test(label)) return "No";
+
+  // ── Compensation ────────────────────────────────────────────────────────────
+  if (/(comfortable|okay|ok|happy|agree)\s+with.*(salary|pay|compensation|wage|range)/i.test(label))
+    return "Yes";
+  if (/salary\s+expect|expected\s+salary|desired\s+salary|target\s+salary/i.test(label))
+    return da.salaryExpectationUSD ?? "$70,000 – $85,000";
+  if (/current\s+salary|current\s+comp/i.test(label))
+    return da.currentSalary ?? "$60,000";
+
+  // ── Availability ────────────────────────────────────────────────────────────
+  if (/notice\s+period/.test(label))               return "2 weeks";
+  if (/when\s+can\s+you\s+start|start\s+date/.test(label)) return "2 weeks after offer";
+  if (/full.?time/.test(label) && !/part.?time/.test(label)) return "Yes";
+  if (/over\s*18|at\s+least\s+18|18\s+years/.test(label))   return "Yes";
+
+  // ── Acknowledgements ────────────────────────────────────────────────────────
+  if (/(acknowledge|agree|confirm|consent)\b/.test(label) &&
+      /(policy|terms|recording|privacy|condition|guidelines?)\b/.test(label))
+    return "Yes";
+
+  // ── Sourcing ────────────────────────────────────────────────────────────────
+  if (/how\s+did\s+you\s+hear/.test(label))        return da.howDidYouHear ?? "LinkedIn";
+  if (/referred\s+by/.test(label))                 return "No";
+  if (/previously\s+(work|employ|applied)/.test(label)) return "No";
+
+  return null; // needs Claude
+}
+
+// Calls Claude via /ai-resolve-field for a single unknown field; returns answer string or null
 async function callAiResolveField(field, contextHtml) {
   const controller = new AbortController();
   const timeoutId  = setTimeout(() => controller.abort(), 15_000);
@@ -319,15 +404,27 @@ async function callAiResolveField(field, contextHtml) {
   }
 }
 
-// Batches unknown fields through Groq in groups of 3 to stay under TPM limits
+// Phase 1: local, Phase 2: Claude only for what local can't handle.
 // Returns { resolved: [{ selector, value, fieldType }], failed: [label] }
-async function resolveUnknownFields(unknownFields, contextHtml) {
+async function resolveUnknownFields(unknownFields, contextHtml, profileData) {
   const resolved   = [];
   const failed     = [];
-  const BATCH_SIZE = 3;
+  const needsAi    = [];
 
-  for (let i = 0; i < unknownFields.length; i += BATCH_SIZE) {
-    const batch   = unknownFields.slice(i, i + BATCH_SIZE);
+  // Local resolver — zero API calls, zero tokens
+  for (const field of unknownFields) {
+    const answer = localResolveField(field, profileData);
+    if (answer !== null) {
+      resolved.push({ selector: field.selector, value: answer, fieldType: field.fieldType });
+    } else {
+      needsAi.push(field);
+    }
+  }
+
+  // Claude only for open-ended fields local couldn't handle
+  const BATCH_SIZE = 3;
+  for (let i = 0; i < needsAi.length; i += BATCH_SIZE) {
+    const batch   = needsAi.slice(i, i + BATCH_SIZE);
     const answers = await Promise.all(batch.map((f) => callAiResolveField(f, contextHtml)));
 
     for (let j = 0; j < batch.length; j++) {
@@ -469,7 +566,7 @@ async function runAutofill() {
   if (unknownFields.length > 0) {
     elLoadingStep.textContent = "Resolving unknown fields...";
 
-    const { resolved, failed } = await resolveUnknownFields(unknownFields, jobDescription);
+    const { resolved, failed } = await resolveUnknownFields(unknownFields, jobDescription, profileData);
     unknownLabels = [...failed];
 
     if (resolved.length > 0) {
