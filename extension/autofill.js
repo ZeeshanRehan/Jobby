@@ -187,17 +187,69 @@ if (!window.__jobbyAutofillInjected) {
     return options;
   }
 
-  // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select.
+  // Async react-select (e.g. Greenhouse location) mounts options only after typing. Type the
+  // first answer clause (the city) to trigger the remote load, then poll until real options mount.
+  async function typeAheadOptions(el, answer) {
+    const query = String(answer).split(",")[0].trim(); // "Glassboro, New Jersey" → "Glassboro"
+    el.focus();
+    fillText(el, query);
+    for (let t = 0; t < 13; t++) { // ~2.6s
+      await sleep(200);
+      let menu = findComboboxMenu(el);
+      if (!menu) { await openCombobox(el); menu = findComboboxMenu(el); } // re-nudge open if it closed
+      const els  = readComboboxOptionEls(menu);
+      const txts = els.map((o) => o.textContent.trim());
+      const settling = txts.length === 0 || txts.some((x) => /^(loading|searching)/i.test(x)) || txts.every((x) => /no options/i.test(x));
+      if (!settling) {
+        console.log(`[Jobby] typeahead "${getUniqueSelector(el)}" query=${JSON.stringify(query)} opts=${txts.length} ${JSON.stringify(txts).slice(0, 200)}`);
+        return els;
+      }
+    }
+    console.log(`[Jobby] typeahead "${getUniqueSelector(el)}" query=${JSON.stringify(query)} timed-out`);
+    return [];
+  }
+
+  // Location-specific pick: prefer an option containing city + full state, longest (most-qualified) wins.
+  // Bypasses bestOptionMatch whose leading-clause rule would land on a bare "Glassboro" over the full entry.
+  function pickLocationOption(texts, answer) {
+    if (!texts.length) return -1;
+    const parts = String(answer).toLowerCase().split(",").map((s) => s.trim()).filter(Boolean);
+    const city  = parts[0] || "";
+    const state = parts[1] || "";
+    const lc    = texts.map((t) => t.toLowerCase());
+
+    let bi = -1, blen = -1;
+    lc.forEach((t, k) => { if (t.includes(city) && (!state || t.includes(state)) && t.length > blen) { blen = t.length; bi = k; } });
+    if (bi >= 0) return bi;
+
+    blen = -1;
+    lc.forEach((t, k) => { if (city && t.includes(city) && t.length > blen) { blen = t.length; bi = k; } });
+    if (bi >= 0) return bi;
+
+    return -1; // no city match → blank (the async branch fires for any 0-option combobox; a blind
+               // first-pick would repeat the wrong-menu bug). The log shows the options for diagnosis
+  }
+
+  // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select,
+  // and async type-ahead selects (open → 0 options → type → re-read → location-aware pick).
   async function fillCombobox(el, answer) {
     const sel    = getUniqueSelector(el);
     const opened = await openCombobox(el);
     if (!opened) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=did-not-open`); await closeCombobox(el); return false; }
 
-    const opts = readComboboxOptionEls(findComboboxMenu(el));
-    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-options`); await closeCombobox(el); return false; }
+    let opts  = readComboboxOptionEls(findComboboxMenu(el));
+    let texts = opts.map((o) => o.textContent.trim());
+    let idx;
 
-    const texts = opts.map((o) => o.textContent.trim());
-    const idx   = bestOptionMatch(texts, answer);
+    if (opts.length === 0) {
+      opts  = await typeAheadOptions(el, answer);
+      texts = opts.map((o) => o.textContent.trim());
+      idx   = pickLocationOption(texts, answer);
+    } else {
+      idx   = bestOptionMatch(texts, answer);
+    }
+
+    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-options`); await closeCombobox(el); return false; }
     if (idx < 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-match answer=${JSON.stringify(String(answer))} options=${JSON.stringify(texts).slice(0, 300)}`); await closeCombobox(el); return false; }
     const pick  = opts[idx];
 
@@ -233,6 +285,55 @@ if (!window.__jobbyAutofillInjected) {
     console.log("[Jobby] fillFile: files after set=", el.files.length, el.files[0]?.name);
     el.dispatchEvent(new Event("change", { bubbles: true }));
     el.dispatchEvent(new Event("input",  { bubbles: true }));
+  }
+
+  // ─── Consent Checkbox Ticking ───────────────────────────────────────────────
+  // Ticks the mandatory + consent/agreement boxes that gate Submit (GDPR, terms, "info is accurate").
+  // Targets ONLY checkbox elements, so the submit button is structurally unreachable. Never submits.
+  const CONSENT_RE   = /(agree|consent|acknowledge|gdpr|terms|privacy|authoriz|certif|confirm|i have read|policy|conditions|accurate|true and complete)/i;
+  const MARKETING_RE = /(newsletter|subscribe|promotion|marketing|mailing list|offers|updates about|opt.?in to receive)/i;
+
+  // consent prose often lives in aria-describedby, not label[for] — fold it into the match string
+  function describedByText(el) {
+    const ids = (el.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+    return ids.map((id) => document.getElementById(id)?.textContent || "").join(" ");
+  }
+
+  function tickCheckbox(el) {
+    if (el instanceof HTMLInputElement && el.type === "checkbox") {
+      if (!el.checked) el.click(); // native click toggles + fires change so React sees it
+      return el.checked;
+    }
+    el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    el.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    el.click();
+    return el.getAttribute("aria-checked") === "true";
+  }
+
+  // required is the primary trigger (a required box before Submit is consent by definition); the
+  // keyword path is a bonus. Marketing is skipped UNLESS it's required (rare, but still gates submit).
+  function tickConsentCheckboxes() {
+    const ticked = [];
+    for (const el of document.querySelectorAll('input[type="checkbox"], [role="checkbox"]')) {
+      if (el.disabled || el.getAttribute("aria-disabled") === "true") continue;
+      const checked = el.type === "checkbox" ? el.checked : el.getAttribute("aria-checked") === "true";
+      if (checked) continue;
+
+      const label     = `${getLabelText(el) || ""} ${describedByText(el)}`.trim();
+      const required  = el.required || el.getAttribute("aria-required") === "true";
+      const consent   = CONSENT_RE.test(label);
+      const marketing = MARKETING_RE.test(label);
+      const id        = getUniqueSelector(el) || label.slice(0, 40);
+
+      if (!(required || (consent && !marketing))) {
+        console.log(`[Jobby] checkbox-skip "${id}" required=${required} consent=${consent} marketing=${marketing}`);
+        continue;
+      }
+      const ok = tickCheckbox(el);
+      console.log(`[Jobby] checkbox-tick "${id}" required=${required} consent=${consent} ok=${ok}`);
+      if (ok) ticked.push(getLabelText(el) || el.name || el.id || "checkbox");
+    }
+    return ticked;
   }
 
   // ─── Unknown Field Scanner ────────────────────────────────────────────────
@@ -293,6 +394,7 @@ if (!window.__jobbyAutofillInjected) {
     isReactSelectCombobox, findComboboxMenu, readComboboxOptionEls,
     openCombobox, closeCombobox, readComboboxOptions, fillCombobox,
     fillSelect, fillText, getLabelText, scanUnknownFields,
+    tickConsentCheckboxes, typeAheadOptions, pickLocationOption,
   };
 
   // ─── Message Handler ──────────────────────────────────────────────────────
@@ -348,7 +450,13 @@ if (!window.__jobbyAutofillInjected) {
         }
 
         const unknownFields = await scanUnknownFields(adapter, handledEls);
-        console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length);
+
+        // tick mandatory/consent boxes that gate Submit — never the submit button itself
+        const consent = tickConsentCheckboxes();
+        report.consent = consent;
+        report.filled.push(...consent);
+
+        console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length, "consent:", consent.length);
         sendResponse({ report, unknownFields });
       })();
       return true;

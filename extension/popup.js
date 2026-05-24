@@ -344,6 +344,11 @@ function localResolveField(field, profileData) {
   if (/\bcountry\b/.test(label) &&
       !/(status|eligib|visa|sponsor|citizen|authoriz|permanent\s+resident|refugee|work\s+permit)/.test(label))
     return "United States of America - New Jersey";
+  // free-text city autocomplete (Greenhouse candidate-location) — type city, matcher picks the geocoded option.
+  // guarded against location-type/preference dropdowns and the "based in X?" yes/no questions handled below
+  if ((/(current\s+)?location\b|where\s+are\s+you\s+(currently\s+)?(based|located|living)|current\s+city|^city\b/.test(label)) &&
+      !/(type|prefer|remote|hybrid|on.?site|relocat|willing|country)/.test(label))
+    return da.currentLocation ?? null;
   if (/\brelocate\b/.test(label))                  return "Yes";
   if (/based\s+in/.test(label) &&
       /canada|ontario|uk|united kingdom|singapore|australia|europe/.test(label))
@@ -602,6 +607,7 @@ async function runAutofill() {
         unknown: unknownLabels,
         stale:   report.stale,
         errors:  report.errors,
+        consent: report.consent || [],
       },
     }),
   }).catch(() => {});

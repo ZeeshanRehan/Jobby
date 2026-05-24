@@ -182,6 +182,8 @@ const profileData = {
     comfortableWithUpTo25PctTravel:           "Yes",
     comfortableWithUpTo50PctTravel:           "Yes",
     hasReliableTransportation:                "Yes",
+    // typed into location autocompletes (city, full state) — matcher picks the geocoded option
+    currentLocation:                          "Glassboro, New Jersey",
 
     // ── Compensation ──────────────────────────────────────────────────────────
     salaryExpectationUSD:                     "$70,000 – $85,000",
