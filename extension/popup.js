@@ -657,7 +657,11 @@ async function runTailoring() {
 
 // ─── Event Listeners ──────────────────────────────────────────────────────────
 btnTailor.addEventListener("click", runTailoring);
-btnAutofill.addEventListener("click", runAutofill);
+// Steps 5-7 of runAutofill (resolve/persist/render) are awaited without per-step
+// try/catch — route any uncaught rejection to the error screen so it can't hang silently
+btnAutofill.addEventListener("click", () => {
+  runAutofill().catch((err) => showError("autofill", err?.message || String(err)));
+});
 btnAutofillBack.addEventListener("click", () => showState(stateIdle));
 
 btnRetry.addEventListener("click", runTailoring);

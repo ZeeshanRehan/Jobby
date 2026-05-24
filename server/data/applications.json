@@ -536,5 +536,385 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "25db9702-1f1e-42aa-8cfa-61cbcf6202a1",
+    "timestamp": "2026-05-24T00:14:12.284Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7833368?gh_jid=7833368",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_25db9702-1f1e-42aa-8cfa-61cbcf6202a1.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNWRiOTcwMi0xZjFlLTQyYWEtOGNmYS02MWNiY2Y2MjAyYTEucGRmIiwiaWF0IjoxNzc5NTgxNjUyLCJleHAiOjE3Nzk1ODUyNTJ9.FQN6D38Q5UxaL66JAIiOFk8d1c_SknIs7rCxOhyMw-0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/25db9702-1f1e-42aa-8cfa-61cbcf6202a1.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation",
+        "Prospect research"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating ability to qualify and nurture long-term prospect relationships."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through data-driven optimization."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to communicate product value and drive prospect engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating strong product-market fit and user engagement."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation",
+      "Prospect research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_65808589",
+        "#question_65808590",
+        "#question_65808591",
+        "#question_65808594",
+        "#question_65808595",
+        "#question_65808596",
+        "#question_65808597",
+        "#country",
+        "#candidate-location",
+        "#question_65808592",
+        "#question_65808593",
+        "#question_65808598",
+        "#question_65808599",
+        "#question_65808600",
+        "#question_65808603\\[\\]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "cea2d0e0-52a0-49f5-8cdb-4309c00530cd",
+    "timestamp": "2026-05-24T01:25:10.467Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7758505?gh_jid=7758505",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_cea2d0e0-52a0-49f5-8cdb-4309c00530cd.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jZWEyZDBlMC01MmEwLTQ5ZjUtOGNkYi00MzA5YzAwNTMwY2QucGRmIiwiaWF0IjoxNzc5NTg1OTEwLCJleHAiOjE3Nzk1ODk1MTB9._zXh2-MSqblv7pD_FpjW_Fr5vRVoRIzPV872ns_YuFw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/cea2d0e0-52a0-49f5-8cdb-4309c00530cd.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Sales prospecting",
+        "Market research"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Sales prospecting",
+      "Market research"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "185bd558-af1e-494f-94e2-6448d5556ce8",
+    "timestamp": "2026-05-24T01:25:18.116Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7758505?gh_jid=7758505",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_185bd558-af1e-494f-94e2-6448d5556ce8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xODViZDU1OC1hZjFlLTQ5NGYtOTRlMi02NDQ4ZDU1NTZjZTgucGRmIiwiaWF0IjoxNzc5NTg1OTE4LCJleHAiOjE3Nzk1ODk1MTh9.0dWSJ4gUyFxJ1Lje0jExAroAfVyaN8lyyxJHr4ojDxg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/185bd558-af1e-494f-94e2-6448d5556ce8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Sales prospecting",
+        "CRM"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Sales prospecting",
+      "CRM"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64905996",
+        "#question_64905997",
+        "#question_64905998",
+        "#question_64906001",
+        "#question_64906002",
+        "#question_64906003",
+        "#question_64906004",
+        "#country",
+        "#candidate-location",
+        "#question_64905999",
+        "#question_64906005",
+        "#question_64906006",
+        "#question_64906007",
+        "#question_64906010\\[\\]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "2715f148-e7af-4b53-b6dc-86c6e9fcf481",
+    "timestamp": "2026-05-24T05:43:57.813Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7724285?gh_jid=7724285",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2715f148-e7af-4b53-b6dc-86c6e9fcf481.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNzE1ZjE0OC1lN2FmLTRiNTMtYjZkYy04NmM2ZTlmY2Y0ODEucGRmIiwiaWF0IjoxNzc5NjAxNDM3LCJleHAiOjE3Nzk2MDUwMzd9.mzMrqRTipMttkqPIDmZUKFhHVUI3d5sD-ZYCuZMkzYo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2715f148-e7af-4b53-b6dc-86c6e9fcf481.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Marketo",
+        "Tableau",
+        "Bizible",
+        "Account-Based Marketing",
+        "Demand Generation",
+        "Marketing Automation",
+        "Pipeline Analysis",
+        "Territory Management",
+        "Webinar Platforms"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, establishing clear prioritization and integrated campaign strategy across channels."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Salesforce-informed prototypes, and structured UX templates for 100+ active small businesses on the platform, ensuring segment-specific messaging and tiered treatment."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members and demonstrating measurable pipeline contribution."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, operationalizing account and data management workflows."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, demonstrating data-driven optimization and measurement discipline."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, architecting an integrated platform that connected multiple user segments and channels."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to build cross-functional partnerships and drive segment-specific engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Salesforce-integrated data models, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations through integrated, multi-touch campaigns."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating measurable engagement and funnel conversion metrics."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Marketo",
+      "Tableau",
+      "Bizible",
+      "Account-Based Marketing",
+      "Demand Generation",
+      "Marketing Automation",
+      "Pipeline Analysis",
+      "Territory Management",
+      "Webinar Platforms"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "7b1eb695-1f20-437e-a4d6-8da84380d770",
+    "timestamp": "2026-05-24T05:43:58.705Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7724285?gh_jid=7724285",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7b1eb695-1f20-437e-a4d6-8da84380d770.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83YjFlYjY5NS0xZjIwLTQzN2UtYTRkNi04ZGE4NDM4MGQ3NzAucGRmIiwiaWF0IjoxNzc5NjAxNDM4LCJleHAiOjE3Nzk2MDUwMzh9.cJkoJFMAiIbzA9GK1rT6r9c-EkjLoSMffcwJkpoWXYk",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7b1eb695-1f20-437e-a4d6-8da84380d770.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Marketo",
+        "Tableau",
+        "Bizible",
+        "Marketing Automation",
+        "Account-Based Marketing",
+        "Demand Generation",
+        "Campaign Strategy",
+        "Pipeline Analytics",
+        "Territory Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Salesforce-informed prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Marketo",
+      "Tableau",
+      "Bizible",
+      "Marketing Automation",
+      "Account-Based Marketing",
+      "Demand Generation",
+      "Campaign Strategy",
+      "Pipeline Analytics",
+      "Territory Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64567483",
+        "#question_64567484",
+        "#question_64567485",
+        "#question_64567489",
+        "#question_64567490",
+        "#question_64567491",
+        "#question_64771494",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#country",
+        "#candidate-location",
+        "#question_67088231",
+        "#question_66194211",
+        "#question_64771493",
+        "#question_64567492",
+        "#question_64567493",
+        "#\\31 31"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]
