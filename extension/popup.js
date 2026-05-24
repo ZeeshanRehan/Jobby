@@ -337,6 +337,8 @@ function localResolveField(field, profileData) {
     return "No";
 
   // ── Location ────────────────────────────────────────────────────────────────
+  // Resolve country locally — keeps the 244-option country dropdown out of Claude
+  if (/\bcountry\b/.test(label))                   return "United States";
   if (/\brelocate\b/.test(label))                  return "Yes";
   if (/based\s+in/.test(label) &&
       /canada|ontario|uk|united kingdom|singapore|australia|europe/.test(label))

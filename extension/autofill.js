@@ -193,7 +193,13 @@ if (!window.__jobbyAutofillInjected) {
       let fieldType, options = null;
       if (isCombobox) {
         fieldType = "combobox";
-        options   = await readComboboxOptions(el);
+        // one broken combobox must not reject the whole scan (→ silent popup timeout)
+        try {
+          options = await readComboboxOptions(el);
+        } catch (err) {
+          console.warn(`[Jobby] combobox scan failed for "${selector}":`, err);
+          options = [];
+        }
       } else if (el instanceof HTMLSelectElement) {
         fieldType = "select";
         options   = Array.from(el.options).slice(1).map((o) => o.text.trim()).filter(Boolean);
