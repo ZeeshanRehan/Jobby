@@ -1196,5 +1196,79 @@
       "errors": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "85397059-069b-4db1-950b-d633cd1716e1",
+    "timestamp": "2026-05-24T15:56:23.938Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/6180015?gh_jid=6180015",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_85397059-069b-4db1-950b-d633cd1716e1.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84NTM5NzA1OS0wNjliLTRkYjEtOTUwYi1kNjMzY2QxNzE2ZTEucGRmIiwiaWF0IjoxNzc5NjM4MTgzLCJleHAiOjE3Nzk2NDE3ODN9.8piqPZR6rDjB7MxrYaSZV3-yn1sDVBaoDZL4LexWHgM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/85397059-069b-4db1-950b-d633cd1716e1.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Market research"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Market research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#question_49897938",
+        "#question_49897939",
+        "#question_49897940",
+        "#question_49897943",
+        "#question_62720207",
+        "#candidate-location",
+        "#question_49897947",
+        "#question_49897945"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_61262671",
+        "#question_49897941",
+        "#question_49897942",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#question_49897944",
+        "#\\31 31"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
   }
 ]

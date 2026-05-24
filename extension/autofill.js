@@ -69,8 +69,11 @@ if (!window.__jobbyAutofillInjected) {
 
     let i = texts.findIndex((t) => t.toLowerCase().trim() === lower);
     if (i >= 0) return i;
-    i = texts.findIndex((t) => t.toLowerCase().includes(lower));
-    if (i >= 0) return i;
+    // forward-substring needs ≥3 chars so a short answer ("no") can't match inside a word ("Lebanon")
+    if (lower.length >= 3) {
+      i = texts.findIndex((t) => t.toLowerCase().includes(lower));
+      if (i >= 0) return i;
+    }
     i = texts.findIndex((t) => { const x = t.toLowerCase().trim(); return x.length >= 4 && lower.includes(x); });
     if (i >= 0) return i;
 
@@ -113,62 +116,75 @@ if (!window.__jobbyAutofillInjected) {
       && el.classList.contains("select__input");
   }
 
-  // react-select links the input to its listbox via aria-controls — resolves the menu
-  // whether it renders inline or is portaled to <body>. We open one menu at a time
-  // (open → read → close serially), so the document-wide fallback is unambiguous.
+  // react-select sets aria-controls to its listbox id ONLY while open, and clears it on close.
+  // Resolve strictly by that id — never a document-wide query, which would hand back some OTHER
+  // field's open menu (e.g. the country-code list) and cross-contaminate every fill.
   function findComboboxMenu(el) {
     const controls = el.getAttribute("aria-controls") || el.getAttribute("aria-owns");
-    if (controls) {
-      const byId = document.getElementById(controls);
-      if (byId) return byId;
-    }
-    return document.querySelector('.select__menu, [role="listbox"]') || null;
+    if (!controls) return null;
+    return document.getElementById(controls) || null;
+  }
+
+  // Open = aria-expanded true AND its own menu resolvable (guards a stale expanded flag)
+  function isComboboxOpen(el) {
+    return el.getAttribute("aria-expanded") === "true" && !!findComboboxMenu(el);
   }
 
   function readComboboxOptionEls(menu) {
     return menu ? Array.from(menu.querySelectorAll(".select__option, [role='option']")) : [];
   }
 
+  // Returns true only if THIS field's own menu is open afterward
   async function openCombobox(el) {
+    if (isComboboxOpen(el)) return true;
     el.focus();
     el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     el.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
     await sleep(200);
     // react-select also opens on ArrowDown when focused — fallback if the synthetic click didn't take
-    if (el.getAttribute("aria-expanded") !== "true") {
+    if (!isComboboxOpen(el)) {
       el.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", code: "ArrowDown", keyCode: 40, which: 40, bubbles: true }));
       await sleep(200);
     }
+    return isComboboxOpen(el);
   }
 
-  // Closes without selecting; blur triggers react-select's closeMenuOnBlur
-  function closeCombobox(el) {
+  // Closes the menu and confirms it closed — a stuck-open menu blocks the next field from opening.
+  // Escape+blur first; if that doesn't take on this build, a click outside closes react-select.
+  async function closeCombobox(el) {
     el.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", keyCode: 27, which: 27, bubbles: true }));
     el.blur();
+    await sleep(60);
+    if (el.getAttribute("aria-expanded") === "true") {
+      document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+      document.body.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+      await sleep(60);
+    }
   }
 
   // Opens the menu, captures the real option strings, closes it clean
   async function readComboboxOptions(el) {
-    await openCombobox(el);
+    const opened    = await openCombobox(el);
     const menu      = findComboboxMenu(el);
     const optionEls = readComboboxOptionEls(menu);
     const options   = optionEls.map((o) => o.textContent.trim()).filter(Boolean);
-    // discriminator: expanded=true + a menu in doc but opts=0 → find bug; expanded!=true → open bug
-    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" expanded=${el.getAttribute("aria-expanded")} controls=${el.getAttribute("aria-controls")} menusInDoc=${document.querySelectorAll('.select__menu, [role="listbox"]').length} menuFound=${!!menu} opts=${optionEls.length} options=${JSON.stringify(options).slice(0, 300)}`);
-    closeCombobox(el);
-    await sleep(60);
+    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" opened=${opened} controls=${el.getAttribute("aria-controls")} menuFound=${!!menu} opts=${optionEls.length} options=${JSON.stringify(options).slice(0, 300)}`);
+    await closeCombobox(el);
     return options;
   }
 
   // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select.
   async function fillCombobox(el, answer) {
-    await openCombobox(el);
+    const sel    = getUniqueSelector(el);
+    const opened = await openCombobox(el);
+    if (!opened) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=did-not-open`); await closeCombobox(el); return false; }
+
     const opts = readComboboxOptionEls(findComboboxMenu(el));
-    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=-1 reason=no-options`); closeCombobox(el); return false; }
+    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-options`); await closeCombobox(el); return false; }
 
     const texts = opts.map((o) => o.textContent.trim());
     const idx   = bestOptionMatch(texts, answer);
-    if (idx < 0) { console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=-1 reason=no-match answer=${JSON.stringify(String(answer))} options=${JSON.stringify(texts).slice(0, 300)}`); closeCombobox(el); return false; }
+    if (idx < 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-match answer=${JSON.stringify(String(answer))} options=${JSON.stringify(texts).slice(0, 300)}`); await closeCombobox(el); return false; }
     const pick  = opts[idx];
 
     pick.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
@@ -176,16 +192,15 @@ if (!window.__jobbyAutofillInjected) {
     pick.click();
     await sleep(120);
 
-    // verify the option now shows as a selected value — covers single (single-value) and multi (chip)
-    const expandedAfter = el.getAttribute("aria-expanded");
+    // verify the option actually rendered as a selected value IN THIS field — covers single + multi chip
     const vc    = el.closest('[class*="value-container"]');
     const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
     const ok    = shown.includes(texts[idx]);
-    console.log(`[Jobby] fill-debug "${getUniqueSelector(el)}" idx=${idx} picked=${JSON.stringify(texts[idx])} expandedAfter=${expandedAfter} ok=${ok} shown=${JSON.stringify(shown).slice(0, 200)}`);
+    console.log(`[Jobby] fill-debug "${sel}" idx=${idx} picked=${JSON.stringify(texts[idx])} ok=${ok} shown=${JSON.stringify(shown).slice(0, 200)}`);
 
-    // multi-select leaves the menu open after a pick — close it cleanly
-    if (expandedAfter === "true") closeCombobox(el);
-    return ok || expandedAfter === "false";
+    // always close so a still-open menu can't block the next field
+    await closeCombobox(el);
+    return ok;
   }
 
   // ─── File Fill ────────────────────────────────────────────────────────────
@@ -222,6 +237,9 @@ if (!window.__jobbyAutofillInjected) {
       const isCombobox = isReactSelectCombobox(el);
       if (el instanceof HTMLInputElement && SKIP_INPUT_TYPES.has(el.type) && !isCombobox) continue;
       if (el.id && el.id.includes("recaptcha")) continue;
+      // intl-tel-input bundles a country-code combobox (id="country") with the phone field —
+      // the phone value already carries the +1, and opening it left a stuck menu that broke every later fill
+      if (isCombobox && el.id === "country") continue;
 
       const label = getLabelText(el);
       if (!label) continue;
