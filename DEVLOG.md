@@ -9,6 +9,46 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-25 — first test suite + `bestOptionMatch` shortest-wins comment is wrong  ·  DECISION / OPEN
+
+**Context.** Added the project's first automated tests (`node --test`, zero deps, `npm test`). The target is
+the two pure "chokepoint" functions every form funnels through — `bestOptionMatch` and `localResolveField`.
+These carry the nastiest edge-case logic in the app and had **zero** coverage; every logic bug in the
+entries below (Lebanon, "No" ⊂ "Not…", country→work-status leak) is now a locked regression case. DOM
+mechanics (combobox open/close, checkbox tick) are deliberately NOT tested — sandbox-blind, live-only.
+
+**Logistics.** Pure functions extracted into `extension/lib/*.js` with a dual export
+(`if (typeof module !== "undefined") module.exports = …`) so the same source is a browser global AND a
+Node import — single source of truth, no duplication.
+- `localResolveField` → `extension/lib/resolve.js`, loaded via `<script>` in `popup.html` before `popup.js`.
+  **Done & committed this session.** Popup-only, zero impact on the autofill injection path.
+- `bestOptionMatch` → `extension/lib/match.js`: **HELD.** Extracting it changes the `executeScript` call
+  (`files: ["autofill.js"]` → `["lib/match.js", "autofill.js"]`), which is in the live autofill hot path.
+  Held until checkbox + async-location are confirmed on a real Greenhouse form so that run stays on
+  known-good `autofill.js`. Until then `test/match.test.js` guards a **verbatim temp copy** of the function
+  (loud TODO at the top). If you edit the matcher in `autofill.js` before the extraction, mirror it there.
+
+**Finding the tests surfaced (the reason this is an entry, not just a commit).** Writing the matcher tests
+exposed that the `autofill.js:83` comment is **factually wrong**. It claims picking the SHORTEST containing
+option makes `"United States"` land on `"United States of America"`, "not the first `…- Alabama` by list
+position". But `"United States - Alabama"` (23 chars) is *shorter* than `"United States of America"` (24),
+so shortest-wins actually picks **Alabama**. The *mechanism* the comment describes (shortest, not
+first-by-position) is real and correctly implemented; only the *example* is a fiction.
+
+**Why it's benign (so far) — hence OPEN, not a fire.** Real country dropdowns expose an exact
+`"United States"` option → step-1 exact match handles it before shortest-wins runs. State-split dropdowns
+(e.g. Remote) get the state-qualified answer `"United States of America - New Jersey"` from
+`localResolveField`, which also exact-matches. The contradiction only bites if a real form ever presents a
+bare `"United States"` answer against mixed state/country options with no exact hit — not yet observed.
+
+**Decision.** Did NOT lock the buggy Alabama behavior in a test (that would cement a latent bug against a
+wrong comment). Kept a positive property-based shortest-wins test using non-contradictory options. The
+comment fix in `autofill.js` is folded into the HELD extraction task (it's a doc-only change, but touching
+`autofill.js` waits for the live confirmation per the sequencing above). Revisit if a live form ever shows
+the bare-"United States" + state-split combination.
+
+---
+
 ## 2026-05-24 — react-select combobox cascade: every dropdown filled blank/garbage  ·  FIXED
 
 **Symptom.** On live Greenhouse, dropdowns either filled nothing or filled wildly wrong values — the

@@ -188,14 +188,28 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-24 (late — supersedes the earlier same-day "combobox cascade" cutoff; that work is now
-committed and iterated past where those notes left it). **HEAD = `54fdb7c` "comboboxes 96%". Working tree
-clean, up to date with `origin/main`.**
+**Date:** 2026-05-25. **HEAD = `54fdb7c` "comboboxes 96%". Working tree has UNCOMMITTED test-system work**
+(see "Test system landed" below) — not yet committed/pushed. Autofill code itself is unchanged from
+`54fdb7c`.
 
 **STATUS: autofill runs end-to-end on live Greenhouse.** One run fills: adapter text fields → resume
 upload → react-select dropdowns (single **and** async type-ahead location) → AI/local field resolution →
 consent-checkbox ticking. Submit is never clicked (dry-run by design). Full per-bug post-mortem for the
 combobox saga lives in `DEVLOG.md`.
+
+**Test system landed (2026-05-25, uncommitted).** First automated tests — `node --test`, zero deps, run
+with `npm test`. Targets the two pure chokepoint functions every form funnels through:
+- `localResolveField` → **extracted** to `extension/lib/resolve.js` (dual browser-global / Node export),
+  loaded via `<script>` in `popup.html` before `popup.js`. `test/resolve.test.js` (10 cases). Popup-only.
+- `bestOptionMatch` → **extraction HELD** (it's in the live autofill injection path; held until checkbox +
+  location confirmed live so that run stays on known-good `autofill.js`). `test/match.test.js` (10 cases)
+  guards a **verbatim temp copy** until `extension/lib/match.js` lands — see the held task + DEVLOG.
+- Suite = 20 tests, all green. Encodes every logic regression from DEVLOG (Lebanon, "No"⊂"Not…",
+  country→work-status leak, leading-clause, token-overlap, shortest-wins, boundaries).
+- ⚠️ The popup.html→resolve.js→popup.js **global-sharing is a runtime contract not yet verified live.**
+  Before the next run, in the popup's devtools console run
+  `localResolveField({label:"Gender"},{demographics:{gender:"TEST"}})` → must return `"TEST"`. If
+  `ReferenceError`/`undefined`, the wiring's wrong and every unknown field silently falls through to Claude.
 
 **What landed since the prior cutoff** (these notes used to say "uncommitted" / "not implemented" /
 "deferred" — all now committed in `c1369a9` → `54fdb7c`):
@@ -207,8 +221,10 @@ combobox saga lives in `DEVLOG.md`.
   cross-contaminated); added `isComboboxOpen()`; `openCombobox`/`closeCombobox` now verify their OWN
   menu opened/closed; `fillCombobox` requires `opened` + `ok===true`; `scanUnknownFields` skips `#country`.
 - **`bestOptionMatch` ladder rewrite — committed.** exact → leading-clause (comma split: "No, I do not
-  have a disability" → "No") → answer⊂option (**shortest** wins, fixes "United States" → "…- Alabama") →
-  option⊂answer(≥4) → token-overlap. Forward-substring needs ≥3 chars (stops "No" ⊂ "Lebanon").
+  have a disability" → "No") → answer⊂option (**shortest containing option** wins — deterministic, not
+  first-by-position; note this is shortest *by length*, so "United States" + mixed state/country options
+  picks "…- Alabama", NOT "of America" — the `autofill.js:83` comment overstates this, see DEVLOG
+  2026-05-25) → option⊂answer(≥4) → token-overlap. Forward-substring needs ≥3 chars (stops "No" ⊂ "Lebanon").
 - **Consent-checkbox fill — IMPLEMENTED** (`tickConsentCheckboxes`, `autofill.js:315`, wired into the run
   at `:455`). Ticks boxes that gate Submit: trigger is `required` (a required box before Submit is consent
   by definition), keyword match is a bonus; marketing skipped UNLESS required; never clicks Submit;
@@ -235,11 +251,19 @@ but `coverageReport` is still **field-names-only** (`filled`/`skipped`/`consent`
 per-field `{ label, value, source, status }` the audit table needs.
 
 **Deploy/test state:**
-- Extension (`autofill.js`, `popup.js`): **reload extension** only.
-- Server: HEAD is pushed; VPS needs `cd ~/Jobby && git pull && pm2 restart all`.
+- Tests: `npm test` (`node --test`, no deps) — 20 green. Run before committing logic changes to the matcher
+  or resolver.
+- Extension (`popup.js`, `popup.html`, new `lib/resolve.js`): **reload extension** to pick up. Do the
+  console runtime check above before relying on it. `autofill.js` is unchanged.
+- Server: HEAD is pushed; VPS needs `cd ~/Jobby && git pull && pm2 restart all`. (Test work is extension/
+  local only — no server or VPS change.)
 
 **Next up (priority order):**
-1. **Verify checkbox + async location live** on a real Greenhouse form → then strip the debug logs.
+0. **Commit the uncommitted test-system work** (package.json, `extension/lib/resolve.js`, `popup.js`,
+   `popup.html`, `test/`, DEVLOG, this cutoff) once the popup console check passes.
+1. **Verify checkbox + async location live** on a real Greenhouse form → then strip the debug logs AND do
+   the HELD `bestOptionMatch` extraction (task #5: `lib/match.js` + injection change + comment fix + switch
+   `match.test.js` off its temp copy).
 2. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
    `{ label, value, source: adapter|local|ai, status }`. Foundation for the audit table + feedback loop:
    user wants to review/correct non-standard fills and save them as profile defaults ("not every fill is
@@ -249,8 +273,10 @@ per-field `{ label, value, source, status }` the audit table needs.
 3. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
 4. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
 
-**Local harness** (`.harness/`, untracked) validates react-select mechanics only — it greenlit two
-passes that died on the real form. **The real-form test is the only source of truth.**
+**Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two
+passes that died on the real form. **For DOM behavior, the real-form test is the only source of truth.**
+The new `npm test` suite is the complement: it covers the *pure logic* (matching/resolving) where offline
+testing IS trustworthy — that split (logic = unit-tested, DOM = live-only) is deliberate.
 
 ---
 
@@ -277,6 +303,81 @@ git add . && git commit -m "message" && git push
 # On VPS
 cd ~/Jobby && git pull && pm2 restart all && pm2 logs
 ```
+
+---
+
+## V3+ Strategic Direction (EXPLORATORY — brainstormed, NOT committed/built)
+> Captured from a long design conversation so next session has the *why*, not just the *what*. Nothing here
+> is decided or scheduled — it's the shape we reasoned toward and the tradeoffs behind each lean. **This
+> revises the "V3 = Playwright everywhere" assumption in Future Modules below** (see "Playwright's role").
+
+**North star.** Volume over polish: ~20-30 (stretch 30/day) tailored apps/day, **as close to zero
+human-in-loop as possible.** User accepts that some apps go out wrong/stale — throughput beats per-app
+perfection ("it was never meant to be perfect from the getgo"). Long-term aspiration: a **multi-user SaaS**
+(dashboard, ~$20-50/mo). Personal-use job hunt is the prototype/dogfood and comes first regardless.
+
+**THE central fork — credential custody.** Never hold users' Google/Workday passwords or log in *as them*
+server-side: that's a breach honeypot + Google-ToS violation + (for SaaS) liability. **Decision lean:
+everything runs client-side in the user's own already-logged-in browser** — never store their creds.
+
+**Chosen apply model — autonomous in-browser loop (NOT Simplify-style handholding).** The extension drives
+tabs in the user's browser on its own: pull next job from queue → open → fill (existing engine) → submit →
+next, looping while the user leaves a window open on the side. Uses their real session, so no cred custody.
+Multi-page (Workday) IS drivable this way (navigate + re-inject per page). Orchestrate from a **persistent
+extension page** (MV3 service workers die at ~30s) — that page is also the dashboard.
+
+**The trilemma (pick two):** always-on / no-credential-custody / cheap.
+- In-browser loop = no-custody + cheap, but **browser must be open** (the accepted tradeoff). Auto-start +
+  background-run makes the friction "machine on," not "babysitting" — lunch is fine; only laptop-closed-all-day is a gap.
+- **Split queue softens it:** server *finds + tailors* 24/7 (cheap, no browser); extension *drains* the
+  queue whenever the browser's on and catches up. Missing a day just delays, doesn't lose.
+- Cloud-VM / hosted browser (Browserbase/Kasm/Browserless) = always-on + phone-access, but **re-introduces
+  session custody + per-user always-on compute cost** → only as a higher-priced premium tier, eyes open.
+
+**Playwright's role (revised).** The in-browser pivot **retires "Playwright for applying" in the SaaS path**
+— the extension does it, in the user's session, multi-page included; server-side Playwright would re-create
+the custody landmine. Playwright now only for: (a) *personal* laptop-closed/server-side use (own creds, own
+risk = the original V3), (b) scraping any no-API site (mostly avoided).
+
+**Board strategy / tiers.**
+- **Tier 1 — Greenhouse / Lever / Ashby:** no login, low bot-detection (they *want* applicants), single/near-
+  single page. **Where unattended apply genuinely works; the volume cluster. Do Lever + Ashby next** (~½-1 day
+  each — engine is shared, cost is live quirk-hunting, not new logic; the adapter JSON is ~10 lines).
+- **Tier 3 — Workday / iCIMS / Taleo:** per-company account + email verification + 5-7 page wizard + custom
+  widgets + per-tenant variance = a *separate project*, not "adapter #4." Good news: generic scan-fill-advance
+  loop + the two EEO pages (veteran/disability/race → `localResolveField`) are ~half-free; `data-automation-id`
+  gives stable selectors. Net-new = account/email-code manager, the page-loop, Workday widget helpers.
+- **Skip LinkedIn/Indeed scraping** (anti-bot, ToS, legal). **Sourcing = API/JSON consumers, not HTML
+  scrapers:** Greenhouse Job Board API, Lever public API, GitHub new-grad repos (SimplifyJobs/New-Grad-Positions,
+  speedyapply, vanshb03, jobright-ai, ambicuity — they link straight to ATS apply URLs).
+
+**Unit economics.** In-browser loop shifts the expensive part (running browsers) onto the *user's* machine —
+COGS ≈ just AI tailoring (~$0.043/app). At volume, **cap apps/tier so AI < ~30% of the sub** (uncapped 50/day
+≈ $64/mo AI > a $50 sub = underwater). ~40 users × $50 capped ~15/day ≈ $2k rev, ~$1.3k profit. **Churn is the
+real constraint** (success = user gets a job = cancels), not infra.
+
+**Captcha.** Rare on Tier 1. Paid solvers work for reCAPTCHA v2, unreliable for v3/hCaptcha/Turnstile
+(behavioral score — the real wall is bot-*detection*, not the puzzle). Unsolved → needs-human queue.
+
+**Loop mechanics.** Sequential + jitter (parallel = more bot-like, hammers the user's machine, and speed isn't
+the bottleneck; cap at 2 tabs if ever). **Queue state lives server-side, never in the tab**; status
+`pending → in-progress → submitted | failed | needs-human`; **checkpoint per job** (a closed tab loses at most
+1 in-flight). Interrupted job: clearly-unsubmitted → re-queue; ambiguous → needs-human (avoid double-submit).
+The **~10/day "needs-human" bucket is the EXCEPTION path** (captcha/broken/stale), not the normal flow.
+
+**Mascot ("frog wizard") — virality/UX hook.** On-page **shadow-DOM Lottie overlay** that rides each job page
+as it fills (the shareable moment) + a dashboard home-base frog. States (`idle/working/success/needs-you`)
+driven by the autofill `report` events you already emit — a thin visual skin, not new infra. Must never
+overlap/block a field or cost a submission. MVP: static working+done state → Lottie states → hop transitions.
+
+**Monetization gate (before charging anyone).** Operator's eligibility to earn business income must be
+verified with appropriate professionals *before* taking payments; plus LLC + ToS/privacy. Building + personal
+use is unaffected. Market is real but crowded (Simplify, LazyApply, Sonara, JobRight…) — the tailoring angle
+is the quality wedge vs spray-and-pray.
+
+**Rough sequence:** finish Greenhouse (verify live + tests + commit) → Lever/Ashby adapters → scraper + queue
+(server, safe) → in-browser autonomous loop (extension) → frog → Workday page-loop → multi-tenant SaaS layer
+(auth/billing) *last*, on a proven engine.
 
 ---
 
