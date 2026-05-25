@@ -340,7 +340,7 @@ async function resolveUnknownFields(unknownFields, contextHtml, profileData) {
     }
   }
 
-  // TODO: temp instrumentation for the "lesser AI fallback" question — strip once measured
+  // run-level coverage signal — local-vs-AI resolve split (feeds the V4 local-vs-AI hit-rate analytic)
   console.log(`[Jobby] resolve-split — unknown: ${unknownFields.length} | local: ${unknownFields.length - needsAi.length} | ai: ${needsAi.length}`);
   if (needsAi.length) console.log("[Jobby] →AI labels:", needsAi.map((f) => f.label));
 

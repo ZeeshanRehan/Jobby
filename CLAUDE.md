@@ -188,10 +188,9 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-25. **HEAD = `24f8635` "autofilll greenhouse upgraded needs lesser AI fallback".**
-**UNCOMMITTED this session** (logic verified, not yet committed): `extension/lib/resolve.js` (ack/LGBTQ
-fix), `test/resolve.test.js` (+4 tests), `extension/popup.js` (temp resolve-split instrumentation),
-`.claude/settings.json` (npm test allow), plus this cutoff + DEVLOG. Runtime data dirty as usual.
+**Date:** 2026-05-25. **HEAD = `c1b5bb4` "...logging testing for AI fallback resolving".** Working tree
+clean except runtime data. This session's ack/LGBTQ resolver fix + 4 tests + the `resolve-split`
+instrumentation are committed (`b099f50` → `c1b5bb4`) and **confirmed live**.
 
 **STATUS: autofill runs end-to-end on live Greenhouse and Phase 1 cleanup is DONE.** One run fills: adapter
 text fields → resume upload → react-select dropdowns → AI/local field resolution → consent-checkbox
@@ -228,9 +227,9 @@ and are the permanent floor. **4 were standard fields leaking through regex gaps
 (a) ack/consent handler is now **options-aware** — detects `Acknowledge/Confirm` / `Yes, I consent` by
 option shape and returns it verbatim (verb-less labels like "Privacy notice" used to miss); (b) demographic
 regex widened to catch "LGBTQIA+ community". 1 borderline (work-eligibility status) left on AI by design
-(country-guard). Expected: 13→~9 on that form; ack/EEO gains repeat on most forms. **Logic verified
-(24 green); NOT yet confirmed live** — reload + one run (expect `local: ~15 | ai: ~9`), then strip the temp
-resolve-split log. Full post-mortem: DEVLOG 2026-05-25.
+(country-guard). Expected: 13→~9 on that form; ack/EEO gains repeat on most forms. **CONFIRMED LIVE** (24 green offline + a
+real run showed the AI field count drop). The `resolve-split` log is **KEPT** (not stripped) as the
+run-level local-vs-AI coverage signal → feeds the V4 hit-rate analytic. Full post-mortem: DEVLOG 2026-05-25.
 
 **Runtime data accruing:** `server/data/applications.json` per-app records (`jobUrl, status, mode,
 resumeUrl, changesMade, coverageReport`) — V4 dashboard foundation. `coverageReport` is still
@@ -242,21 +241,19 @@ resumeUrl, changesMade, coverageReport`) — V4 dashboard foundation. `coverageR
 - Extension changes need an **extension reload** to pick up. Server HEAD is pushed; VPS needs
   `cd ~/Jobby && git pull && pm2 restart all` only if a server file changed (Phase 1 was extension/local only).
 
-**Next up (priority order):**
-1. **Confirm the resolver fix live** — reload extension, one run on a form with EEO/consent gates → expect
-   `resolve-split` ~`local: 15 | ai: 9` and the 4 fields filling with no API call. Then **strip the temp
-   `[Jobby] resolve-split` log** from `resolveUnknownFields`.
-2. **Commit** this session's uncommitted work (resolve.js fix, +4 tests, settings.json, docs) once #1 passes.
-3. **Confirm async location live** on a form that HAS a location combobox; fix the wrong Alabama comment
-   in `autofill.js` while there.
-4. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
+**Next up (priority order — immediate fork is #1 vs #2, see this session's strategy chat):**
+1. **Breadth: `lever.json` / `ashby.json` adapters** (Tier 1, no login, low bot-detection, shared engine;
+   adapter JSON ~10 lines, the cost is live quirk-hunting). The most direct apps/day-per-effort lever.
+2. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
    `{ label, value, source: adapter|local|ai, status }`. Foundation for the audit table + feedback loop:
    user wants to review/correct non-standard fills and save them as profile defaults ("not every fill is
    exactly how I'd want it"). Proposed app record:
    `{ id, appliedAt, jobUrl, platform, company, jobTitle, resumeUrl, tailoring, fields[], counts }`.
    Analytics: coverage rate, most-blank labels, local-vs-AI hit rate, per-platform.
-5. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
-6. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
+3. **Confirm async location live** + fix the wrong Alabama comment in `autofill.js` — opportunistic, next
+   time a form has a location combobox.
+4. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
+5. `automation/` Playwright stubs (V3 hands-off submit) — after adapters prove out.
 
 **Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two
 passes that died on the real form. **For DOM behavior, the real-form test is the only source of truth.**

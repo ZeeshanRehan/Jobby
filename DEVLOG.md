@@ -51,6 +51,11 @@ expect the split to move to ~`local: 15 | ai: 9` and the 4 fields to fill with n
 resolve-split log after that. Decision stands: don't chase the 8 essays/job-specific — AI is the right tool
 there; the win was the 4 regex-gap leaks, and ack/EEO gates repeat on nearly every form.
 
+**Follow-up (same day, `b099f50` → `c1b5bb4`) — CONFIRMED LIVE; tag → FIXED.** A real run showed the AI
+field count drop as predicted. The `resolve-split` log is intentionally **KEPT** (not stripped) — it's one
+clean line in the popup console and is the ongoing local-vs-AI coverage signal for V4. Comment relabeled
+from "temp instrumentation, strip once measured" to a permanent coverage-signal note.
+
 ---
 
 ## 2026-05-25 — first test suite + `bestOptionMatch` shortest-wins comment is wrong  ·  DECISION / OPEN
