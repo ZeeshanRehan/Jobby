@@ -267,7 +267,8 @@ async function fetchResumeAsDataUrl(resumeUrl) {
 // Injects autofill.js then sends FILL_FORM — returns { report, unknownFields }
 async function injectAndFill(tabId, adapter, profileData, resumePdf) {
   try {
-    await chrome.scripting.executeScript({ target: { tabId }, files: ["autofill.js"] });
+    // lib/match.js must inject first — autofill.js references bestOptionMatch as a shared global
+    await chrome.scripting.executeScript({ target: { tabId }, files: ["lib/match.js", "autofill.js"] });
   } catch (err) {
     throw { step: "injection", message: `Cannot inject into this page: ${err.message}` };
   }

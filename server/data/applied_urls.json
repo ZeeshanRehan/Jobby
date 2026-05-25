@@ -82,5 +82,13 @@
   "https://job-boards.greenhouse.io/embed/job_app": {
     "timestamp": "2026-05-24T17:35:11.445Z",
     "applicationId": "ee4afca0-9e0b-4339-b77d-52dd3d826965"
+  },
+  "https://job-boards.greenhouse.io/remotecom/jobs/7703245003": {
+    "timestamp": "2026-05-25T21:31:45.557Z",
+    "applicationId": "4ebe0ced-bf2f-46b8-8503-3f530747c719"
+  },
+  "https://job-boards.greenhouse.io/remotecom/jobs/7741371003": {
+    "timestamp": "2026-05-25T21:37:11.492Z",
+    "applicationId": "2acbdd07-0a9e-4b15-98e6-9000e0580b84"
   }
 }

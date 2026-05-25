@@ -57,52 +57,8 @@ if (!window.__jobbyAutofillInjected) {
   }
 
   // ─── Option Matching ────────────────────────────────────────────────────────
-  // Maps a resolved answer to the best option. Priority: exact → answer-in-option →
-  // option-in-answer (≥4 chars, blocks "no" ⊂ "not…") → token overlap, which bridges
-  // canonical answers and verbose options (e.g. "South Asian / Indian" → "South Asian
-  // (inclusive of Bangladesh, Pakistan, India…)"). Returns the best index, or -1.
-  const MATCH_STOP = new Set(["with", "that", "from", "your", "this", "have", "will", "other", "please", "than", "into", "they"]);
-
-  function bestOptionMatch(texts, answer) {
-    const lower = String(answer).toLowerCase().trim();
-    if (!lower) return -1;
-
-    const lc = texts.map((t) => t.toLowerCase().trim());
-
-    // 1. exact
-    let i = lc.findIndex((t) => t === lower);
-    if (i >= 0) return i;
-
-    // 2. leading clause — "No, I do not have a disability" → "No"; "Yes, I am a veteran" → "Yes"
-    const head = lower.split(",")[0].trim();
-    if (head && head !== lower) {
-      i = lc.findIndex((t) => t === head);
-      if (i >= 0) return i;
-    }
-
-    // 3. answer ⊂ option — pick the SHORTEST containing option so "United States" lands on
-    //    "United States of America", not the first "...- Alabama" by list position
-    if (lower.length >= 3) {
-      let bi = -1, blen = Infinity;
-      lc.forEach((t, k) => { if (t.includes(lower) && t.length < blen) { blen = t.length; bi = k; } });
-      if (bi >= 0) return bi;
-    }
-
-    // 4. option ⊂ answer (≥4 chars, blocks "no" ⊂ "not…")
-    i = lc.findIndex((t) => t.length >= 4 && lower.includes(t));
-    if (i >= 0) return i;
-
-    // 5. token overlap — pick the option sharing the most distinctive words, only if a clear winner
-    const tokens = lower.split(/[^a-z0-9]+/).filter((w) => w.length >= 4 && !MATCH_STOP.has(w));
-    if (!tokens.length) return -1;
-    let best = -1, bestScore = 0, tie = false;
-    lc.forEach((t, idx) => {
-      const score = tokens.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0);
-      if (score > bestScore) { bestScore = score; best = idx; tie = false; }
-      else if (score === bestScore && score > 0) { tie = true; }
-    });
-    return (best >= 0 && bestScore > 0 && !tie) ? best : -1;
-  }
+  // bestOptionMatch lives in lib/match.js (single source of truth, unit-tested) and is
+  // injected as a content-script global immediately before this file — see popup.js injectAndFill.
 
   // ─── Select Fill ──────────────────────────────────────────────────────────
   function fillSelect(el, answer) {
@@ -182,7 +138,6 @@ if (!window.__jobbyAutofillInjected) {
     const menu      = findComboboxMenu(el);
     const optionEls = readComboboxOptionEls(menu);
     const options   = optionEls.map((o) => o.textContent.trim()).filter(Boolean);
-    console.log(`[Jobby] combobox-debug "${getUniqueSelector(el)}" opened=${opened} controls=${el.getAttribute("aria-controls")} menuFound=${!!menu} opts=${optionEls.length} options=${JSON.stringify(options).slice(0, 300)}`);
     await closeCombobox(el);
     return options;
   }
@@ -200,12 +155,8 @@ if (!window.__jobbyAutofillInjected) {
       const els  = readComboboxOptionEls(menu);
       const txts = els.map((o) => o.textContent.trim());
       const settling = txts.length === 0 || txts.some((x) => /^(loading|searching)/i.test(x)) || txts.every((x) => /no options/i.test(x));
-      if (!settling) {
-        console.log(`[Jobby] typeahead "${getUniqueSelector(el)}" query=${JSON.stringify(query)} opts=${txts.length} ${JSON.stringify(txts).slice(0, 200)}`);
-        return els;
-      }
+      if (!settling) return els;
     }
-    console.log(`[Jobby] typeahead "${getUniqueSelector(el)}" query=${JSON.stringify(query)} timed-out`);
     return [];
   }
 
@@ -233,9 +184,8 @@ if (!window.__jobbyAutofillInjected) {
   // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select,
   // and async type-ahead selects (open → 0 options → type → re-read → location-aware pick).
   async function fillCombobox(el, answer) {
-    const sel    = getUniqueSelector(el);
     const opened = await openCombobox(el);
-    if (!opened) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=did-not-open`); await closeCombobox(el); return false; }
+    if (!opened) { await closeCombobox(el); return false; }
 
     let opts  = readComboboxOptionEls(findComboboxMenu(el));
     let texts = opts.map((o) => o.textContent.trim());
@@ -249,8 +199,8 @@ if (!window.__jobbyAutofillInjected) {
       idx   = bestOptionMatch(texts, answer);
     }
 
-    if (opts.length === 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-options`); await closeCombobox(el); return false; }
-    if (idx < 0) { console.log(`[Jobby] fill-debug "${sel}" idx=-1 reason=no-match answer=${JSON.stringify(String(answer))} options=${JSON.stringify(texts).slice(0, 300)}`); await closeCombobox(el); return false; }
+    if (opts.length === 0) { await closeCombobox(el); return false; }
+    if (idx < 0) { await closeCombobox(el); return false; }
     const pick  = opts[idx];
 
     pick.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
@@ -262,7 +212,6 @@ if (!window.__jobbyAutofillInjected) {
     const vc    = el.closest('[class*="value-container"]');
     const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
     const ok    = shown.includes(texts[idx]);
-    console.log(`[Jobby] fill-debug "${sel}" idx=${idx} picked=${JSON.stringify(texts[idx])} ok=${ok} shown=${JSON.stringify(shown).slice(0, 200)}`);
 
     // always close so a still-open menu can't block the next field
     await closeCombobox(el);
@@ -272,7 +221,6 @@ if (!window.__jobbyAutofillInjected) {
   // ─── File Fill ────────────────────────────────────────────────────────────
   // Reconstructs a File from a base64 dataURL and attaches via DataTransfer
   function fillFile(el, dataUrl) {
-    console.log("[Jobby] fillFile: el=", el, "visible=", el.offsetParent !== null, "disabled=", el.disabled);
     const [, base64] = dataUrl.split(",");
     const binary = atob(base64);
     const bytes = new Uint8Array(binary.length);
@@ -282,7 +230,6 @@ if (!window.__jobbyAutofillInjected) {
     const dt   = new DataTransfer();
     dt.items.add(file);
     el.files = dt.files;
-    console.log("[Jobby] fillFile: files after set=", el.files.length, el.files[0]?.name);
     el.dispatchEvent(new Event("change", { bubbles: true }));
     el.dispatchEvent(new Event("input",  { bubbles: true }));
   }
@@ -323,14 +270,9 @@ if (!window.__jobbyAutofillInjected) {
       const required  = el.required || el.getAttribute("aria-required") === "true";
       const consent   = CONSENT_RE.test(label);
       const marketing = MARKETING_RE.test(label);
-      const id        = getUniqueSelector(el) || label.slice(0, 40);
 
-      if (!(required || (consent && !marketing))) {
-        console.log(`[Jobby] checkbox-skip "${id}" required=${required} consent=${consent} marketing=${marketing}`);
-        continue;
-      }
+      if (!(required || (consent && !marketing))) continue;
       const ok = tickCheckbox(el);
-      console.log(`[Jobby] checkbox-tick "${id}" required=${required} consent=${consent} ok=${ok}`);
       if (ok) ticked.push(getLabelText(el) || el.name || el.id || "checkbox");
     }
     return ticked;
@@ -381,7 +323,6 @@ if (!window.__jobbyAutofillInjected) {
         fieldType = el.type || "text";
       }
 
-      console.log(`[Jobby] unknown field — "${label}" (${fieldType}) selector="${selector}" options=${options ? options.length : 0}`);
       unknownFields.push({ selector, label, fieldType, options });
     }
 
@@ -416,31 +357,25 @@ if (!window.__jobbyAutofillInjected) {
 
           const el = document.querySelector(selector);
           if (!el) {
-            console.log(`[Jobby] stale — ${fieldName} selector "${selector}" matched nothing`);
             report.stale.push(fieldName);
             continue;
           }
 
           handledEls.add(el);
-          console.log(`[Jobby] found ${fieldName} (${type}) — el:`, el);
 
           try {
             if (type === "text") {
               const value = resolvePath(profileData, source);
               if (value == null || value === "") {
-                console.log(`[Jobby] skipped ${fieldName} — no value at path "${source}"`);
                 report.skipped.push(fieldName);
                 continue;
               }
               fillText(el, String(value));
-              console.log(`[Jobby] filled ${fieldName} =`, value);
               report.filled.push(fieldName);
             } else if (type === "file") {
               fillFile(el, resumePdf);
-              console.log(`[Jobby] file attached for ${fieldName}`);
               report.filled.push(fieldName);
             } else {
-              console.log(`[Jobby] skipped ${fieldName} — unknown type "${type}"`);
               report.skipped.push(fieldName);
             }
           } catch (err) {
@@ -482,10 +417,8 @@ if (!window.__jobbyAutofillInjected) {
               fillText(el, value);
             }
             if (ok) {
-              console.log(`[Jobby] AI filled "${selector}" =`, value);
               aiFilled.push(selector);
             } else {
-              console.log(`[Jobby] AI fill no-match "${selector}" =`, value);
               aiErrors.push(selector);
             }
           } catch (err) {
