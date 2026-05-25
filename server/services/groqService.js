@@ -1,3 +1,7 @@
+// ─── NAME IS LEGACY — THIS RUNS ON CLAUDE, NOT GROQ ─────────────────────────
+// Migrated off Groq llama-3.3 → Claude Haiku 4.5 on 2026-05-24 (Anthropic SDK,
+// ANTHROPIC_API_KEY). The filename + "groq" references stayed for git/import
+// stability. There is NO Groq dependency. Do not look for a GROQ_API_KEY.
 const Anthropic = require("@anthropic-ai/sdk");
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });

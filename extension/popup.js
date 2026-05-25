@@ -1,6 +1,6 @@
 // ─── Constants ───────────────────────────────────────────────────────────────
 const API_URL    = "http://178.105.161.45:3000/tailor-resume";
-const TIMEOUT_MS = 120_000; // Groq + Puppeteer can take 30-60s
+const TIMEOUT_MS = 120_000; // Claude + Puppeteer can take 30-60s
 const STORAGE_KEY = "lastResult";
 
 // ─── DOM References ───────────────────────────────────────────────────────────
@@ -586,7 +586,7 @@ async function runAutofill() {
       aiFilledCount = aiFilled.length;
       report.filled.push(...aiFilled);
 
-      // Fields Groq answered but the DOM fill still failed go into unknown
+      // Fields the AI answered but the DOM fill still failed go into unknown
       if (aiErrors.length > 0) {
         const errSet = new Set(aiErrors);
         resolved.forEach((f) => { if (errSet.has(f.selector)) unknownLabels.push(f.selector); });

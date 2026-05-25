@@ -62,7 +62,7 @@ const profileData = {
   },
 
   // ─── Bio ─────────────────────────────────────────────────────────────────────
-  // Used by Groq for open-ended "tell me about yourself" / background questions.
+  // Used by Claude for open-ended "tell me about yourself" / background questions.
   bio: {
     // 2–3 sentence punch — used for short "about you" fields
     summary: "Computer Science student at Rowan University (graduating May 2026) with a record of building software that ships and gets real-world use — from a cognitive assessment tool deployed across two hospitals to an AI-powered job automation platform that cuts application time from 30 minutes to under a minute. I'm drawn to problems at the intersection of technology and human productivity, and I bring a naturally global perspective from growing up across India, the Middle East, and the US.",
@@ -93,7 +93,7 @@ const profileData = {
   },
 
   // ─── Projects ─────────────────────────────────────────────────────────────────
-  // Used by Groq for "what's your proudest work" / "describe a project" questions.
+  // Used by Claude for "what's your proudest work" / "describe a project" questions.
   // Lead with PPST for impact/healthcare angle, Jobby for AI/tech angle.
   projects: [
     {
@@ -112,15 +112,15 @@ const profileData = {
     {
       name: "Jobby",
       tagline: "AI-powered job application automation — from job post to filled form in under 60 seconds",
-      description: "End-to-end job application automation built as a Chrome extension + Express API. Scrapes job descriptions, tailors resumes per role using Groq AI, generates single-page ATS-safe PDFs with Puppeteer, stores them in Supabase, and autofills application forms using adapter-based selector maps with an AI fallback for unknown fields.",
+      description: "End-to-end job application automation built as a Chrome extension + Express API. Scrapes job descriptions, tailors resumes per role using Claude (Anthropic), generates single-page ATS-safe PDFs with Puppeteer, stores them in Supabase, and autofills application forms using adapter-based selector maps with an AI fallback for unknown fields.",
       impact: "Reduces per-application time from 20–30 minutes to under 60 seconds.",
       highlights: [
         "AI resume tailoring per job description — keywords woven in without changing facts or metrics",
-        "Chrome extension with adapter-based autofill and Groq-powered fallback for unknown form fields",
+        "Chrome extension with adapter-based autofill and Claude-powered fallback for unknown form fields",
         "Full pipeline: scrape → tailor → PDF → upload → autofill",
         "Adapter architecture makes it extensible to any ATS without touching core logic",
       ],
-      techStack: ["Node.js", "Express", "Groq AI", "Puppeteer", "Supabase", "Chrome Extension MV3"],
+      techStack: ["Node.js", "Express", "Anthropic Claude", "Puppeteer", "Supabase", "Chrome Extension MV3"],
     },
     {
       name: "Are You Hungry",
@@ -137,7 +137,7 @@ const profileData = {
   ],
 
   // ─── Default Answer Bank ────────────────────────────────────────────────────
-  // Groq uses these as a semantic lookup — match by meaning, not exact key name.
+  // Claude uses these as a semantic lookup — match by meaning, not exact key name.
   // Rule: if a form question maps to any entry here, use the value. No ambiguity.
   defaultAnswers: {
 

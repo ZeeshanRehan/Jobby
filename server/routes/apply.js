@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "jobUrl and jobDescription are required" });
   }
 
-  // Idempotency check — before any Groq call to save tokens
+  // Idempotency check — before any AI call to save tokens
   const existing = hasApplied(jobUrl);
   if (existing) {
     const existingRecord = findApplication(existing.applicationId);
@@ -55,7 +55,7 @@ router.post("/", async (req, res) => {
   try {
     tailored = await tailorResume(jobDescription, jobUrl);
   } catch (err) {
-    console.error("[apply - Step 1 Groq] Failed:", err.message);
+    console.error("[apply - Step 1 Claude] Failed:", err.message);
     return res.status(500).json({ error: "AI tailoring failed", step: "ai_tailoring" });
   }
 

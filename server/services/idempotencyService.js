@@ -1,5 +1,5 @@
 // ─── Idempotency Service ─────────────────────────────────────────────────────
-// Prevents duplicate tailoring runs for the same job URL, saving Groq tokens.
+// Prevents duplicate tailoring runs for the same job URL, saving Claude tokens.
 
 const fs   = require("fs");
 const path = require("path");

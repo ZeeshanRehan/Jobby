@@ -128,7 +128,7 @@ router.post("/", async (req, res) => {
       .trim();
 
     const parsed = JSON.parse(clean);
-    // Only suppress if Groq explicitly returned null — low confidence still gets filled
+    // Only suppress if the model explicitly returned null — low confidence still gets filled
     if (!parsed.answer) parsed.answer = null;
     res.json(parsed);
   } catch (err) {

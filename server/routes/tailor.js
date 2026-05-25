@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
 
   // ─── Extract request body ─────────────────────────────────────────────────
-  // jobUrl is optional — used for logging/context but not required by Groq.
+  // jobUrl is optional — used for logging/context but not required by the tailoring model.
   // jobDescription is required — reject early if missing.
   const { jobDescription, jobUrl } = req.body;
 
@@ -20,18 +20,18 @@ router.post("/", async (req, res) => {
   }
 
   // ─── Step 1: AI Tailoring ─────────────────────────────────────────────────
-  // Send jobDescription + jobUrl to Groq. Returns structured JSON with
+  // Send jobDescription + jobUrl to Claude. Returns structured JSON with
   // tailoredExperience, tailoredProjects, skillsToAdd, warnings.
-  // Fails if Groq API is down, key is invalid, or response isn't valid JSON.
+  // Fails if the Anthropic API is down, key is invalid, or response isn't valid JSON.
   let tailored;
   try {
     tailored = await tailorResume(jobDescription, jobUrl);
   } catch (err) {
-    console.error("[Step 1 - Groq] Failed:", err.message);
+    console.error("[Step 1 - Claude] Failed:", err.message);
     return res.status(500).json({
       success: false,
       step: "ai_tailoring",
-      error: "AI tailoring failed — check Groq API key or model availability",
+      error: "AI tailoring failed — check ANTHROPIC_API_KEY or model availability",
     });
   }
 
