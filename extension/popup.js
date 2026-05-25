@@ -340,6 +340,10 @@ async function resolveUnknownFields(unknownFields, contextHtml, profileData) {
     }
   }
 
+  // TODO: temp instrumentation for the "lesser AI fallback" question — strip once measured
+  console.log(`[Jobby] resolve-split — unknown: ${unknownFields.length} | local: ${unknownFields.length - needsAi.length} | ai: ${needsAi.length}`);
+  if (needsAi.length) console.log("[Jobby] →AI labels:", needsAi.map((f) => f.label));
+
   // Claude only for open-ended fields local couldn't handle
   const BATCH_SIZE = 3;
   for (let i = 0; i < needsAi.length; i += BATCH_SIZE) {

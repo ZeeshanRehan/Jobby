@@ -2077,5 +2077,173 @@
       ]
     },
     "errors": []
+  },
+  {
+    "applicationId": "20a9b065-e1f4-46b9-9903-8cb3b9ba59d6",
+    "timestamp": "2026-05-25T22:22:12.647Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741373003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_20a9b065-e1f4-46b9-9903-8cb3b9ba59d6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yMGE5YjA2NS1lMWY0LTQ2YjktOTkwMy04Y2IzYjliYTU5ZDYucGRmIiwiaWF0IjoxNzc5NzQ3NzMyLCJleHAiOjE3Nzk3NTEzMzJ9.Y6viurBQTiIWQ94uowX6gp16WQUHfJAA3cmN_V4y7y4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/20a9b065-e1f4-46b9-9903-8cb3b9ba59d6.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "System Design",
+        "Verification Loops",
+        "Guardrails",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "System Design",
+      "Verification Loops",
+      "Guardrails",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803696003",
+        "#question_30803697003",
+        "#question_30803698003",
+        "#question_30803699003",
+        "#question_30803700003",
+        "#question_30803701003",
+        "#question_30803703003",
+        "#question_30803712003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803702003",
+        "#question_30803704003",
+        "#question_30803705003",
+        "#question_30803706003",
+        "#question_30803707003",
+        "#question_30803708003",
+        "#question_30803709003",
+        "#question_30803710003",
+        "#question_30803711003",
+        "#question_30803713003",
+        "#question_30803714003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "c7d0859e-d159-4abc-829b-fb08236ce93f",
+    "timestamp": "2026-05-25T22:23:59.097Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741374003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_c7d0859e-d159-4abc-829b-fb08236ce93f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jN2QwODU5ZS1kMTU5LTRhYmMtODI5Yi1mYjA4MjM2Y2U5M2YucGRmIiwiaWF0IjoxNzc5NzQ3ODM5LCJleHAiOjE3Nzk3NTE0Mzl9.ndZ2UfcdFLbi2fYu3JhS1_skGndHG-vQpqqNaDIvqYo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/c7d0859e-d159-4abc-829b-fb08236ce93f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Automation Workflows",
+        "Agentic Systems",
+        "System Design",
+        "Verification Testing",
+        "Guardrails",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Automation Workflows",
+      "Agentic Systems",
+      "System Design",
+      "Verification Testing",
+      "Guardrails",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803715003",
+        "#question_30803716003",
+        "#question_30803717003",
+        "#question_30803718003",
+        "#question_30803719003",
+        "#question_30803720003",
+        "#question_30803722003",
+        "#question_30803731003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803721003",
+        "#question_30803723003",
+        "#question_30803724003",
+        "#question_30803725003",
+        "#question_30803726003",
+        "#question_30803727003",
+        "#question_30803728003",
+        "#question_30803729003",
+        "#question_30803730003",
+        "#question_30803732003",
+        "#question_30803733003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
   }
 ]

@@ -188,90 +188,69 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-25. **HEAD = `54fdb7c` "comboboxes 96%". Working tree has UNCOMMITTED test-system work**
-(see "Test system landed" below) — not yet committed/pushed. Autofill code itself is unchanged from
-`54fdb7c`.
+**Date:** 2026-05-25. **HEAD = `24f8635` "autofilll greenhouse upgraded needs lesser AI fallback".**
+Working tree clean except runtime data (`applications.json`, `applied_urls.json`, 2 résumé PDFs accruing
+from runs) — no uncommitted code.
 
-**STATUS: autofill runs end-to-end on live Greenhouse.** One run fills: adapter text fields → resume
-upload → react-select dropdowns (single **and** async type-ahead location) → AI/local field resolution →
-consent-checkbox ticking. Submit is never clicked (dry-run by design). Full per-bug post-mortem for the
-combobox saga lives in `DEVLOG.md`.
+**STATUS: autofill runs end-to-end on live Greenhouse and Phase 1 cleanup is DONE.** One run fills: adapter
+text fields → resume upload → react-select dropdowns → AI/local field resolution → consent-checkbox
+ticking. Submit is never clicked (dry-run by design). Full per-bug post-mortem for the combobox saga lives
+in `DEVLOG.md`.
 
-**Test system landed (2026-05-25, uncommitted).** First automated tests — `node --test`, zero deps, run
-with `npm test`. Targets the two pure chokepoint functions every form funnels through:
-- `localResolveField` → **extracted** to `extension/lib/resolve.js` (dual browser-global / Node export),
-  loaded via `<script>` in `popup.html` before `popup.js`. `test/resolve.test.js` (10 cases). Popup-only.
-- `bestOptionMatch` → **extraction HELD** (it's in the live autofill injection path; held until checkbox +
-  location confirmed live so that run stays on known-good `autofill.js`). `test/match.test.js` (10 cases)
-  guards a **verbatim temp copy** until `extension/lib/match.js` lands — see the held task + DEVLOG.
-- Suite = 20 tests, all green. Encodes every logic regression from DEVLOG (Lebanon, "No"⊂"Not…",
+**Phase 1 — pre-V4 cleanup (COMPLETE, committed).** This was the "de-tax" pass before V4 log work:
+- **Test system** (`be837ba`): `npm test` (`node --test`, zero deps, 20 green). `localResolveField` →
+  `extension/lib/resolve.js`, `bestOptionMatch` → `extension/lib/match.js` — both dual browser-global /
+  Node-export, single source of truth, loaded as content-script globals / `<script>` before `popup.js`.
+  `test/resolve.test.js` + `test/match.test.js` encode every DEVLOG logic regression (Lebanon, "No"⊂"Not…",
   country→work-status leak, leading-clause, token-overlap, shortest-wins, boundaries).
-- ⚠️ The popup.html→resolve.js→popup.js **global-sharing is a runtime contract not yet verified live.**
-  Before the next run, in the popup's devtools console run
-  `localResolveField({label:"Gender"},{demographics:{gender:"TEST"}})` → must return `"TEST"`. If
-  `ReferenceError`/`undefined`, the wiring's wrong and every unknown field silently falls through to Claude.
+- **`bestOptionMatch` extraction** (`24f8635`): moved OUT of `autofill.js` → `lib/match.js`; injection is
+  now `executeScript files: ["lib/match.js", "autofill.js"]` (popup.js:270); `match.test.js:6` now
+  `require()`s the real module — **the duplicate-copy maintenance tax is paid off** (no more hand-mirroring
+  the matcher between `autofill.js` and the test). This extraction was HELD until checkbox confirmed live.
+- **Debug logs stripped** from `autofill.js` (`24f8635`) — the "lighten the logs" half. High-level run logs
+  (`FILL_FORM received`, `report:`, `AI fill done`) kept; per-field combobox/fill/typeahead spam gone.
+- **Consent checkbox CONFIRMED LIVE** — last Remote/Greenhouse run reported `consent: 1`, 0 errors, filled
+  clean on the stripped `autofill.js`. `localResolveField` wiring confirmed too (run completed without a
+  `ReferenceError` → the resolve.js global-sharing contract holds; the old "unverified wiring" worry is closed).
 
-**What landed since the prior cutoff** (these notes used to say "uncommitted" / "not implemented" /
-"deferred" — all now committed in `c1369a9` → `54fdb7c`):
-- **Combobox cascade — FIXED & committed.** Root cause: the *fill* phase read the WRONG menu per field.
-  `#country` (intl-tel-input phone chip) filled first, left its menu stuck open → later comboboxes failed
-  to open → `findComboboxMenu`'s document-wide fallback returned the stuck 244-option COUNTRY menu →
-  blank/garbage (picked "Lebanon" as a phone code). Fix: `findComboboxMenu` resolves ONLY via
-  `aria-controls`→`getElementById` (document-wide fallback removed — worst case is now blank, never
-  cross-contaminated); added `isComboboxOpen()`; `openCombobox`/`closeCombobox` now verify their OWN
-  menu opened/closed; `fillCombobox` requires `opened` + `ok===true`; `scanUnknownFields` skips `#country`.
-- **`bestOptionMatch` ladder rewrite — committed.** exact → leading-clause (comma split: "No, I do not
-  have a disability" → "No") → answer⊂option (**shortest containing option** wins — deterministic, not
-  first-by-position; note this is shortest *by length*, so "United States" + mixed state/country options
-  picks "…- Alabama", NOT "of America" — the `autofill.js:83` comment overstates this, see DEVLOG
-  2026-05-25) → option⊂answer(≥4) → token-overlap. Forward-substring needs ≥3 chars (stops "No" ⊂ "Lebanon").
-- **Consent-checkbox fill — IMPLEMENTED** (`tickConsentCheckboxes`, `autofill.js:315`, wired into the run
-  at `:455`). Ticks boxes that gate Submit: trigger is `required` (a required box before Submit is consent
-  by definition), keyword match is a bonus; marketing skipped UNLESS required; never clicks Submit;
-  reported in `report.consent`. Native `<input type=checkbox>` via `.click()`, custom `role=checkbox` via
-  synthetic mouse events. This was the prior cutoff's blocked "immediate ask".
-- **`candidate-location` async type-ahead — IMPLEMENTED** (`typeAheadOptions` + `pickLocationOption`,
-  `autofill.js` ~`:195`). Types the city clause to trigger the remote load, polls ~2.6s for real options,
-  then a location-aware pick (city + full state, longest match). **No city match → leaves it blank by
-  design** (never a blind first-pick — that would re-introduce the wrong-menu bug). Was "deferred #3".
-- **`popup.js` `localResolveField`** — `/country/` rule guarded against work-status/eligibility labels
-  (status|eligib|visa|sponsor|citizen|authoriz|permanent resident|refugee|work permit → route to AI);
-  country answer state-qualified `"United States of America - New Jersey"`.
-- **`server/data/profile.js`** — `contact.linkedinUrl` fixed (committed).
+**Open loose ends from Phase 1:**
+- **async type-ahead location still UNCONFIRMED live** — the last retest form had no location combobox
+  (adapter fields were just name/email/phone/resume/linkedin/website). Confirm on a form that has one.
+- **doc-only**: the `autofill.js` "United States → not Alabama" comment is factually wrong (shortest-wins
+  actually picks "…- Alabama"). Benign — see DEVLOG 2026-05-25 OPEN. Fix when next touching that file.
 
-**Unverified / open:**
-- Live-on-real-form confirmation of **checkbox-tick** and **async location** is not recorded in these
-  notes — both are coded and the "96%" commit implies close, but **confirm on the next real Greenhouse run.**
-- Debug logs still in `autofill.js` (`[Jobby] combobox-debug`, `fill-debug`, `typeahead`,
-  `checkbox-skip`/`checkbox-tick`, per-field). **Strip once checkbox + location are confirmed live.**
+**AI-fallback measurement gap (the "lesser AI fallback" thread — the commit name is a TODO, not done work).**
+We CANNOT see the local-vs-AI split. `sendAiFields` DOM-fills the MERGED resolved set, so a log like
+"AI fill done — filled: 24" = local+AI **combined**, NOT 24-to-Claude. The server route (`ai-fallback.js`)
+logs only on error, and the last run had 0 errors → no retroactive record either. **Before adding anything
+to `localResolveField`, instrument the split** in `resolveUnknownFields` (popup.js:328): log `local: X |
+ai: Y` + the exact labels routed to Claude. One real run then tells us whether AI fallback is already fine
+(only genuine open-ended Qs leaking) or bloated (standard fields leaking through). Measurement-first — do
+NOT guess-extend the resolver. (This instrumentation doubles as a down payment on V4's local-vs-AI analytic.)
 
-**Runtime data already accruing:** `server/data/applications.json` = 26 per-app records
-(`jobUrl, status, mode, resumeUrl, changesMade, coverageReport`). This is the V4 dashboard foundation —
-but `coverageReport` is still **field-names-only** (`filled`/`skipped`/`consent` arrays), NOT yet the
-per-field `{ label, value, source, status }` the audit table needs.
+**Runtime data accruing:** `server/data/applications.json` per-app records (`jobUrl, status, mode,
+resumeUrl, changesMade, coverageReport`) — V4 dashboard foundation. `coverageReport` is still
+**field-names-only** (`filled`/`skipped`/`consent` arrays), NOT yet the per-field
+`{ label, value, source, status }` the audit table needs.
 
 **Deploy/test state:**
-- Tests: `npm test` (`node --test`, no deps) — 20 green. Run before committing logic changes to the matcher
-  or resolver.
-- Extension (`popup.js`, `popup.html`, new `lib/resolve.js`): **reload extension** to pick up. Do the
-  console runtime check above before relying on it. `autofill.js` is unchanged.
-- Server: HEAD is pushed; VPS needs `cd ~/Jobby && git pull && pm2 restart all`. (Test work is extension/
-  local only — no server or VPS change.)
+- Tests: `npm test` (`node --test`, no deps) — 20 green. Run before committing matcher/resolver logic changes.
+- Extension changes need an **extension reload** to pick up. Server HEAD is pushed; VPS needs
+  `cd ~/Jobby && git pull && pm2 restart all` only if a server file changed (Phase 1 was extension/local only).
 
 **Next up (priority order):**
-0. **Commit the uncommitted test-system work** (package.json, `extension/lib/resolve.js`, `popup.js`,
-   `popup.html`, `test/`, DEVLOG, this cutoff) once the popup console check passes.
-1. **Verify checkbox + async location live** on a real Greenhouse form → then strip the debug logs AND do
-   the HELD `bestOptionMatch` extraction (task #5: `lib/match.js` + injection change + comment fix + switch
-   `match.test.js` off its temp copy).
-2. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
+1. **(cheap, ~5 lines) Instrument the local-vs-AI split** in `resolveUnknownFields` (popup.js:328) → one
+   live run → decide whether the "lesser AI fallback" agenda needs any work at all. Doubles as V4 down payment.
+2. **Confirm async location live** on a form that HAS a location combobox; fix the wrong Alabama comment
+   in `autofill.js` while there.
+3. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
    `{ label, value, source: adapter|local|ai, status }`. Foundation for the audit table + feedback loop:
    user wants to review/correct non-standard fills and save them as profile defaults ("not every fill is
    exactly how I'd want it"). Proposed app record:
    `{ id, appliedAt, jobUrl, platform, company, jobTitle, resumeUrl, tailoring, fields[], counts }`.
    Analytics: coverage rate, most-blank labels, local-vs-AI hit rate, per-platform.
-3. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
-4. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
+4. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
+5. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
 
 **Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two
 passes that died on the real form. **For DOM behavior, the real-form test is the only source of truth.**

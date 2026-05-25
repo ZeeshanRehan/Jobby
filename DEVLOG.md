@@ -47,6 +47,15 @@ comment fix in `autofill.js` is folded into the HELD extraction task (it's a doc
 `autofill.js` waits for the live confirmation per the sequencing above). Revisit if a live form ever shows
 the bare-"United States" + state-split combination.
 
+**Follow-up 2026-05-25 (later, `24f8635`) — HELD extraction released, tax paid.** A live Remote/Greenhouse
+run confirmed the consent checkbox (`consent: 1`, 0 errors) on known-good `autofill.js`, which was the gate
+on the hold. So the extraction landed: `bestOptionMatch` moved into `extension/lib/match.js`, injection
+changed to `executeScript files: ["lib/match.js", "autofill.js"]` (popup.js:270), and `test/match.test.js`
+switched from its verbatim temp copy to `require("../extension/lib/match.js")` — **the duplicate-copy
+maintenance tax is now gone.** Debug logs stripped from `autofill.js` in the same commit. STILL OPEN from
+this entry: (a) the wrong "Alabama" comment was NOT fixed in `24f8635` — carry it to the next `autofill.js`
+touch; (b) async type-ahead location remains unconfirmed live (the retest form had no location combobox).
+
 ---
 
 ## 2026-05-24 — react-select combobox cascade: every dropdown filled blank/garbage  ·  FIXED
