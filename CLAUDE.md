@@ -189,8 +189,9 @@ Two complementary records — keep both current:
 
 ### Last Session Cutoff
 **Date:** 2026-05-25. **HEAD = `24f8635` "autofilll greenhouse upgraded needs lesser AI fallback".**
-Working tree clean except runtime data (`applications.json`, `applied_urls.json`, 2 résumé PDFs accruing
-from runs) — no uncommitted code.
+**UNCOMMITTED this session** (logic verified, not yet committed): `extension/lib/resolve.js` (ack/LGBTQ
+fix), `test/resolve.test.js` (+4 tests), `extension/popup.js` (temp resolve-split instrumentation),
+`.claude/settings.json` (npm test allow), plus this cutoff + DEVLOG. Runtime data dirty as usual.
 
 **STATUS: autofill runs end-to-end on live Greenhouse and Phase 1 cleanup is DONE.** One run fills: adapter
 text fields → resume upload → react-select dropdowns → AI/local field resolution → consent-checkbox
@@ -219,14 +220,17 @@ in `DEVLOG.md`.
 - **doc-only**: the `autofill.js` "United States → not Alabama" comment is factually wrong (shortest-wins
   actually picks "…- Alabama"). Benign — see DEVLOG 2026-05-25 OPEN. Fix when next touching that file.
 
-**AI-fallback measurement gap (the "lesser AI fallback" thread — the commit name is a TODO, not done work).**
-We CANNOT see the local-vs-AI split. `sendAiFields` DOM-fills the MERGED resolved set, so a log like
-"AI fill done — filled: 24" = local+AI **combined**, NOT 24-to-Claude. The server route (`ai-fallback.js`)
-logs only on error, and the last run had 0 errors → no retroactive record either. **Before adding anything
-to `localResolveField`, instrument the split** in `resolveUnknownFields` (popup.js:328): log `local: X |
-ai: Y` + the exact labels routed to Claude. One real run then tells us whether AI fallback is already fine
-(only genuine open-ended Qs leaking) or bloated (standard fields leaking through). Measurement-first — do
-NOT guess-extend the resolver. (This instrumentation doubles as a down payment on V4's local-vs-AI analytic.)
+**AI-fallback measurement — DONE and acted on (the "lesser AI fallback" thread).** Instrumented the
+local-vs-AI split in `resolveUnknownFields` (popup.js, temp `[Jobby] resolve-split` log) and ran live on a
+Remote Eng-Team-Lead form: **`unknown: 24 | local: 11 | ai: 13`**. Verdict: 13-to-AI is mostly CORRECT —
+**8 are legit AI** (5 open-ended essays + 3 job-specific qualification yes/nos; essay-heavy senior role)
+and are the permanent floor. **4 were standard fields leaking through regex gaps → fixed in `lib/resolve.js`:**
+(a) ack/consent handler is now **options-aware** — detects `Acknowledge/Confirm` / `Yes, I consent` by
+option shape and returns it verbatim (verb-less labels like "Privacy notice" used to miss); (b) demographic
+regex widened to catch "LGBTQIA+ community". 1 borderline (work-eligibility status) left on AI by design
+(country-guard). Expected: 13→~9 on that form; ack/EEO gains repeat on most forms. **Logic verified
+(24 green); NOT yet confirmed live** — reload + one run (expect `local: ~15 | ai: ~9`), then strip the temp
+resolve-split log. Full post-mortem: DEVLOG 2026-05-25.
 
 **Runtime data accruing:** `server/data/applications.json` per-app records (`jobUrl, status, mode,
 resumeUrl, changesMade, coverageReport`) — V4 dashboard foundation. `coverageReport` is still
@@ -234,23 +238,25 @@ resumeUrl, changesMade, coverageReport`) — V4 dashboard foundation. `coverageR
 `{ label, value, source, status }` the audit table needs.
 
 **Deploy/test state:**
-- Tests: `npm test` (`node --test`, no deps) — 20 green. Run before committing matcher/resolver logic changes.
+- Tests: `npm test` (`node --test`, no deps) — **24 green** (+4 for the ack/LGBTQ resolver fix). Run before committing matcher/resolver logic changes.
 - Extension changes need an **extension reload** to pick up. Server HEAD is pushed; VPS needs
   `cd ~/Jobby && git pull && pm2 restart all` only if a server file changed (Phase 1 was extension/local only).
 
 **Next up (priority order):**
-1. **(cheap, ~5 lines) Instrument the local-vs-AI split** in `resolveUnknownFields` (popup.js:328) → one
-   live run → decide whether the "lesser AI fallback" agenda needs any work at all. Doubles as V4 down payment.
-2. **Confirm async location live** on a form that HAS a location combobox; fix the wrong Alabama comment
+1. **Confirm the resolver fix live** — reload extension, one run on a form with EEO/consent gates → expect
+   `resolve-split` ~`local: 15 | ai: 9` and the 4 fields filling with no API call. Then **strip the temp
+   `[Jobby] resolve-split` log** from `resolveUnknownFields`.
+2. **Commit** this session's uncommitted work (resolve.js fix, +4 tests, settings.json, docs) once #1 passes.
+3. **Confirm async location live** on a form that HAS a location combobox; fix the wrong Alabama comment
    in `autofill.js` while there.
-3. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
+4. **Dashboard groundwork (V4)** — enrich `coverageReport` from field-names-only to per-field
    `{ label, value, source: adapter|local|ai, status }`. Foundation for the audit table + feedback loop:
    user wants to review/correct non-standard fills and save them as profile defaults ("not every fill is
    exactly how I'd want it"). Proposed app record:
    `{ id, appliedAt, jobUrl, platform, company, jobTitle, resumeUrl, tailoring, fields[], counts }`.
    Analytics: coverage rate, most-blank labels, local-vs-AI hit rate, per-platform.
-4. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
-5. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
+5. True multi-VALUE fill ("select all that apply") — single pick only. Deferred.
+6. `lever.json` / `ashby.json` adapters; `automation/` Playwright stubs (V3 hands-off submit).
 
 **Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two
 passes that died on the real form. **For DOM behavior, the real-form test is the only source of truth.**

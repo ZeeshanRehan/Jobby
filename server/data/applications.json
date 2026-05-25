@@ -2245,5 +2245,185 @@
       ]
     },
     "errors": []
+  },
+  {
+    "applicationId": "d202549e-90c9-4783-94f9-e8d108dc87ef",
+    "timestamp": "2026-05-25T22:48:57.573Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741375003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d202549e-90c9-4783-94f9-e8d108dc87ef.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMjAyNTQ5ZS05MGM5LTQ3ODMtOTRmOS1lOGQxMDhkYzg3ZWYucGRmIiwiaWF0IjoxNzc5NzQ5MzM3LCJleHAiOjE3Nzk3NTI5Mzd9.94uHTsdSr9AFT5Gh8UQMDI02UxI4qJV1ZXx_eMru_YA",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d202549e-90c9-4783-94f9-e8d108dc87ef.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "System Design",
+        "Observability",
+        "Verification Loops",
+        "Guardrails"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, proposed and operationalized end-to-end workflows (spec → plan → execute → verify) projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "System Design",
+      "Observability",
+      "Verification Loops",
+      "Guardrails"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803734003",
+        "#question_30803735003",
+        "#question_30803736003",
+        "#question_30803737003",
+        "#question_30803738003",
+        "#question_30803739003",
+        "#question_30803741003",
+        "#question_30803750003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803740003",
+        "#question_30803742003",
+        "#question_30803743003",
+        "#question_30803744003",
+        "#question_30803745003",
+        "#question_30803746003",
+        "#question_30803747003",
+        "#question_30803748003",
+        "#question_30803749003",
+        "#question_30803751003",
+        "#question_30803752003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "083699b9-868d-4589-8230-43cd4334446a",
+    "timestamp": "2026-05-25T22:53:59.512Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741377003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_083699b9-868d-4589-8230-43cd4334446a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wODM2OTliOS04NjhkLTQ1ODktODIzMC00M2NkNDMzNDQ0NmEucGRmIiwiaWF0IjoxNzc5NzQ5NjM5LCJleHAiOjE3Nzk3NTMyMzl9.94yeRx2wQFMW0h179URzISpEb_xFFZyla6qD-9PnmVU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/083699b9-868d-4589-8230-43cd4334446a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Automation Workflows",
+        "Agentic Systems",
+        "Verification Testing",
+        "System Design",
+        "Team Dynamics",
+        "Performance Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, proposed and operationalized agentic workflows to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Automation Workflows",
+      "Agentic Systems",
+      "Verification Testing",
+      "System Design",
+      "Team Dynamics",
+      "Performance Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803772003",
+        "#question_30803773003",
+        "#question_30803774003",
+        "#question_30803775003",
+        "#question_30803776003",
+        "#question_30803777003",
+        "#question_30803779003",
+        "#question_30803788003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803778003",
+        "#question_30803780003",
+        "#question_30803781003",
+        "#question_30803782003",
+        "#question_30803783003",
+        "#question_30803784003",
+        "#question_30803785003",
+        "#question_30803786003",
+        "#question_30803787003",
+        "#question_30803789003",
+        "#question_30803790003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
   }
 ]

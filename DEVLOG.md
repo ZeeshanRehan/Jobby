@@ -9,6 +9,50 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-25 — "lesser AI fallback": measured the split, fixed the 4 real leaks  ·  FIXED (unverified live)
+
+**Context.** The `24f8635` commit name ("needs lesser AI fallback") was a TODO, not done work. Open
+question: of the unknown fields a form sends, how many actually hit Claude vs resolve locally? The run logs
+couldn't answer it — `sendAiFields` DOM-fills the MERGED (local+AI) resolved set, so "AI fill done —
+filled: 24" conflates both, and `ai-fallback.js` logs only on error (the run had 0).
+
+**Measurement.** Added a temp `[Jobby] resolve-split` log in `resolveUnknownFields` (popup.js) printing
+`local: X | ai: Y` + the exact labels routed to Claude. One live run on a Remote Engineering-Team-Lead
+form: **`unknown: 24 | local: 11 | ai: 13`.**
+
+**Finding — 13-to-AI is mostly correct, not bloat.** Of the 13: **8 are legitimately AI's job** — 5
+open-ended essays (Elixir experience, difficult-direct-report story, product-collab story, "what interests
+you", "what resonates from our values") + 3 job-specific qualification yes/nos (production backend? manage
+engineers? non-technical stakeholder convos?). Those are the permanent floor; you can't pre-can them. The
+posting being a senior, essay-heavy role inflates the count — a normal form has 1-2 of these.
+
+**The 4 real leaks (standard fields slipping through narrow label regexes) — FIXED in `lib/resolve.js`:**
+- "Privacy notice" `[Acknowledge/Confirm]`, "Notice at Collection for California…"
+  `[Acknowledge/Confirm, I am not a CA resident]`, "…confirm you consent your self-identification data…"
+  `[Yes, I consent / I don't wish to answer]` — the old ack rule required an action VERB *and* a
+  policy/privacy keyword in the LABEL; these miss one or the other. Fix: detect by **option shape** (find
+  an option matching `acknowledge|i consent|i agree|yes, i (consent|agree)`) and return it verbatim so the
+  matcher gets an exact hit. Returning a bare "Yes" wouldn't have matched "Acknowledge/Confirm". CA notice
+  → "Acknowledge/Confirm" by design (existing "always affirm consent gates" policy), not the truer "not a
+  CA resident".
+- "…LGBTQIA+ community?" `[Yes, No, Prefer not to respond, …]` — demographic rule only matched
+  `/sexual orientation/`. Widened to `lgbtq|lbgtq|lesbian|transgender`.
+- 1 borderline left on AI **by design**: the work-eligibility *status* dropdown (Citizen/PR/VISA/Sponsor) —
+  the country-guard routes it to AI on purpose.
+
+**Guard against over-triggering.** The ack detector keys on consent/acknowledge OPTION text, not a bare
+"Yes", so plain `[Yes, No]` qualification questions still route to AI. A `resolve.test.js` case locks this.
+
+**Tests.** +4 in `test/resolve.test.js` (LGBTQIA+, two verb-less ack labels, consent field, plain-Yes/No
+guard). Suite 20 → **24 green**.
+
+**Verified?** Logic only (offline, 24 green). **Live fill NOT yet confirmed** — needs reload + one run;
+expect the split to move to ~`local: 15 | ai: 9` and the 4 fields to fill with no API call. Strip the temp
+resolve-split log after that. Decision stands: don't chase the 8 essays/job-specific — AI is the right tool
+there; the win was the 4 regex-gap leaks, and ack/EEO gates repeat on nearly every form.
+
+---
+
 ## 2026-05-25 — first test suite + `bestOptionMatch` shortest-wins comment is wrong  ·  DECISION / OPEN
 
 **Context.** Added the project's first automated tests (`node --test`, zero deps, `npm test`). The target is

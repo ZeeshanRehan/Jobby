@@ -20,7 +20,7 @@ function localResolveField(field, profileData) {
     return demographics?.veteranStatus ?? null;
   if (/\bdisabilit/.test(label))
     return demographics?.disabilityStatus ?? null;
-  if (/sexual\s+orientation/.test(label))
+  if (/sexual\s+orientation|lgbtq|lbgtq|lesbian|transgender/.test(label))
     return da.sexualOrientation ?? "Prefer not to say";
   if (/pronouns/.test(label))
     return "He/Him";
@@ -86,7 +86,13 @@ function localResolveField(field, profileData) {
   if (/full.?time/.test(label) && !/part.?time/.test(label)) return "Yes";
   if (/over\s*18|at\s+least\s+18|18\s+years/.test(label))   return "Yes";
 
-  // ── Acknowledgements ────────────────────────────────────────────────────────
+  // ── Acknowledgements / consent gates ──────────────────────────────────────────
+  // Varied option text ("Acknowledge/Confirm", "Yes, I consent") and labels that often lack a verb
+  // ("Privacy notice"). Detect by option shape and return the affirmative option verbatim so the
+  // matcher gets an exact hit; fall back to the label rule when a field carries no options.
+  const ackOption = (field.options || []).find((o) =>
+    /acknowledge|i\s+consent|i\s+agree|yes,?\s*i\s+(consent|agree)/i.test(o));
+  if (ackOption) return ackOption;
   if (/(acknowledge|agree|confirm|consent)\b/.test(label) &&
       /(policy|terms|recording|privacy|condition|guidelines?)\b/.test(label))
     return "Yes";

@@ -85,3 +85,35 @@ test("null/empty profile does not throw", () => {
   assert.doesNotThrow(() => localResolveField({ label: "Gender" }, null));
   assert.equal(localResolveField({ label: "Gender" }, null), null);
 });
+
+test("demographics: LGBTQIA+ community question resolves like sexual orientation", () => {
+  // Live Remote form leaked this to AI — label is "LBGTQIA+ community", not "sexual orientation".
+  const label = "Do you identify as part of the Lesbian, Bisexual, Gay, Transgender, Queer, Intersex, and Asexual (LBGTQIA+) community?";
+  assert.equal(localResolveField({ label }, profile), "Prefer not to say");
+});
+
+test("ack gate: verb-less label is caught by its affirmative option", () => {
+  // "Privacy notice" / "Notice at Collection…" have no acknowledge/agree verb in the label, so the
+  // label rule alone misses them. The option shape carries the signal.
+  assert.equal(
+    localResolveField({ label: "Privacy notice", options: ["Acknowledge/Confirm"] }, profile),
+    "Acknowledge/Confirm"
+  );
+  assert.equal(
+    localResolveField({ label: "Notice at Collection for California Job Applicants", options: ["Acknowledge/Confirm", "I am not a California resident"] }, profile),
+    "Acknowledge/Confirm"
+  );
+});
+
+test("ack gate: consent field returns the affirmative option verbatim, not a bare 'Yes'", () => {
+  assert.equal(
+    localResolveField({ label: "Please confirm you consent your self-identification data to be processed for the listed purposes", options: ["Yes, I consent", "I don't wish to answer"] }, profile),
+    "Yes, I consent"
+  );
+});
+
+test("ack guard: a plain Yes/No qualification question is NOT hijacked as an ack gate", () => {
+  // Job-specific yes/no must still route to AI — the ack detector keys on consent/acknowledge option
+  // text, not on a bare "Yes".
+  assert.equal(localResolveField({ label: "Do you have formal experience managing a team of engineers?", options: ["Yes", "No"] }, profile), null);
+});
