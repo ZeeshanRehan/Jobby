@@ -1,7 +1,7 @@
 {
   "platform": "lever",
   "version": "2026-05-26-001",
-  "detect": ["jobs.lever.co"],
+  "detect": ["lever.co"],
   "fields": {
     "name":      { "selector": "input[name='name']",            "type": "text", "source": "identity.fullName" },
     "email":     { "selector": "input[name='email']",           "type": "text", "source": "contact.email" },
