@@ -158,8 +158,8 @@ These are non-negotiable — never relax them:
 - [x] server/server.js — all V2 routes mounted with auth
 - [x] CORS — chrome-extension:// origins allowed via cors({ origin: true })
 - [x] server/data/adapters/greenhouse.json — field selectors for Greenhouse ATS
-- [ ] server/data/adapters/lever.json — not yet written
-- [ ] server/data/adapters/ashby.json — not yet written
+- [x] server/data/adapters/lever.json — written, mostly live-verified
+- [x] server/data/adapters/ashby.json — written, live-tested (blur fix in, 4 fields still failing — see cutoff)
 
 **Extension (mostly complete)**
 - [x] extension/manifest.json — MV3, service worker, permissions
@@ -188,78 +188,76 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-26. **HEAD = `0b1bcd4` "feat: Ashby radio labels, Yes/No buttons, location field".**
-Working tree clean except runtime data. Claude Code runs on the VPS — server file edits are live after
-`pm2 restart all`, no git pull needed. Extension file edits require git push → local pull → Chrome reload.
+**Date:** 2026-05-26. **HEAD = `140a855` "debug: log scanned unknown fields table".**
+Working tree clean except runtime data (applications.json / applied_urls.json + resume PDFs — ignore them).
+Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
+local pull → Chrome reload. All code below is committed + pushed.
 
-**STATUS: Greenhouse confirmed live. Lever partially live-tested. Ashby adapter written + fixes committed
-but NOT yet live-tested.** The next session should start with a full Ashby test run before building anything new.
+**STATUS: Ashby blur fix LIVE-TESTED — did NOT fully fix.** Greenhouse live. Lever partial. Ashby is the
+active front. After the blur fix a real Ashby submit STILL failed on 4 required fields (see "Still broken").
+**Next session: collect the two debug captures below from the user FIRST — do NOT build blind.**
 
-**This session's work (`c1b5bb4` → `0b1bcd4`):**
+**This session's work (`e1f0c2f` → `140a855`):**
 
-**Lever adapter — DONE, mostly live-verified** (`5381eeb` → `8b4e980` → `61eb593`):
-- `server/data/adapters/lever.json` — selectors DOM-verified via console snippet before first run.
-- Fields: name (`identity.fullName`), email, phone, org (`identity.currentOrg = "Rowan University"`),
-  location (`defaultAnswers.currentLocation`), linkedin, portfolio, resume (`#resume-upload-input`).
-- Detect pattern: `"lever.co"` (covers `jobs.lever.co`, `jobs.eu.lever.co`, all regional subdomains).
-- Live bugs caught and fixed: EU subdomain miss, org filled as "$60k" (was unhandled → AI mis-routed),
-  location blank (not in adapter), resume selector too generic.
-- `identity.fullName` and `identity.currentOrg` added to `server/data/profile.js`.
-- **Submit blocked by hCaptcha on the button** (`id="hcaptchaSubmitBtn"`) — dry-run safe, but live submit
-  will need captcha handling when that's enabled.
+**Force-flag dedup + honest naming** (`e1f0c2f` "ashby test + allowing retry"):
+- `apply.js` takes `force`; the dedup (a Claude-token saver, NOT a submission record) is skipped when
+  `force:true`. Response key renamed `alreadyApplied` → `alreadyTailored` (we dry-run only; it tracks tailoring).
+- `popup.html` "Force re-tailor" checkbox (`#force-rerun`); `popup.js` `callApplyApi(..., force)`.
+- Cleared `applied_urls.json`→`{}` and `applications.json`→`[]` for testing (backups `*.bak`).
 
-**Radio button support — DONE, general** (`61eb593`):
-- `getRadioGroupLabel()`: fieldset legend → aria-labelledby → Lever `.application-field` parent pattern.
-- `scanUnknownFields()`: groups radio inputs by `name`, pushes one `{ fieldType: 'radio', options }` entry.
-- `FILL_AI_FIELDS`: `querySelectorAll` + `bestOptionMatch` on label texts → `click()`.
+**Multi-select checkbox groups** (`ba9ca61` "updated ashby for checkboxes"):
+- `autofill.js`: `getRadioGroupLabel`→`getGroupLabel`; new checkbox-group scanner pass (a fieldset/role=group
+  with ≥2 non-consent boxes) → `{ fieldType:"checkboxgroup", options }`, tagged `data-jobby-checkgroup`.
+  Consent ticker now skips boxes inside a checkgroup. New FILL_AI_FIELDS `checkboxgroup` handler (value = array).
+- `ai-fallback.js`: checkboxgroup rule = LEAN INCLUSIVE (check every real match, then add the 1–2 closest if
+  few/no strong matches; empty `[]` only if all irrelevant). Pulls flattened `resumeData.skills` into the
+  profile context (profileData has no skills list). User call 2026-05-26 — see memory feedback_autofill_max_coverage.
 
-**Lever label fallback for textareas — DONE** (`61eb593`):
-- `getLabelText()` now clones `.application-field` parent, removes it, takes remaining text.
-- Fixes UUID-named textareas (`cards[UUID][field0]`) that previously returned null label → scanner skipped them.
+**Blur fix** (`c9fbc12` "aded blur to ashby adpater"):
+- Root cause: Ashby validates "required" on BLUR, not on input. Values were set (native setter + input/change)
+  but never blurred → "Missing entry" until the user manually focused+blurred. (User: "clicked in and out, took it.")
+- `commitBlur(el)` = `el.blur()` + a bubbling `focusout`. `fillText` now: focus → set → input/change → commitBlur.
+  Also `commitBlur` after `.click()` in the yesno / radio / checkboxgroup handlers.
 
-**AI fallback URL confusion — FIXED** (`3868a50`):
-- `contextHtml` was raw HTML; URL strings (e.g. `inside.lever.co`) triggered Haiku's "I can't browse" reflex.
-- Fix: `stripHtml()` strips tags + URLs before insertion into prompt.
-- Fix: added routing rule for technical knowledge questions (methodology/process) so they get answered as
-  domain expertise, not motivation essays. Full post-mortem: DEVLOG 2026-05-26.
+**Diagnostic tables** (`140a855`):
+- FILL_FORM logs a `console.table` of SCANNED unknownFields (label / fieldType / options / selector).
+- FILL_AI_FIELDS logs a `console.table` of FILLED fields (label / fieldType / AI value / status).
+- Decode: a required field missing from BOTH tables was never scanned; in scan-only = resolver dropped it
+  (returned null); `ERROR` = selector miss at fill time; filled-but-still-required = widget needs other handling.
 
-**Ashby adapter — DONE, NOT YET LIVE-TESTED** (`4038446` → `0b1bcd4`):
-- `server/data/adapters/ashby.json` — detect: `"jobs.ashbyhq.com"`.
-- Stable system fields only: name (`_systemfield_name`), email (`_systemfield_email`),
-  location (`input[placeholder='Start typing...']`), resume (`#_systemfield_resume`).
-- UUID fields (phone, linkedin, portfolio, custom questions, EEOC radios) → unknown scanner via `label[for]`.
-- One live run confirmed: name/email/resume filled (3 adapter fields), 7 unknowns sent to AI — all filled.
-- **Three gaps fixed post-first-run (commits in `0b1bcd4`, NOT YET re-tested live):**
-  - EEOC radio labels: `getRadioGroupLabel` Ashby fieldset-without-legend fallback — strips `_option_`
-    children, splits on "Input" a11y noise → extracts "Gender", "Race", "Veteran Status".
-  - Yes/No toggle buttons: Ashby renders boolean questions as `button[type='submit']` pairs inside
-    `[class*="_yesno_"]` containers. New scan loop at end of `scanUnknownFields`; tags each with
-    `data-jobby-yesno="N"`; new `fieldType: "yesno"` FILL_AI_FIELDS handler clicks matching button.
-  - Location: `input[placeholder='Start typing...']` has no id/name → was invisible to scanner. Added to
-    adapter. Whether Ashby accepts typed text without autocomplete selection is **UNCONFIRMED**.
-- `dryRunBlockSelector: "button[class*='_primary_']"` — Ashby uses `button[type='submit']` for upload
-  buttons and Yes/No buttons too, so type alone is not a safe block target.
+**STILL BROKEN after blur fix (real Ashby submit — an IT-support role):**
+1. **Location** — now BLANK (was garbled before blur). The blur clears the unselected combobox text. CONFIRMED
+   by user it's a free-type input WITH a suggestion dropdown → needs a type→PICK handler. `input[placeholder=
+   'Start typing...']` is NOT react-select (no `.select__input`), so the existing combobox code may not drop in as-is.
+2. **Yes/No** "Have you ever provided technical support for end-users...".
+3. **Textarea** "Describe your experience managing IT systems or providing technical support...".
+4. **Textarea** "Describe a situation where you collaborated across teams...".
 
-**Deploy/test state:**
-- Tests: `npm test` — **24 green** (unchanged this session; no logic changes to resolve.js/match.js).
-- Extension changes in `0b1bcd4` need **local git pull + Chrome extension reload** before Ashby re-test.
-- Server (adapters, profile, ai-fallback): already live on VPS, `pm2 restart all` already run.
+**PENDING DEBUG CAPTURES — ask the user for these FIRST (autofill can't tell us otherwise):**
+(A) Re-run autofill on an Ashby form with DevTools console open; paste back the `[Jobby] report:` line, the
+    SCAN table, and the AI-FILL table. Cross-ref tells us per failing field: never-scanned vs resolver-dropped
+    vs fill-ERROR vs filled-but-rejected. Leading hypotheses to confirm: the textareas may be `contenteditable`
+    (scanner only sees input/textarea/select) OR the AI returned empty; the Yes/No is either not scanned as
+    `yesno` or its label didn't match the button text.
+(B) Location dropdown DOM — paste this in the same console and send the output:
+    ```js
+    const el = document.querySelector("input[placeholder='Start typing...']");
+    const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;
+    set.call(el,'Glassboro'); el.dispatchEvent(new Event('input',{bubbles:true}));
+    setTimeout(()=>{console.log('role:',el.getAttribute('role'),'aria-controls:',el.getAttribute('aria-controls'),'expanded:',el.getAttribute('aria-expanded'));console.log('CONTAINER:',el.closest('div')?.parentElement?.outerHTML?.slice(0,2500));},1500);
+    ```
+    Reveals whether it's `aria-controls`-driven (reuse combobox code) or custom, plus the suggestion-row structure.
 
-**Open items / next up (priority order):**
-1. **Ashby live re-test** — pull + reload extension, run on a full Ashby form. Confirm radio (EEOC),
-   Yes/No buttons, and location fill. Expect gaps; iterate.
-2. **Job queue + scraper (V3)** — Greenhouse Job Board API first (public JSON, no scraping). Server-side
-   queue (`pending → in-progress → submitted | failed | needs-human`). This is what unlocks volume.
-3. **Autonomous drain loop** — persistent extension page pulls from queue, opens tab, injects autofill,
-   waits for result, loops. MV3 service worker dies at ~30s so needs a dedicated persistent page.
-4. **Submit enable** — flip dry-run off once queue + loop is working. hCaptcha on Lever is the known risk.
-5. **Dashboard / coverageReport enrichment (V4)** — per-field `{ label, value, source, status }` records.
-6. Workday — genuinely separate project (multi-page, account manager, custom widgets). Not soon.
+**THEN:** build the location type→pick; fix the textareas/Yes-No per what the tables show. `npm test` still
+green (no logic changes to resolve/match this session). After Ashby is solid, resume the V3 roadmap.
 
-**Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two
-passes that died on the real form. **For DOM behavior, the real-form test is the only source of truth.**
-The new `npm test` suite is the complement: it covers the *pure logic* (matching/resolving) where offline
-testing IS trustworthy — that split (logic = unit-tested, DOM = live-only) is deliberate.
+**Roadmap after Ashby (unchanged priority):** V3 job queue + Greenhouse Job Board API → autonomous in-browser
+drain loop (MV3 SW dies ~30s, needs a persistent page) → flip dry-run off (hCaptcha on Lever is the known
+risk) → V4 dashboard. Workday is a separate project, not soon.
+
+**Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two passes
+that died on the real form. **For DOM behavior, the real-form test is the only source of truth.** `npm test`
+is the complement: pure logic (matching/resolving) where offline IS trustworthy — split is deliberate.
 
 ---
 
