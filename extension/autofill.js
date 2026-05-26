@@ -47,10 +47,10 @@ if (!window.__jobbyAutofillInjected) {
     return text ? text.replace(/\s+/g, " ").replace(/[*✱]/g, "").trim() : null;
   }
 
-  // ─── Radio Group Label ────────────────────────────────────────────────────
-  // Extracts the question label for a radio group — tries generic patterns first,
-  // then Lever's application-field wrapper pattern.
-  function getRadioGroupLabel(el) {
+  // ─── Group Label ──────────────────────────────────────────────────────────
+  // Extracts the question label for a radio or checkbox group — tries generic
+  // patterns first, then Lever's application-field wrapper pattern.
+  function getGroupLabel(el) {
     const fieldset = el.closest("fieldset");
     if (fieldset) {
       const legend = fieldset.querySelector("legend");
@@ -305,6 +305,7 @@ if (!window.__jobbyAutofillInjected) {
     const ticked = [];
     for (const el of document.querySelectorAll('input[type="checkbox"], [role="checkbox"]')) {
       if (el.disabled || el.getAttribute("aria-disabled") === "true") continue;
+      if (el.closest("[data-jobby-checkgroup]")) continue; // owned by a multi-select group
       const checked = el.type === "checkbox" ? el.checked : el.getAttribute("aria-checked") === "true";
       if (checked) continue;
 
@@ -343,7 +344,7 @@ if (!window.__jobbyAutofillInjected) {
         processedRadioNames.add(name);
         const radios = [...document.querySelectorAll(`input[name="${name}"]`)];
         radios.forEach((r) => handledEls.add(r));
-        const label = getRadioGroupLabel(el);
+        const label = getGroupLabel(el);
         if (!label) continue;
         const options = radios.map((r) => {
           const lbl = document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label");
@@ -385,6 +386,37 @@ if (!window.__jobbyAutofillInjected) {
       }
 
       unknownFields.push({ selector, label, fieldType, options });
+    }
+
+    // Multi-select checkbox groups ("select all that apply") — a fieldset of checkboxes with
+    // unique names. Group by fieldset/role=group, tag the container so FILL_AI_FIELDS can re-find
+    // the boxes. Consent/marketing boxes are excluded — tickConsentCheckboxes owns those.
+    let checkGroupIdx = 0;
+    const seenGroups = new Set();
+    for (const cb of document.querySelectorAll('input[type="checkbox"]')) {
+      if (handledEls.has(cb) || cb.disabled) continue;
+      const group = cb.closest('fieldset, [role="group"]');
+      if (!group || seenGroups.has(group)) continue;
+      seenGroups.add(group);
+      const boxes = [...group.querySelectorAll('input[type="checkbox"]')].filter((b) => {
+        if (b.disabled) return false;
+        const t = getLabelText(b) || "";
+        return !CONSENT_RE.test(t) && !MARKETING_RE.test(t);
+      });
+      if (boxes.length < 2) continue; // single box = consent/standalone, not a multi-select
+      boxes.forEach((b) => handledEls.add(b));
+      const label = getGroupLabel(cb);
+      if (!label) continue;
+      const options = boxes.map((b) => {
+        const lbl = document.querySelector(`label[for="${CSS.escape(b.id)}"]`) || b.closest("label");
+        return lbl?.textContent?.trim() || b.name;
+      }).filter(Boolean);
+      group.setAttribute("data-jobby-checkgroup", String(checkGroupIdx));
+      unknownFields.push({
+        selector: `[data-jobby-checkgroup="${checkGroupIdx}"] input[type="checkbox"]`,
+        label, fieldType: "checkboxgroup", options,
+      });
+      checkGroupIdx++;
     }
 
     // Ashby Yes/No button groups — _yesno_ containers with Yes/No buttons.
@@ -508,6 +540,23 @@ if (!window.__jobbyAutofillInjected) {
               const idx = bestOptionMatch(labels, value);
               if (idx >= 0) { radios[idx].click(); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
+              continue;
+            }
+
+            // Multi-select checkbox groups — value is an array of options to check; tick each match
+            if (fieldType === "checkboxgroup") {
+              const boxes = [...document.querySelectorAll(selector)];
+              if (!boxes.length) { aiErrors.push(selector); continue; }
+              const labels = boxes.map((b) => {
+                const lbl = document.querySelector(`label[for="${CSS.escape(b.id)}"]`) || b.closest("label");
+                return lbl?.textContent?.trim() || b.name;
+              });
+              const wanted = Array.isArray(value) ? value : (value ? [value] : []);
+              for (const w of wanted) {
+                const idx = bestOptionMatch(labels, w);
+                if (idx >= 0 && !boxes[idx].checked) boxes[idx].click();
+              }
+              aiFilled.push(selector); // empty selection is a valid resolution for "select all that apply"
               continue;
             }
 

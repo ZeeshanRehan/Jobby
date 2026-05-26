@@ -3,6 +3,7 @@
 const express         = require("express");
 const Anthropic       = require("@anthropic-ai/sdk");
 const { profileData } = require("../data/profile");
+const { resumeData }  = require("../services/groqService");
 
 const router    = express.Router();
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -36,6 +37,8 @@ function buildFieldPrompt(label, fieldType, contextHtml, options) {
     bio,
     projects,
     defaultAnswers,
+    // flat tool/tech list — the authoritative source for skill-match questions (checkboxgroup)
+    skills: Object.values(resumeData.skills || {}).flat(),
   };
 
   return `You are filling a job application form field on behalf of this candidate. Always produce an answer.
@@ -92,6 +95,7 @@ Match the field label to the correct source and write a response accordingly:
 ═══ HARD RULES ═══
 - ALWAYS produce a non-empty answer. Null is not acceptable unless the field is physically unanswerable.
 - For select/radio: answer MUST exactly match one of the provided options (case-insensitive). Map Yes/No to the matching option text.
+- For checkboxgroup (multi-select "select all that apply"): "answer" MUST be a JSON ARRAY of option strings (each exactly matching a provided option), matched against profile.skills / projects / bio. Include every option with real evidence in the profile. Then lean inclusive: if there are many options and few/no strong matches, still pick the 1–2 CLOSEST to the candidate's background (adjacent tech, transferable experience) rather than returning empty — checking a couple of plausible options rarely hurts. Only return an empty array [] when the options are clearly all irrelevant to this candidate.
 - For acknowledgement/consent/agree fields: always pick the affirmative option.
 - For demographics: use profile.demographics and match to the closest available option.
 - For US location questions ("are you based in [US city/state]?"): answer Yes — candidate can relocate anywhere in the US.

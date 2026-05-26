@@ -289,78 +289,10 @@ cd ~/Jobby && git pull && pm2 restart all && pm2 logs
 
 ---
 
-## V3+ Strategic Direction (EXPLORATORY — brainstormed, NOT committed/built)
-> Captured from a long design conversation so next session has the *why*, not just the *what*. Nothing here
-> is decided or scheduled — it's the shape we reasoned toward and the tradeoffs behind each lean. **This
-> revises the "V3 = Playwright everywhere" assumption in Future Modules below** (see "Playwright's role").
-
-**North star.** Volume over polish: ~20-30 (stretch 30/day) tailored apps/day, **as close to zero
-human-in-loop as possible.** User accepts that some apps go out wrong/stale — throughput beats per-app
-perfection ("it was never meant to be perfect from the getgo"). Long-term aspiration: a **multi-user SaaS**
-(dashboard, ~$20-50/mo). Personal-use job hunt is the prototype/dogfood and comes first regardless.
-
-**THE central fork — credential custody.** Never hold users' Google/Workday passwords or log in *as them*
-server-side: that's a breach honeypot + Google-ToS violation + (for SaaS) liability. **Decision lean:
-everything runs client-side in the user's own already-logged-in browser** — never store their creds.
-
-**Chosen apply model — autonomous in-browser loop (NOT Simplify-style handholding).** The extension drives
-tabs in the user's browser on its own: pull next job from queue → open → fill (existing engine) → submit →
-next, looping while the user leaves a window open on the side. Uses their real session, so no cred custody.
-Multi-page (Workday) IS drivable this way (navigate + re-inject per page). Orchestrate from a **persistent
-extension page** (MV3 service workers die at ~30s) — that page is also the dashboard.
-
-**The trilemma (pick two):** always-on / no-credential-custody / cheap.
-- In-browser loop = no-custody + cheap, but **browser must be open** (the accepted tradeoff). Auto-start +
-  background-run makes the friction "machine on," not "babysitting" — lunch is fine; only laptop-closed-all-day is a gap.
-- **Split queue softens it:** server *finds + tailors* 24/7 (cheap, no browser); extension *drains* the
-  queue whenever the browser's on and catches up. Missing a day just delays, doesn't lose.
-- Cloud-VM / hosted browser (Browserbase/Kasm/Browserless) = always-on + phone-access, but **re-introduces
-  session custody + per-user always-on compute cost** → only as a higher-priced premium tier, eyes open.
-
-**Playwright's role (revised).** The in-browser pivot **retires "Playwright for applying" in the SaaS path**
-— the extension does it, in the user's session, multi-page included; server-side Playwright would re-create
-the custody landmine. Playwright now only for: (a) *personal* laptop-closed/server-side use (own creds, own
-risk = the original V3), (b) scraping any no-API site (mostly avoided).
-
-**Board strategy / tiers.**
-- **Tier 1 — Greenhouse / Lever / Ashby:** no login, low bot-detection (they *want* applicants), single/near-
-  single page. **Where unattended apply genuinely works; the volume cluster. Do Lever + Ashby next** (~½-1 day
-  each — engine is shared, cost is live quirk-hunting, not new logic; the adapter JSON is ~10 lines).
-- **Tier 3 — Workday / iCIMS / Taleo:** per-company account + email verification + 5-7 page wizard + custom
-  widgets + per-tenant variance = a *separate project*, not "adapter #4." Good news: generic scan-fill-advance
-  loop + the two EEO pages (veteran/disability/race → `localResolveField`) are ~half-free; `data-automation-id`
-  gives stable selectors. Net-new = account/email-code manager, the page-loop, Workday widget helpers.
-- **Skip LinkedIn/Indeed scraping** (anti-bot, ToS, legal). **Sourcing = API/JSON consumers, not HTML
-  scrapers:** Greenhouse Job Board API, Lever public API, GitHub new-grad repos (SimplifyJobs/New-Grad-Positions,
-  speedyapply, vanshb03, jobright-ai, ambicuity — they link straight to ATS apply URLs).
-
-**Unit economics.** In-browser loop shifts the expensive part (running browsers) onto the *user's* machine —
-COGS ≈ just AI tailoring (~$0.043/app). At volume, **cap apps/tier so AI < ~30% of the sub** (uncapped 50/day
-≈ $64/mo AI > a $50 sub = underwater). ~40 users × $50 capped ~15/day ≈ $2k rev, ~$1.3k profit. **Churn is the
-real constraint** (success = user gets a job = cancels), not infra.
-
-**Captcha.** Rare on Tier 1. Paid solvers work for reCAPTCHA v2, unreliable for v3/hCaptcha/Turnstile
-(behavioral score — the real wall is bot-*detection*, not the puzzle). Unsolved → needs-human queue.
-
-**Loop mechanics.** Sequential + jitter (parallel = more bot-like, hammers the user's machine, and speed isn't
-the bottleneck; cap at 2 tabs if ever). **Queue state lives server-side, never in the tab**; status
-`pending → in-progress → submitted | failed | needs-human`; **checkpoint per job** (a closed tab loses at most
-1 in-flight). Interrupted job: clearly-unsubmitted → re-queue; ambiguous → needs-human (avoid double-submit).
-The **~10/day "needs-human" bucket is the EXCEPTION path** (captcha/broken/stale), not the normal flow.
-
-**Mascot ("frog wizard") — virality/UX hook.** On-page **shadow-DOM Lottie overlay** that rides each job page
-as it fills (the shareable moment) + a dashboard home-base frog. States (`idle/working/success/needs-you`)
-driven by the autofill `report` events you already emit — a thin visual skin, not new infra. Must never
-overlap/block a field or cost a submission. MVP: static working+done state → Lottie states → hop transitions.
-
-**Monetization gate (before charging anyone).** Operator's eligibility to earn business income must be
-verified with appropriate professionals *before* taking payments; plus LLC + ToS/privacy. Building + personal
-use is unaffected. Market is real but crowded (Simplify, LazyApply, Sonara, JobRight…) — the tailoring angle
-is the quality wedge vs spray-and-pray.
-
-**Rough sequence:** finish Greenhouse (verify live + tests + commit) → Lever/Ashby adapters → scraper + queue
-(server, safe) → in-browser autonomous loop (extension) → frog → Workday page-loop → multi-tenant SaaS layer
-(auth/billing) *last*, on a proven engine.
+## V3+ Strategic Direction (EXPLORATORY)
+> **Moved to `NOTES.md`** — search the `[IDEA] V3+ strategy` entry. It was bloating this always-loaded
+> file. Nothing there is committed/built; it's the *why* + tradeoffs behind the volume-autopilot /
+> in-browser-loop / SaaS lean. Recon from real ATS runs also lives in `NOTES.md` (`[RECON]` tags).
 
 ---
 

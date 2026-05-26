@@ -1,1 +1,70 @@
-[]
+[
+  {
+    "applicationId": "ac438e04-f95b-4e0c-a201-326ca2f3da69",
+    "timestamp": "2026-05-26T14:48:52.304Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/664c9e24-67ca-4a09-ac8b-5405b1468dc0/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ac438e04-f95b-4e0c-a201-326ca2f3da69.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hYzQzOGUwNC1mOTViLTRlMGMtYTIwMS0zMjZjYTJmM2RhNjkucGRmIiwiaWF0IjoxNzc5ODA2OTMyLCJleHAiOjE3Nzk4MTA1MzJ9.VqAfZ-4F-pBYUCvEXZQZYhMphRLRBnRCo5GdkQLWSzo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ac438e04-f95b-4e0c-a201-326ca2f3da69.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Windows",
+        "macOS",
+        "Google Workspace",
+        "Intune",
+        "JAMF",
+        "Duo",
+        "Tailscale",
+        "SaaS",
+        "Active Directory",
+        "Mobile Device Management"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Windows",
+      "macOS",
+      "Google Workspace",
+      "Intune",
+      "JAMF",
+      "Duo",
+      "Tailscale",
+      "SaaS",
+      "Active Directory",
+      "Mobile Device Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "location",
+        "resume",
+        "#e5a9aef4-1a92-4362-892c-0244b87ab1ec",
+        "#\\30 539bcb4-f5d1-4279-983e-54ead52155a5",
+        "input[name=\"993812f5-7010-4618-a3e1-46569b1ea3b4_3ede3329-5afa-447d-8d29-0743b30726ff\"]",
+        "input[name=\"ed4f45bc-d5e7-478a-8201-734d3bd4dc9c__systemfield_eeoc_gender\"]",
+        "input[name=\"ed4f45bc-d5e7-478a-8201-734d3bd4dc9c__systemfield_eeoc_race\"]",
+        "input[name=\"ed4f45bc-d5e7-478a-8201-734d3bd4dc9c__systemfield_eeoc_veteran_status\"]",
+        "[data-jobby-yesno=\"0\"]",
+        "[data-jobby-yesno=\"2\"]",
+        "#\\38 e142671-c852-4ce2-bd01-aa0a54f39643",
+        "#c7880132-cc19-4f1c-b921-28274122ff5f",
+        "#\\32 6297468-ac1e-4ac4-932c-76b965d2dc33",
+        "#\\35 100372d-4dab-4bc9-8833-6c08ec44b8a0",
+        "#\\32 8749331-4cba-497b-ad9f-1cdc34fe05f0",
+        "[data-jobby-yesno=\"1\"]",
+        "[data-jobby-yesno=\"3\"]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  }
+]
