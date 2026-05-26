@@ -1,0 +1,12 @@
+{
+  "platform": "ashby",
+  "version": "2026-05-26-001",
+  "detect": ["jobs.ashbyhq.com"],
+  "fields": {
+    "name":   { "selector": "input[name='_systemfield_name']",  "type": "text", "source": "identity.fullName" },
+    "email":  { "selector": "input[name='_systemfield_email']", "type": "text", "source": "contact.email" },
+    "resume": { "selector": "#_systemfield_resume",             "type": "file", "uploadStrategy": "native", "source": "pdf" }
+  },
+  "dryRunBlockSelector": "button[class*='_primary_']",
+  "steps": []
+}
