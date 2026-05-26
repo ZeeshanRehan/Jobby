@@ -9,6 +9,109 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-26 — Lever + Ashby adapters, radio/yesno support, AI fallback URL bug  ·  FIXED (Ashby unverified live)
+
+### Lever adapter — iterative live-fix cycle
+
+**Commits:** `5381eeb` → `4796ecd` → `8b4e980` → `61eb593`
+
+**Adapter written, DOM-verified via console snippet before any live run.** All 7 selectors (name, email,
+phone, linkedin, portfolio, resume, submit) confirmed present on a real Lever apply page. Two fixes from the
+verification pass:
+- Resume selector tightened from generic `input[type='file']` → `#resume-upload-input` (confirmed ID in DOM).
+- Submit button id is `hcaptchaSubmitBtn` — Lever uses hCaptcha; noted for when live submit is enabled.
+
+**EU subdomain miss (`8b4e980`).** First real-form test: "No adapter found." URL was `jobs.eu.lever.co`
+but detect was `"jobs.lever.co"`. Fix: broadened to `"lever.co"` to cover all regional subdomains.
+
+**Post-live-run gaps fixed (`61eb593` + profile.js changes):**
+- `org` field (current company) was omitted from the adapter → unknown scanner → AI → filled with "$60,000"
+  (AI matched "current company" to salary defaultAnswer). Fix: added `identity.currentOrg = "Rowan University"`
+  to profile.js; added `org` to adapter pointing to it.
+- `location` field (`input[name='location']`) was not in adapter → blank. Added with source
+  `defaultAnswers.currentLocation`.
+- `identity.fullName` added to profile.js for Lever's single combined name field.
+
+**Radio button support added (`61eb593`)** — general feature, not Lever-specific:
+- `getRadioGroupLabel()`: tries fieldset legend → role=group aria-labelledby → Lever `.application-field`
+  parent pattern.
+- `scanUnknownFields()`: detects `input[type='radio']`, groups by `name`, adds all group inputs to
+  `handledEls`, pushes one `{ fieldType: 'radio', options }` entry per group.
+- `FILL_AI_FIELDS`: radio handler uses `querySelectorAll` + `bestOptionMatch` on label texts → `click()`.
+
+**Lever textarea/label fallback (`61eb593`)** — `getLabelText` extended with Lever-style fallback:
+clones `.application-field` parent, removes the `.application-field` child, takes remaining text. Fixes
+UUID-named textareas (e.g. `cards[UUID][field0]`) where id/name/aria return null. Previously these were
+invisible to the unknown scanner; now they show up with the correct question text.
+
+**Lever live status:** name, email, phone, org, location, linkedin, portfolio, resume all adapter-mapped.
+Radio (work auth YES/NO) handled. Custom textareas handled. Consent checkbox handled. **Partially
+live-tested — org/$60k fixed, EU domain fixed, textarea+radio fill observed working in one run. Submit
+never clicked (dry-run by design, hCaptcha on the button).**
+
+---
+
+### AI fallback URL confusion bug — FIXED (`3868a50`)
+
+**Symptom.** Textarea "What are the standard components in an implementation?" was filled with: *"I don't
+have direct access to browse inside.lever.co in real time, but I'm genuinely drawn to roles where I can
+build infrastructure..."* — a "why I'm interested" motivation answer, not a methodology answer.
+
+**Root cause 1: raw HTML in context.** `contextHtml` was passed as raw HTML (tags + URLs intact) sliced at
+2000 chars. The string `inside.lever.co` appeared in the HTML and triggered Claude Haiku's "I can't browse
+URLs" reflex, followed by a pivot to a motivation answer.
+
+**Root cause 2: missing routing rule.** "What are the standard components in an implementation?" is a
+**technical knowledge question** — asking for domain expertise, not personal motivation. The prompt had
+routes for "why do you want to work here", "tell me about yourself", etc., but no route for technical
+methodology questions. Haiku fell through to the "why interested" branch.
+
+**Fix:** Added `stripHtml()` to remove HTML tags and URLs from `contextHtml` before prompt insertion.
+Added routing rule: *"technical/role-specific knowledge questions → answer as a practitioner, use general
+domain knowledge + projects/bio, 2-4 sentences, do NOT give a motivation answer."*
+
+---
+
+### Ashby adapter — written, partially tested, several gaps fixed  ·  FIXED (unverified live)
+
+**Commits:** `4038446` → `0b1bcd4`
+
+**Architecture insight from DOM inspection.** Ashby uses `_systemfield_*` name attributes for stable
+system fields (name, email, resume) but UUIDs for all custom fields (phone, LinkedIn, portfolio, custom
+questions). Adapter covers only stable system fields — UUID fields fall to the unknown scanner which picks
+them up via `label[for="UUID"]` associations. This is correct architecture for Ashby.
+
+**Button discovery issue.** Ashby uses `button[type='submit']` for: (a) file upload buttons, (b) Yes/No
+option buttons, AND (c) the real "Submit Application" button. `dryRunBlockSelector: "button[type='submit']"`
+would block Yes/No fills mid-form. Set to `button[class*='_primary_']` to target only the submit button.
+
+**Three post-test gaps fixed in `0b1bcd4` (NONE yet live-verified):**
+
+1. **EEOC radio labels not found.** `getRadioGroupLabel` tried `fieldset > legend` first — Ashby uses
+   fieldset WITHOUT a legend. The fieldset text is "GenderInput genderMaleFemaleDecline to self-identify" —
+   "Input gender" is a11y noise injected after the visible label. Fix: when `closest('fieldset')` has no
+   legend, clone fieldset → remove `[class*="_option_"]` children → split text on `/\s+Input\b/i` → take
+   part before it → returns "Gender", "Race", "Veteran Status" correctly.
+
+2. **Yes/No toggle buttons not handled.** Ashby renders some boolean questions as two `button[type='submit']`
+   elements inside a `div[class*="_yesno_"]` container. These are not `input` elements so `scanUnknownFields`
+   (which queries `input, textarea, select`) never saw them. Fix: added a second scan loop at the end of
+   `scanUnknownFields` querying `[class*="_yesno_"]` containers. Label extracted by cloning parent
+   `_fieldEntry_*` div and removing the `_yesno_` child. Each container tagged with `data-jobby-yesno="N"` at
+   scan time to give FILL_AI_FIELDS a stable selector. New `fieldType: "yesno"` handler: `querySelector` by
+   data attribute → `querySelectorAll('button')` → `bestOptionMatch` on button texts → `click()`.
+
+3. **Location field not filled.** `input[placeholder='Start typing...']` has no id or name so
+   `getUniqueSelector` returned null and the scanner skipped it. Fix: added to adapter directly with
+   `source: "defaultAnswers.currentLocation"`. Fills "Glassboro, New Jersey" via `fillText`. Whether Ashby
+   accepts typed text without a dropdown selection is **UNCONFIRMED** — location may require autocomplete pick.
+
+**Ashby live-test status:** name, email, resume filled (confirmed from one run — `autofill.js` log showed
+`filled: 3, unknownFields: 7, AI fill done — filled: 7`). Radio, yesno, and location fixes committed but
+**NOT YET tested live.** Run one full Ashby form to confirm.
+
+---
+
 ## 2026-05-25 — "lesser AI fallback": measured the split, fixed the 4 real leaks  ·  FIXED (unverified live)
 
 **Context.** The `24f8635` commit name ("needs lesser AI fallback") was a TODO, not done work. Open
