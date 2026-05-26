@@ -7,6 +7,14 @@ const { profileData } = require("../data/profile");
 const router    = express.Router();
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+function stripHtml(html) {
+  return (html || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/https?:\/\/\S+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function buildFieldPrompt(label, fieldType, contextHtml, options) {
   const {
     contact, workAuthorization, education, preferences,
@@ -77,6 +85,10 @@ Match the field label to the correct source and write a response accordingly:
 • "what skills do you bring" / "relevant experience for this role":
   → Pull from profile.bio.strengths + most relevant project from profile.projects
 
+• technical / role-specific knowledge questions ("what are the standard components in...", "describe your process for...", "how do you approach...", "what does a typical X look like", "what experience do you have with X"):
+  → Answer as a knowledgeable practitioner. Use general domain knowledge for the methodology/process question, then anchor to profile.projects or profile.bio where relevant.
+  → 2–4 sentences, specific and concrete. Do NOT give a "why I'm interested" answer — the question is asking the candidate to demonstrate knowledge, not motivation.
+
 ═══ HARD RULES ═══
 - ALWAYS produce a non-empty answer. Null is not acceptable unless the field is physically unanswerable.
 - For select/radio: answer MUST exactly match one of the provided options (case-insensitive). Map Yes/No to the matching option text.
@@ -98,7 +110,7 @@ ${JSON.stringify(safeProfile, null, 2)}
 Label: ${label}
 Type: ${fieldType}
 ${options       ? `Options: ${JSON.stringify(options)}`           : ""}
-${contextHtml   ? `Job description context:\n${contextHtml.slice(0, 2000)}` : ""}`;
+${contextHtml   ? `Job description context:\n${stripHtml(contextHtml).slice(0, 2000)}` : ""}`;
 }
 
 router.post("/", async (req, res) => {
