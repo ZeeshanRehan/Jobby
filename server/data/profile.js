@@ -7,6 +7,7 @@ const profileData = {
     firstName: "Zeshan",
     lastName: "Rehan",
     fullName: "Zeshan Rehan",
+    currentOrg: "Rowan University",
     middleName: "",
     preferredName: "",
     pronouns: "he/him",

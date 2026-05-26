@@ -6,6 +6,8 @@
     "name":      { "selector": "input[name='name']",            "type": "text", "source": "identity.fullName" },
     "email":     { "selector": "input[name='email']",           "type": "text", "source": "contact.email" },
     "phone":     { "selector": "input[name='phone']",           "type": "text", "source": "contact.phone" },
+    "org":       { "selector": "input[name='org']",             "type": "text", "source": "identity.currentOrg" },
+    "location":  { "selector": "input[name='location']",         "type": "text", "source": "defaultAnswers.currentLocation" },
     "linkedin":  { "selector": "input[name='urls[LinkedIn]']",  "type": "text", "source": "contact.linkedinUrl" },
     "portfolio": { "selector": "input[name='urls[Portfolio]']", "type": "text", "source": "contact.portfolioUrl" },
     "resume":    { "selector": "#resume-upload-input",           "type": "file", "uploadStrategy": "native", "source": "pdf" }

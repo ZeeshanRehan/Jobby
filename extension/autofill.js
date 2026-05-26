@@ -34,7 +34,39 @@ if (!window.__jobbyAutofillInjected) {
     }
     if (!text) text = el.getAttribute("aria-label");
     if (!text) text = el.placeholder || null;
-    return text ? text.replace(/\s+/g, " ").replace(/\*/g, "").trim() : null;
+    // Lever-style: question text lives in the parent of .application-field, above the inputs
+    if (!text) {
+      const wrapper = el.closest(".application-field")?.parentElement;
+      if (wrapper) {
+        const clone = wrapper.cloneNode(true);
+        clone.querySelector(".application-field")?.remove();
+        const t = clone.textContent.trim();
+        if (t) text = t;
+      }
+    }
+    return text ? text.replace(/\s+/g, " ").replace(/[*✱]/g, "").trim() : null;
+  }
+
+  // ─── Radio Group Label ────────────────────────────────────────────────────
+  // Extracts the question label for a radio group — tries generic patterns first,
+  // then Lever's application-field wrapper pattern.
+  function getRadioGroupLabel(el) {
+    const legend = el.closest("fieldset")?.querySelector("legend");
+    if (legend) return legend.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+    const ariaGroup = el.closest('[role="group"]');
+    if (ariaGroup) {
+      const lbId = ariaGroup.getAttribute("aria-labelledby");
+      const lbl = lbId && document.getElementById(lbId);
+      if (lbl) return lbl.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+    }
+    const wrapper = el.closest(".application-field")?.parentElement;
+    if (wrapper) {
+      const clone = wrapper.cloneNode(true);
+      clone.querySelector(".application-field")?.remove();
+      const text = clone.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+      if (text) return text;
+    }
+    return null;
   }
 
   // ─── Unique Selector ──────────────────────────────────────────────────────
@@ -288,10 +320,29 @@ if (!window.__jobbyAutofillInjected) {
   // Async: combobox fields are opened to read their real options for the resolver
   async function scanUnknownFields(adapter, handledEls) {
     const unknownFields = [];
+    const processedRadioNames = new Set();
 
     for (const el of document.querySelectorAll("input, textarea, select")) {
       if (handledEls.has(el)) continue;
       const isCombobox = isReactSelectCombobox(el);
+
+      // Radio groups: collect all inputs sharing the same name as one field with options
+      if (el instanceof HTMLInputElement && el.type === "radio") {
+        const name = el.name;
+        if (!name || processedRadioNames.has(name)) { handledEls.add(el); continue; }
+        processedRadioNames.add(name);
+        const radios = [...document.querySelectorAll(`input[name="${name}"]`)];
+        radios.forEach((r) => handledEls.add(r));
+        const label = getRadioGroupLabel(el);
+        if (!label) continue;
+        const options = radios.map((r) => {
+          const lbl = document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label");
+          return lbl?.textContent?.trim() || r.value;
+        }).filter(Boolean);
+        unknownFields.push({ selector: `input[name="${name}"]`, label, fieldType: "radio", options });
+        continue;
+      }
+
       if (el instanceof HTMLInputElement && SKIP_INPUT_TYPES.has(el.type) && !isCombobox) continue;
       if (el.id && el.id.includes("recaptcha")) continue;
       // intl-tel-input bundles a country-code combobox (id="country") with the phone field —
@@ -405,9 +456,23 @@ if (!window.__jobbyAutofillInjected) {
         const aiErrors = [];
 
         for (const { selector, value, fieldType } of fields) {
-          const el = document.querySelector(selector);
-          if (!el) { aiErrors.push(selector); continue; }
           try {
+            // Radio groups need querySelectorAll — handle before the single-element path
+            if (fieldType === "radio") {
+              const radios = [...document.querySelectorAll(selector)];
+              if (!radios.length) { aiErrors.push(selector); continue; }
+              const labels = radios.map((r) => {
+                const lbl = document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label");
+                return lbl?.textContent?.trim() || r.value;
+              });
+              const idx = bestOptionMatch(labels, value);
+              if (idx >= 0) { radios[idx].click(); aiFilled.push(selector); }
+              else { aiErrors.push(selector); }
+              continue;
+            }
+
+            const el = document.querySelector(selector);
+            if (!el) { aiErrors.push(selector); continue; }
             let ok = true;
             if (fieldType === "combobox") {
               ok = await fillCombobox(el, value);
