@@ -8,7 +8,7 @@
     "phone":     { "selector": "input[name='phone']",           "type": "text", "source": "contact.phone" },
     "linkedin":  { "selector": "input[name='urls[LinkedIn]']",  "type": "text", "source": "contact.linkedinUrl" },
     "portfolio": { "selector": "input[name='urls[Portfolio]']", "type": "text", "source": "contact.portfolioUrl" },
-    "resume":    { "selector": "input[type='file']",            "type": "file", "uploadStrategy": "native", "source": "pdf" }
+    "resume":    { "selector": "#resume-upload-input",           "type": "file", "uploadStrategy": "native", "source": "pdf" }
   },
   "dryRunBlockSelector": "button[type='submit'], input[type='submit']",
   "steps": []
