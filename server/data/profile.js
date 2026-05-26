@@ -6,6 +6,7 @@ const profileData = {
   identity: {
     firstName: "Zeshan",
     lastName: "Rehan",
+    fullName: "Zeshan Rehan",
     middleName: "",
     preferredName: "",
     pronouns: "he/him",

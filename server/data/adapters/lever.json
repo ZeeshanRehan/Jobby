@@ -1,0 +1,15 @@
+{
+  "platform": "lever",
+  "version": "2026-05-26-001",
+  "detect": ["jobs.lever.co"],
+  "fields": {
+    "name":      { "selector": "input[name='name']",            "type": "text", "source": "identity.fullName" },
+    "email":     { "selector": "input[name='email']",           "type": "text", "source": "contact.email" },
+    "phone":     { "selector": "input[name='phone']",           "type": "text", "source": "contact.phone" },
+    "linkedin":  { "selector": "input[name='urls[LinkedIn]']",  "type": "text", "source": "contact.linkedinUrl" },
+    "portfolio": { "selector": "input[name='urls[Portfolio]']", "type": "text", "source": "contact.portfolioUrl" },
+    "resume":    { "selector": "input[type='file']",            "type": "file", "uploadStrategy": "native", "source": "pdf" }
+  },
+  "dryRunBlockSelector": "button[type='submit'], input[type='submit']",
+  "steps": []
+}
