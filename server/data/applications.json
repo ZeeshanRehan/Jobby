@@ -2425,5 +2425,90 @@
       ]
     },
     "errors": []
+  },
+  {
+    "applicationId": "3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e",
+    "timestamp": "2026-05-25T23:09:01.977Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741378003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMzg0YTBiMS1hMGI4LTRlYTYtYmJlZi01ZmJiMmMyOTU2MWUucGRmIiwiaWF0IjoxNzc5NzUwNTQxLCJleHAiOjE3Nzk3NTQxNDF9.jVHXdqOb_f8bidCNzExGqptCwR6WC5-WpotS7K9TERg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "Verification Loops",
+        "System Design",
+        "Team Dynamics",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "Verification Loops",
+      "System Design",
+      "Team Dynamics",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803791003",
+        "#question_30803792003",
+        "#question_30803793003",
+        "#question_30803794003",
+        "#question_30803795003",
+        "#question_30803796003",
+        "#question_30803798003",
+        "#question_30803807003",
+        "#question_30803808003",
+        "#question_30803809003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017903003",
+        "#\\34 017904003",
+        "#\\34 019168003",
+        "#question_30803799003",
+        "#question_30803800003",
+        "#question_30803801003",
+        "#question_30803802003",
+        "#question_30803803003",
+        "#question_30803804003",
+        "#question_30803805003",
+        "#question_30803806003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "If you are eligible, please select the status that allows you to work and live in that Country:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
   }
 ]
