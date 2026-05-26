@@ -1,0 +1,2809 @@
+[
+  {
+    "applicationId": "426518b0-8c7c-4ba4-af8a-ad57fb29681c",
+    "timestamp": "2026-05-23T17:33:32.491Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7926000?gh_jid=7926000",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_426518b0-8c7c-4ba4-af8a-ad57fb29681c.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80MjY1MThiMC04YzdjLTRiYTQtYWY4YS1hZDU3ZmIyOTY4MWMucGRmIiwiaWF0IjoxNzc5NTU3NjEyLCJleHAiOjE3Nzk1NjEyMTJ9.pPD1EgASikluD0NygD9I4v_Nr2rKH5Et3Dxw9DwYT-0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/426518b0-8c7c-4ba4-af8a-ad57fb29681c.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Zendesk"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, utilizing problem-solving skills to improve customer experience."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members, and providing excellent customer support."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Zendesk"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ca919733-d8b0-4392-8a14-3632aa489b2a",
+    "timestamp": "2026-05-23T17:34:53.911Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7895319?gh_jid=7895319",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ca919733-d8b0-4392-8a14-3632aa489b2a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jYTkxOTczMy1kOGIwLTQzOTItOGExNC0zNjMyYWE0ODliMmEucGRmIiwiaWF0IjoxNzc5NTU3NjkzLCJleHAiOjE3Nzk1NjEyOTN9.kTxx_mjt_0lmfNcgsg4hHJHA_98tMouMl4P1lvSOYHo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ca919733-d8b0-4392-8a14-3632aa489b2a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Pandas",
+        "Jupyter Notebooks",
+        "Excel"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Pandas",
+      "Jupyter Notebooks",
+      "Excel"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "31bed2f2-23eb-44d4-802b-2b25a01f2cb3",
+    "timestamp": "2026-05-23T17:53:01.257Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7891753?gh_jid=7891753",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_31bed2f2-23eb-44d4-802b-2b25a01f2cb3.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMWJlZDJmMi0yM2ViLTQ0ZDQtODAyYi0yYjI1YTAxZjJjYjMucGRmIiwiaWF0IjoxNzc5NTU4NzgxLCJleHAiOjE3Nzk1NjIzODF9.hhGBUup2oeD6czLfBPKjOC1OF6uc0ZCbla3-1I6aNcg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/31bed2f2-23eb-44d4-802b-2b25a01f2cb3.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Pandas",
+        "Jupyter Notebooks",
+        "Excel"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Pandas",
+      "Jupyter Notebooks",
+      "Excel"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "acf81493-5468-485d-a33e-a87165fe0569",
+    "timestamp": "2026-05-23T17:57:26.576Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7729729?gh_jid=7729729",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_acf81493-5468-485d-a33e-a87165fe0569.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hY2Y4MTQ5My01NDY4LTQ4NWQtYTMzZS1hODcxNjVmZTA1NjkucGRmIiwiaWF0IjoxNzc5NTU5MDQ2LCJleHAiOjE3Nzk1NjI2NDZ9.OP_Fod7duE5OipphRFvKKrkZxvC15xGm2DnZeHEqTzw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/acf81493-5468-485d-a33e-a87165fe0569.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "resume",
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "07aa4417-c3c9-4b53-a33d-5c5f2285b481",
+    "timestamp": "2026-05-23T18:05:30.969Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7891787?gh_jid=7891787",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_07aa4417-c3c9-4b53-a33d-5c5f2285b481.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wN2FhNDQxNy1jM2M5LTRiNTMtYTMzZC01YzVmMjI4NWI0ODEucGRmIiwiaWF0IjoxNzc5NTU5NTMwLCJleHAiOjE3Nzk1NjMxMzB9.J5rdZrVk3MJwvIzROpGGvrfsu_BDa-EQspO-jZ842rs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/07aa4417-c3c9-4b53-a33d-5c5f2285b481.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Streamlit",
+        "Retool",
+        "dbt",
+        "RAG",
+        "Snowflake",
+        "BigQuery",
+        "Airflow",
+        "Dagster"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, utilizing data modeling principles to inform the design."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, leveraging AI-powered interfaces to enhance user experience."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, which involved data modeling and analysis to optimize the process."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Streamlit",
+      "Retool",
+      "dbt",
+      "RAG",
+      "Snowflake",
+      "BigQuery",
+      "Airflow",
+      "Dagster"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "d37e441f-66f4-4e66-8833-bfed551ba2da",
+    "timestamp": "2026-05-23T21:24:02.993Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7868163?gh_jid=7868163",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d37e441f-66f4-4e66-8833-bfed551ba2da.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMzdlNDQxZi02NmY0LTRlNjYtODgzMy1iZmVkNTUxYmEyZGEucGRmIiwiaWF0IjoxNzc5NTcxNDQyLCJleHAiOjE3Nzk1NzUwNDJ9.840LSwBzb0JM-pgSdKPbLmISz_GI89_AosnVQz6zv_w",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d37e441f-66f4-4e66-8833-bfed551ba2da.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Claude",
+        "MCP",
+        "Code Sandbox",
+        "Storybook",
+        "WCAG"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, TypeScript-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Claude",
+      "MCP",
+      "Code Sandbox",
+      "Storybook",
+      "WCAG"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_66207721",
+        "#question_66207722",
+        "#question_66207727",
+        "#question_66207728",
+        "#question_66207729"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "Github profile",
+        "In 2-3 sentences, what excites you about this position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national base pay range for this role is $105,800 - $158,800 CAD. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "Due to current team needs, we are only considering candidates based in the BC or Ontario. Please confirm you're based in BC or Ontario.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "7cb5c76d-51f2-46f0-8a19-b5453724fd5f",
+    "timestamp": "2026-05-23T21:52:23.482Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7809234?gh_jid=7809234",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7cb5c76d-51f2-46f0-8a19-b5453724fd5f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83Y2I1Yzc2ZC01MWYyLTQ2ZjAtOGExOS1iNTQ1MzcyNGZkNWYucGRmIiwiaWF0IjoxNzc5NTczMTQzLCJleHAiOjE3Nzk1NzY3NDN9.5g0Hqymp3bJFXwPcDE1C-nE672BtCe0wtpFQsiqpyMU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7cb5c76d-51f2-46f0-8a19-b5453724fd5f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, utilizing sales and customer success skills."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, improving sales conversion rates."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65540580",
+        "#question_65610433",
+        "#question_65540583",
+        "#question_65540584",
+        "#question_65540585",
+        "#question_65540586",
+        "#question_65540588"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "What is your preferred last name? If your legal last name and preferred last name are the same, please input your legal last name.",
+        "In 2-3 sentences, please tell us what excites you about the Enterprise SDR position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national pay for this role is $65,240.00 CAD base pay. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:",
+        "Greenhouse Interview Recording Policy (Candidate Evaluation and Training)"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "af6c26a2-8808-4d16-b4fe-1659b1dd1e4d",
+    "timestamp": "2026-05-23T22:56:05.422Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7769906?gh_jid=7769906",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_af6c26a2-8808-4d16-b4fe-1659b1dd1e4d.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hZjZjMjZhMi04ODA4LTRkMTYtYjRmZS0xNjU5YjFkZDFlNGQucGRmIiwiaWF0IjoxNzc5NTc2OTY1LCJleHAiOjE3Nzk1ODA1NjV9.E-9KZMbmEoHuTWgyxuJN65c59ZvdB2uVIt3IjwJHqvI",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/af6c26a2-8808-4d16-b4fe-1659b1dd1e4d.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Adaptive",
+        "Netsuite",
+        "Excel",
+        "Powerpoint"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Adaptive",
+      "Netsuite",
+      "Excel",
+      "Powerpoint"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65046863",
+        "#question_65046866",
+        "#question_65046867",
+        "#question_65046868",
+        "#question_65046869",
+        "#question_65046870"
+      ],
+      "skipped": [],
+      "unknown": [
+        "What is your preferred first name? If your legal first name and preferred first name are the same, please input your legal first name.",
+        "What is your preferred last name? If your legal last name and preferred last name are the same, please input your legal last name.",
+        "In 2-3 sentences, what excites you about this position at Greenhouse, and how does it align with your long-term career goals?",
+        "The national pay range for this role is $128,300-175,000. We prioritize transparency and want to ensure alignment early in the process. Based on this range, do you feel comfortable moving forward with this opportunity? We’re happy to discuss the full compensation package, including benefits, during the interview process.",
+        "If you chose Greenhouse Employee, Greenhouse Event, or Other, please specify here:",
+        "I identify my gender as:",
+        "I identify as transgender:",
+        "I identify my sexual orientation as:",
+        "I identify my ethnicity as (mark all that apply):",
+        "Veteran Status:",
+        "I have a physical disability:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "528bcce6-51fc-4736-9f31-b610a9e041c7",
+    "timestamp": "2026-05-24T00:03:33.626Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7846916?gh_jid=7846916",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_528bcce6-51fc-4736-9f31-b610a9e041c7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81MjhiY2NlNi01MWZjLTQ3MzYtOWYzMS1iNjEwYTllMDQxYzcucGRmIiwiaWF0IjoxNzc5NTgxMDEzLCJleHAiOjE3Nzk1ODQ2MTN9.8ixh5pfikcUj804kwh51X4ne-uBJf2Zotyo5a1r9ado",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/528bcce6-51fc-4736-9f31-b610a9e041c7.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "UX Writing",
+        "Content Strategy",
+        "Design Systems",
+        "Interaction Design",
+        "User Research",
+        "Accessibility",
+        "Information Architecture",
+        "Taxonomy Design",
+        "SaaS",
+        "AI Product Design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, UX writing, and structured content patterns for 100+ active small businesses on the platform, establishing scalable design system standards."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack AI-powered music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, designing intuitive content patterns that allow users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "UX Writing",
+      "Content Strategy",
+      "Design Systems",
+      "Interaction Design",
+      "User Research",
+      "Accessibility",
+      "Information Architecture",
+      "Taxonomy Design",
+      "SaaS",
+      "AI Product Design"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#candidate-location",
+        "#question_65972979",
+        "#question_65972980",
+        "#question_65972981",
+        "#question_66274632",
+        "#question_65972982",
+        "#question_65972985",
+        "#question_65972986",
+        "#question_65972987",
+        "#question_65972988",
+        "#question_65972989",
+        "#question_65972990",
+        "#question_65972991",
+        "#\\31 31",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35"
+      ],
+      "skipped": [],
+      "unknown": [
+        "I identify my gender as:",
+        "I identify my sexual orientation as:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "25db9702-1f1e-42aa-8cfa-61cbcf6202a1",
+    "timestamp": "2026-05-24T00:14:12.284Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7833368?gh_jid=7833368",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_25db9702-1f1e-42aa-8cfa-61cbcf6202a1.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNWRiOTcwMi0xZjFlLTQyYWEtOGNmYS02MWNiY2Y2MjAyYTEucGRmIiwiaWF0IjoxNzc5NTgxNjUyLCJleHAiOjE3Nzk1ODUyNTJ9.FQN6D38Q5UxaL66JAIiOFk8d1c_SknIs7rCxOhyMw-0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/25db9702-1f1e-42aa-8cfa-61cbcf6202a1.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation",
+        "Prospect research"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating ability to qualify and nurture long-term prospect relationships."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through data-driven optimization."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to communicate product value and drive prospect engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating strong product-market fit and user engagement."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation",
+      "Prospect research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_65808589",
+        "#question_65808590",
+        "#question_65808591",
+        "#question_65808594",
+        "#question_65808595",
+        "#question_65808596",
+        "#question_65808597",
+        "#country",
+        "#candidate-location",
+        "#question_65808592",
+        "#question_65808593",
+        "#question_65808598",
+        "#question_65808599",
+        "#question_65808600",
+        "#question_65808603\\[\\]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "cea2d0e0-52a0-49f5-8cdb-4309c00530cd",
+    "timestamp": "2026-05-24T01:25:10.467Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7758505?gh_jid=7758505",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_cea2d0e0-52a0-49f5-8cdb-4309c00530cd.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jZWEyZDBlMC01MmEwLTQ5ZjUtOGNkYi00MzA5YzAwNTMwY2QucGRmIiwiaWF0IjoxNzc5NTg1OTEwLCJleHAiOjE3Nzk1ODk1MTB9._zXh2-MSqblv7pD_FpjW_Fr5vRVoRIzPV872ns_YuFw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/cea2d0e0-52a0-49f5-8cdb-4309c00530cd.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Sales prospecting",
+        "Market research"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Sales prospecting",
+      "Market research"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "185bd558-af1e-494f-94e2-6448d5556ce8",
+    "timestamp": "2026-05-24T01:25:18.116Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7758505?gh_jid=7758505",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_185bd558-af1e-494f-94e2-6448d5556ce8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xODViZDU1OC1hZjFlLTQ5NGYtOTRlMi02NDQ4ZDU1NTZjZTgucGRmIiwiaWF0IjoxNzc5NTg1OTE4LCJleHAiOjE3Nzk1ODk1MTh9.0dWSJ4gUyFxJ1Lje0jExAroAfVyaN8lyyxJHr4ojDxg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/185bd558-af1e-494f-94e2-6448d5556ce8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Sales prospecting",
+        "CRM"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Sales prospecting",
+      "CRM"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64905996",
+        "#question_64905997",
+        "#question_64905998",
+        "#question_64906001",
+        "#question_64906002",
+        "#question_64906003",
+        "#question_64906004",
+        "#country",
+        "#candidate-location",
+        "#question_64905999",
+        "#question_64906005",
+        "#question_64906006",
+        "#question_64906007",
+        "#question_64906010\\[\\]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "2715f148-e7af-4b53-b6dc-86c6e9fcf481",
+    "timestamp": "2026-05-24T05:43:57.813Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7724285?gh_jid=7724285",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2715f148-e7af-4b53-b6dc-86c6e9fcf481.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNzE1ZjE0OC1lN2FmLTRiNTMtYjZkYy04NmM2ZTlmY2Y0ODEucGRmIiwiaWF0IjoxNzc5NjAxNDM3LCJleHAiOjE3Nzk2MDUwMzd9.mzMrqRTipMttkqPIDmZUKFhHVUI3d5sD-ZYCuZMkzYo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2715f148-e7af-4b53-b6dc-86c6e9fcf481.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Marketo",
+        "Tableau",
+        "Bizible",
+        "Account-Based Marketing",
+        "Demand Generation",
+        "Marketing Automation",
+        "Pipeline Analysis",
+        "Territory Management",
+        "Webinar Platforms"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, establishing clear prioritization and integrated campaign strategy across channels."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Salesforce-informed prototypes, and structured UX templates for 100+ active small businesses on the platform, ensuring segment-specific messaging and tiered treatment."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members and demonstrating measurable pipeline contribution."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, operationalizing account and data management workflows."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, demonstrating data-driven optimization and measurement discipline."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, architecting an integrated platform that connected multiple user segments and channels."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to build cross-functional partnerships and drive segment-specific engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Salesforce-integrated data models, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations through integrated, multi-touch campaigns."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating measurable engagement and funnel conversion metrics."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Marketo",
+      "Tableau",
+      "Bizible",
+      "Account-Based Marketing",
+      "Demand Generation",
+      "Marketing Automation",
+      "Pipeline Analysis",
+      "Territory Management",
+      "Webinar Platforms"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "7b1eb695-1f20-437e-a4d6-8da84380d770",
+    "timestamp": "2026-05-24T05:43:58.705Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7724285?gh_jid=7724285",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7b1eb695-1f20-437e-a4d6-8da84380d770.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83YjFlYjY5NS0xZjIwLTQzN2UtYTRkNi04ZGE4NDM4MGQ3NzAucGRmIiwiaWF0IjoxNzc5NjAxNDM4LCJleHAiOjE3Nzk2MDUwMzh9.cJkoJFMAiIbzA9GK1rT6r9c-EkjLoSMffcwJkpoWXYk",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7b1eb695-1f20-437e-a4d6-8da84380d770.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Marketo",
+        "Tableau",
+        "Bizible",
+        "Marketing Automation",
+        "Account-Based Marketing",
+        "Demand Generation",
+        "Campaign Strategy",
+        "Pipeline Analytics",
+        "Territory Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Salesforce-informed prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Marketo",
+      "Tableau",
+      "Bizible",
+      "Marketing Automation",
+      "Account-Based Marketing",
+      "Demand Generation",
+      "Campaign Strategy",
+      "Pipeline Analytics",
+      "Territory Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64567483",
+        "#question_64567484",
+        "#question_64567485",
+        "#question_64567489",
+        "#question_64567490",
+        "#question_64567491",
+        "#question_64771494",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#country",
+        "#candidate-location",
+        "#question_67088231",
+        "#question_66194211",
+        "#question_64771493",
+        "#question_64567492",
+        "#question_64567493",
+        "#\\31 31"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "94018c72-2282-48e9-9273-3b32ffbbba01",
+    "timestamp": "2026-05-24T05:55:33.344Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7704734?gh_jid=7704734",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_94018c72-2282-48e9-9273-3b32ffbbba01.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85NDAxOGM3Mi0yMjgyLTQ4ZTktOTI3My0zYjMyZmZiYmJhMDEucGRmIiwiaWF0IjoxNzc5NjAyMTMzLCJleHAiOjE3Nzk2MDU3MzN9.ujxef21DFnaqwtLiLenYsv3VDMFaQ7PG8y_ryAetJZs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/94018c72-2282-48e9-9273-3b32ffbbba01.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating ability to nurture long-term prospect relationships and deliver world-class experience through each interaction."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through strategic account prioritization and personalized outreach."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, demonstrating high accountability and ownership over responsibilities."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, showcasing ability to receive and implement feedback with strong work ethic and organizational skills."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, showcasing captivating communication skills and ability to authentically tell the SkillSwap story."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations, leveraging AI thoughtfully to enhance productivity and uncover smarter ways of working."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating ability to drive engagement and over-deliver on responsibilities."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "ce97e3ae-5364-4a7d-829e-01948a8b86c6",
+    "timestamp": "2026-05-24T05:55:46.554Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7704734?gh_jid=7704734",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ce97e3ae-5364-4a7d-829e-01948a8b86c6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jZTk3ZTNhZS01MzY0LTRhN2QtODI5ZS0wMTk0OGE4Yjg2YzYucGRmIiwiaWF0IjoxNzc5NjAyMTQ2LCJleHAiOjE3Nzk2MDU3NDZ9.AHRFN_YLEaBiDIqNqj1l2dDaOFo36m8MPrFwIFFx9O0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ce97e3ae-5364-4a7d-829e-01948a8b86c6.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Salesloft",
+        "ZoomInfo",
+        "Cold calling",
+        "Cold emailing",
+        "Lead qualification",
+        "Account prioritization",
+        "Pipeline generation",
+        "Market research",
+        "Prospect research"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, driving pipeline and account prioritization for 100+ active small businesses."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, enabling personalized outreach and prospect nurturing."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through data-driven optimization."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, demonstrating accountability and organizational skills."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, showcasing a high standard of integrity and attention to detail."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, demonstrating self-starter mentality and creative problem-solving."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, showcasing excellent communication skills and ability to evangelize product value."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Launched a crypto alt-token $EAGLES as a form of currency amongst members.",
+          "tailored": "Launched a crypto alt-token $EAGLES as a form of currency amongst members, demonstrating innovative thinking and ability to discover new approaches to drive engagement."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations through thoughtful AI leverage."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating ability to drive measurable results and optimize user experience."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Salesloft",
+      "ZoomInfo",
+      "Cold calling",
+      "Cold emailing",
+      "Lead qualification",
+      "Account prioritization",
+      "Pipeline generation",
+      "Market research",
+      "Prospect research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_64361981",
+        "#question_64361982",
+        "#question_64361984",
+        "#question_64361983",
+        "#question_64361993"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#country",
+        "#question_64361986",
+        "#question_64361987",
+        "#question_64361989",
+        "#question_64361990",
+        "#question_64361991",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#candidate-location",
+        "#question_64852015",
+        "#question_64361988",
+        "#question_64361992",
+        "#\\31 31"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ebf2779f-4020-4d68-be4b-ffcc8065817b",
+    "timestamp": "2026-05-24T06:31:12.171Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/7909444?gh_jid=7909444",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ebf2779f-4020-4d68-be4b-ffcc8065817b.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lYmYyNzc5Zi00MDIwLTRkNjgtYmU0Yi1mZmNjODA2NTgxN2IucGRmIiwiaWF0IjoxNzc5NjA0MjcyLCJleHAiOjE3Nzk2MDc4NzJ9.f8wqHxdDeo-LtVJ1Rr83HcTFxTc-6PJwHVTkfB-wmN4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ebf2779f-4020-4d68-be4b-ffcc8065817b.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Snowflake",
+        "Tableau",
+        "SQL",
+        "Attribution modeling",
+        "Bizible",
+        "Salesforce",
+        "Marketing analytics",
+        "Revenue operations",
+        "B2B marketing",
+        "Cursor",
+        "LLM"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Snowflake",
+      "Tableau",
+      "SQL",
+      "Attribution modeling",
+      "Bizible",
+      "Salesforce",
+      "Marketing analytics",
+      "Revenue operations",
+      "B2B marketing",
+      "Cursor",
+      "LLM"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#question_66672118",
+        "#question_66672119",
+        "#question_66672120",
+        "#question_66672123",
+        "#question_66672124",
+        "#question_66672125",
+        "#question_66672121",
+        "#question_66672128"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_66672122",
+        "#candidate-location",
+        "#question_66672126",
+        "#question_66672127",
+        "#question_66672131\\[\\]"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "85397059-069b-4db1-950b-d633cd1716e1",
+    "timestamp": "2026-05-24T15:56:23.938Z",
+    "jobUrl": "https://job-boards.greenhouse.io/greenhouse/jobs/6180015?gh_jid=6180015",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_85397059-069b-4db1-950b-d633cd1716e1.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84NTM5NzA1OS0wNjliLTRkYjEtOTUwYi1kNjMzY2QxNzE2ZTEucGRmIiwiaWF0IjoxNzc5NjM4MTgzLCJleHAiOjE3Nzk2NDE3ODN9.8piqPZR6rDjB7MxrYaSZV3-yn1sDVBaoDZL4LexWHgM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/85397059-069b-4db1-950b-d633cd1716e1.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "HubSpot",
+        "LinkedIn Sales Navigator",
+        "Outreach",
+        "Gong",
+        "Lead qualification",
+        "Cold calling",
+        "Cold emailing",
+        "Market research"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "HubSpot",
+      "LinkedIn Sales Navigator",
+      "Outreach",
+      "Gong",
+      "Lead qualification",
+      "Cold calling",
+      "Cold emailing",
+      "Market research"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#country",
+        "#question_49897938",
+        "#question_49897939",
+        "#question_49897940",
+        "#question_49897943",
+        "#question_62720207",
+        "#candidate-location",
+        "#question_49897947",
+        "#question_49897945"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_61262671",
+        "#question_49897941",
+        "#question_49897942",
+        "#\\31 30",
+        "#\\31 32",
+        "#\\31 33",
+        "#\\31 34",
+        "#\\31 35",
+        "#question_49897944",
+        "#\\31 31"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "2bece7e6-7246-462c-a46d-d66c5e413556",
+    "timestamp": "2026-05-24T16:17:44.529Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7586693003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2bece7e6-7246-462c-a46d-d66c5e413556.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yYmVjZTdlNi03MjQ2LTQ2MmMtYTQ2ZC1kNjZjNWU0MTM1NTYucGRmIiwiaWF0IjoxNzc5NjM5NDY0LCJleHAiOjE3Nzk2NDMwNjR9.dq9OYSh03r6WlVMUzWj6ad1vjkefPJodMwkx4vsn6Ds",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2bece7e6-7246-462c-a46d-d66c5e413556.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "9391a440-c801-487b-b64e-5a4c5be86fcb",
+    "timestamp": "2026-05-24T16:17:47.694Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7586693003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_9391a440-c801-487b-b64e-5a4c5be86fcb.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85MzkxYTQ0MC1jODAxLTQ4N2ItYjY0ZS01YTRjNWJlODZmY2IucGRmIiwiaWF0IjoxNzc5NjM5NDY3LCJleHAiOjE3Nzk2NDMwNjd9.UpaOLgW31NSRHE09tx9Jem1-bGzBGZ0zv3Pf8vqgnss",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/9391a440-c801-487b-b64e-5a4c5be86fcb.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_29271297003",
+        "#question_29271298003",
+        "#question_29271299003",
+        "#question_29271300003",
+        "#question_29271302003",
+        "#question_29271303003",
+        "#question_29271304003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#question_29271305003",
+        "#question_29330050003",
+        "#question_29330051003",
+        "#question_30522545003",
+        "#question_29330052003",
+        "#question_30020690003",
+        "#question_30311331003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_29271301003",
+        "#\\34 017904003"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "796b3d06-973e-43a9-b488-bbc2d6828b24",
+    "timestamp": "2026-05-24T16:37:31.749Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7660139003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_796b3d06-973e-43a9-b488-bbc2d6828b24.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83OTZiM2QwNi05NzNlLTQzYTktYjQ4OC1iYmMyZDY4MjhiMjQucGRmIiwiaWF0IjoxNzc5NjQwNjUxLCJleHAiOjE3Nzk2NDQyNTF9.hwbcEMMf8kN9RhQfAj-amKBJfS-oyl16c89g2vG3TKI",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/796b3d06-973e-43a9-b488-bbc2d6828b24.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Figma",
+        "Prototyping",
+        "Design Systems",
+        "AI-assisted Design",
+        "User Research",
+        "Interaction Design",
+        "Visual Design",
+        "Product Strategy",
+        "Mentorship",
+        "Cross-functional Leadership"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, establishing reusable design patterns and frameworks."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, high-fidelity prototypes, and structured UX templates for 100+ active small businesses on the platform, demonstrating craft-first systems thinking."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, establishing foundational design patterns for community-driven platforms."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and AI-assisted design with GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Figma",
+      "Prototyping",
+      "Design Systems",
+      "AI-assisted Design",
+      "User Research",
+      "Interaction Design",
+      "Visual Design",
+      "Product Strategy",
+      "Mentorship",
+      "Cross-functional Leadership"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_29993646003",
+        "#question_29993647003",
+        "#question_29993648003",
+        "#question_29993649003",
+        "#question_29993651003",
+        "#question_29993652003",
+        "#question_29993653003",
+        "#question_29993655003",
+        "#question_29993657003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_29993650003",
+        "#question_29993654003",
+        "#question_29993656003",
+        "#question_29993659003",
+        "#question_30311469003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#question_29993658003"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ec5d0666-dcfb-4309-8907-89b6961e118e",
+    "timestamp": "2026-05-24T16:41:17.313Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7729943003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ec5d0666-dcfb-4309-8907-89b6961e118e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lYzVkMDY2Ni1kY2ZiLTQzMDktODkwNy04OWI2OTYxZTExOGUucGRmIiwiaWF0IjoxNzc5NjQwODc3LCJleHAiOjE3Nzk2NDQ0Nzd9.nNRCjx3G_Ag8hJNZ5Bpqw1LaPbvbqNv7vuhm46cDZFQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ec5d0666-dcfb-4309-8907-89b6961e118e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Figma",
+        "Adobe Creative Suite",
+        "Illustrator",
+        "Photoshop",
+        "InDesign",
+        "Sketch",
+        "Prototyping",
+        "Social Media Design",
+        "Typography",
+        "Brand Strategy",
+        "Marketing Collateral",
+        "Email Design",
+        "Landing Page Design",
+        "Presentation Design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Adobe Creative Suite-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Figma",
+      "Adobe Creative Suite",
+      "Illustrator",
+      "Photoshop",
+      "InDesign",
+      "Sketch",
+      "Prototyping",
+      "Social Media Design",
+      "Typography",
+      "Brand Strategy",
+      "Marketing Collateral",
+      "Email Design",
+      "Landing Page Design",
+      "Presentation Design"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30700228003",
+        "#question_30700229003",
+        "#question_30700230003",
+        "#question_30700231003",
+        "#question_30700233003",
+        "#question_30700234003",
+        "#question_30700235003",
+        "#question_30700237003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30727107003",
+        "#question_30700232003",
+        "#question_30700236003",
+        "#question_30700238003",
+        "#question_30700239003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "189be01b-e4c4-439e-adc3-c874fc472e77",
+    "timestamp": "2026-05-24T16:43:16.482Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7734361003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_189be01b-e4c4-439e-adc3-c874fc472e77.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xODliZTAxYi1lNGM0LTQzOWUtYWRjMy1jODc0ZmM0NzJlNzcucGRmIiwiaWF0IjoxNzc5NjQwOTk2LCJleHAiOjE3Nzk2NDQ1OTZ9.3PUJSvazBbYttBzroUoJEYNfq8S8p1EouY60gOGf2k8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/189be01b-e4c4-439e-adc3-c874fc472e77.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "After Effects",
+        "Motion design",
+        "Video production",
+        "Performance marketing",
+        "A/B testing",
+        "ROAS optimization",
+        "CTR optimization",
+        "CVR optimization",
+        "Asset adaptation",
+        "Production pipeline",
+        "Figma",
+        "Premiere Pro"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, motion design prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "After Effects",
+      "Motion design",
+      "Video production",
+      "Performance marketing",
+      "A/B testing",
+      "ROAS optimization",
+      "CTR optimization",
+      "CVR optimization",
+      "Asset adaptation",
+      "Production pipeline",
+      "Figma",
+      "Premiere Pro"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30739515003",
+        "#question_30739516003",
+        "#question_30770006003",
+        "#question_30770007003",
+        "#question_30739517003",
+        "#question_30739518003",
+        "#question_30739719003",
+        "#question_30739520003",
+        "#question_30739521003",
+        "#question_30739522003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30770008003",
+        "#question_30739519003",
+        "#question_30739523003",
+        "#question_30739524003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "b424359d-a8a3-40f4-8b4a-01d0460e78fb",
+    "timestamp": "2026-05-24T17:32:56.680Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7724699003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_b424359d-a8a3-40f4-8b4a-01d0460e78fb.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iNDI0MzU5ZC1hOGEzLTQwZjQtOGI0YS0wMWQwNDYwZTc4ZmIucGRmIiwiaWF0IjoxNzc5NjQzOTc2LCJleHAiOjE3Nzk2NDc1NzZ9.LsqXc2ZAmGNo2Oh5fIrfT9Dd2vBzx9Km1h13tL3Xcic",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/b424359d-a8a3-40f4-8b4a-01d0460e78fb.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kubernetes",
+        "Datadog",
+        "Grafana",
+        "Prometheus",
+        "GitLab CI",
+        "GitHub Actions",
+        "Bash",
+        "SLOs",
+        "SLIs",
+        "Error budgets",
+        "Incident management",
+        "Infrastructure as code",
+        "Observability",
+        "AI automation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Kubernetes-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Bash, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Kubernetes",
+      "Datadog",
+      "Grafana",
+      "Prometheus",
+      "GitLab CI",
+      "GitHub Actions",
+      "Bash",
+      "SLOs",
+      "SLIs",
+      "Error budgets",
+      "Incident management",
+      "Infrastructure as code",
+      "Observability",
+      "AI automation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "81f5354d-a77f-4961-a55d-42024c193929",
+    "timestamp": "2026-05-24T17:33:05.080Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7724699003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_81f5354d-a77f-4961-a55d-42024c193929.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84MWY1MzU0ZC1hNzdmLTQ5NjEtYTU1ZC00MjAyNGMxOTM5MjkucGRmIiwiaWF0IjoxNzc5NjQzOTg0LCJleHAiOjE3Nzk2NDc1ODR9.vp5hFibfCPIGf5U2wfzx2-gUyKSHFVxqNJIrXDhYU8M",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/81f5354d-a77f-4961-a55d-42024c193929.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kubernetes",
+        "Datadog",
+        "Prometheus",
+        "Grafana",
+        "GitLab CI",
+        "GitHub Actions",
+        "Bash",
+        "SLOs",
+        "SLIs",
+        "Error budgets",
+        "Incident management",
+        "Infrastructure as code",
+        "Self-healing infrastructure",
+        "Automated incident triage"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Kubernetes-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Bash, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Kubernetes",
+      "Datadog",
+      "Prometheus",
+      "Grafana",
+      "GitLab CI",
+      "GitHub Actions",
+      "Bash",
+      "SLOs",
+      "SLIs",
+      "Error budgets",
+      "Incident management",
+      "Infrastructure as code",
+      "Self-healing infrastructure",
+      "Automated incident triage"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_30648398003",
+        "#question_30648399003",
+        "#question_30648400003",
+        "#question_30648402003",
+        "#question_30648403003",
+        "#question_30648404003",
+        "#question_30648405003",
+        "#question_30648407003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30648401003",
+        "#question_30648406003",
+        "#question_30648408003",
+        "#question_30648409003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "ee4afca0-9e0b-4339-b77d-52dd3d826965",
+    "timestamp": "2026-05-24T17:35:11.444Z",
+    "jobUrl": "https://job-boards.greenhouse.io/embed/job_app?for=tenstorrent&token=4645584007&utm_source=jobright",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ee4afca0-9e0b-4339-b77d-52dd3d826965.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lZTRhZmNhMC05ZTBiLTQzMzktYjc3ZC01MmRkM2Q4MjY5NjUucGRmIiwiaWF0IjoxNzc5NjQ0MTExLCJleHAiOjE3Nzk2NDc3MTF9.9T2JXuFNPbXy2MDT7doAGyVENCjGopoz5XwtgIvqusw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ee4afca0-9e0b-4339-b77d-52dd3d826965.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "C++",
+        "C",
+        "RISC-V",
+        "Networking",
+        "Protocol Design",
+        "Synchronization",
+        "Collective Communication",
+        "Bare-metal Programming",
+        "Hardware-software Interaction",
+        "Distributed Systems",
+        "Performance Tuning",
+        "Interconnect Optimization"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, C++-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, C++, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "C++",
+      "C",
+      "RISC-V",
+      "Networking",
+      "Protocol Design",
+      "Synchronization",
+      "Collective Communication",
+      "Bare-metal Programming",
+      "Hardware-software Interaction",
+      "Distributed Systems",
+      "Performance Tuning",
+      "Interconnect Optimization"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_8227028007",
+        "#question_8227029007",
+        "#gender",
+        "#veteran_status",
+        "#disability_status",
+        "#question_10594935007",
+        "#hispanic_ethnicity"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#candidate-location"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "4ebe0ced-bf2f-46b8-8503-3f530747c719",
+    "timestamp": "2026-05-25T21:31:45.555Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7703245003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_4ebe0ced-bf2f-46b8-8503-3f530747c719.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80ZWJlMGNlZC1iZjJmLTQ2YjgtODUwMy0zZjUzMDc0N2M3MTkucGRmIiwiaWF0IjoxNzc5NzQ0NzA1LCJleHAiOjE3Nzk3NDgzMDV9.73RToFKdaPh2_BdcsMxCJxNffK4yC4h6Z3-wSGaSbdQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/4ebe0ced-bf2f-46b8-8503-3f530747c719.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "System Design",
+        "Verification Loops",
+        "Guardrails",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "System Design",
+      "Verification Loops",
+      "Guardrails",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30443198003",
+        "#question_30443199003",
+        "#question_30443200003",
+        "#question_30443201003",
+        "#question_30443202003",
+        "#question_30443203003",
+        "#question_30443205003",
+        "#question_30443214003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30443204003",
+        "#question_30443206003",
+        "#question_30443207003",
+        "#question_30443208003",
+        "#question_30443209003",
+        "#question_30443210003",
+        "#question_30443211003",
+        "#question_30443212003",
+        "#question_30443213003",
+        "#question_30443215003",
+        "#question_30443216003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "11d646bb-a938-46c9-86b5-3c278683677e",
+    "timestamp": "2026-05-25T21:37:01.243Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741371003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_11d646bb-a938-46c9-86b5-3c278683677e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xMWQ2NDZiYi1hOTM4LTQ2YzktODZiNS0zYzI3ODY4MzY3N2UucGRmIiwiaWF0IjoxNzc5NzQ1MDIxLCJleHAiOjE3Nzk3NDg2MjF9.C6mOfEJDwWSTm3ZmWVIW4kNBNPYxeyp3kK-cQ5yY4Ys",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/11d646bb-a938-46c9-86b5-3c278683677e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "Verification Loops",
+        "System Design",
+        "Production Systems",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "Verification Loops",
+      "System Design",
+      "Production Systems",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "2acbdd07-0a9e-4b15-98e6-9000e0580b84",
+    "timestamp": "2026-05-25T21:37:11.491Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741371003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2acbdd07-0a9e-4b15-98e6-9000e0580b84.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yYWNiZGQwNy0wYTllLTRiMTUtOThlNi05MDAwZTA1ODBiODQucGRmIiwiaWF0IjoxNzc5NzQ1MDMxLCJleHAiOjE3Nzk3NDg2MzF9.ayS3Npm_Jn4rKap0dJzZimGGdu-6C059Dz6r6UJCCzM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2acbdd07-0a9e-4b15-98e6-9000e0580b84.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "Verification Loops",
+        "System Design",
+        "Team Leadership",
+        "Performance Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, proposed and operationalized agentic workflows to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "Verification Loops",
+      "System Design",
+      "Team Leadership",
+      "Performance Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803665003",
+        "#question_30803666003",
+        "#question_30803667003",
+        "#question_30803668003",
+        "#question_30803669003",
+        "#question_30803670003",
+        "#question_30803672003",
+        "#question_30803681003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803671003",
+        "#question_30803673003",
+        "#question_30803674003",
+        "#question_30803675003",
+        "#question_30803676003",
+        "#question_30803677003",
+        "#question_30803678003",
+        "#question_30803679003",
+        "#question_30803680003",
+        "#question_30803682003",
+        "#question_30803683003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "20a9b065-e1f4-46b9-9903-8cb3b9ba59d6",
+    "timestamp": "2026-05-25T22:22:12.647Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741373003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_20a9b065-e1f4-46b9-9903-8cb3b9ba59d6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yMGE5YjA2NS1lMWY0LTQ2YjktOTkwMy04Y2IzYjliYTU5ZDYucGRmIiwiaWF0IjoxNzc5NzQ3NzMyLCJleHAiOjE3Nzk3NTEzMzJ9.Y6viurBQTiIWQ94uowX6gp16WQUHfJAA3cmN_V4y7y4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/20a9b065-e1f4-46b9-9903-8cb3b9ba59d6.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "System Design",
+        "Verification Loops",
+        "Guardrails",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "System Design",
+      "Verification Loops",
+      "Guardrails",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803696003",
+        "#question_30803697003",
+        "#question_30803698003",
+        "#question_30803699003",
+        "#question_30803700003",
+        "#question_30803701003",
+        "#question_30803703003",
+        "#question_30803712003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803702003",
+        "#question_30803704003",
+        "#question_30803705003",
+        "#question_30803706003",
+        "#question_30803707003",
+        "#question_30803708003",
+        "#question_30803709003",
+        "#question_30803710003",
+        "#question_30803711003",
+        "#question_30803713003",
+        "#question_30803714003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "c7d0859e-d159-4abc-829b-fb08236ce93f",
+    "timestamp": "2026-05-25T22:23:59.097Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741374003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_c7d0859e-d159-4abc-829b-fb08236ce93f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jN2QwODU5ZS1kMTU5LTRhYmMtODI5Yi1mYjA4MjM2Y2U5M2YucGRmIiwiaWF0IjoxNzc5NzQ3ODM5LCJleHAiOjE3Nzk3NTE0Mzl9.ndZ2UfcdFLbi2fYu3JhS1_skGndHG-vQpqqNaDIvqYo",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/c7d0859e-d159-4abc-829b-fb08236ce93f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Automation Workflows",
+        "Agentic Systems",
+        "System Design",
+        "Verification Testing",
+        "Guardrails",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Automation Workflows",
+      "Agentic Systems",
+      "System Design",
+      "Verification Testing",
+      "Guardrails",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803715003",
+        "#question_30803716003",
+        "#question_30803717003",
+        "#question_30803718003",
+        "#question_30803719003",
+        "#question_30803720003",
+        "#question_30803722003",
+        "#question_30803731003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803721003",
+        "#question_30803723003",
+        "#question_30803724003",
+        "#question_30803725003",
+        "#question_30803726003",
+        "#question_30803727003",
+        "#question_30803728003",
+        "#question_30803729003",
+        "#question_30803730003",
+        "#question_30803732003",
+        "#question_30803733003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "d202549e-90c9-4783-94f9-e8d108dc87ef",
+    "timestamp": "2026-05-25T22:48:57.573Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741375003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d202549e-90c9-4783-94f9-e8d108dc87ef.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMjAyNTQ5ZS05MGM5LTQ3ODMtOTRmOS1lOGQxMDhkYzg3ZWYucGRmIiwiaWF0IjoxNzc5NzQ5MzM3LCJleHAiOjE3Nzk3NTI5Mzd9.94uHTsdSr9AFT5Gh8UQMDI02UxI4qJV1ZXx_eMru_YA",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d202549e-90c9-4783-94f9-e8d108dc87ef.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "System Design",
+        "Observability",
+        "Verification Loops",
+        "Guardrails"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, proposed and operationalized end-to-end workflows (spec → plan → execute → verify) projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "System Design",
+      "Observability",
+      "Verification Loops",
+      "Guardrails"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803734003",
+        "#question_30803735003",
+        "#question_30803736003",
+        "#question_30803737003",
+        "#question_30803738003",
+        "#question_30803739003",
+        "#question_30803741003",
+        "#question_30803750003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803740003",
+        "#question_30803742003",
+        "#question_30803743003",
+        "#question_30803744003",
+        "#question_30803745003",
+        "#question_30803746003",
+        "#question_30803747003",
+        "#question_30803748003",
+        "#question_30803749003",
+        "#question_30803751003",
+        "#question_30803752003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "083699b9-868d-4589-8230-43cd4334446a",
+    "timestamp": "2026-05-25T22:53:59.512Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741377003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_083699b9-868d-4589-8230-43cd4334446a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wODM2OTliOS04NjhkLTQ1ODktODIzMC00M2NkNDMzNDQ0NmEucGRmIiwiaWF0IjoxNzc5NzQ5NjM5LCJleHAiOjE3Nzk3NTMyMzl9.94yeRx2wQFMW0h179URzISpEb_xFFZyla6qD-9PnmVU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/083699b9-868d-4589-8230-43cd4334446a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Automation Workflows",
+        "Agentic Systems",
+        "Verification Testing",
+        "System Design",
+        "Team Dynamics",
+        "Performance Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, proposed and operationalized agentic workflows to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Automation Workflows",
+      "Agentic Systems",
+      "Verification Testing",
+      "System Design",
+      "Team Dynamics",
+      "Performance Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803772003",
+        "#question_30803773003",
+        "#question_30803774003",
+        "#question_30803775003",
+        "#question_30803776003",
+        "#question_30803777003",
+        "#question_30803779003",
+        "#question_30803788003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017904003",
+        "#question_30803778003",
+        "#question_30803780003",
+        "#question_30803781003",
+        "#question_30803782003",
+        "#question_30803783003",
+        "#question_30803784003",
+        "#question_30803785003",
+        "#question_30803786003",
+        "#question_30803787003",
+        "#question_30803789003",
+        "#question_30803790003",
+        "#\\34 017903003",
+        "#\\34 019168003"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e",
+    "timestamp": "2026-05-25T23:09:01.977Z",
+    "jobUrl": "https://job-boards.greenhouse.io/remotecom/jobs/7741378003",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMzg0YTBiMS1hMGI4LTRlYTYtYmJlZi01ZmJiMmMyOTU2MWUucGRmIiwiaWF0IjoxNzc5NzUwNTQxLCJleHAiOjE3Nzk3NTQxNDF9.jVHXdqOb_f8bidCNzExGqptCwR6WC5-WpotS7K9TERg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Elixir",
+        "Phoenix",
+        "Ruby",
+        "Functional Programming",
+        "Autonomous Agents",
+        "Agentic Workflows",
+        "Verification Loops",
+        "System Design",
+        "Team Dynamics",
+        "Observability"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Elixir",
+      "Phoenix",
+      "Ruby",
+      "Functional Programming",
+      "Autonomous Agents",
+      "Agentic Workflows",
+      "Verification Loops",
+      "System Design",
+      "Team Dynamics",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above.",
+        "#question_30803791003",
+        "#question_30803792003",
+        "#question_30803793003",
+        "#question_30803794003",
+        "#question_30803795003",
+        "#question_30803796003",
+        "#question_30803798003",
+        "#question_30803807003",
+        "#question_30803808003",
+        "#question_30803809003",
+        "#\\34 017901003",
+        "#\\34 017902003",
+        "#\\34 017903003",
+        "#\\34 017904003",
+        "#\\34 019168003",
+        "#question_30803799003",
+        "#question_30803800003",
+        "#question_30803801003",
+        "#question_30803802003",
+        "#question_30803803003",
+        "#question_30803804003",
+        "#question_30803805003",
+        "#question_30803806003"
+      ],
+      "skipped": [],
+      "unknown": [
+        "If you are eligible, please select the status that allows you to work and live in that Country:"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": [
+        "By checking this box, I consent to Remote collecting, storing, and processing my responses to the demographic data surveys above."
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "dcfa2065-0f13-4a68-a04b-3443db859815",
+    "timestamp": "2026-05-26T04:01:33.360Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/c2aec3b8-e665-4855-b8f4-38312b4dc99e/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "unknown",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_dcfa2065-0f13-4a68-a04b-3443db859815.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kY2ZhMjA2NS0wZjEzLTRhNjgtYTA0Yi0zNDQzZGI4NTk4MTUucGRmIiwiaWF0IjoxNzc5NzY4MDkzLCJleHAiOjE3Nzk3NzE2OTN9.ykXtAawUFgRZG-U0d1h0Oib2Y1hua-CbmhAnQWZScJw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/dcfa2065-0f13-4a68-a04b-3443db859815.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Tableau",
+        "Looker",
+        "Data Visualization",
+        "Business Intelligence",
+        "Analytics",
+        "Customer Analytics",
+        "Data Analysis",
+        "Reporting"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Tableau-informed prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Tableau",
+      "Looker",
+      "Data Visualization",
+      "Business Intelligence",
+      "Analytics",
+      "Customer Analytics",
+      "Data Analysis",
+      "Reporting"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "f26c8200-8bfa-4bd9-a742-abb0219019b2",
+    "timestamp": "2026-05-26T04:04:26.743Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/1e2d50d7-e502-47b7-99b9-a184cfb5816d/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "unknown",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_f26c8200-8bfa-4bd9-a742-abb0219019b2.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mMjZjODIwMC04YmZhLTRiZDktYTc0Mi1hYmIwMjE5MDE5YjIucGRmIiwiaWF0IjoxNzc5NzY4MjY2LCJleHAiOjE3Nzk3NzE4NjZ9.BpMAX7ueUZEmLrxCqDNFWx4WqeiLwl2Woh37_W9ORIY",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/f26c8200-8bfa-4bd9-a742-abb0219019b2.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "SQL",
+        "Tableau",
+        "Power BI",
+        "Data Visualization",
+        "ETL",
+        "Looker",
+        "Snowflake",
+        "BigQuery",
+        "Apache Spark",
+        "Pandas"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "SQL",
+      "Tableau",
+      "Power BI",
+      "Data Visualization",
+      "ETL",
+      "Looker",
+      "Snowflake",
+      "BigQuery",
+      "Apache Spark",
+      "Pandas"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "43792a4a-9ded-476d-a4d3-909e089f37d3",
+    "timestamp": "2026-05-26T04:11:59.183Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/620b7586-d44a-4e25-8740-d5b5f3947ef6/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "lever",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_43792a4a-9ded-476d-a4d3-909e089f37d3.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80Mzc5MmE0YS05ZGVkLTQ3NmQtYTRkMy05MDllMDg5ZjM3ZDMucGRmIiwiaWF0IjoxNzc5NzY4NzE5LCJleHAiOjE3Nzk3NzIzMTl9.ZKcF8inpXKddAO75ouT0VbpxN5OdnrHRrdxnot_r7F8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/43792a4a-9ded-476d-a4d3-909e089f37d3.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Consulting",
+        "Implementation",
+        "Solutions Architecture",
+        "Stakeholder Management",
+        "Requirements Gathering",
+        "Process Optimization"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Consulting",
+      "Implementation",
+      "Solutions Architecture",
+      "Stakeholder Management",
+      "Requirements Gathering",
+      "Process Optimization"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "phone",
+        "linkedin",
+        "portfolio",
+        "resume",
+        "#location-input",
+        "[name=\"org\"]",
+        "[name=\"urls[GitHub]\"]",
+        "[name=\"urls[Other]\"]"
+      ],
+      "skipped": [],
+      "unknown": [
+        "Twitter URL"
+      ],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "c6b91079-f23d-4422-b0f2-be040ebb398b",
+    "timestamp": "2026-05-26T04:28:18.472Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/065f4538-7347-4207-909f-4ea68f63b4af/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "lever",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_c6b91079-f23d-4422-b0f2-be040ebb398b.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jNmI5MTA3OS1mMjNkLTQ0MjItYjBmMi1iZTA0MGViYjM5OGIucGRmIiwiaWF0IjoxNzc5NzY5Njk4LCJleHAiOjE3Nzk3NzMyOTh9.KQcZSUi2BmoxgP0H8YwWLHBSO39-_s7xxQdmHDcPprQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/c6b91079-f23d-4422-b0f2-be040ebb398b.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "API design",
+        "Microservices",
+        "PostgreSQL",
+        "Elasticsearch",
+        "Message queues",
+        "Rate limiting",
+        "Authentication",
+        "Caching strategies"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system and API infrastructure for involveMINT's mutual-credit marketplace."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Node.js and Express-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack and Node.js APIs to help communities share skills, services, and help."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, delivering personalized song suggestions through a scalable API allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "API design",
+      "Microservices",
+      "PostgreSQL",
+      "Elasticsearch",
+      "Message queues",
+      "Rate limiting",
+      "Authentication",
+      "Caching strategies"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "phone",
+        "org",
+        "location",
+        "linkedin",
+        "portfolio",
+        "resume",
+        "Yes",
+        "[name=\"urls[GitHub]\"]",
+        "[name=\"urls[Other]\"]",
+        "[name=\"cards[46505168-3608-4446-a4c6-456fd3b62faa][field0]\"]"
+      ],
+      "skipped": [],
+      "unknown": [
+        "Twitter URL"
+      ],
+      "stale": [],
+      "errors": [],
+      "consent": [
+        "Yes"
+      ]
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "1bfc5854-be3e-4281-adc0-cd70e7224f8d",
+    "timestamp": "2026-05-26T04:52:26.446Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/ac045913-951a-41d4-83f0-b6fd4b67f510/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1bfc5854-be3e-4281-adc0-cd70e7224f8d.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xYmZjNTg1NC1iZTNlLTQyODEtYWRjMC1jZDcwZTcyMjRmOGQucGRmIiwiaWF0IjoxNzc5NzcxMTQ2LCJleHAiOjE3Nzk3NzQ3NDZ9.ImyDXpRcCMQgjGHM8m9E8xwoAS6LLoVpN1d6poA54Ec",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/1bfc5854-be3e-4281-adc0-cd70e7224f8d.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Dashboards",
+        "Metrics tracking",
+        "Program coordination",
+        "Funnel analysis",
+        "Bottleneck identification",
+        "Automation",
+        "SaaS",
+        "Operations"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, TypeScript-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, tracked conversion metrics and projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Dashboards",
+      "Metrics tracking",
+      "Program coordination",
+      "Funnel analysis",
+      "Bottleneck identification",
+      "Automation",
+      "SaaS",
+      "Operations"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "resume",
+        "#\\38 db1be62-8604-41d7-967e-1937c994166e",
+        "#\\35 ee7de27-559b-4733-aa30-2083e3512937",
+        "#\\30 95615d0-8eed-4efb-a99d-0c9741c6949b",
+        "#\\33 9a611bf-d1ff-4155-9712-73de2829964d",
+        "#dc78938a-1d1b-4d2d-9af3-e596c91bac8f",
+        "#\\34 9e9032b-8a78-4ddc-9047-918929f5dc54",
+        "#\\31 136362b-2d57-4c49-9904-069e96660d6d"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  }
+]

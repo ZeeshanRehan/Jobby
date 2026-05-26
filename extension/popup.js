@@ -32,6 +32,7 @@ const btnBack   = document.getElementById("btn-back");
 const elPlatformLine   = document.getElementById("platform-line");
 const elPlatformName   = document.getElementById("platform-name");
 const elAlreadyApplied = document.getElementById("already-applied");
+const elForceRerun     = document.getElementById("force-rerun");
 
 const stateAutofill    = document.getElementById("state-autofill");
 const elAfFilledCount  = document.getElementById("af-filled-count");
@@ -217,7 +218,7 @@ async function callTailorApi(jobDescription, jobUrl) {
 }
 
 // ─── Autofill API ─────────────────────────────────────────────────────────────
-async function callApplyApi(jobDescription, jobUrl) {
+async function callApplyApi(jobDescription, jobUrl, force = false) {
   const controller = new AbortController();
   const timeoutId  = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -226,7 +227,7 @@ async function callApplyApi(jobDescription, jobUrl) {
     response = await fetch(`${API_BASE}/apply`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": API_KEY },
-      body: JSON.stringify({ jobUrl, jobDescription, mode: "dry_run" }),
+      body: JSON.stringify({ jobUrl, jobDescription, mode: "dry_run", force }),
       signal: controller.signal,
     });
   } catch (err) {
@@ -442,14 +443,14 @@ async function runAutofill() {
 
   let applyData;
   try {
-    applyData = await callApplyApi(jobDescription, tabUrl);
+    applyData = await callApplyApi(jobDescription, tabUrl, elForceRerun?.checked || false);
   } catch (err) {
     showError(err.step, err.message);
     return;
   }
 
-  if (applyData.alreadyApplied) {
-    showError("already applied", "This URL is already on record. Click Back to continue.");
+  if (applyData.alreadyTailored) {
+    showError("already tailored", "This URL was already tailored once. Tick 'Force re-tailor' on the start screen and run again.");
     return;
   }
 

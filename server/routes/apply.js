@@ -35,17 +35,20 @@ function loadAdapter(platform) {
 // ─── POST /apply ─────────────────────────────────────────────────────────────
 
 router.post("/", async (req, res) => {
-  const { jobUrl, jobDescription, mode } = req.body;
+  const { jobUrl, jobDescription, mode, force } = req.body;
 
   if (!jobUrl || !jobDescription) {
     return res.status(400).json({ error: "jobUrl and jobDescription are required" });
   }
 
-  // Idempotency check — before any AI call to save tokens
-  const existing = hasApplied(jobUrl);
-  if (existing) {
-    const existingRecord = findApplication(existing.applicationId);
-    return res.json({ alreadyApplied: true, existingRecord });
+  // Dedup guard — skips a re-tailor (and its Claude cost) for a URL we've already tailored.
+  // This tracks tailoring, not submission. `force: true` overrides it (reposted/updated listing, re-test)
+  if (!force) {
+    const existing = hasApplied(jobUrl);
+    if (existing) {
+      const existingRecord = findApplication(existing.applicationId);
+      return res.json({ alreadyTailored: true, existingRecord });
+    }
   }
 
   const applicationId = randomUUID();

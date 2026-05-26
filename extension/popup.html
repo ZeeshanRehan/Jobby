@@ -318,6 +318,17 @@
       margin-bottom: 10px;
     }
 
+    /* ── Force re-tailor toggle ──────────────────────────────────── */
+    .force-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
     /* ── Autofill success ─────────────────────────────────────────── */
     .autofill-header {
       display: flex;
@@ -402,7 +413,8 @@
     <div class="brand">Jobby</div>
     <div class="brand-sub">AI Resume Tailoring</div>
     <div class="url-label" id="current-url">Loading...</div>
-    <div id="already-applied" class="already-applied hidden">Already applied — tailoring again will create a new record</div>
+    <div id="already-applied" class="already-applied hidden">Already tailored once — tick Force re-tailor to run it again</div>
+    <label class="force-row"><input type="checkbox" id="force-rerun" /> Force re-tailor (ignore duplicate check)</label>
     <button id="btn-tailor">Tailor Resume</button>
     <button id="btn-autofill" class="btn-secondary" style="margin-top:10px;">Autofill Form</button>
   </div>
