@@ -51,14 +51,24 @@ if (!window.__jobbyAutofillInjected) {
   // Extracts the question label for a radio group — tries generic patterns first,
   // then Lever's application-field wrapper pattern.
   function getRadioGroupLabel(el) {
-    const legend = el.closest("fieldset")?.querySelector("legend");
-    if (legend) return legend.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+    const fieldset = el.closest("fieldset");
+    if (fieldset) {
+      const legend = fieldset.querySelector("legend");
+      if (legend) return legend.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+      // Ashby: fieldset without legend — label precedes _option_ divs; strip trailing "Input <name>" a11y noise
+      const clone = fieldset.cloneNode(true);
+      clone.querySelectorAll('[class*="_option_"]').forEach((o) => o.remove());
+      const raw = clone.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+      const text = raw.split(/\s+Input\b/i)[0].trim();
+      if (text) return text;
+    }
     const ariaGroup = el.closest('[role="group"]');
     if (ariaGroup) {
       const lbId = ariaGroup.getAttribute("aria-labelledby");
       const lbl = lbId && document.getElementById(lbId);
       if (lbl) return lbl.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
     }
+    // Lever-style: .application-field parent holds the question text
     const wrapper = el.closest(".application-field")?.parentElement;
     if (wrapper) {
       const clone = wrapper.cloneNode(true);
@@ -377,6 +387,24 @@ if (!window.__jobbyAutofillInjected) {
       unknownFields.push({ selector, label, fieldType, options });
     }
 
+    // Ashby Yes/No button groups — _yesno_ containers with Yes/No buttons.
+    // Tag each container with data-jobby-yesno so FILL_AI_FIELDS can find the right one.
+    let yesNoIdx = 0;
+    for (const container of document.querySelectorAll('[class*="_yesno_"]')) {
+      const buttons = [...container.querySelectorAll("button")];
+      if (buttons.length < 2) continue;
+      const fieldEntry = container.parentElement;
+      if (!fieldEntry) continue;
+      const clone = fieldEntry.cloneNode(true);
+      clone.querySelector('[class*="_yesno_"]')?.remove();
+      const label = clone.textContent.replace(/[*✱]/g, "").replace(/\s+/g, " ").trim();
+      if (!label) continue;
+      const options = buttons.map((b) => b.textContent.trim()).filter(Boolean);
+      container.setAttribute("data-jobby-yesno", String(yesNoIdx));
+      unknownFields.push({ selector: `[data-jobby-yesno="${yesNoIdx}"]`, label, fieldType: "yesno", options });
+      yesNoIdx++;
+    }
+
     return unknownFields;
   }
 
@@ -457,6 +485,18 @@ if (!window.__jobbyAutofillInjected) {
 
         for (const { selector, value, fieldType } of fields) {
           try {
+            // Ashby Yes/No button groups — find tagged container, click the matching button
+            if (fieldType === "yesno") {
+              const container = document.querySelector(selector);
+              if (!container) { aiErrors.push(selector); continue; }
+              const buttons = [...container.querySelectorAll("button")];
+              const labels  = buttons.map((b) => b.textContent.trim());
+              const idx     = bestOptionMatch(labels, value);
+              if (idx >= 0) { buttons[idx].click(); aiFilled.push(selector); }
+              else { aiErrors.push(selector); }
+              continue;
+            }
+
             // Radio groups need querySelectorAll — handle before the single-element path
             if (fieldType === "radio") {
               const radios = [...document.querySelectorAll(selector)];
