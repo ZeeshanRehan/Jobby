@@ -514,6 +514,15 @@ if (!window.__jobbyAutofillInjected) {
         report.filled.push(...consent);
 
         console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length, "consent:", consent.length);
+        // Scan diagnostic — what the scanner DETECTED. A required field missing from BOTH this table
+        // and the AI-fill table was never seen by the scanner (bad label / unsupported widget).
+        try {
+          console.table(unknownFields.map((f) => ({
+            label: f.label, fieldType: f.fieldType,
+            options: Array.isArray(f.options) ? f.options.length : "",
+            selector: f.selector,
+          })));
+        } catch (e) { console.warn("[Jobby] scan table failed:", e.message); }
         sendResponse({ report, unknownFields });
       })();
       return true;
