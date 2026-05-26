@@ -14,6 +14,68 @@ Entry tags:
 
 ---
 
+## 2026-05-26 [IDEA] Adapters need an entry/navigation phase (posting → Apply → form) + LinkedIn sourcing
+
+- **LinkedIn as sourcing (the safe path):** non-Easy-Apply LinkedIn jobs have a plain "Apply" → redirects to the
+  company ATS (GH/Lever/Ashby/Workday). Scraper reads listing → extracts external apply link → queues the *ATS*
+  URL → adapter fills it (no submit on LinkedIn = no ban risk). Caveat: scraping LinkedIn *listings* still carries
+  LinkedIn detection risk; the apply step doesn't. Easy-Apply jobs are LinkedIn-native (no external posting) → don't fit.
+- **Pre-form navigation complexity (user caught this 2026-05-26):** the queued URL does NOT land on the fillable
+  form — it lands on the job *description*; you must click "Apply" (sometimes pick "Apply Manually" / dismiss a
+  modal / pass SSO) to *reach* the form. True for Greenhouse / Lever / Workday. Scrapers + ATS APIs hand you the
+  *posting* URL anyway, so this is the **normal case, not an edge case** — the adapter spec was missing this phase.
+- **Fix:** extend adapter schema `{ detect, fields }` → add `{ entrySteps: [...] }` = the 1-3 deterministic
+  clicks/waits from posting → form. Run `entrySteps` first, then existing field mapping. Deterministic per-ATS
+  (Apply-button selectors are stable); escalate to agent only when the entry path is novel.
+
+---
+
+## 2026-05-26 [IDEA] Simplify (competitor) — what it is, why not to embed it
+
+- **Simplify Copilot** = Chrome extension, runs in the user's own logged-in session (same in-browser model as
+  Jobby). Autofills recognized fields on the application page from a **static stored profile**.
+- **Handholding, not autonomous:** fills the *current* page; the **user** clicks Next + Submit. Does not
+  autonomously drive a multi-page Workday wizard end-to-end (exact current behavior unverified — they iterate).
+  Reactive to the page you're on; the page must stay open for it to work.
+- **Does NOT tailor the resume per-JD** — that's Jobby's wedge.
+- **Don't embed / drive it:** closed product, no API, against their ToS, fragile, and outsourcing the fill kills
+  the tailoring differentiator + you can't build a SaaS on a competitor's extension.
+- **Takeaway:** Jobby's `autofill.js` + adapters + resolver already *is* a Simplify-equivalent. The gap vs
+  Simplify is the two parts they deliberately skipped — **tailoring** (quality) + **autonomy** (auto-Next /
+  auto-submit). Their keep-a-human-clicking choice avoids mis-submit + ToS exposure; Jobby's accepted-bad-apps
+  tolerance is exactly what lets it cross that line.
+
+---
+
+## 2026-05-26 [IDEA] Field-resolution escalation ladder (Rungs 0-5)
+
+**Target shape (user, 2026-05-26):** high volume + agentic fill + robust Workday adapter + escalate-to-human;
+user OK manually filling ~5-10/day himself (this *sizes* the needs-human bucket — it's the accepted exception load).
+
+The fill path is a cost/capability ladder — climb a rung only when the cheaper one fails:
+- **R0 adapter** (deterministic selectors) — free
+- **R1 `localResolveField`** (~75%: demographics / yes-no / salary / location) — free
+- **R2 Haiku batched** (open-ended, 3/batch) — ~$0.043/app — *current state*
+- **R3 fat single-shot (NEW):** whole form → **Sonnet** in one call → field→value map. Diff vs R2 = smarter
+  model + sees ALL fields together (cross-field disambiguation) vs 3 in isolation. ~$0.05-0.20/app, ~1 day to
+  build. Fixes answer *quality* on weird/interdependent Workday questions. Does NOT solve missed/custom widgets.
+- **R4 agentic loop (NEW):** perceive (DOM/screenshot) → decide → act (tool call) → observe, looping. Operates
+  widgets (date pickers, "Add another", typeaheads), clicks through multi-page wizards, recovers from validation
+  errors. The "token-thirsty" rung: ~$0.50-2+/hard app, **prompt-caching mandatory**; 30s-2min/form. **Could
+  retire per-tenant adapters + unlock the whole enterprise tier (Workday/iCIMS/Taleo).**
+  - *Bridge:* agent reasons on VPS, hands execute in the user's extension tab via persistent WebSocket — **NOT
+    MCP** (can't reach a live user tab); server-side Playwright would re-introduce credential custody for
+    logged-in sites.
+  - *Guardrails (mis-submit is THE danger):* dry-run by default (fill, never auto-Submit until verified), step
+    caps + loop detection → needs-human, action allowlist.
+- **R5 needs-human** — captcha / broken / stale → the ~5-10/day bucket.
+
+**Sequencing:** build **R3 now** (cheap, lifts every hard ATS at once). **Defer R4** — prove deterministic+R3
+first, watch which forms actually defeat it, then point the agent **narrowly** at those (a general agent run
+everywhere torches cost + throughput). For SaaS R4 must be gated/premium; personal use it's fine.
+
+---
+
 ## 2026-05-26 [IDEA] Coverage ceiling + why LinkedIn/mass-appliers aren't the model
 
 **Coverage if we land Greenhouse + Lever + Ashby + Workday.** Two very different "percents" — depends

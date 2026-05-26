@@ -86,6 +86,15 @@ if (!window.__jobbyAutofillInjected) {
     return null;
   }
 
+  // ─── Blur Commit ────────────────────────────────────────────────────────────
+  // Ashby (and other touched/blur-validated forms) only run "required" validation on blur, not
+  // on input — so a field can hold the right value yet still fail submit until it loses focus.
+  // React's onBlur is wired to the bubbling focusout, so fire both the native blur and focusout.
+  function commitBlur(el) {
+    el.blur();
+    el.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+  }
+
   // ─── Text Fill (React-compatible) ─────────────────────────────────────────
   // Uses native setter to bypass React's synthetic event wrapper
   function fillText(el, value) {
@@ -93,9 +102,11 @@ if (!window.__jobbyAutofillInjected) {
       ? HTMLTextAreaElement.prototype
       : HTMLInputElement.prototype;
     const setter = Object.getOwnPropertyDescriptor(proto, "value").set;
+    el.focus();
     setter.call(el, value);
     el.dispatchEvent(new Event("input",  { bubbles: true }));
     el.dispatchEvent(new Event("change", { bubbles: true }));
+    commitBlur(el); // validation often only clears on blur
   }
 
   // ─── Option Matching ────────────────────────────────────────────────────────
@@ -524,7 +535,7 @@ if (!window.__jobbyAutofillInjected) {
               const buttons = [...container.querySelectorAll("button")];
               const labels  = buttons.map((b) => b.textContent.trim());
               const idx     = bestOptionMatch(labels, value);
-              if (idx >= 0) { buttons[idx].click(); aiFilled.push(selector); }
+              if (idx >= 0) { buttons[idx].click(); commitBlur(buttons[idx]); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
               continue;
             }
@@ -538,7 +549,7 @@ if (!window.__jobbyAutofillInjected) {
                 return lbl?.textContent?.trim() || r.value;
               });
               const idx = bestOptionMatch(labels, value);
-              if (idx >= 0) { radios[idx].click(); aiFilled.push(selector); }
+              if (idx >= 0) { radios[idx].click(); commitBlur(radios[idx]); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
               continue;
             }
@@ -554,7 +565,7 @@ if (!window.__jobbyAutofillInjected) {
               const wanted = Array.isArray(value) ? value : (value ? [value] : []);
               for (const w of wanted) {
                 const idx = bestOptionMatch(labels, w);
-                if (idx >= 0 && !boxes[idx].checked) boxes[idx].click();
+                if (idx >= 0 && !boxes[idx].checked) { boxes[idx].click(); commitBlur(boxes[idx]); }
               }
               aiFilled.push(selector); // empty selection is a valid resolution for "select all that apply"
               continue;
@@ -582,6 +593,20 @@ if (!window.__jobbyAutofillInjected) {
         }
 
         console.log("[Jobby] AI fill done — filled:", aiFilled.length, "errors:", aiErrors.length);
+        // Per-field diagnostic — shows what the AI answered for each field and whether it landed.
+        // Paste this table back when a field "didn't take" so we can tell empty-answer from failed-fill.
+        try {
+          console.table(fields.map(({ selector, value, fieldType }) => {
+            const first = document.querySelector(selector);
+            const label = first ? (getGroupLabel(first) || getLabelText(first) || selector) : selector;
+            return {
+              label,
+              fieldType,
+              value: Array.isArray(value) ? value.join(" | ") : String(value ?? "").slice(0, 80),
+              status: aiErrors.includes(selector) ? "ERROR" : "filled",
+            };
+          }));
+        } catch (e) { console.warn("[Jobby] diagnostic table failed:", e.message); }
         sendResponse({ aiFilled, aiErrors });
       })();
       return true;
