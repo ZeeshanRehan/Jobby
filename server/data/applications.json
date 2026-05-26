@@ -2510,5 +2510,152 @@
       ]
     },
     "errors": []
+  },
+  {
+    "applicationId": "dcfa2065-0f13-4a68-a04b-3443db859815",
+    "timestamp": "2026-05-26T04:01:33.360Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/c2aec3b8-e665-4855-b8f4-38312b4dc99e/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "unknown",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_dcfa2065-0f13-4a68-a04b-3443db859815.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kY2ZhMjA2NS0wZjEzLTRhNjgtYTA0Yi0zNDQzZGI4NTk4MTUucGRmIiwiaWF0IjoxNzc5NzY4MDkzLCJleHAiOjE3Nzk3NzE2OTN9.ykXtAawUFgRZG-U0d1h0Oib2Y1hua-CbmhAnQWZScJw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/dcfa2065-0f13-4a68-a04b-3443db859815.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Tableau",
+        "Looker",
+        "Data Visualization",
+        "Business Intelligence",
+        "Analytics",
+        "Customer Analytics",
+        "Data Analysis",
+        "Reporting"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Tableau-informed prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Tableau",
+      "Looker",
+      "Data Visualization",
+      "Business Intelligence",
+      "Analytics",
+      "Customer Analytics",
+      "Data Analysis",
+      "Reporting"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "f26c8200-8bfa-4bd9-a742-abb0219019b2",
+    "timestamp": "2026-05-26T04:04:26.743Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/1e2d50d7-e502-47b7-99b9-a184cfb5816d/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "unknown",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_f26c8200-8bfa-4bd9-a742-abb0219019b2.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mMjZjODIwMC04YmZhLTRiZDktYTc0Mi1hYmIwMjE5MDE5YjIucGRmIiwiaWF0IjoxNzc5NzY4MjY2LCJleHAiOjE3Nzk3NzE4NjZ9.BpMAX7ueUZEmLrxCqDNFWx4WqeiLwl2Woh37_W9ORIY",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/f26c8200-8bfa-4bd9-a742-abb0219019b2.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "SQL",
+        "Tableau",
+        "Power BI",
+        "Data Visualization",
+        "ETL",
+        "Looker",
+        "Snowflake",
+        "BigQuery",
+        "Apache Spark",
+        "Pandas"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "SQL",
+      "Tableau",
+      "Power BI",
+      "Data Visualization",
+      "ETL",
+      "Looker",
+      "Snowflake",
+      "BigQuery",
+      "Apache Spark",
+      "Pandas"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "43792a4a-9ded-476d-a4d3-909e089f37d3",
+    "timestamp": "2026-05-26T04:11:59.183Z",
+    "jobUrl": "https://jobs.eu.lever.co/lever/620b7586-d44a-4e25-8740-d5b5f3947ef6/apply?utm_source=startup.jobs&utm_medium=organic",
+    "jobTitle": null,
+    "company": null,
+    "platform": "lever",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_43792a4a-9ded-476d-a4d3-909e089f37d3.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80Mzc5MmE0YS05ZGVkLTQ3NmQtYTRkMy05MDllMDg5ZjM3ZDMucGRmIiwiaWF0IjoxNzc5NzY4NzE5LCJleHAiOjE3Nzk3NzIzMTl9.ZKcF8inpXKddAO75ouT0VbpxN5OdnrHRrdxnot_r7F8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/43792a4a-9ded-476d-a4d3-909e089f37d3.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Consulting",
+        "Implementation",
+        "Solutions Architecture",
+        "Stakeholder Management",
+        "Requirements Gathering",
+        "Process Optimization"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Consulting",
+      "Implementation",
+      "Solutions Architecture",
+      "Stakeholder Management",
+      "Requirements Gathering",
+      "Process Optimization"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "phone",
+        "linkedin",
+        "portfolio",
+        "resume",
+        "#location-input",
+        "[name=\"org\"]",
+        "[name=\"urls[GitHub]\"]",
+        "[name=\"urls[Other]\"]"
+      ],
+      "skipped": [],
+      "unknown": [
+        "Twitter URL"
+      ],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
   }
 ]

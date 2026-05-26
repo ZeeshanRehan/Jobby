@@ -110,5 +110,17 @@
   "https://job-boards.greenhouse.io/remotecom/jobs/7741378003": {
     "timestamp": "2026-05-25T23:09:01.978Z",
     "applicationId": "3384a0b1-a0b8-4ea6-bbef-5fbb2c29561e"
+  },
+  "https://jobs.eu.lever.co/lever/c2aec3b8-e665-4855-b8f4-38312b4dc99e/apply": {
+    "timestamp": "2026-05-26T04:01:33.362Z",
+    "applicationId": "dcfa2065-0f13-4a68-a04b-3443db859815"
+  },
+  "https://jobs.eu.lever.co/lever/1e2d50d7-e502-47b7-99b9-a184cfb5816d/apply": {
+    "timestamp": "2026-05-26T04:04:26.745Z",
+    "applicationId": "f26c8200-8bfa-4bd9-a742-abb0219019b2"
+  },
+  "https://jobs.eu.lever.co/lever/620b7586-d44a-4e25-8740-d5b5f3947ef6/apply": {
+    "timestamp": "2026-05-26T04:11:59.184Z",
+    "applicationId": "43792a4a-9ded-476d-a4d3-909e089f37d3"
   }
 }
