@@ -526,6 +526,8 @@ if (!window.__jobbyAutofillInjected) {
           } catch (err) {
             console.error(`[Jobby] error on ${fieldName}:`, err);
             report.errors.push({ field: fieldName, message: err.message });
+          } finally {
+            await sleep(16); // same anti-race yield as the AI-field loop
           }
         }
 
@@ -622,7 +624,23 @@ if (!window.__jobbyAutofillInjected) {
           } catch (err) {
             console.error(`[Jobby] AI fill error on "${selector}":`, err);
             aiErrors.push(selector);
+          } finally {
+            // yield a frame so React commits this field's state before the next event burst — rapid
+            // synthetic events race React's render and a subset silently fails to commit (shifting failures)
+            await sleep(16);
           }
+        }
+
+        // Race guard: a synthetic input can fail to commit to React state, so the field reads filled but is
+        // empty at submit (React resets the DOM value to its empty controlled state on re-render). Re-read
+        // text-like fields and refill once — the single retry that turns "usually works" into "works".
+        const TEXTLIKE = new Set(["text", "textarea", "number", "tel", "url", "email"]);
+        for (const { selector, value, fieldType } of fields) {
+          if (!TEXTLIKE.has(fieldType)) continue;
+          const el = document.querySelector(selector);
+          if (!el || el.value.trim() !== "") continue;
+          fillText(el, Array.isArray(value) ? value.join(", ") : String(value ?? ""));
+          await sleep(16);
         }
 
         console.log("[Jobby] AI fill done — filled:", aiFilled.length, "errors:", aiErrors.length);
@@ -640,12 +658,6 @@ if (!window.__jobbyAutofillInjected) {
             };
           }));
         } catch (e) { console.warn("[Jobby] diagnostic table failed:", e.message); }
-        // yesno commit probe — .checked/.indeterminate are properties, invisible in outerHTML. If a failing
-        // yesno's hidden checkbox stays indeterminate after the pointer-click, Ashby gates on isTrusted (→ fiber)
-        try {
-          console.table([...document.querySelectorAll('[data-jobby-yesno] input[type=checkbox]')]
-            .map((c) => ({ name: c.name, checked: c.checked, indeterminate: c.indeterminate })));
-        } catch (e) { console.warn("[Jobby] yesno probe failed:", e.message); }
         sendResponse({ aiFilled, aiErrors });
       })();
       return true;

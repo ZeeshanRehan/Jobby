@@ -415,5 +415,141 @@
       "consent": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "f9a04d45-38c1-4a7a-943e-40112b8351bd",
+    "timestamp": "2026-05-27T18:50:30.538Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/664c9e24-67ca-4a09-ac8b-5405b1468dc0/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_f9a04d45-38c1-4a7a-943e-40112b8351bd.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mOWEwNGQ0NS0zOGMxLTRhN2EtOTQzZS00MDExMmI4MzUxYmQucGRmIiwiaWF0IjoxNzc5OTA3ODMwLCJleHAiOjE3Nzk5MTE0MzB9.R3f-TN2zj4rQ70xbDtlZtRJxHTXCzWTjA_4UZfAkruM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/f9a04d45-38c1-4a7a-943e-40112b8351bd.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Intune",
+        "JAMF",
+        "Google Workspace",
+        "Duo",
+        "Tailscale",
+        "Windows",
+        "macOS",
+        "Mobile Device Management",
+        "SaaS Administration"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Intune",
+      "JAMF",
+      "Google Workspace",
+      "Duo",
+      "Tailscale",
+      "Windows",
+      "macOS",
+      "Mobile Device Management",
+      "SaaS Administration"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "location",
+        "resume",
+        "#e5a9aef4-1a92-4362-892c-0244b87ab1ec",
+        "#\\30 539bcb4-f5d1-4279-983e-54ead52155a5",
+        "input[name=\"0baf4202-0a32-4234-88d0-a0c72b0e4a2d_3ede3329-5afa-447d-8d29-0743b30726ff\"]",
+        "input[name=\"348eac9f-490d-48f6-9874-d2f104a075e8__systemfield_eeoc_gender\"]",
+        "input[name=\"348eac9f-490d-48f6-9874-d2f104a075e8__systemfield_eeoc_race\"]",
+        "input[name=\"348eac9f-490d-48f6-9874-d2f104a075e8__systemfield_eeoc_veteran_status\"]",
+        "[data-jobby-yesno=\"0\"]",
+        "[data-jobby-yesno=\"2\"]",
+        "#\\38 e142671-c852-4ce2-bd01-aa0a54f39643",
+        "#c7880132-cc19-4f1c-b921-28274122ff5f",
+        "#\\32 6297468-ac1e-4ac4-932c-76b965d2dc33",
+        "#\\35 100372d-4dab-4bc9-8833-6c08ec44b8a0",
+        "#\\32 8749331-4cba-497b-ad9f-1cdc34fe05f0",
+        "[data-jobby-checkgroup=\"0\"] input[type=\"checkbox\"]",
+        "[data-jobby-yesno=\"1\"]",
+        "[data-jobby-yesno=\"3\"]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "4c7c4269-f0e6-4782-9529-28e3c62a02d9",
+    "timestamp": "2026-05-27T18:59:50.695Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/664c9e24-67ca-4a09-ac8b-5405b1468dc0/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_4c7c4269-f0e6-4782-9529-28e3c62a02d9.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80YzdjNDI2OS1mMGU2LTQ3ODItOTUyOS0yOGUzYzYyYTAyZDkucGRmIiwiaWF0IjoxNzc5OTA4MzkwLCJleHAiOjE3Nzk5MTE5OTB9.zC8UCoWhQj9F9464_6vF4DxFSCbGrIHaqpoRbzJKLDw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/4c7c4269-f0e6-4782-9529-28e3c62a02d9.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Windows",
+        "macOS",
+        "Google Workspace",
+        "Intune",
+        "JAMF",
+        "Duo",
+        "Tailscale",
+        "SaaS",
+        "Active Directory",
+        "Mobile Device Management"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Windows",
+      "macOS",
+      "Google Workspace",
+      "Intune",
+      "JAMF",
+      "Duo",
+      "Tailscale",
+      "SaaS",
+      "Active Directory",
+      "Mobile Device Management"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "location",
+        "resume",
+        "#e5a9aef4-1a92-4362-892c-0244b87ab1ec",
+        "#\\30 539bcb4-f5d1-4279-983e-54ead52155a5",
+        "input[name=\"651d1519-ebc9-4e51-8d86-d4fe2efc0772_3ede3329-5afa-447d-8d29-0743b30726ff\"]",
+        "input[name=\"e612f70c-00f2-4077-ba44-1ad8b57760f7__systemfield_eeoc_gender\"]",
+        "input[name=\"e612f70c-00f2-4077-ba44-1ad8b57760f7__systemfield_eeoc_race\"]",
+        "input[name=\"e612f70c-00f2-4077-ba44-1ad8b57760f7__systemfield_eeoc_veteran_status\"]",
+        "[data-jobby-yesno=\"0\"]",
+        "[data-jobby-yesno=\"2\"]",
+        "#\\38 e142671-c852-4ce2-bd01-aa0a54f39643",
+        "#c7880132-cc19-4f1c-b921-28274122ff5f",
+        "#\\32 6297468-ac1e-4ac4-932c-76b965d2dc33",
+        "#\\35 100372d-4dab-4bc9-8833-6c08ec44b8a0",
+        "#\\32 8749331-4cba-497b-ad9f-1cdc34fe05f0",
+        "[data-jobby-checkgroup=\"0\"] input[type=\"checkbox\"]",
+        "[data-jobby-yesno=\"1\"]",
+        "[data-jobby-yesno=\"3\"]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
   }
 ]
