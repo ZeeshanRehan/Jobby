@@ -580,8 +580,9 @@ if (!window.__jobbyAutofillInjected) {
                 document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label"));
               const labels = labelEls.map((lbl, i) => lbl?.textContent?.trim() || radios[i].value);
               const idx = bestOptionMatch(labels, value);
-              // click the label (not the hidden input) with a full pointer sequence — Ashby commits on mousedown
-              if (idx >= 0) { pointerClick(labelEls[idx] || radios[idx]); commitBlur(radios[idx]); aiFilled.push(selector); }
+              // pointer-click the input itself: its mousedown bubbles input→container→option row to reach
+              // Ashby's commit handler, and the click still natively checks the radio. (label-click misses it.)
+              if (idx >= 0) { pointerClick(radios[idx]); commitBlur(radios[idx]); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
               continue;
             }
@@ -597,7 +598,7 @@ if (!window.__jobbyAutofillInjected) {
               const wanted = Array.isArray(value) ? value : (value ? [value] : []);
               for (const w of wanted) {
                 const idx = bestOptionMatch(labels, w);
-                if (idx >= 0 && !boxes[idx].checked) { boxes[idx].click(); commitBlur(boxes[idx]); }
+                if (idx >= 0 && !boxes[idx].checked) { pointerClick(boxes[idx]); commitBlur(boxes[idx]); }
               }
               aiFilled.push(selector); // empty selection is a valid resolution for "select all that apply"
               continue;
