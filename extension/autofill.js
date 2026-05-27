@@ -96,8 +96,9 @@ if (!window.__jobbyAutofillInjected) {
   }
 
   // ─── Text Fill (React-compatible) ─────────────────────────────────────────
-  // Uses native setter to bypass React's synthetic event wrapper
-  function fillText(el, value) {
+  // Uses native setter to bypass React's synthetic event wrapper. No blur — callers that need
+  // blur-validation use fillText; the combobox typeahead must NOT blur (it would close the menu).
+  function setNativeValue(el, value) {
     const proto = el instanceof HTMLTextAreaElement
       ? HTMLTextAreaElement.prototype
       : HTMLInputElement.prototype;
@@ -106,7 +107,18 @@ if (!window.__jobbyAutofillInjected) {
     setter.call(el, value);
     el.dispatchEvent(new Event("input",  { bubbles: true }));
     el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function fillText(el, value) {
+    setNativeValue(el, value);
     commitBlur(el); // validation often only clears on blur
+  }
+
+  // Full pointer sequence — Ashby (and react widgets) commit on mousedown, not a bare .click()
+  function pointerClick(el) {
+    el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    el.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    el.click();
   }
 
   // ─── Option Matching ────────────────────────────────────────────────────────
@@ -200,7 +212,7 @@ if (!window.__jobbyAutofillInjected) {
   async function typeAheadOptions(el, answer) {
     const query = String(answer).split(",")[0].trim(); // "Glassboro, New Jersey" → "Glassboro"
     el.focus();
-    fillText(el, query);
+    setNativeValue(el, query); // keep focus — blurring here would close the menu before options mount
     for (let t = 0; t < 13; t++) { // ~2.6s
       await sleep(200);
       let menu = findComboboxMenu(el);
@@ -237,14 +249,14 @@ if (!window.__jobbyAutofillInjected) {
   // Opens, maps the answer to the best live option, clicks it. Handles single + multi-select,
   // and async type-ahead selects (open → 0 options → type → re-read → location-aware pick).
   async function fillCombobox(el, answer) {
-    const opened = await openCombobox(el);
-    if (!opened) { await closeCombobox(el); return false; }
+    const opened = await openCombobox(el); // react-select opens on mousedown; Ashby opens on type (below)
 
-    let opts  = readComboboxOptionEls(findComboboxMenu(el));
+    let opts  = opened ? readComboboxOptionEls(findComboboxMenu(el)) : [];
     let texts = opts.map((o) => o.textContent.trim());
     let idx;
 
     if (opts.length === 0) {
+      // empty menu = either async react-select OR a type-to-open combobox (Ashby) — typing handles both
       opts  = await typeAheadOptions(el, answer);
       texts = opts.map((o) => o.textContent.trim());
       idx   = pickLocationOption(texts, answer);
@@ -264,7 +276,9 @@ if (!window.__jobbyAutofillInjected) {
     // verify the option actually rendered as a selected value IN THIS field — covers single + multi chip
     const vc    = el.closest('[class*="value-container"]');
     const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
-    const ok    = shown.includes(texts[idx]);
+    // Ashby (non react-select) reflects the pick in the input's own value rather than a chip element
+    const ashbyOk = el instanceof HTMLInputElement && el.value.trim() === texts[idx];
+    const ok    = shown.includes(texts[idx]) || ashbyOk;
 
     // always close so a still-open menu can't block the next field
     await closeCombobox(el);
@@ -494,6 +508,15 @@ if (!window.__jobbyAutofillInjected) {
               }
               fillText(el, String(value));
               report.filled.push(fieldName);
+            } else if (type === "combobox") {
+              const value = resolvePath(profileData, source);
+              if (value == null || value === "") {
+                report.skipped.push(fieldName);
+                continue;
+              }
+              const ok = await fillCombobox(el, String(value));
+              if (ok) report.filled.push(fieldName);
+              else report.errors.push({ field: fieldName, message: "combobox pick failed" });
             } else if (type === "file") {
               fillFile(el, resumePdf);
               report.filled.push(fieldName);
@@ -544,7 +567,7 @@ if (!window.__jobbyAutofillInjected) {
               const buttons = [...container.querySelectorAll("button")];
               const labels  = buttons.map((b) => b.textContent.trim());
               const idx     = bestOptionMatch(labels, value);
-              if (idx >= 0) { buttons[idx].click(); commitBlur(buttons[idx]); aiFilled.push(selector); }
+              if (idx >= 0) { pointerClick(buttons[idx]); commitBlur(buttons[idx]); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
               continue;
             }
@@ -553,12 +576,12 @@ if (!window.__jobbyAutofillInjected) {
             if (fieldType === "radio") {
               const radios = [...document.querySelectorAll(selector)];
               if (!radios.length) { aiErrors.push(selector); continue; }
-              const labels = radios.map((r) => {
-                const lbl = document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label");
-                return lbl?.textContent?.trim() || r.value;
-              });
+              const labelEls = radios.map((r) =>
+                document.querySelector(`label[for="${CSS.escape(r.id)}"]`) || r.closest("label"));
+              const labels = labelEls.map((lbl, i) => lbl?.textContent?.trim() || radios[i].value);
               const idx = bestOptionMatch(labels, value);
-              if (idx >= 0) { radios[idx].click(); commitBlur(radios[idx]); aiFilled.push(selector); }
+              // click the label (not the hidden input) with a full pointer sequence — Ashby commits on mousedown
+              if (idx >= 0) { pointerClick(labelEls[idx] || radios[idx]); commitBlur(radios[idx]); aiFilled.push(selector); }
               else { aiErrors.push(selector); }
               continue;
             }
@@ -616,6 +639,12 @@ if (!window.__jobbyAutofillInjected) {
             };
           }));
         } catch (e) { console.warn("[Jobby] diagnostic table failed:", e.message); }
+        // yesno commit probe — .checked/.indeterminate are properties, invisible in outerHTML. If a failing
+        // yesno's hidden checkbox stays indeterminate after the pointer-click, Ashby gates on isTrusted (→ fiber)
+        try {
+          console.table([...document.querySelectorAll('[data-jobby-yesno] input[type=checkbox]')]
+            .map((c) => ({ name: c.name, checked: c.checked, indeterminate: c.indeterminate })));
+        } catch (e) { console.warn("[Jobby] yesno probe failed:", e.message); }
         sendResponse({ aiFilled, aiErrors });
       })();
       return true;
