@@ -9,6 +9,77 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-27 — Ashby autofill: location combobox, mousedown-commit, fill-time race  ·  FIXED (live-verified)
+
+The 2026-05-26 entry left Ashby with 4 required fields failing after the blur fix. Closed out across three
+live runs — each run fixed one layer and surfaced the next. Final state: a real Ashby submit (Notable,
+IT-support role) passes with every required field committed. `npm test` green throughout (no resolve/match
+logic touched).
+
+**Commits:** `d2cecd7` (location combobox + blur split) → `e0d09fd` (pointer-click commit) → `93e4bf2` (fill race).
+
+### Layer 1 — Location: it's an ARIA combobox, not react-select (`d2cecd7`)
+
+**Symptom.** Location went BLANK at submit. The blur fix cleared it — we set the text, blurred, and an
+unselected autocomplete clears its own input on blur.
+
+**Root cause.** `input[placeholder='Start typing...']` is `role=combobox` + `aria-haspopup=listbox`, opens on
+TYPE, and portals its `role=listbox` (`id=:r0:`) to `<body>` with `role=option` rows. NOT react-select (no
+`.select__input` / `value-container`), so the existing combobox path didn't engage and the adapter filled it
+as plain text.
+
+**Dead end.** Assumed a full custom handler was needed. Actually `fillCombobox` / `typeAheadOptions` /
+`pickLocationOption` were ~80% reusable: `findComboboxMenu` already resolves via `getElementById` (works for
+the portaled, colon-prefixed `:r0:`) and `readComboboxOptionEls` already queries `[role='option']`.
+
+**Fix.** Adapter location `type: "text"` → `"combobox"`, routed through `fillCombobox`. Generalized: (a) don't
+bail when click-to-open fails — Ashby opens on type, which `typeAheadOptions` does; (b) verify the pick via
+`input.value === optionText` (no react-select chip to read). Also split `fillText` → `setNativeValue` (no
+blur) + `fillText` (blur), because the blur added in `c9fbc12` was closing the typeahead menu before options
+mounted.
+
+### Layer 2 — Commit fires on mousedown, not click (`e0d09fd`)
+
+**Symptom.** "How did you hear" radio and the tools checkboxgroup reported filled (visually selected) but
+submit rejected them as "Missing entry".
+
+**Root cause.** Ashby's custom radio/checkbox/yesno widgets commit to React state on **mousedown**, not on a
+bare programmatic `.click()` (which fires only a click event). The visual layer updated via downstream
+handlers but the commit never ran. The working combobox handler already used the full mouse sequence — that
+was the tell.
+
+**Dead ends.** (1) The yesno hidden `<input type=checkbox>` probe — added to read `.checked`/`.indeterminate`
+(invisible in outerHTML) — was a RED HERRING. That checkbox is Ashby's visual/internal state, not its
+validation source: it read byte-identical (`false,false,true,false`) across a run where all yesno passed AND a
+run where two yesno failed. Removed it. (2) Clicking the radio's `<label>` (which forwards a click to the
+input) still missed the commit — the mousedown fired on the label, a sibling of the input's container, and
+never reached the handler.
+
+**Fix.** `pointerClick(el)` = mousedown → mouseup → click. Radio clicks the INPUT itself (mousedown bubbles
+input → container → option row to the handler; click still natively checks it). yesno/checkboxgroup click
+their button/box. NOT an `isTrusted` gate — synthetic events DO commit here.
+
+### Layer 3 — Fill-time race: synthetic events outrun React (`93e4bf2`)
+
+**Symptom.** With the widgets fixed, a DIFFERENT ~3-field subset failed each run (consecutive runs rejected
+different fields). All reported filled, 0 errors. The set SHIFTED.
+
+**Root cause.** Both fill loops fire synthetic events in a tight synchronous burst; React never gets a
+microtask/frame to flush state between them, so a subset of commits is lost — the field reads filled (DOM
+value set) but is empty at submit (React resets the DOM to its uncommitted controlled value on re-render).
+**Smoking gun:** the number field "0" passed one run, failed the next, identical code + value. Intermittent
+with no change = race, not a deterministic reset.
+
+**Fix.** `await sleep(16)` (one frame) after each field in FILL_AI_FIELDS and FILL_FORM (in a `finally`, so it
+covers every `continue` branch), giving React a render cycle to commit before the next event burst. Plus a
+single verify+refill pass for text-like fields (text/textarea/number/tel/url/email): re-read after the loop,
+refill once if empty. The yield reduces the race; the refill catches stragglers. Skipped
+yesno/radio/checkboxgroup verify — no cheap committed-state read (see the probe dead end), and the yield is
+what helps them. If non-text fields ever race again, the robust escalation is driving react widgets via React
+fiber/props (trusted-event-free) — same path noted for V3 Playwright.
+
+---
+
 ## 2026-05-26 — Lever + Ashby adapters, radio/yesno support, AI fallback URL bug  ·  FIXED (Ashby unverified live)
 
 ### Lever adapter — iterative live-fix cycle
