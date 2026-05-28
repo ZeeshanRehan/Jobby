@@ -710,17 +710,36 @@ if (!window.__jobbyAutofillInjected) {
           return;
         }
 
-        // Greenhouse hosted forms use a single visible submit button — match by type+text.
-        // Walk visible submit-like buttons; skip cancel/back/withdraw.
-        const candidates = Array.from(document.querySelectorAll(
-          'button[type="submit"], input[type="submit"], button[data-source="submit"]'
-        ));
+        // Submit button discovery — staged so the cheapest, most-precise match wins first:
+        //   1. Standard semantic submits (Greenhouse, Lever)
+        //   2. Ashby — CSS-module primary buttons (`button[class*='_primary_']`)
+        //   3. Text-based fallback — any visible button whose text starts with submit/apply/send
+        // Cancel/back/withdraw/preview/draft are excluded at every stage.
         const visible = (el) => {
           const r = el.getBoundingClientRect();
           return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== "hidden" && !el.disabled;
         };
-        const SKIP_RE = /(cancel|back|withdraw|save\s+draft|preview)/i;
-        const submitBtn = candidates.find((el) => visible(el) && !SKIP_RE.test(el.textContent || ""));
+        const SKIP_RE   = /(cancel|back|withdraw|save\s+draft|preview)/i;
+        const SUBMIT_RE = /^(submit|apply|send|finish)\b/i;
+        const okBtn     = (el) => visible(el) && !SKIP_RE.test(el.textContent || "");
+
+        let submitBtn = Array.from(document.querySelectorAll(
+          'button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button'
+        )).find(okBtn);
+
+        if (!submitBtn) {
+          // Ashby CSS-module fallback — hash suffix (`_primary_8wvgw_96`) rotates on rebuilds
+          // so this is the safety net for when the stable class is missing/renamed.
+          submitBtn = Array.from(document.querySelectorAll(
+            'button[class*="_primary_"]'
+          )).find(okBtn);
+        }
+
+        if (!submitBtn) {
+          submitBtn = Array.from(document.querySelectorAll("button")).find(
+            (el) => okBtn(el) && SUBMIT_RE.test((el.textContent || "").trim())
+          );
+        }
 
         if (!submitBtn) {
           sendResponse({ submitted: false, reason: "submit_button_not_found" });

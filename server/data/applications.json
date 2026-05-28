@@ -1823,5 +1823,47 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "ccd5cca5-a7c4-4d5d-b156-4b95ecd633d0",
+    "timestamp": "2026-05-28T16:00:58.211Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/6fe46609-bea1-4a25-be32-3a52ce232767/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_ccd5cca5-a7c4-4d5d-b156-4b95ecd633d0.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jY2Q1Y2NhNS1hN2M0LTRkNWQtYjE1Ni00Yjk1ZWNkNjMzZDAucGRmIiwiaWF0IjoxNzc5OTg0MDU4LCJleHAiOjE3Nzk5ODc2NTh9.6_tpiQ_z6-P46_FMAAsj2xlWw95C79ZjoEtLG8NDTlQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/ccd5cca5-a7c4-4d5d-b156-4b95ecd633d0.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Vue",
+        "Ruby",
+        "GCP",
+        "Kubernetes",
+        "NLP",
+        "Machine Learning",
+        "Code Review",
+        "Agile"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Vue",
+      "Ruby",
+      "GCP",
+      "Kubernetes",
+      "NLP",
+      "Machine Learning",
+      "Code Review",
+      "Agile"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
