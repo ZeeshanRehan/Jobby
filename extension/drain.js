@@ -33,6 +33,21 @@ const els = {
   curStep:      $("curStep"),
   log:          $("log"),
   errBanner:    $("errBanner"),
+  detailsToggle:$("detailsToggle"),
+  detailsBody:  $("detailsBody"),
+  detailsEmpty: $("detailsEmpty"),
+  detailsContent: $("detailsContent"),
+  dCompany:     $("dCompany"),
+  dTitle:       $("dTitle"),
+  dUrl:         $("dUrl"),
+  dResult:      $("dResult"),
+  dFormFilled:  $("dFormFilled"),
+  dFormErrors:  $("dFormErrors"),
+  dFormUnknowns:$("dFormUnknowns"),
+  dFormList:    $("dFormList"),
+  dAiFilled:    $("dAiFilled"),
+  dAiErrors:    $("dAiErrors"),
+  dAiTbody:     $("dAiTbody"),
 };
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -103,6 +118,98 @@ function showError(text) {
   els.errBanner.classList.add("show");
 }
 function clearError() { els.errBanner.classList.remove("show"); }
+
+// ─── Last-job details panel ───────────────────────────────────────────────────
+// Captures the full pipeline outcome for the most-recent job so the user can
+// audit what was filled (adapter vs AI), what errored, and why submit succeeded
+// or failed — all without tailing drain.jsonl on the server.
+const details = {
+  job:    null,
+  form:   { filled: [], errors: [], unknowns: 0 },
+  ai:     { filled: 0, errors: 0, fields: [] },
+  result: { kind: null, label: "—" }, // kind: ok|err|skip|null
+};
+
+function resetDetails(job) {
+  details.job    = job;
+  details.form   = { filled: [], errors: [], unknowns: 0 };
+  details.ai     = { filled: 0, errors: 0, fields: [] };
+  details.result = { kind: null, label: "running…" };
+  renderDetails();
+}
+
+function renderDetails() {
+  if (!details.job) {
+    els.detailsEmpty.style.display = "block";
+    els.detailsContent.style.display = "none";
+    return;
+  }
+  els.detailsEmpty.style.display = "none";
+  els.detailsContent.style.display = "flex";
+
+  const j = details.job;
+  els.dCompany.textContent = j.company || "—";
+  els.dTitle.textContent   = j.title   || "—";
+  els.dUrl.textContent     = j.apply_url || "—";
+  els.dUrl.href            = j.apply_url || "#";
+
+  els.dResult.textContent  = details.result.label;
+  els.dResult.className    = "details-result" + (details.result.kind ? " " + details.result.kind : "");
+
+  els.dFormFilled.textContent   = `${details.form.filled.length} filled`;
+  els.dFormErrors.textContent   = `${details.form.errors.length} errors`;
+  els.dFormUnknowns.textContent = `${details.form.unknowns} unknowns`;
+
+  els.dFormList.innerHTML = "";
+  for (const f of details.form.filled) {
+    const li = document.createElement("li");
+    li.textContent = f.field || f.selector || "(field)";
+    els.dFormList.appendChild(li);
+  }
+  for (const f of details.form.errors) {
+    const li = document.createElement("li");
+    li.className = "err";
+    li.textContent = (f.field || f.selector || "(field)") + (f.error ? ` — ${f.error}` : "");
+    els.dFormList.appendChild(li);
+  }
+
+  els.dAiFilled.textContent = `${details.ai.filled} filled`;
+  els.dAiErrors.textContent = `${details.ai.errors} errors`;
+  els.dAiTbody.innerHTML = "";
+  for (const f of details.ai.fields) {
+    const tr = document.createElement("tr");
+    const isErr = f.status && f.status !== "filled";
+    const tdStatus = document.createElement("td");
+    tdStatus.className = "status-cell";
+    const chip = document.createElement("span");
+    chip.className = "chip " + (isErr ? "chip-err" : "chip-ok");
+    chip.textContent = f.status || "—";
+    tdStatus.appendChild(chip);
+    const tdLabel = document.createElement("td"); tdLabel.textContent = f.label || "—";
+    const tdValue = document.createElement("td"); tdValue.className = "value-cell"; tdValue.textContent = f.value == null ? "" : String(f.value);
+    tr.appendChild(tdStatus); tr.appendChild(tdLabel); tr.appendChild(tdValue);
+    els.dAiTbody.appendChild(tr);
+  }
+}
+
+function setDetailsForm(report, unknownCount) {
+  details.form.filled   = report?.filled || [];
+  details.form.errors   = report?.errors || [];
+  details.form.unknowns = unknownCount || 0;
+  renderDetails();
+}
+
+function setDetailsAi(diag) {
+  details.ai.fields = Array.isArray(diag) ? diag : [];
+  details.ai.filled = details.ai.fields.filter((f) => f.status === "filled").length;
+  details.ai.errors = details.ai.fields.length - details.ai.filled;
+  renderDetails();
+}
+
+function setDetailsResult(kind, label) {
+  details.result = { kind, label };
+  renderDetails();
+}
 
 // ─── Server I/O ───────────────────────────────────────────────────────────────
 async function api(path, opts = {}) {
@@ -285,6 +392,7 @@ async function resolveAndFillUnknowns(tabId, unknownFields, jobDescription, prof
 async function processJob(job) {
   state.current = job;
   setCurrent(job, "starting");
+  resetDetails(job);
   await logStep(job, "claim", true, `${job.title} @ ${job.company}`);
 
   let tabId, jd, applyData, resumePdf;
@@ -299,6 +407,7 @@ async function processJob(job) {
     await logStep(job, "jd", false, err.message);
     await updateQueue(job.id, "error", `jd: ${err.message}`);
     state.counts.errors += 1;
+    setDetailsResult("err", `JD fetch failed — ${err.message}`);
     return;
   }
 
@@ -312,6 +421,7 @@ async function processJob(job) {
     await logStep(job, "tailor", false, err.message);
     await updateQueue(job.id, "error", `tailor: ${err.message}`);
     state.counts.errors += 1;
+    setDetailsResult("err", `Tailor failed — ${err.message}`);
     return;
   }
 
@@ -324,6 +434,7 @@ async function processJob(job) {
     await logStep(job, "pdf", false, err.message);
     await updateQueue(job.id, "error", `pdf: ${err.message}`, applyData.applicationId);
     state.counts.errors += 1;
+    setDetailsResult("err", `PDF failed — ${err.message}`);
     return;
   }
 
@@ -336,6 +447,7 @@ async function processJob(job) {
     await logStep(job, "open_tab", false, err.message);
     await updateQueue(job.id, "error", `open_tab: ${err.message}`, applyData.applicationId);
     state.counts.errors += 1;
+    setDetailsResult("err", `Open tab failed — ${err.message}`);
     return;
   }
 
@@ -352,6 +464,7 @@ async function processJob(job) {
     }, AUTOFILL_TIMEOUT_MS);
     report = resp?.report || { filled: [], errors: [] };
     unknownFields = resp?.unknownFields || [];
+    setDetailsForm(report, unknownFields.length);
     await logStep(job, "fill_form", true,
       `filled=${report.filled.length} errors=${report.errors.length} unknowns=${unknownFields.length}`,
       { report, unknownCount: unknownFields.length });
@@ -359,6 +472,7 @@ async function processJob(job) {
     await logStep(job, "fill_form", false, err.message);
     await updateQueue(job.id, "error", `fill_form: ${err.message}`, applyData.applicationId);
     state.counts.errors += 1;
+    setDetailsResult("err", `Fill form failed — ${err.message}`);
     if (tabId) await closeTab(tabId);
     return;
   }
@@ -367,6 +481,7 @@ async function processJob(job) {
   try {
     setCurrent(job, "AI fallback");
     const { aiFilled, aiErrors, aiFieldsDiag } = await resolveAndFillUnknowns(tabId, unknownFields, jd.jobDescription, applyData.profileData);
+    setDetailsAi(aiFieldsDiag);
     // Persist the full per-field {label, value, status} table so we can audit AI answers after the tab closes.
     await logStep(job, "fill_ai", true, `ai_filled=${aiFilled} ai_errors=${aiErrors}`, { fields: aiFieldsDiag });
   } catch (err) {
@@ -379,6 +494,7 @@ async function processJob(job) {
     await logStep(job, "submit", true, "DRY-RUN — fill complete, not submitting");
     await updateQueue(job.id, "pending", "dry-run completed", applyData.applicationId); // put back in queue
     state.counts.skipped += 1;
+    setDetailsResult("skip", "Dry-run — not submitted");
   } else {
     try {
       setCurrent(job, "submitting");
@@ -388,15 +504,18 @@ async function processJob(job) {
         await updateQueue(job.id, "done", null, applyData.applicationId);
         try { await markApplied(job.apply_url, applyData.applicationId); } catch (_) { /* queue status is source of truth */ }
         state.counts.applied += 1;
+        setDetailsResult("ok", "Submitted");
       } else {
         const reason = resp?.reason || "unknown";
         await logStep(job, "submit", false, reason);
         await updateQueue(job.id, "error", `submit: ${reason}`, applyData.applicationId);
         state.counts.errors += 1;
+        setDetailsResult("err", `Submit failed — ${reason}`);
       }
     } catch (err) {
       await logStep(job, "submit", false, err.message);
       await updateQueue(job.id, "error", `submit: ${err.message}`, applyData.applicationId);
+      setDetailsResult("err", `Submit error — ${err.message}`);
       state.counts.errors += 1;
     }
   }
@@ -477,6 +596,12 @@ els.startBtn.addEventListener("click", async () => {
 
 els.atsSelect.addEventListener("change", () => {
   els.atsPill.textContent = ATS_LABELS[els.atsSelect.value] || els.atsSelect.value;
+});
+
+els.detailsToggle.addEventListener("click", () => {
+  const collapsed = els.detailsBody.style.display === "none";
+  els.detailsBody.style.display = collapsed ? "" : "none";
+  els.detailsToggle.textContent = collapsed ? "Hide" : "Show";
 });
 
 els.stopBtn.addEventListener("click", () => {

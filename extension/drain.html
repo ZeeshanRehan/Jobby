@@ -184,6 +184,34 @@
       0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.5); }
       50%     { box-shadow: 0 0 0 6px rgba(5,150,105,0); }
     }
+    .details-empty { color: var(--text-mute); font-style: italic; padding: 4px 0; }
+    .details-grid { display: flex; flex-direction: column; gap: 18px; }
+    .details-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 18px; }
+    .details-meta-row { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .details-k { font-size: 11px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+    .details-v { font-size: 14px; color: var(--text); word-break: break-word; }
+    .details-link { font-size: 13px; color: var(--accent); text-decoration: none; word-break: break-all; }
+    .details-link:hover { text-decoration: underline; }
+    .details-result { font-size: 13px; font-weight: 600; }
+    .details-result.ok    { color: var(--success); }
+    .details-result.err   { color: var(--error); }
+    .details-result.skip  { color: var(--warning); }
+    .details-section { display: flex; flex-direction: column; gap: 8px; }
+    .details-h { font-size: 13px; font-weight: 600; color: var(--text); }
+    .details-stat-line { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .chip-ok   { background: #ecfdf5; color: var(--success); }
+    .chip-err  { background: #fff1f3; color: var(--error); }
+    .chip-warn { background: #fffbeb; color: var(--warning); }
+    .details-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .details-list li { background: #f1f5f9; color: var(--text); border-radius: 6px; padding: 3px 9px; font-size: 12.5px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .details-list li.err { background: #fff1f3; color: var(--error); }
+    .details-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .details-table th, .details-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .details-table th { font-size: 11px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+    .details-table td.status-cell { white-space: nowrap; }
+    .details-table td.value-cell  { color: var(--text); word-break: break-word; max-width: 480px; }
+    .details-table tr:last-child td { border-bottom: none; }
     .err-banner {
       display: none; background: #fff1f3; color: #9f1239; border: 1px solid #fecdd3;
       padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 14px;
@@ -254,6 +282,44 @@
           <div class="title"        id="curTitle"></div>
         </div>
         <div class="step" id="curStep" style="display:none;">idle</div>
+      </div>
+    </div>
+
+    <div class="card" id="detailsCard">
+      <h2 style="display:flex;align-items:center;justify-content:space-between;">
+        <span>Last Job — Details</span>
+        <button class="btn btn-secondary" id="detailsToggle" style="padding:4px 10px;font-size:12px;font-weight:600;">Hide</button>
+      </h2>
+      <div id="detailsBody">
+        <div class="details-empty" id="detailsEmpty">No completed jobs yet — details will appear here.</div>
+        <div class="details-grid" id="detailsContent" style="display:none;">
+          <div class="details-meta">
+            <div class="details-meta-row"><span class="details-k">Company</span><span class="details-v" id="dCompany">—</span></div>
+            <div class="details-meta-row"><span class="details-k">Title</span><span class="details-v" id="dTitle">—</span></div>
+            <div class="details-meta-row"><span class="details-k">URL</span><a class="details-link" id="dUrl" target="_blank" rel="noopener">—</a></div>
+            <div class="details-meta-row"><span class="details-k">Result</span><span class="details-result" id="dResult">—</span></div>
+          </div>
+          <div class="details-section">
+            <div class="details-h">Adapter fields</div>
+            <div class="details-stat-line">
+              <span class="chip chip-ok"   id="dFormFilled">0 filled</span>
+              <span class="chip chip-err"  id="dFormErrors">0 errors</span>
+              <span class="chip chip-warn" id="dFormUnknowns">0 unknowns</span>
+            </div>
+            <ul class="details-list" id="dFormList"></ul>
+          </div>
+          <div class="details-section">
+            <div class="details-h">AI-resolved fields</div>
+            <div class="details-stat-line">
+              <span class="chip chip-ok"  id="dAiFilled">0 filled</span>
+              <span class="chip chip-err" id="dAiErrors">0 errors</span>
+            </div>
+            <table class="details-table" id="dAiTable">
+              <thead><tr><th>Status</th><th>Label</th><th>Value</th></tr></thead>
+              <tbody id="dAiTbody"></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
 
