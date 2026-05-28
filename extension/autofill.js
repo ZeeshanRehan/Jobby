@@ -687,12 +687,22 @@ if (!window.__jobbyAutofillInjected) {
     // ── FILL_SUBMIT — captcha guard + click the form's submit button ──────
     if (message.type === "FILL_SUBMIT") {
       (async () => {
-        // Captcha guard: if hCaptcha/reCAPTCHA is present and not solved, abort and let drain skip.
-        // Greenhouse rarely uses these; Lever sometimes does. Cheap insurance against burning the IP.
-        const captchaEl = document.querySelector(
-          'iframe[src*="hcaptcha.com"], iframe[src*="recaptcha"], .h-captcha, .g-recaptcha, [data-sitekey]'
-        );
-        if (captchaEl) {
+        // Captcha guard — only abort if a challenge is VISIBLY rendered. Greenhouse loads hCaptcha's
+        // invisible-mode iframe on every page (zero-size, lazy), so a CSS-class / SDK-presence check
+        // false-positives on every job. Real challenges render an iframe with non-trivial dimensions
+        // (hcaptcha.com bframe ≈ 400×600, recaptcha bframe ≈ 300×400). Size > 80×80 covers both
+        // without matching the invisible loaders.
+        const challenge = (() => {
+          const sels = ['iframe[src*="hcaptcha.com"]', 'iframe[src*="recaptcha"]'];
+          for (const sel of sels) {
+            for (const iframe of document.querySelectorAll(sel)) {
+              const r = iframe.getBoundingClientRect();
+              if (r.width > 80 && r.height > 80) return iframe;
+            }
+          }
+          return null;
+        })();
+        if (challenge) {
           sendResponse({ submitted: false, reason: "captcha_present" });
           return;
         }
