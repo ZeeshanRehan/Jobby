@@ -9,6 +9,26 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-28 — Drain captcha guard: false-positive on Greenhouse's preloaded invisible hCaptcha  ·  FIXED (live-verified)
+
+First V3 drain run aborted at the submit step with `reason: "captcha_present"` on a fillable Greenhouse
+job. User confirmed: no challenge visible on the form, manual submit click went through cleanly with
+no challenge ever appearing.
+
+**Commit:** `42ae475`.
+
+**Root cause.** `FILL_SUBMIT`'s guard ran `document.querySelector('iframe[src*="hcaptcha.com"], iframe[src*="recaptcha"], .h-captcha, .g-recaptcha, [data-sitekey]')` — i.e. matched on *SDK presence*, not on *challenge visibility*. Greenhouse preloads hCaptcha's invisible-mode iframe on every form (lazy-mode: SDK loaded, challenge only fires on suspicious traffic). The loader iframe has zero rendered size but matches the src pattern — so the guard tripped on every Greenhouse submit.
+
+**Fix.** Replaced the SDK-presence check with a size threshold: only abort if a captcha-source iframe has `getBoundingClientRect().width > 80 && height > 80`. Real challenge iframes are ~400×600 (hCaptcha bframe) / ~300×400 (reCAPTCHA bframe); invisible loaders are 0×0 or 1×1. The submit pipeline still detects + skips a real challenge, but no longer false-positives on preloaded SDKs.
+
+**Verification.** Re-ran drain with `target=1` after the fix. Full pipeline completed: claim → jd → tailor → pdf → open_tab → fill_form → fill_ai → submit → done. ~35s end-to-end. Queue record marked `done`, `applied_urls.json` recorded via `/queue/mark-applied`.
+
+**Known gap (not fixed).** The check is *pre-click only*. If a lazy hCaptcha/reCAPTCHA decides to challenge AFTER the click (high-risk traffic), the drain will report `submitted: true` but the form won't actually have submitted. Surfacing this requires post-click detection (URL-change confirmation or delayed challenge-iframe re-check). Deferred until it bites — Greenhouse first runs from a fresh IP haven't triggered it yet.
+
+**Related (same commit chain).** `de79a92` separately added AI Q/A persistence to `drain.jsonl` because the first successful submit auto-completed in a snap and the user couldn't see what the AI had answered. `FILL_AI_FIELDS` now returns the diagnostic table; drain logs it as `data.fields` on the `fill_ai` step so post-hoc audits work after the job tab closes.
+
+---
+
 ## 2026-05-28 — Greenhouse demographics: local resolver returned profile defaults that didn't match the live options  ·  FIXED (live-verified)
 
 First Greenhouse smoke test (Discord SWE Core Product) on the live drain target. Autofill ran clean except

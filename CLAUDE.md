@@ -186,8 +186,10 @@ These are non-negotiable — never relax them:
 - [x] server/routes/jd.js — Greenhouse JD fetcher
 - [x] extension/drain.html — controller UI (light theme, contrast, padding)
 - [x] extension/drain.js — claim → JD → tailor → tab → fill → submit → update → jitter loop
-- [x] extension/autofill.js FILL_SUBMIT — captcha guard + submit button click
-- [ ] Live-test on first 10 fillable Greenhouse jobs (this is the next action)
+- [x] extension/autofill.js FILL_SUBMIT — visible-iframe captcha guard + submit button click
+- [x] First live submit end-to-end (target=1, Greenhouse) — passed, queue marked done, applied_urls recorded
+- [x] AI Q/A persistence to drain.jsonl (audit what answers the AI gave after the tab closes)
+- [ ] Full 10-job batch — next action
 - [ ] V3 Playwright path — deferred; in-browser is the chosen architecture
 
 ### Session Anchors (read these first when picking up)
@@ -202,15 +204,23 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-28 (late session). **HEAD = `0d6ebf6` "greenhouse 1st smoke test"** (autofill gate fix
-shipped + live-verified) **plus uncommitted V3 drain build (~9 new/modified files).**
+**Date:** 2026-05-28 (late session). **HEAD = `de79a92` "persist AI Q/A pairs to drain.jsonl".**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
 local pull → Chrome reload. **NOTE: I (Claude Code) am on the VPS with NO Chrome — I can smoke-test the
-server pipeline (`/apply`) but the live DOM fill/submit runs in the user's local Chrome via the extension.**
+server pipeline but the live DOM fill/submit runs in the user's local Chrome via the extension.**
 
-**STATUS: V3 in-browser drain loop is BUILT but UNTESTED.** Architecture fork resolved in favor of in-browser
-persistent page (one dedicated Chrome tab runs `extension/drain.html`, opens job tabs in background,
-fills/submits, closes them). DEVLOG has the 2026-05-28 entry on the gate fix that preceded this build.
+**STATUS: V3 in-browser drain loop LIVE-VERIFIED end-to-end.** First real submit (`target=1`) on a fillable
+Greenhouse job completed: claim → jd → tailor → pdf → open_tab → fill_form → fill_ai → submit → done.
+Architecture fork resolved in favor of in-browser persistent page (one dedicated Chrome tab runs
+`extension/drain.html`, opens job tabs in background, fills/submits, closes them). Three commits since
+the build went up:
+- `3af68fe` initial drain build (server endpoints + drain.html/drain.js + popup restyle)
+- `42ae475` captcha-guard fix (was false-positiving on Greenhouse's preloaded invisible hCaptcha iframe;
+  now requires a visibly-rendered challenge iframe >80×80 to abort — see today's DEVLOG entry)
+- `de79a92` AI Q/A persistence — `FILL_AI_FIELDS` returns the full `{label, fieldType, value, status}`
+  table; drain logs it as `data.fields` on the `fill_ai` step in `drain.jsonl` so post-hoc audits work
+  after the job tab closes. Inspect with:
+  `jq -r 'select(.step=="fill_ai") | "=== \(.company) ===", (.data.fields[] | "[\(.status)] \(.label) → \(.value)")' server/data/drain.jsonl`
 
 **New / modified this session (uncommitted):**
 - `server/services/drainLogger.js` — append-only JSONL to `server/data/drain.jsonl`, with `tail(n)` for UI.
@@ -234,11 +244,15 @@ fills/submits, closes them). DEVLOG has the 2026-05-28 entry on the gate fix tha
 - `extension/popup.js` — wires the drain button (`chrome.tabs.create({url: chrome.runtime.getURL("drain.html")})`
   + closes popup).
 
-**Next up:** smoke-test the drain UI end-to-end on first 10 fillable Greenhouse jobs (dry-run OFF per user
-direction; toggle exists as safety latch). Watch `drain.jsonl` server-side, watch the log tail in-tab.
-Expected failure modes: PDF fetch from Supabase signed URL inside the extension origin (cookies? CORS?),
-background-tab `setTimeout` throttling stretching per-job time (likely fine for first 5min), the captcha
-guard firing on Lever jobs once we widen beyond Greenhouse.
+**Next up:** scale `target` from 1 to 10 in `drain.html` and run a full batch. Watch `drain.jsonl`
+server-side, watch the log tail in-tab. Per-job runtime is ~35s observed (claim through submit) — 10 jobs
+with 25-45s jitter ≈ 8-13 minutes total. Audit AI answers via the jq one-liner above. Known weak spot:
+the Greenhouse adapter's `linkedin`/`website` selectors (`input[id*='linkedin']`, `input[id*='website']`)
+hit `stale` on GitLab — Greenhouse's actual selectors there are something different; tighten when convenient
+but non-blocking (optional fields). After 10-job batch succeeds, **(a)** flip drain.html `target` default
+back to a reasonable number (user choice, currently 1), **(b)** add the same AI-Q/A persistence path to
+the popup's autofill flow if useful, **(c)** start widening beyond Greenhouse (Lever still has
+hCaptcha-on-submit risk — the visible-only guard should now correctly abort on a real challenge there).
 
 **Earlier this session — autofill gate fix (`0d6ebf6`).** Greenhouse Discord smoke test exposed
 `localResolveField` short-circuiting on the label without checking field options — fixed by gating local
