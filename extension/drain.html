@@ -94,15 +94,18 @@
       display: inline-flex; align-items: center; gap: 8px;
       color: var(--text-soft); font-size: 14px;
     }
-    label.field input[type="number"] {
-      width: 64px;
+    label.field input[type="number"],
+    label.field select {
       padding: 6px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 14px;
       font-family: inherit;
       background: white;
+      color: var(--text);
     }
+    label.field input[type="number"] { width: 64px; }
+    label.field select { min-width: 120px; }
     label.switch {
       display: inline-flex; align-items: center; gap: 8px;
       color: var(--text-soft); font-size: 14px;
@@ -198,7 +201,7 @@
         <h1>Jobby — Drain Controller</h1>
         <div class="subtitle">In-browser queue runner. Closes when you close this tab.</div>
       </div>
-      <span class="pill" id="atsPill">Greenhouse</span>
+      <span class="pill" id="atsPill">All ATS</span>
     </header>
 
     <div class="err-banner" id="errBanner"></div>
@@ -209,10 +212,21 @@
         <button class="btn btn-primary"   id="startBtn">Start Applying</button>
         <button class="btn btn-danger"    id="stopBtn" disabled>Stop</button>
         <label class="field">
+          ATS&nbsp;<select id="atsSelect">
+            <option value="all">All</option>
+            <option value="greenhouse">Greenhouse</option>
+            <option value="ashby">Ashby</option>
+            <option value="lever">Lever</option>
+          </select>
+        </label>
+        <label class="field">
           Target&nbsp;<input type="number" id="targetCount" min="1" max="200" value="1" />
         </label>
         <label class="switch">
           <input type="checkbox" id="dryRun" /> Dry-run (fill but don't submit)
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="watchMode" /> Show job tabs (focus each as it opens)
         </label>
         <div class="status-line" style="margin-left:auto;">
           <span class="dot stopped" id="statusDot"></span>

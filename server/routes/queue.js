@@ -15,15 +15,16 @@ const { logEvent, tail } = require("../services/drainLogger");
 
 const router = express.Router();
 
-// Claim the next pending fillable job. `ats` filter optional (defaults to greenhouse for
-// the first drain — Ashby/Lever can be drained later by passing ?ats=ashby etc.).
-// Atomic: marks the claimed record `in_progress` so a second concurrent claimer
-// (e.g. a controller in two tabs) won't grab the same job.
+// Claim the next pending fillable job. `ats` filter optional — pass an explicit ATS
+// ("greenhouse" | "ashby" | "lever") to scope the claim, or omit / pass "all" to claim
+// across every source. Atomic: marks the claimed record `in_progress` so a second
+// concurrent claimer (e.g. a controller in two tabs) won't grab the same job.
 router.get("/next", (req, res) => {
-  const ats = req.query.ats || "greenhouse";
+  const ats = req.query.ats;
   const queue = readQueue();
+  const matchesAts = (r) => !ats || ats === "all" || r.ats === ats;
   const idx = queue.findIndex((r) =>
-    r.ats === ats && r.fillable && r.status === "pending" && !hasApplied(r.apply_url)
+    matchesAts(r) && r.fillable && r.status === "pending" && !hasApplied(r.apply_url)
   );
   if (idx === -1) return res.json({ job: null });
 

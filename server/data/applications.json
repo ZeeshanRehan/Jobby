@@ -1305,5 +1305,523 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "546f8a01-c2d7-46f8-9680-47779e4f91f5",
+    "timestamp": "2026-05-28T13:29:30.869Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8539891002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_546f8a01-c2d7-46f8-9680-47779e4f91f5.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81NDZmOGEwMS1jMmQ3LTQ2ZjgtOTY4MC00Nzc3OWU0ZjkxZjUucGRmIiwiaWF0IjoxNzc5OTc0OTcwLCJleHAiOjE3Nzk5Nzg1NzB9.tRv5LnToLsD2fZghZNwaawBxQaX1aJ3EWbnwvGYGj6s",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/546f8a01-c2d7-46f8-9680-47779e4f91f5.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Outreach.io",
+        "LinkedIn Sales Navigator",
+        "DevOps",
+        "Sales Development",
+        "Account Research",
+        "Prospecting",
+        "Pipeline Generation"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Outreach.io",
+      "LinkedIn Sales Navigator",
+      "DevOps",
+      "Sales Development",
+      "Account Research",
+      "Prospecting",
+      "Pipeline Generation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "7431dbf0-b796-43ee-8c0e-20954d688936",
+    "timestamp": "2026-05-28T13:32:35.794Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8562271002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7431dbf0-b796-43ee-8c0e-20954d688936.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83NDMxZGJmMC1iNzk2LTQzZWUtOGMwZS0yMDk1NGQ2ODg5MzYucGRmIiwiaWF0IjoxNzc5OTc1MTU1LCJleHAiOjE3Nzk5Nzg3NTV9.uem6G1FhKPOX308Yt6WiorOV2890HYpJ6Par-BYn79k",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7431dbf0-b796-43ee-8c0e-20954d688936.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Salesforce",
+        "Outreach",
+        "ZoomInfo",
+        "Cognism",
+        "LinkedIn Sales Navigator",
+        "DevOps",
+        "Public Sector"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Salesforce",
+      "Outreach",
+      "ZoomInfo",
+      "Cognism",
+      "LinkedIn Sales Navigator",
+      "DevOps",
+      "Public Sector"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "836bd924-d849-4fbb-a6af-7faf36669f28",
+    "timestamp": "2026-05-28T13:33:58.395Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8521684002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_836bd924-d849-4fbb-a6af-7faf36669f28.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84MzZiZDkyNC1kODQ5LTRmYmItYTZhZi03ZmFmMzY2NjlmMjgucGRmIiwiaWF0IjoxNzc5OTc1MjM4LCJleHAiOjE3Nzk5Nzg4Mzh9.WLsBB6ailpFS_7yUS9vy5EzIczT8-FTYWC0BPrPqqEw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/836bd924-d849-4fbb-a6af-7faf36669f28.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Greenhouse",
+        "Google Workspace",
+        "Applicant Tracking Systems",
+        "Interview Coordination",
+        "Candidate Scheduling",
+        "Employment Contracts",
+        "Asynchronous Communication"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, coordinating logistics across multiple stakeholders."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, demonstrating strong attention to detail and process improvement."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Greenhouse",
+      "Google Workspace",
+      "Applicant Tracking Systems",
+      "Interview Coordination",
+      "Candidate Scheduling",
+      "Employment Contracts",
+      "Asynchronous Communication"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "2c63a1ba-7cfb-41a5-b59c-46e48f7d0c99",
+    "timestamp": "2026-05-28T13:35:34.805Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8446714002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2c63a1ba-7cfb-41a5-b59c-46e48f7d0c99.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yYzYzYTFiYS03Y2ZiLTQxYTUtYjU5Yy00NmU0OGY3ZDBjOTkucGRmIiwiaWF0IjoxNzc5OTc1MzM0LCJleHAiOjE3Nzk5Nzg5MzR9.iVTm-hdi3MxTHCMLe1hn8BVqF-MggZ8ygd2UHIvg1Lw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2c63a1ba-7cfb-41a5-b59c-46e48f7d0c99.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevSecOps",
+        "Application Lifecycle Management",
+        "Sales Pipeline Management",
+        "Win/Loss Analysis",
+        "Negotiation",
+        "Account Planning"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevSecOps",
+      "Application Lifecycle Management",
+      "Sales Pipeline Management",
+      "Win/Loss Analysis",
+      "Negotiation",
+      "Account Planning"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "c4856954-b942-4532-9350-81111d05ec8d",
+    "timestamp": "2026-05-28T13:38:11.581Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8528922002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_c4856954-b942-4532-9350-81111d05ec8d.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jNDg1Njk1NC1iOTQyLTQ1MzItOTM1MC04MTExMWQwNWVjOGQucGRmIiwiaWF0IjoxNzc5OTc1NDkxLCJleHAiOjE3Nzk5NzkwOTF9.5RK9-UbNPmwFug54RmddVO3AYVE1y1qBDE8wr_46-9c",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/c4856954-b942-4532-9350-81111d05ec8d.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevSecOps",
+        "Application Lifecycle Management",
+        "Open Source",
+        "Sales Pipeline Management",
+        "Negotiation",
+        "Account Planning"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, documenting buying criteria and processes to ensure evidence-based decision making."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members, and conducted root cause analyses on process improvements to share learnings across teams."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack and Git version control to help communities share skills, services, and help."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevSecOps",
+      "Application Lifecycle Management",
+      "Open Source",
+      "Sales Pipeline Management",
+      "Negotiation",
+      "Account Planning"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "32b3ce65-0008-42e7-9f8b-733bbbea355c",
+    "timestamp": "2026-05-28T13:40:38.410Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8551458002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_32b3ce65-0008-42e7-9f8b-733bbbea355c.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMmIzY2U2NS0wMDA4LTQyZTctOWY4Yi03MzNiYmJlYTM1NWMucGRmIiwiaWF0IjoxNzc5OTc1NjM4LCJleHAiOjE3Nzk5NzkyMzh9.Dft9RHYICdNPLdaj1h5m96QPe-6fmg-ovunxoLtMCbs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/32b3ce65-0008-42e7-9f8b-733bbbea355c.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "654a0159-e888-4c0e-ab79-e356636d590a",
+    "timestamp": "2026-05-28T13:43:23.262Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8561622002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_654a0159-e888-4c0e-ab79-e356636d590a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82NTRhMDE1OS1lODg4LTRjMGUtYWI3OS1lMzU2NjM2ZDU5MGEucGRmIiwiaWF0IjoxNzc5OTc1ODAzLCJleHAiOjE3Nzk5Nzk0MDN9._1HrNin6dzwe4jB0J2dIb-cqelpeQ_QfxtKwOt5X4vY",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/654a0159-e888-4c0e-ab79-e356636d590a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "MEDDPICC",
+        "Command of the Message",
+        "SaaS",
+        "Territory Management",
+        "Pipeline Management",
+        "Forecasting",
+        "Account Management",
+        "Prospecting",
+        "Negotiation",
+        "DevSecOps"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, managing complex stakeholder needs and adoption strategies."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, documenting decision processes and key stakeholders to support long-term customer outcomes."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members while proactively supporting adoption and reducing churn."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, managing the full product lifecycle from prospecting to user adoption."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to articulate value propositions to different audience levels."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "MEDDPICC",
+      "Command of the Message",
+      "SaaS",
+      "Territory Management",
+      "Pipeline Management",
+      "Forecasting",
+      "Account Management",
+      "Prospecting",
+      "Negotiation",
+      "DevSecOps"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "8cc7fbea-af1a-4fe4-bfb7-95f756afa3c7",
+    "timestamp": "2026-05-28T13:45:58.209Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8448368002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_8cc7fbea-af1a-4fe4-bfb7-95f756afa3c7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84Y2M3ZmJlYS1hZjFhLTRmZTQtYmZiNy05NWY3NTZhZmEzYzcucGRmIiwiaWF0IjoxNzc5OTc1OTU4LCJleHAiOjE3Nzk5Nzk1NTh9.9aAQx5jM1rbyWUK9rRFvVDIOwf3q1gr7cF_0s3k-bc0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/8cc7fbea-af1a-4fe4-bfb7-95f756afa3c7.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevSecOps",
+        "Application Lifecycle Management",
+        "Sales Pipeline Management",
+        "Win/Loss Analysis"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, documenting buying criteria and processes to guide customer adoption."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform, aligning solutions to customer business outcomes."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members, and contributed root-cause insights on process improvements."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevSecOps",
+      "Application Lifecycle Management",
+      "Sales Pipeline Management",
+      "Win/Loss Analysis"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "914f8215-5bed-4268-ba9a-7dbcafc0ddca",
+    "timestamp": "2026-05-28T13:48:38.868Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8534549002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_914f8215-5bed-4268-ba9a-7dbcafc0ddca.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85MTRmODIxNS01YmVkLTQyNjgtYmE5YS03ZGJjYWZjMGRkY2EucGRmIiwiaWF0IjoxNzc5OTc2MTE4LCJleHAiOjE3Nzk5Nzk3MTh9.CF8T-jfgRWyHnwuve4CvFhbXhvXSALeUQnGTV9vz-io",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/914f8215-5bed-4268-ba9a-7dbcafc0ddca.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "MEDDPICC",
+        "Command of the Message",
+        "SaaS",
+        "DevSecOps",
+        "Territory Management",
+        "Pipeline Management",
+        "Value-Based Selling",
+        "Forecasting"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, collaborating with technical and business stakeholders to deliver cohesive customer outcomes."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, documenting buying criteria and decision processes to support disciplined sales cycles."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members while supporting long-term customer adoption and expansion."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, maintaining accurate documentation and territory records."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, articulating value propositions to different audience levels and building strong community relationships."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to communicate platform value and drive adoption."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations while managing the complete customer journey from evaluation to value realization."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating strong product adoption and customer engagement."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "MEDDPICC",
+      "Command of the Message",
+      "SaaS",
+      "DevSecOps",
+      "Territory Management",
+      "Pipeline Management",
+      "Value-Based Selling",
+      "Forecasting"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "21109aee-682d-49f8-a00d-c079abe8efaf",
+    "timestamp": "2026-05-28T13:51:24.795Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8535897002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_21109aee-682d-49f8-a00d-c079abe8efaf.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yMTEwOWFlZS02ODJkLTQ5ZjgtYTAwZC1jMDc5YWJlOGVmYWYucGRmIiwiaWF0IjoxNzc5OTc2Mjg0LCJleHAiOjE3Nzk5Nzk4ODR9.q5GAaXzwwjogNNNc7Jr3p7PmQdnC8U0tU9rorHX9TLg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/21109aee-682d-49f8-a00d-c079abe8efaf.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevOps",
+        "Application Lifecycle Management",
+        "MEDPICC",
+        "Command of the Message"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Git, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevOps",
+      "Application Lifecycle Management",
+      "MEDPICC",
+      "Command of the Message"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

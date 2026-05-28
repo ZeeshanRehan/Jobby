@@ -17,7 +17,10 @@ const els = {
   startBtn:     $("startBtn"),
   stopBtn:      $("stopBtn"),
   targetCount:  $("targetCount"),
+  atsSelect:    $("atsSelect"),
+  atsPill:      $("atsPill"),
   dryRun:       $("dryRun"),
+  watchMode:    $("watchMode"),
   statusDot:    $("statusDot"),
   statusText:   $("statusText"),
   progressBar:  $("progressBar"),
@@ -37,10 +40,15 @@ const state = {
   running:       false,
   stopRequested: false,
   target:        10,
+  ats:           "all",
   dryRun:        false,
+  watchMode:     false,
   counts:        { applied: 0, skipped: 0, errors: 0 },
   current:       null,
 };
+
+const ATS_LABELS = { all: "All ATS", greenhouse: "Greenhouse", ashby: "Ashby", lever: "Lever" };
+const ID_PREFIX  = { greenhouse: "gh_", ashby: "ashby_", lever: "lever_" };
 
 // ─── UI helpers ───────────────────────────────────────────────────────────────
 function setStatus(kind, text) {
@@ -128,14 +136,17 @@ async function logStep(job, step, ok, message, data = null) {
 }
 
 async function claimNextJob() {
-  const { job } = await api("/queue/next?ats=greenhouse");
+  const { job } = await api(`/queue/next?ats=${encodeURIComponent(state.ats)}`);
   return job;
 }
 
 async function fetchJD(job) {
-  if (job.ats !== "greenhouse") throw new Error(`JD fetch not implemented for ${job.ats}`);
-  const numericId = String(job.id).replace(/^gh_/, "");
-  const { jobDescription, title, company } = await api(`/jd/greenhouse/${encodeURIComponent(job.board_token)}/${encodeURIComponent(numericId)}`);
+  const prefix = ID_PREFIX[job.ats];
+  if (!prefix) throw new Error(`JD fetch not implemented for ${job.ats}`);
+  const rawId = String(job.id).replace(new RegExp(`^${prefix}`), "");
+  const { jobDescription, title, company } = await api(
+    `/jd/${job.ats}/${encodeURIComponent(job.board_token)}/${encodeURIComponent(rawId)}`
+  );
   return { jobDescription, title, company };
 }
 
@@ -184,7 +195,7 @@ async function updateQueue(jobId, status, last_error = null, applicationId = nul
 // ─── Tab control ──────────────────────────────────────────────────────────────
 function openTabAndWaitForLoad(url) {
   return new Promise((resolve, reject) => {
-    chrome.tabs.create({ url, active: false }, (tab) => {
+    chrome.tabs.create({ url, active: state.watchMode }, (tab) => {
       let done = false;
       const cleanup = () => { chrome.tabs.onUpdated.removeListener(listener); clearTimeout(timer); };
       const listener = (tabId, info) => {
@@ -421,7 +432,7 @@ async function loop() {
     }
     if (!job) {
       await logStep(null, "claim", false, "no pending fillable jobs");
-      showError("No pending fillable Greenhouse jobs in queue.");
+      showError(`No pending fillable jobs in queue (filter: ${state.ats}).`);
       break;
     }
 
@@ -454,11 +465,18 @@ async function loop() {
 // ─── Wire up controls ─────────────────────────────────────────────────────────
 els.startBtn.addEventListener("click", async () => {
   state.target = Math.max(1, parseInt(els.targetCount.value, 10) || 10);
+  state.ats = els.atsSelect.value || "all";
   state.dryRun = els.dryRun.checked;
+  state.watchMode = els.watchMode.checked;
   state.counts = { applied: 0, skipped: 0, errors: 0 };
   els.statTarget.textContent = state.target;
+  els.atsPill.textContent = ATS_LABELS[state.ats] || state.ats;
   updateStats();
   await loop();
+});
+
+els.atsSelect.addEventListener("change", () => {
+  els.atsPill.textContent = ATS_LABELS[els.atsSelect.value] || els.atsSelect.value;
 });
 
 els.stopBtn.addEventListener("click", () => {

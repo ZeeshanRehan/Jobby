@@ -189,7 +189,8 @@ These are non-negotiable — never relax them:
 - [x] extension/autofill.js FILL_SUBMIT — visible-iframe captcha guard + submit button click
 - [x] First live submit end-to-end (target=1, Greenhouse) — passed, queue marked done, applied_urls recorded
 - [x] AI Q/A persistence to drain.jsonl (audit what answers the AI gave after the tab closes)
-- [ ] Full 10-job batch — next action
+- [x] Multi-job batch — 17 GitLab fill_ai events in drain.jsonl, AI fired on 2 (sponsorship, demographics, accessibility — all clean), other 15 fully local-resolved
+- [ ] Ashby/Lever queue sources + drop the `?ats=greenhouse` hardcode in `claimNextJob()` — next action
 - [ ] V3 Playwright path — deferred; in-browser is the chosen architecture
 
 ### Session Anchors (read these first when picking up)
@@ -219,8 +220,8 @@ the build went up:
   now requires a visibly-rendered challenge iframe >80×80 to abort — see today's DEVLOG entry)
 - `de79a92` AI Q/A persistence — `FILL_AI_FIELDS` returns the full `{label, fieldType, value, status}`
   table; drain logs it as `data.fields` on the `fill_ai` step in `drain.jsonl` so post-hoc audits work
-  after the job tab closes. Inspect with:
-  `jq -r 'select(.step=="fill_ai") | "=== \(.company) ===", (.data.fields[] | "[\(.status)] \(.label) → \(.value)")' server/data/drain.jsonl`
+  after the job tab closes. **No `jq` on the VPS — use node:**
+  `node -e "require('fs').readFileSync('server/data/drain.jsonl','utf8').trim().split('\n').map(l=>JSON.parse(l)).filter(e=>e.step==='fill_ai').forEach(e=>{console.log('\n=== '+e.company+' ===');(e.data.fields||[]).forEach(f=>console.log('  ['+f.status+'] '+f.label+' → '+f.value))})"`
 
 **New / modified this session (uncommitted):**
 - `server/services/drainLogger.js` — append-only JSONL to `server/data/drain.jsonl`, with `tail(n)` for UI.
@@ -243,16 +244,19 @@ the build went up:
   "Open Drain Controller" button in idle state.
 - `extension/popup.js` — wires the drain button (`chrome.tabs.create({url: chrome.runtime.getURL("drain.html")})`
   + closes popup).
+- **This session (post-`de79a92`, uncommitted):** `extension/drain.html` + `extension/drain.js` —
+  "Show job tabs" checkbox (id=`watchMode`); when on, `chrome.tabs.create({active: state.watchMode})` so
+  each new job tab steals focus and the user can watch the fill live. Default off (backgrounded). When
+  the job tab closes after submit, focus falls back to the drain tab (it's the opener).
 
-**Next up:** scale `target` from 1 to 10 in `drain.html` and run a full batch. Watch `drain.jsonl`
-server-side, watch the log tail in-tab. Per-job runtime is ~35s observed (claim through submit) — 10 jobs
-with 25-45s jitter ≈ 8-13 minutes total. Audit AI answers via the jq one-liner above. Known weak spot:
-the Greenhouse adapter's `linkedin`/`website` selectors (`input[id*='linkedin']`, `input[id*='website']`)
-hit `stale` on GitLab — Greenhouse's actual selectors there are something different; tighten when convenient
-but non-blocking (optional fields). After 10-job batch succeeds, **(a)** flip drain.html `target` default
-back to a reasonable number (user choice, currently 1), **(b)** add the same AI-Q/A persistence path to
-the popup's autofill flow if useful, **(c)** start widening beyond Greenhouse (Lever still has
-hCaptcha-on-submit risk — the visible-only guard should now correctly abort on a real challenge there).
+**Next up:** (1) Commit + push the `watchMode` toggle. (2) Run a 5–10-job batch with watchMode ON to
+eyeball the fill on real forms — confirms the toggle works, no captcha-guard false-positives, and lets us
+spot any other staleness beyond the known GitLab `linkedin`/`website` selectors (those are optional, non-
+blocking). (3) Widen beyond Greenhouse: add `automation/sources/ashbyBoard.js` + `leverBoard.js` (their
+public board APIs), seed the queue, AND remove the `?ats=greenhouse` hardcode in `claimNextJob()`
+(`extension/drain.js:131`) — likely rotate or drop the filter. Lever still has hCaptcha-on-submit risk;
+the visible-only guard should correctly abort on a real challenge. (4) Then optional: add AI-Q/A
+persistence to the popup autofill flow; flip drain.html `target` default to something reasonable.
 
 **Earlier this session — autofill gate fix (`0d6ebf6`).** Greenhouse Discord smoke test exposed
 `localResolveField` short-circuiting on the label without checking field options — fixed by gating local
