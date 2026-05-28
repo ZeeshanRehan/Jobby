@@ -666,20 +666,23 @@ if (!window.__jobbyAutofillInjected) {
 
         console.log("[Jobby] AI fill done — filled:", aiFilled.length, "errors:", aiErrors.length);
         // Per-field diagnostic — shows what the AI answered for each field and whether it landed.
-        // Paste this table back when a field "didn't take" so we can tell empty-answer from failed-fill.
+        // Returned to caller (drain.js persists it to drain.jsonl) so the question→answer mapping
+        // survives the tab closing. Also printed to the page console for live debugging via popup.
+        let aiFieldsDiag = [];
         try {
-          console.table(fields.map(({ selector, value, fieldType }) => {
+          aiFieldsDiag = fields.map(({ selector, value, fieldType }) => {
             const first = document.querySelector(selector);
             const label = first ? (getGroupLabel(first) || getLabelText(first) || selector) : selector;
             return {
               label,
               fieldType,
-              value: Array.isArray(value) ? value.join(" | ") : String(value ?? "").slice(0, 80),
+              value: Array.isArray(value) ? value.join(" | ") : String(value ?? "").slice(0, 240),
               status: aiErrors.includes(selector) ? "ERROR" : "filled",
             };
-          }));
+          });
+          console.table(aiFieldsDiag);
         } catch (e) { console.warn("[Jobby] diagnostic table failed:", e.message); }
-        sendResponse({ aiFilled, aiErrors });
+        sendResponse({ aiFilled, aiErrors, aiFieldsDiag });
       })();
       return true;
     }

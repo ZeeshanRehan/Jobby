@@ -261,9 +261,13 @@ async function resolveAndFillUnknowns(tabId, unknownFields, jobDescription, prof
     }
   }
 
-  if (resolved.length === 0) return { aiFilled: 0, aiErrors: 0 };
+  if (resolved.length === 0) return { aiFilled: 0, aiErrors: 0, aiFieldsDiag: [] };
   const resp = await sendMessage(tabId, { type: "FILL_AI_FIELDS", fields: resolved }, AUTOFILL_TIMEOUT_MS);
-  return { aiFilled: resp?.aiFilled?.length || 0, aiErrors: resp?.aiErrors?.length || 0 };
+  return {
+    aiFilled:      resp?.aiFilled?.length || 0,
+    aiErrors:      resp?.aiErrors?.length || 0,
+    aiFieldsDiag:  resp?.aiFieldsDiag || [],
+  };
 }
 
 // ─── Per-job pipeline ─────────────────────────────────────────────────────────
@@ -351,8 +355,9 @@ async function processJob(job) {
   // 6. AI fallback for unknowns
   try {
     setCurrent(job, "AI fallback");
-    const { aiFilled, aiErrors } = await resolveAndFillUnknowns(tabId, unknownFields, jd.jobDescription, applyData.profileData);
-    await logStep(job, "fill_ai", true, `ai_filled=${aiFilled} ai_errors=${aiErrors}`);
+    const { aiFilled, aiErrors, aiFieldsDiag } = await resolveAndFillUnknowns(tabId, unknownFields, jd.jobDescription, applyData.profileData);
+    // Persist the full per-field {label, value, status} table so we can audit AI answers after the tab closes.
+    await logStep(job, "fill_ai", true, `ai_filled=${aiFilled} ai_errors=${aiErrors}`, { fields: aiFieldsDiag });
   } catch (err) {
     await logStep(job, "fill_ai", false, err.message);
     // not fatal — try to submit anyway
