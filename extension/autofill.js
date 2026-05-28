@@ -504,8 +504,22 @@ if (!window.__jobbyAutofillInjected) {
     if (message.type === "FILL_FORM") {
       (async () => {
         const { adapter, profileData, resumePdf } = message;
-        const report      = { filled: [], stale: [], skipped: [], errors: [] };
+        // `filled` stays string[] (legacy popup + server log consumers). `filledDetails` is
+        // the richer audit trail — {field, label, value} per filled element — drain.html
+        // surfaces it in the Last-Job details panel.
+        const report      = { filled: [], filledDetails: [], stale: [], skipped: [], errors: [] };
         const handledEls  = new WeakSet();
+
+        // Resolve a human-readable label for a filled element. Falls back to the adapter
+        // field key when the DOM has nothing (rare for these adapter-defined fields).
+        const labelFor = (el, fieldName) => {
+          try { return getLabelText(el) || fieldName; } catch { return fieldName; }
+        };
+
+        const recordFilled = (fieldName, el, value) => {
+          report.filled.push(fieldName);
+          report.filledDetails.push({ field: fieldName, label: labelFor(el, fieldName), value });
+        };
 
         console.log("[Jobby] FILL_FORM received, fields:", Object.keys(adapter.fields));
 
@@ -528,7 +542,7 @@ if (!window.__jobbyAutofillInjected) {
                 continue;
               }
               fillText(el, String(value));
-              report.filled.push(fieldName);
+              recordFilled(fieldName, el, String(value));
             } else if (type === "combobox") {
               const value = resolvePath(profileData, source);
               if (value == null || value === "") {
@@ -536,11 +550,11 @@ if (!window.__jobbyAutofillInjected) {
                 continue;
               }
               const ok = await fillCombobox(el, String(value));
-              if (ok) report.filled.push(fieldName);
+              if (ok) recordFilled(fieldName, el, String(value));
               else report.errors.push({ field: fieldName, message: "combobox pick failed" });
             } else if (type === "file") {
               fillFile(el, resumePdf);
-              report.filled.push(fieldName);
+              recordFilled(fieldName, el, "(resume.pdf)");
             } else {
               report.skipped.push(fieldName);
             }
@@ -558,6 +572,11 @@ if (!window.__jobbyAutofillInjected) {
         const consent = tickConsentCheckboxes();
         report.consent = consent;
         report.filled.push(...consent);
+        // Consent strings are already human labels (see tickConsentCheckboxes()) — surface
+        // them in the audit panel as their own entries.
+        for (const label of consent) {
+          report.filledDetails.push({ field: "consent", label, value: "(checked)" });
+        }
 
         console.log("[Jobby] report:", report, "unknownFields:", unknownFields.length, "consent:", consent.length);
         // Scan diagnostic — what the scanner DETECTED. A required field missing from BOTH this table

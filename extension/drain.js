@@ -161,15 +161,32 @@ function renderDetails() {
   els.dFormUnknowns.textContent = `${details.form.unknowns} unknowns`;
 
   els.dFormList.innerHTML = "";
+  // filledDetails: [{field, label, value}] — show real form label + value sent.
+  // Legacy string form falls back to the bare key.
   for (const f of details.form.filled) {
     const li = document.createElement("li");
-    li.textContent = f.field || f.selector || "(field)";
+    if (typeof f === "string") {
+      li.textContent = f;
+    } else {
+      const label = document.createElement("span");
+      label.className = "details-li-label";
+      label.textContent = f.label || f.field || "(field)";
+      const sep = document.createElement("span");
+      sep.className = "details-li-sep";
+      sep.textContent = " → ";
+      const value = document.createElement("span");
+      value.className = "details-li-value";
+      value.textContent = f.value == null ? "" : String(f.value);
+      li.appendChild(label); li.appendChild(sep); li.appendChild(value);
+    }
     els.dFormList.appendChild(li);
   }
   for (const f of details.form.errors) {
     const li = document.createElement("li");
     li.className = "err";
-    li.textContent = (f.field || f.selector || "(field)") + (f.error ? ` — ${f.error}` : "");
+    const name = typeof f === "string" ? f : (f.field || f.selector || "(field)");
+    const msg  = typeof f === "object" ? (f.message || f.error) : null;
+    li.textContent = name + (msg ? ` — ${msg}` : "");
     els.dFormList.appendChild(li);
   }
 
@@ -193,7 +210,9 @@ function renderDetails() {
 }
 
 function setDetailsForm(report, unknownCount) {
-  details.form.filled   = report?.filled || [];
+  // Prefer the rich filledDetails [{field, label, value}] when present; fall back to the
+  // legacy string array (older autofill builds or popup-driven runs).
+  details.form.filled   = report?.filledDetails?.length ? report.filledDetails : (report?.filled || []);
   details.form.errors   = report?.errors || [];
   details.form.unknowns = unknownCount || 0;
   renderDetails();

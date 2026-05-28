@@ -203,9 +203,12 @@
     .chip-ok   { background: #ecfdf5; color: var(--success); }
     .chip-err  { background: #fff1f3; color: var(--error); }
     .chip-warn { background: #fffbeb; color: var(--warning); }
-    .details-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-    .details-list li { background: #f1f5f9; color: var(--text); border-radius: 6px; padding: 3px 9px; font-size: 12.5px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .details-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+    .details-list li { background: #f1f5f9; color: var(--text); border-radius: 6px; padding: 5px 10px; font-size: 13px; line-height: 1.4; word-break: break-word; }
     .details-list li.err { background: #fff1f3; color: var(--error); }
+    .details-li-label { font-weight: 600; }
+    .details-li-sep   { color: var(--text-mute); margin: 0 2px; }
+    .details-li-value { color: var(--text-soft); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; }
     .details-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .details-table th, .details-table td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
     .details-table th { font-size: 11px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; }

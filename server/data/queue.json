@@ -19884,11 +19884,12 @@
     "location": "Palo Alto",
     "apply_url": "https://jobs.lever.co/mistral/618c9763-cb22-4343-baca-cf1cf6b05f5c/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T17:11:04.497Z",
+    "applicationId": "a1cb5e0b-c0fa-4883-9d88-8532439e703f"
   },
   {
     "id": "lever_ed08b81f-9c52-4f86-addd-c4c06f3b114a",

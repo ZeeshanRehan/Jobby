@@ -1965,5 +1965,82 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "a1cb5e0b-c0fa-4883-9d88-8532439e703f",
+    "timestamp": "2026-05-28T17:10:44.772Z",
+    "jobUrl": "https://jobs.lever.co/mistral/618c9763-cb22-4343-baca-cf1cf6b05f5c/apply",
+    "jobTitle": null,
+    "company": null,
+    "platform": "lever",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_a1cb5e0b-c0fa-4883-9d88-8532439e703f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hMWNiNWUwYi1jMGZhLTQ4ODMtOWQ4OC04NTMyNDM5ZTcwM2YucGRmIiwiaWF0IjoxNzc5OTg4MjQ0LCJleHAiOjE3Nzk5OTE4NDR9.DuXo_mVI6CQA1Bz1TLpcUg1YUhShz2j4PdZqtsgiG00",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/a1cb5e0b-c0fa-4883-9d88-8532439e703f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "B2B Sales",
+        "Account Management",
+        "Sales Pipeline",
+        "Solution Selling",
+        "Enterprise Sales",
+        "Negotiation",
+        "Customer Success",
+        "Technical Sales",
+        "AI/ML",
+        "Data Infrastructure"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, demonstrating deep understanding of complex technical solutions and their business impact."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, establishing technical credibility through clear articulation of value proposition."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members by aligning stakeholder interests and demonstrating mutual benefit."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, demonstrating ability to build and position complex solutions to early adopters."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, establishing credibility through effective communication of platform value."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack AI-powered music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, demonstrating technical depth in AI application layer and ability to articulate complex solution value to users."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "B2B Sales",
+      "Account Management",
+      "Sales Pipeline",
+      "Solution Selling",
+      "Enterprise Sales",
+      "Negotiation",
+      "Customer Success",
+      "Technical Sales",
+      "AI/ML",
+      "Data Infrastructure"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
