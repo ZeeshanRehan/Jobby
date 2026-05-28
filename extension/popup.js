@@ -331,14 +331,22 @@ async function resolveUnknownFields(unknownFields, contextHtml, profileData) {
   const failed     = [];
   const needsAi    = [];
 
-  // Local resolver — zero API calls, zero tokens
+  // Local resolver — zero API calls, zero tokens.
+  // Gate: when the field carries pre-scanned options (e.g. Greenhouse "Gender Identity" with
+  // Man/Woman/Non-binary), accept the local answer only if bestOptionMatch can land it on a real
+  // option. Otherwise demote to AI — Claude sees the option list and picks a matching string
+  // ("Male" → "Man", "Prefer not to say" → "I don't wish to answer"). Async typeahead comboboxes
+  // arrive with options=[]; those skip the gate so the type-then-pick path still trusts local.
   for (const field of unknownFields) {
     const answer = localResolveField(field, profileData);
     if (answer !== null) {
-      resolved.push({ selector: field.selector, value: answer, fieldType: field.fieldType });
-    } else {
-      needsAi.push(field);
+      const hasOptions = Array.isArray(field.options) && field.options.length > 0;
+      if (!hasOptions || bestOptionMatch(field.options, answer) >= 0) {
+        resolved.push({ selector: field.selector, value: answer, fieldType: field.fieldType });
+        continue;
+      }
     }
+    needsAi.push(field);
   }
 
   // run-level coverage signal — local-vs-AI resolve split (feeds the V4 local-vs-AI hit-rate analytic)

@@ -64,7 +64,12 @@ Jobby/
       profile.js         ← Cached profileData from /profile endpoint
       adapters.js        ← Cached adapter map from /adapters endpoint
       history.js         ← Application history cache
-  automation/            ← V3, not built yet (Playwright, cron jobs)
+  automation/            ← V3 (UNCOMMITTED scaffold)
+    seedQueue.js         ← runner: fetch GH board jobs → enqueue
+    sources/
+      greenhouseBoard.js ← GH board-API → normalized queue records (flags `fillable`)
+    queue/
+      queue.js           ← JSON-backed atomic queue (dedupes vs queue + applied_urls)
   dashboard/             ← V4, not built yet
 ```
 
@@ -188,16 +193,29 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-27. **HEAD = `93e4bf2` "fixed: ashby synthetic events race fixed order".**
-Working tree clean except runtime data (applications.json / applied_urls.json + resume PDFs — ignore them).
+**Date:** 2026-05-28. **HEAD = `a2e261a` "docs: Ashby fully working".**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
-local pull → Chrome reload. All code below is committed + pushed.
+local pull → Chrome reload. **NOTE: I (Claude Code) am on the VPS with NO Chrome — I can smoke-test the
+server pipeline (`/apply`) but the live DOM fill/submit runs in the user's local Chrome via the extension.**
 
-**STATUS: Ashby FULLY WORKING — live-verified.** A real Ashby submit now passes with every required field
-committed. Greenhouse live. Lever partial (hCaptcha on submit). Ashby was the active front; it's done. Next
-up is the V3 roadmap.
+**STATUS: V3 has started — scaffold is on disk but UNCOMMITTED.** New untracked files:
+`automation/sources/greenhouseBoard.js` (Greenhouse board-API → normalized queue records, flags `fillable`
+for hosted `job-boards`/`boards.greenhouse.io` only), `automation/queue/queue.js` (JSON-backed atomic
+queue, dedupes vs queue + `idempotencyService.hasApplied`), `automation/seedQueue.js` (runner). Plus new
+services `applicationLogger.js` / `permanentStorage.js` / `idempotencyService.js` (these ARE committed).
+**`server/data/queue.json` is seeded: 948 jobs, all `pending` — 398 fillable / 550 not** (Stripe is 481,
+mostly off-platform). The drain loop (walk queue → fill/submit each → mark done) is NOT written.
 
-**This session's work — the Ashby autofill saga (`d2cecd7` → `e0d09fd` → `93e4bf2`).** Full post-mortem in
+**Next up (this session's goal):** test the queued links end-to-end. (1) Smoke-test ONE fillable Greenhouse
+link through the full pipeline. (2) Integrate the queue so ~10 jobs get injected + autofilled end-to-end,
+draining one-by-one until complete. KEY GAP: `/apply` needs a `jobDescription` but queue records don't store
+it (greenhouseBoard fetches JD lazily) — the drain path needs a JD-fetch step (GH board API
+`/{token}/jobs/{id}?content=true`). Architecture fork for the drain loop (in-browser persistent page vs
+server Playwright) is unresolved — see roadmap below.
+
+**Prior session — the Ashby autofill saga (`d2cecd7` → `e0d09fd` → `93e4bf2`).** Ashby FULLY WORKING,
+live-verified — a real Ashby submit passes with every required field committed. Greenhouse live. Lever
+partial (hCaptcha on submit). Full post-mortem in
 DEVLOG (2026-05-27 entry). Three layered fixes, each surfaced by its own live run:
 1. **Location combobox** (`d2cecd7`) — it's an ARIA-listbox combobox (`role=combobox`, opens on type, portaled
    `role=listbox #:r0:` with `role=option` rows), NOT react-select. Adapter location `type: "text"` →

@@ -551,5 +551,264 @@
       "consent": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "58d97122-31e4-4956-8fa1-8ea352eaf1af",
+    "timestamp": "2026-05-27T19:33:55.117Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/664c9e24-67ca-4a09-ac8b-5405b1468dc0/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_58d97122-31e4-4956-8fa1-8ea352eaf1af.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81OGQ5NzEyMi0zMWU0LTQ5NTYtOGZhMS04ZWEzNTJlYWYxYWYucGRmIiwiaWF0IjoxNzc5OTEwNDM1LCJleHAiOjE3Nzk5MTQwMzV9.nZjGnikZUwbFuqIC0H185f51_5NwteBlxnwGBTLYJGw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/58d97122-31e4-4956-8fa1-8ea352eaf1af.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Intune",
+        "JAMF",
+        "Google Workspace",
+        "Duo",
+        "Tailscale",
+        "Windows",
+        "macOS",
+        "SaaS",
+        "Device Management"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Intune",
+      "JAMF",
+      "Google Workspace",
+      "Duo",
+      "Tailscale",
+      "Windows",
+      "macOS",
+      "SaaS",
+      "Device Management"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "1afae460-2e6b-4f14-8b2b-3294a1e60839",
+    "timestamp": "2026-05-27T19:33:58.961Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/664c9e24-67ca-4a09-ac8b-5405b1468dc0/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1afae460-2e6b-4f14-8b2b-3294a1e60839.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xYWZhZTQ2MC0yZTZiLTRmMTQtOGIyYi0zMjk0YTFlNjA4MzkucGRmIiwiaWF0IjoxNzc5OTEwNDM4LCJleHAiOjE3Nzk5MTQwMzh9.lezrZkMF4aEpPueht90VzTCIAllcrB--0FyAzZmMzy4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/1afae460-2e6b-4f14-8b2b-3294a1e60839.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Windows",
+        "macOS",
+        "Google Workspace",
+        "Intune",
+        "JAMF",
+        "Duo",
+        "Tailscale",
+        "SaaS",
+        "Mobile Device Management",
+        "Active Directory"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Windows",
+      "macOS",
+      "Google Workspace",
+      "Intune",
+      "JAMF",
+      "Duo",
+      "Tailscale",
+      "SaaS",
+      "Mobile Device Management",
+      "Active Directory"
+    ],
+    "coverageReport": {
+      "filled": [
+        "name",
+        "email",
+        "location",
+        "resume",
+        "#e5a9aef4-1a92-4362-892c-0244b87ab1ec",
+        "#\\30 539bcb4-f5d1-4279-983e-54ead52155a5",
+        "input[name=\"50f8ecb7-41d8-4181-800f-1760e7468504_3ede3329-5afa-447d-8d29-0743b30726ff\"]",
+        "input[name=\"1ffc8cd2-fdf3-40d4-91d3-198ebd0fbcff__systemfield_eeoc_gender\"]",
+        "input[name=\"1ffc8cd2-fdf3-40d4-91d3-198ebd0fbcff__systemfield_eeoc_race\"]",
+        "input[name=\"1ffc8cd2-fdf3-40d4-91d3-198ebd0fbcff__systemfield_eeoc_veteran_status\"]",
+        "[data-jobby-yesno=\"0\"]",
+        "[data-jobby-yesno=\"2\"]",
+        "#\\38 e142671-c852-4ce2-bd01-aa0a54f39643",
+        "#c7880132-cc19-4f1c-b921-28274122ff5f",
+        "#\\32 6297468-ac1e-4ac4-932c-76b965d2dc33",
+        "#\\35 100372d-4dab-4bc9-8833-6c08ec44b8a0",
+        "#\\32 8749331-4cba-497b-ad9f-1cdc34fe05f0",
+        "[data-jobby-checkgroup=\"0\"] input[type=\"checkbox\"]",
+        "[data-jobby-yesno=\"1\"]",
+        "[data-jobby-yesno=\"3\"]"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "2d64aea1-761f-43de-893a-8ade31be9b68",
+    "timestamp": "2026-05-28T10:12:28.599Z",
+    "jobUrl": "https://job-boards.greenhouse.io/discord/jobs/8520965002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2d64aea1-761f-43de-893a-8ade31be9b68.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yZDY0YWVhMS03NjFmLTQzZGUtODkzYS04YWRlMzFiZTliNjgucGRmIiwiaWF0IjoxNzc5OTYzMTQ4LCJleHAiOjE3Nzk5NjY3NDh9.Qovo2gyF0gSU1gEq8rIyYrOGO-o675I6GcvoC52zm5c",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/2d64aea1-761f-43de-893a-8ade31be9b68.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "WebSocket",
+        "Real-time messaging",
+        "Voice APIs",
+        "Video streaming",
+        "Performance optimization",
+        "Accessibility (a11y)",
+        "State management",
+        "Testing frameworks"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React Native-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "WebSocket",
+      "Real-time messaging",
+      "Voice APIs",
+      "Video streaming",
+      "Performance optimization",
+      "Accessibility (a11y)",
+      "State management",
+      "Testing frameworks"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_36274439002",
+        "#question_36274440002",
+        "#question_36274441002",
+        "#question_36274442002",
+        "#question_36274444002",
+        "#\\34 033064002",
+        "#\\34 033065002",
+        "#\\34 033066002",
+        "#\\34 033067002",
+        "#\\34 033069002",
+        "#question_36274438002",
+        "#question_36274443002"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#candidate-location",
+        "#\\34 033068002",
+        "#\\34 033070002"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
+  },
+  {
+    "applicationId": "13ea774d-9326-4f80-a1af-007997f3b3a2",
+    "timestamp": "2026-05-28T10:19:50.635Z",
+    "jobUrl": "https://job-boards.greenhouse.io/discord/jobs/8520965002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_13ea774d-9326-4f80-a1af-007997f3b3a2.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xM2VhNzc0ZC05MzI2LTRmODAtYTFhZi0wMDc5OTdmM2IzYTIucGRmIiwiaWF0IjoxNzc5OTYzNTkwLCJleHAiOjE3Nzk5NjcxOTB9.-P1dlAlQLtAlpozL64g8o-QtWVQBqIGcWARrbAWCs-s",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/13ea774d-9326-4f80-a1af-007997f3b3a2.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "WebSocket",
+        "Real-time messaging",
+        "Performance optimization",
+        "Accessibility (a11y)",
+        "State management",
+        "Testing frameworks"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React Native-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "WebSocket",
+      "Real-time messaging",
+      "Performance optimization",
+      "Accessibility (a11y)",
+      "State management",
+      "Testing frameworks"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#candidate-location",
+        "#question_36274439002",
+        "#question_36274440002",
+        "#question_36274441002",
+        "#question_36274442002",
+        "#question_36274444002",
+        "#\\34 033064002",
+        "#\\34 033065002",
+        "#\\34 033066002",
+        "#\\34 033067002",
+        "#\\34 033069002",
+        "#question_36274438002",
+        "#question_36274443002"
+      ],
+      "skipped": [],
+      "unknown": [
+        "#\\34 033068002",
+        "#\\34 033070002"
+      ],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
   }
 ]

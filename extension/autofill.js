@@ -184,15 +184,31 @@ if (!window.__jobbyAutofillInjected) {
     return isComboboxOpen(el);
   }
 
-  // Closes the menu and confirms it closed — a stuck-open menu blocks the next field from opening.
-  // Escape+blur first; if that doesn't take on this build, a click outside closes react-select.
+  // Closes the menu and confirms it closed — a stuck-open menu blocks the next field from opening
+  // AND leaves visible UX cruft if it persists past submit. Layered fallbacks because one path
+  // (escape, body click) doesn't always take on every react-select build:
+  //   1. focus → Escape keydown → blur+focusout (focus first so the keydown lands on this input)
+  //   2. outside click on documentElement (body can be ambiguous if the form wraps it)
+  //   3. click the dropdown-indicator chevron — toggles a still-open menu closed
   async function closeCombobox(el) {
+    el.focus();
     el.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", code: "Escape", keyCode: 27, which: 27, bubbles: true }));
+    await sleep(30);
     el.blur();
+    el.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
     await sleep(60);
-    if (el.getAttribute("aria-expanded") === "true") {
-      document.body.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
-      document.body.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    if (el.getAttribute("aria-expanded") !== "true") return;
+
+    document.documentElement.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    document.documentElement.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+    await sleep(60);
+    if (el.getAttribute("aria-expanded") !== "true") return;
+
+    const indicator = el.closest('[class*="select__control"]')?.querySelector('[class*="dropdown-indicator"], [class*="indicator"]');
+    if (indicator) {
+      indicator.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+      indicator.dispatchEvent(new MouseEvent("mouseup",   { bubbles: true, cancelable: true }));
+      indicator.click();
       await sleep(60);
     }
   }
@@ -278,7 +294,12 @@ if (!window.__jobbyAutofillInjected) {
     const shown = vc ? Array.from(vc.querySelectorAll(".select__single-value, .select__multi-value__label")).map((x) => x.textContent.trim()) : [];
     // Ashby (non react-select) reflects the pick in the input's own value rather than a chip element
     const ashbyOk = el instanceof HTMLInputElement && el.value.trim() === texts[idx];
-    const ok    = shown.includes(texts[idx]) || ashbyOk;
+    // Greenhouse renders the picked chip with reformatted text (e.g. option "Glassboro, New Jersey,
+    // United States" → chip "Glassboro, NJ, United States"). Match whitespace-normalized substring
+    // either direction so a real pick isn't falsely reported as ERROR.
+    const norm   = (s) => String(s).replace(/\s+/g, " ").trim().toLowerCase();
+    const target = norm(texts[idx]);
+    const ok     = ashbyOk || shown.some((s) => { const n = norm(s); return n === target || n.includes(target) || target.includes(n); });
 
     // always close so a still-open menu can't block the next field
     await closeCombobox(el);
