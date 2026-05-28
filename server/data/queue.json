@@ -9,11 +9,12 @@
     "location": "Remote, Italy",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8503792002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "submit: captcha_present",
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T12:45:29.457Z",
+    "applicationId": "1dfe211f-a5fa-4726-b9a2-bd114b0eb9fe"
   },
   {
     "id": "gh_8548105002",

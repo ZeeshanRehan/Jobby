@@ -880,5 +880,122 @@
       "consent": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "1dfe211f-a5fa-4726-b9a2-bd114b0eb9fe",
+    "timestamp": "2026-05-28T12:45:08.690Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8503792002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1dfe211f-a5fa-4726-b9a2-bd114b0eb9fe.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xZGZlMjExZi1hNWZhLTQ3MjYtYjlhMi1iZDExNGIwZWI5ZmUucGRmIiwiaWF0IjoxNzc5OTcyMzA4LCJleHAiOjE3Nzk5NzU5MDh9.KgepPusCJmE9mqf7E7CmL4C04Mp20XiC1hXRRyjtB2o",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/1dfe211f-a5fa-4726-b9a2-bd114b0eb9fe.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevSecOps",
+        "Application Lifecycle Management",
+        "Sales Pipeline Management",
+        "Win/Loss Analysis"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, managing full buying criteria and process documentation for 100+ active small businesses."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevSecOps",
+      "Application Lifecycle Management",
+      "Sales Pipeline Management",
+      "Win/Loss Analysis"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "50514312-8304-494c-8e62-8ae0f43e3517",
+    "timestamp": "2026-05-28T12:51:10.433Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8503792002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_50514312-8304-494c-8e62-8ae0f43e3517.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81MDUxNDMxMi04MzA0LTQ5NGMtOGU2Mi04YWUwZjQzZTM1MTcucGRmIiwiaWF0IjoxNzc5OTcyNjcwLCJleHAiOjE3Nzk5NzYyNzB9.tQJ252-gKbQ5rUspu54yWgqD1qx_IvtAPNgLt0nnZcA",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/50514312-8304-494c-8e62-8ae0f43e3517.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "DevSecOps",
+        "Git",
+        "Application Lifecycle Management",
+        "Sales Pipeline Management",
+        "Win/Loss Analysis",
+        "Root Cause Analysis",
+        "Commercial Sales",
+        "Account Planning"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "DevSecOps",
+      "Git",
+      "Application Lifecycle Management",
+      "Sales Pipeline Management",
+      "Win/Loss Analysis",
+      "Root Cause Analysis",
+      "Commercial Sales",
+      "Account Planning"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#question_36101205002",
+        "#question_36101207002",
+        "#question_36101209002",
+        "#question_36101210002",
+        "#question_36101211002",
+        "#gender",
+        "#veteran_status",
+        "#disability_status",
+        "#question_36101206002",
+        "#question_36101208002",
+        "#hispanic_ethnicity"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
   }
 ]

@@ -1,0 +1,8 @@
+{"ts":"2026-05-28T12:44:54.610Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"claim","ok":true}
+{"ts":"2026-05-28T12:44:55.028Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"jd","ok":true}
+{"ts":"2026-05-28T12:45:08.929Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"tailor","ok":true}
+{"ts":"2026-05-28T12:45:09.734Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"pdf","ok":true}
+{"ts":"2026-05-28T12:45:10.934Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"open_tab","ok":true}
+{"ts":"2026-05-28T12:45:20.298Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"fill_form","ok":true,"data":{"report":{"filled":["firstName","lastName","email","phone","resume"],"stale":["linkedin","website"],"skipped":[],"errors":[],"consent":[]},"unknownCount":11}}
+{"ts":"2026-05-28T12:45:29.210Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"fill_ai","ok":true}
+{"ts":"2026-05-28T12:45:29.331Z","jobId":"gh_8503792002","company":"GitLab","applyUrl":"https://job-boards.greenhouse.io/gitlab/jobs/8503792002","step":"submit","ok":false,"error":"captcha_present"}
