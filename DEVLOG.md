@@ -9,6 +9,67 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-28 — Greenhouse demographics: local resolver returned profile defaults that didn't match the live options  ·  FIXED (live-verified)
+
+First Greenhouse smoke test (Discord SWE Core Product) on the live drain target. Autofill ran clean except
+three combobox fields stayed empty AND left their menus hanging open. Re-run after refresh: same two
+demographic dropdowns still empty + hanging.
+
+**Commit:** `0d6ebf6` ("greenhouse 1st smoke test").
+
+**Symptom.** Diagnostic table:
+
+| field | value sent | status |
+|---|---|---|
+| Gender | "Male" | filled |
+| Gender Identity | "Male" | ERROR |
+| LGBTQ+ membership | "Prefer not to say" | ERROR |
+| Location (City) | "Glassboro, New Jersey" | ERROR (but visually picked correctly) |
+
+**Root cause — two distinct bugs collided.**
+
+1. **`localResolveField` short-circuits on the label without checking what the actual options are.**
+   `/\bgender\b/` matches both "Gender" (options Male/Female/...) AND "Gender Identity" (options
+   Man/Woman/Non-binary/...) — same value "Male" lands on the first form's options, falls off the second's.
+   Same shape for the LGBTQ+ question: local returned the canonical `"Prefer not to say"` regardless of the
+   real option phrasing. `bestOptionMatch` in autofill returned -1 → `fillCombobox` failed → menu hung.
+
+2. **`closeCombobox` had one fallback (body click) and that wasn't enough on this build of react-select.**
+   Failed-pick paths called `closeCombobox`, the Escape+blur+body-mousedown sequence didn't fully close the
+   menu, and there was no further fallback — the open menu was the visible symptom even when the underlying
+   bug was the empty pick.
+
+3. **Bonus: `fillCombobox` verification was too strict.** Location's pick *succeeded* (user saw it click
+   "Glassboro, NJ, United States") but the chip-text formatting differed from the option-text
+   (`shown.includes(texts[idx])` exact substring) so the verify reported false ERROR. Real fill, wrong status.
+
+**Dead end avoided.** First instinct was "Greenhouse react-select must need different events" — i.e. fix the
+DOM driver. The advisor pushed back: same value "Male" passed on field 6 and failed on field 10, same field
+type and code path — the variable is the options, not the events. That collapsed the suspect set to the
+resolver/matcher chain in one step.
+
+**Fix.** Three layered, smallest-blast-radius edits:
+
+- **Gate.** In `resolveUnknownFields` (popup.js), after `localResolveField` returns non-null, if
+  `Array.isArray(field.options) && field.options.length > 0`, demand `bestOptionMatch(field.options, answer) >= 0`.
+  Otherwise demote to AI — Claude sees the option list in context and picks a real string. Async typeahead
+  comboboxes (`options.length === 0` at scan time) skip the gate so the type-then-pick path still trusts local.
+  Required loading `lib/match.js` into popup.html so the matcher is a shared global there too.
+- **Loosened verification.** Whitespace-normalized bidirectional substring in `fillCombobox` (covers
+  "Glassboro, New Jersey, United States" → "Glassboro, NJ, United States" reformat).
+- **Layered `closeCombobox`.** focus → Escape → blur+focusout, fallback to `documentElement` mousedown/mouseup,
+  final fallback to clicking the `.select__dropdown-indicator` chevron (toggles a still-open menu closed).
+
+**Verification.** User re-ran on the same Discord URL after pulling: all 15 fields filled (no ERRORs), menus
+all closed, form submitted successfully on click. 24/24 unit tests still green.
+
+**Reusable pattern.** Local-resolver-vs-options mismatch isn't Greenhouse-specific — Lever and any future ATS
+with demographic dropdowns will hit it the moment their option phrasing differs from canonical profile
+strings. The gate is the right defense everywhere; it has zero downside since `fillCombobox` would have failed
+the same -1 match anyway, this just moves the decision earlier and gives AI a second chance.
+
+---
+
 ## 2026-05-27 — Ashby autofill: location combobox, mousedown-commit, fill-time race  ·  FIXED (live-verified)
 
 The 2026-05-26 entry left Ashby with 4 required fields failing after the blur fix. Closed out across three

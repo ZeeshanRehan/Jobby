@@ -46,6 +46,14 @@ const elAfErrorsList   = document.getElementById("af-errors-list");
 
 const btnAutofill      = document.getElementById("btn-autofill");
 const btnAutofillBack  = document.getElementById("btn-autofill-back");
+const btnOpenDrain     = document.getElementById("btn-open-drain");
+
+// Opens the drain controller in a new tab. The drain page persists for the lifetime of that tab,
+// independent of this popup (which closes the moment focus leaves it).
+btnOpenDrain?.addEventListener("click", () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL("drain.html") });
+  window.close();
+});
 
 // ─── State Management ─────────────────────────────────────────────────────────
 let currentTab = null;

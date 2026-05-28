@@ -177,9 +177,18 @@ These are non-negotiable — never relax them:
 - [x] extension/autofill.js — DOM execution layer (adapter fields + unknown scan + AI fill + react-select comboboxes + async type-ahead location + consent-checkbox ticking)
 - [x] extension/autofill.js injected on-demand via executeScript (no manifest content_script entry needed)
 
-**Automation stubs (not started)**
-- [ ] automation/autofill/index.js — V3 Playwright stub
-- [ ] automation/autofill/session.js — V3 cookie management stub
+**V3 — In-progress (in-browser drain, BUILT not yet live-tested)**
+- [x] automation/sources/greenhouseBoard.js — GH board API → normalized queue records
+- [x] automation/queue/queue.js — JSON-backed atomic queue
+- [x] automation/seedQueue.js — runner (948 jobs seeded in `server/data/queue.json`)
+- [x] server/services/drainLogger.js — JSONL append + tail
+- [x] server/routes/queue.js — /next, /update, /log, /stats
+- [x] server/routes/jd.js — Greenhouse JD fetcher
+- [x] extension/drain.html — controller UI (light theme, contrast, padding)
+- [x] extension/drain.js — claim → JD → tailor → tab → fill → submit → update → jitter loop
+- [x] extension/autofill.js FILL_SUBMIT — captcha guard + submit button click
+- [ ] Live-test on first 10 fillable Greenhouse jobs (this is the next action)
+- [ ] V3 Playwright path — deferred; in-browser is the chosen architecture
 
 ### Session Anchors (read these first when picking up)
 Two complementary records — keep both current:
@@ -193,25 +202,51 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-28. **HEAD = `a2e261a` "docs: Ashby fully working".**
+**Date:** 2026-05-28 (late session). **HEAD = `0d6ebf6` "greenhouse 1st smoke test"** (autofill gate fix
+shipped + live-verified) **plus uncommitted V3 drain build (~9 new/modified files).**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
 local pull → Chrome reload. **NOTE: I (Claude Code) am on the VPS with NO Chrome — I can smoke-test the
 server pipeline (`/apply`) but the live DOM fill/submit runs in the user's local Chrome via the extension.**
 
-**STATUS: V3 has started — scaffold is on disk but UNCOMMITTED.** New untracked files:
-`automation/sources/greenhouseBoard.js` (Greenhouse board-API → normalized queue records, flags `fillable`
-for hosted `job-boards`/`boards.greenhouse.io` only), `automation/queue/queue.js` (JSON-backed atomic
-queue, dedupes vs queue + `idempotencyService.hasApplied`), `automation/seedQueue.js` (runner). Plus new
-services `applicationLogger.js` / `permanentStorage.js` / `idempotencyService.js` (these ARE committed).
-**`server/data/queue.json` is seeded: 948 jobs, all `pending` — 398 fillable / 550 not** (Stripe is 481,
-mostly off-platform). The drain loop (walk queue → fill/submit each → mark done) is NOT written.
+**STATUS: V3 in-browser drain loop is BUILT but UNTESTED.** Architecture fork resolved in favor of in-browser
+persistent page (one dedicated Chrome tab runs `extension/drain.html`, opens job tabs in background,
+fills/submits, closes them). DEVLOG has the 2026-05-28 entry on the gate fix that preceded this build.
 
-**Next up (this session's goal):** test the queued links end-to-end. (1) Smoke-test ONE fillable Greenhouse
-link through the full pipeline. (2) Integrate the queue so ~10 jobs get injected + autofilled end-to-end,
-draining one-by-one until complete. KEY GAP: `/apply` needs a `jobDescription` but queue records don't store
-it (greenhouseBoard fetches JD lazily) — the drain path needs a JD-fetch step (GH board API
-`/{token}/jobs/{id}?content=true`). Architecture fork for the drain loop (in-browser persistent page vs
-server Playwright) is unresolved — see roadmap below.
+**New / modified this session (uncommitted):**
+- `server/services/drainLogger.js` — append-only JSONL to `server/data/drain.jsonl`, with `tail(n)` for UI.
+- `server/routes/queue.js` — `GET /queue/next` (atomic claim → in_progress), `POST /queue/update`,
+  `POST /queue/log`, `GET /queue/log?n=N`, `GET /queue/stats`. All under `apiKeyAuth`.
+- `server/routes/jd.js` — `GET /jd/greenhouse/:token/:id` → `{ jobDescription, title, company, location }`,
+  strips HTML, fetches from `boards-api.greenhouse.io/v1/boards/{token}/jobs/{id}?content=true`.
+- `server/server.js` — mounts the two new routes.
+- `extension/drain.html` — light-themed controller UI: start/stop, target count (default 10), dry-run
+  toggle (default OFF), progress bar, stats cards, current-job pill, dark log tail.
+- `extension/drain.js` — the loop. Claims → JD-fetch → `/apply` (tailor) → fetch PDF → open active=false tab →
+  inject `lib/match.js` + `autofill.js` → `FILL_FORM` → AI fallback (uses the same gated `localResolveField`
+  + `bestOptionMatch` as popup) → `FILL_AI_FIELDS` → `FILL_SUBMIT` (unless dry-run) → `/queue/update` →
+  close tab → jitter 25–45s → repeat. Defensive: each step's failure logs + bumps error counter + moves on.
+- `extension/autofill.js` — new `FILL_SUBMIT` handler: captcha guard (hCaptcha / reCAPTCHA / data-sitekey
+  iframe → abort with `reason: "captcha_present"`), then finds the visible non-cancel submit button and
+  pointer-clicks it. Returns `{ submitted, reason }`.
+- `extension/popup.html` — full restyle (light theme, white cards on `#f6f7fb`, indigo accent, raised
+  contrast across every text color; user said the old dark-gray-on-near-black was unreadable). Added
+  "Open Drain Controller" button in idle state.
+- `extension/popup.js` — wires the drain button (`chrome.tabs.create({url: chrome.runtime.getURL("drain.html")})`
+  + closes popup).
+
+**Next up:** smoke-test the drain UI end-to-end on first 10 fillable Greenhouse jobs (dry-run OFF per user
+direction; toggle exists as safety latch). Watch `drain.jsonl` server-side, watch the log tail in-tab.
+Expected failure modes: PDF fetch from Supabase signed URL inside the extension origin (cookies? CORS?),
+background-tab `setTimeout` throttling stretching per-job time (likely fine for first 5min), the captcha
+guard firing on Lever jobs once we widen beyond Greenhouse.
+
+**Earlier this session — autofill gate fix (`0d6ebf6`).** Greenhouse Discord smoke test exposed
+`localResolveField` short-circuiting on the label without checking field options — fixed by gating local
+answers through `bestOptionMatch(field.options, answer)` when options exist (else demote to AI); also
+layered `closeCombobox` with documentElement + dropdown-indicator fallbacks, and loosened `fillCombobox`
+verification to whitespace-normalized bidirectional substring. Live-verified. **Full post-mortem: 2026-05-28
+DEVLOG entry — read it if you're touching the resolver or the combobox close path.** All 24 unit tests
+green throughout.
 
 **Prior session — the Ashby autofill saga (`d2cecd7` → `e0d09fd` → `93e4bf2`).** Ashby FULLY WORKING,
 live-verified — a real Ashby submit passes with every required field committed. Greenhouse live. Lever

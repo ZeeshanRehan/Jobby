@@ -810,5 +810,75 @@
       "consent": []
     },
     "errors": []
+  },
+  {
+    "applicationId": "1789e30c-aa6c-4798-8ae2-4022fc84a484",
+    "timestamp": "2026-05-28T10:39:59.598Z",
+    "jobUrl": "https://job-boards.greenhouse.io/discord/jobs/8520965002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "filled",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1789e30c-aa6c-4798-8ae2-4022fc84a484.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xNzg5ZTMwYy1hYTZjLTQ3OTgtOGFlMi00MDIyZmM4NGE0ODQucGRmIiwiaWF0IjoxNzc5OTY0Nzk5LCJleHAiOjE3Nzk5NjgzOTl9.Q6TEh91po_9TvqOYAsgT6QE_MZAXyBrtVc7VjVRgy64",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/1789e30c-aa6c-4798-8ae2-4022fc84a484.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "WebSocket",
+        "Real-time messaging",
+        "Performance optimization",
+        "Accessibility (a11y)",
+        "State management",
+        "Testing frameworks"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React Native-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "WebSocket",
+      "Real-time messaging",
+      "Performance optimization",
+      "Accessibility (a11y)",
+      "State management",
+      "Testing frameworks"
+    ],
+    "coverageReport": {
+      "filled": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "resume",
+        "#candidate-location",
+        "#question_36274439002",
+        "#question_36274440002",
+        "#question_36274441002",
+        "#question_36274442002",
+        "#question_36274444002",
+        "#\\34 033064002",
+        "#\\34 033065002",
+        "#\\34 033066002",
+        "#\\34 033067002",
+        "#\\34 033069002",
+        "#question_36274438002",
+        "#question_36274443002",
+        "#\\34 033068002",
+        "#\\34 033070002"
+      ],
+      "skipped": [],
+      "unknown": [],
+      "stale": [
+        "linkedin",
+        "website"
+      ],
+      "errors": [],
+      "consent": []
+    },
+    "errors": []
   }
 ]

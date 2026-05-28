@@ -35,7 +35,10 @@ function loadAdapter(platform) {
 // ─── POST /apply ─────────────────────────────────────────────────────────────
 
 router.post("/", async (req, res) => {
-  const { jobUrl, jobDescription, mode, force } = req.body;
+  // recordOnTailor (default true) preserves the popup's tailor-time recording — drain.js passes false
+  // because the drain only wants the URL marked applied if FILL_SUBMIT actually succeeds. Without this
+  // gate, a failed submit-click would leave the URL in applied_urls.json with no real submission behind it.
+  const { jobUrl, jobDescription, mode, force, recordOnTailor = true } = req.body;
 
   if (!jobUrl || !jobDescription) {
     return res.status(400).json({ error: "jobUrl and jobDescription are required" });
@@ -111,7 +114,7 @@ router.post("/", async (req, res) => {
   };
 
   appendApplication(applicationRecord);
-  recordApplication(jobUrl, applicationId);
+  if (recordOnTailor) recordApplication(jobUrl, applicationId);
 
   res.json({
     applicationId,

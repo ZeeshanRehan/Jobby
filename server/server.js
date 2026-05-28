@@ -16,6 +16,8 @@ const profileRoute    = require("./routes/profile");
 const adaptersRoute   = require("./routes/adapters");
 const aiFallbackRoute = require("./routes/ai-fallback");
 const applyRoute      = require("./routes/apply");
+const queueRoute      = require("./routes/queue");
+const jdRoute         = require("./routes/jd");
 const apiKeyAuth      = require("./services/apiKeyAuth");
 
 // ─── Public Endpoints ─────────────────────────────────────────────────────────
@@ -37,6 +39,8 @@ app.use("/adapters",         apiKeyAuth, adaptersRoute);
 app.use("/adapter",          apiKeyAuth, adaptersRoute);
 app.use("/ai-resolve-field", apiKeyAuth, aiFallbackRoute);
 app.use("/apply",            apiKeyAuth, applyRoute);
+app.use("/queue",            apiKeyAuth, queueRoute);
+app.use("/jd",               apiKeyAuth, jdRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

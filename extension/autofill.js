@@ -684,6 +684,48 @@ if (!window.__jobbyAutofillInjected) {
       return true;
     }
 
+    // ── FILL_SUBMIT — captcha guard + click the form's submit button ──────
+    if (message.type === "FILL_SUBMIT") {
+      (async () => {
+        // Captcha guard: if hCaptcha/reCAPTCHA is present and not solved, abort and let drain skip.
+        // Greenhouse rarely uses these; Lever sometimes does. Cheap insurance against burning the IP.
+        const captchaEl = document.querySelector(
+          'iframe[src*="hcaptcha.com"], iframe[src*="recaptcha"], .h-captcha, .g-recaptcha, [data-sitekey]'
+        );
+        if (captchaEl) {
+          sendResponse({ submitted: false, reason: "captcha_present" });
+          return;
+        }
+
+        // Greenhouse hosted forms use a single visible submit button — match by type+text.
+        // Walk visible submit-like buttons; skip cancel/back/withdraw.
+        const candidates = Array.from(document.querySelectorAll(
+          'button[type="submit"], input[type="submit"], button[data-source="submit"]'
+        ));
+        const visible = (el) => {
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0 && getComputedStyle(el).visibility !== "hidden" && !el.disabled;
+        };
+        const SKIP_RE = /(cancel|back|withdraw|save\s+draft|preview)/i;
+        const submitBtn = candidates.find((el) => visible(el) && !SKIP_RE.test(el.textContent || ""));
+
+        if (!submitBtn) {
+          sendResponse({ submitted: false, reason: "submit_button_not_found" });
+          return;
+        }
+
+        try {
+          submitBtn.scrollIntoView({ block: "center", behavior: "instant" });
+          await sleep(80);
+          pointerClick(submitBtn);
+          sendResponse({ submitted: true, reason: null });
+        } catch (err) {
+          sendResponse({ submitted: false, reason: `click_error: ${err.message}` });
+        }
+      })();
+      return true;
+    }
+
     return false;
   });
   }
