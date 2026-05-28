@@ -15194,12 +15194,12 @@
     "location": "San Mateo, CA",
     "apply_url": "https://jobs.ashbyhq.com/notable/6fe46609-bea1-4a25-be32-3a52ce232767/application",
     "fillable": true,
-    "status": "pending",
-    "attempts": 2,
+    "status": "done",
+    "attempts": 3,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:24.427Z",
-    "updated_at": "2026-05-28T16:11:10.418Z",
-    "applicationId": "ccd5cca5-a7c4-4d5d-b156-4b95ecd633d0"
+    "updated_at": "2026-05-28T16:17:54.851Z",
+    "applicationId": "00c9c5f1-deed-469a-af84-17534ae943bf"
   },
   {
     "id": "ashby_5eec7409-19b2-4fea-9cce-424122438394",
@@ -19867,11 +19867,12 @@
     "location": "Paris",
     "apply_url": "https://jobs.lever.co/mistral/7894fd8a-ffc9-4c89-87f0-f8a7b695cf01/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "submit: captcha_present",
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T16:31:11.868Z",
+    "applicationId": "75754d28-ad02-4b1e-abed-46fa8e19a646"
   },
   {
     "id": "lever_618c9763-cb22-4343-baca-cf1cf6b05f5c",

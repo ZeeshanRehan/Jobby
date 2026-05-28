@@ -1865,5 +1865,105 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "00c9c5f1-deed-469a-af84-17534ae943bf",
+    "timestamp": "2026-05-28T16:17:46.741Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/6fe46609-bea1-4a25-be32-3a52ce232767/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_00c9c5f1-deed-469a-af84-17534ae943bf.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wMGM5YzVmMS1kZWVkLTQ2OWEtYWY4NC0xNzUzNGFlOTQzYmYucGRmIiwiaWF0IjoxNzc5OTg1MDY2LCJleHAiOjE3Nzk5ODg2NjZ9.zDokpG7SjlJdaTcQOsVs0A4dCVVh67GdaE6YaotNqWY",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/00c9c5f1-deed-469a-af84-17534ae943bf.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Vue",
+        "Ruby",
+        "GCP",
+        "Kubernetes",
+        "NLP",
+        "Machine Learning",
+        "Code Review",
+        "Agile"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Vue",
+      "Ruby",
+      "GCP",
+      "Kubernetes",
+      "NLP",
+      "Machine Learning",
+      "Code Review",
+      "Agile"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "75754d28-ad02-4b1e-abed-46fa8e19a646",
+    "timestamp": "2026-05-28T16:31:03.835Z",
+    "jobUrl": "https://jobs.lever.co/mistral/7894fd8a-ffc9-4c89-87f0-f8a7b695cf01/apply",
+    "jobTitle": null,
+    "company": null,
+    "platform": "lever",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_75754d28-ad02-4b1e-abed-46fa8e19a646.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83NTc1NGQyOC1hZDAyLTRiMWUtYWJlZC00NmZhOGUxOWE2NDYucGRmIiwiaWF0IjoxNzc5OTg1ODYzLCJleHAiOjE3Nzk5ODk0NjN9.mj1IORgZhUuYu9AQYWItDdqBLpczIoXp92FIke7gkuw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/75754d28-ad02-4b1e-abed-46fa8e19a646.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Stakeholder Management",
+        "Public Sector Strategy",
+        "Government Relations",
+        "Digital Sovereignty",
+        "Procurement Compliance",
+        "Enterprise Sales",
+        "Policy Alignment",
+        "Multi-year Roadmap Planning"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, demonstrating strategic relationship and ecosystem leadership."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, aligning technical deployments with client priorities."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through strategic stakeholder alignment."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Stakeholder Management",
+      "Public Sector Strategy",
+      "Government Relations",
+      "Digital Sovereignty",
+      "Procurement Compliance",
+      "Enterprise Sales",
+      "Policy Alignment",
+      "Multi-year Roadmap Planning"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

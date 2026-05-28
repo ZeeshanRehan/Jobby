@@ -690,17 +690,23 @@ if (!window.__jobbyAutofillInjected) {
     // ── FILL_SUBMIT — captcha guard + click the form's submit button ──────
     if (message.type === "FILL_SUBMIT") {
       (async () => {
-        // Captcha guard — only abort if a challenge is VISIBLY rendered. Greenhouse loads hCaptcha's
-        // invisible-mode iframe on every page (zero-size, lazy), so a CSS-class / SDK-presence check
-        // false-positives on every job. Real challenges render an iframe with non-trivial dimensions
-        // (hcaptcha.com bframe ≈ 400×600, recaptcha bframe ≈ 300×400). Size > 80×80 covers both
-        // without matching the invisible loaders.
+        // Captcha guard — abort ONLY for a visibly-rendered challenge popup, never for invisible
+        // loaders, badge widgets, or hidden bframes. Layered checks:
+        //   - host match: hcaptcha.com / recaptcha
+        //   - bounding box ≥ 200×200 (real challenge ≈ 400×600; badge widgets ≤ 302×76; loaders 0–1px)
+        //   - CSS not hidden / display:none
+        //   - has an offsetParent (truly laid out, not detached)
+        // Lever embeds the hCaptcha SDK on every form; without these checks it false-positives.
         const challenge = (() => {
           const sels = ['iframe[src*="hcaptcha.com"]', 'iframe[src*="recaptcha"]'];
           for (const sel of sels) {
             for (const iframe of document.querySelectorAll(sel)) {
               const r = iframe.getBoundingClientRect();
-              if (r.width > 80 && r.height > 80) return iframe;
+              if (r.width < 200 || r.height < 200) continue;
+              const cs = getComputedStyle(iframe);
+              if (cs.visibility === "hidden" || cs.display === "none" || cs.opacity === "0") continue;
+              if (!iframe.offsetParent) continue;
+              return iframe;
             }
           }
           return null;
@@ -724,7 +730,7 @@ if (!window.__jobbyAutofillInjected) {
         const okBtn     = (el) => visible(el) && !SKIP_RE.test(el.textContent || "");
 
         let submitBtn = Array.from(document.querySelectorAll(
-          'button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button'
+          'button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"]'
         )).find(okBtn);
 
         if (!submitBtn) {
