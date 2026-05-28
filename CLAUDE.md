@@ -177,20 +177,23 @@ These are non-negotiable — never relax them:
 - [x] extension/autofill.js — DOM execution layer (adapter fields + unknown scan + AI fill + react-select comboboxes + async type-ahead location + consent-checkbox ticking)
 - [x] extension/autofill.js injected on-demand via executeScript (no manifest content_script entry needed)
 
-**V3 — In-progress (in-browser drain, BUILT not yet live-tested)**
+**V3 — Multi-ATS drain LIVE (Greenhouse + Ashby + Lever all submit-verified)**
 - [x] automation/sources/greenhouseBoard.js — GH board API → normalized queue records
-- [x] automation/queue/queue.js — JSON-backed atomic queue
-- [x] automation/seedQueue.js — runner (948 jobs seeded in `server/data/queue.json`)
+- [x] automation/sources/ashbyBoard.js — Ashby `posting-api/job-board/{org}` → normalized records
+- [x] automation/sources/leverBoard.js — Lever `/v0/postings/{org}?mode=json` → normalized records
+- [x] automation/queue/queue.js — JSON-backed atomic queue (ATS-agnostic record shape)
+- [x] automation/seedQueue.js — `--source greenhouse|ashby|lever` flag, default seeds all three
 - [x] server/services/drainLogger.js — JSONL append + tail
-- [x] server/routes/queue.js — /next, /update, /log, /stats
-- [x] server/routes/jd.js — Greenhouse JD fetcher
-- [x] extension/drain.html — controller UI (light theme, contrast, padding)
-- [x] extension/drain.js — claim → JD → tailor → tab → fill → submit → update → jitter loop
-- [x] extension/autofill.js FILL_SUBMIT — visible-iframe captcha guard + submit button click
-- [x] First live submit end-to-end (target=1, Greenhouse) — passed, queue marked done, applied_urls recorded
-- [x] AI Q/A persistence to drain.jsonl (audit what answers the AI gave after the tab closes)
-- [x] Multi-job batch — 17 GitLab fill_ai events in drain.jsonl, AI fired on 2 (sponsorship, demographics, accessibility — all clean), other 15 fully local-resolved
-- [ ] Ashby/Lever queue sources + drop the `?ats=greenhouse` hardcode in `claimNextJob()` — next action
+- [x] server/routes/queue.js — /next (with `?ats=greenhouse|ashby|lever|all`), /update, /log, /stats, /mark-applied
+- [x] server/routes/jd.js — per-ATS fetchers: `/jd/greenhouse/:tok/:id`, `/jd/ashby/:org/:id`, `/jd/lever/:org/:id`
+- [x] extension/drain.html — controller UI: ATS dropdown, target, dry-run, watchMode, breakdown, last-job details
+- [x] extension/drain.js — claim → JD → tailor → tab → fill → AI fallback → submit → update → jitter loop;
+      ATS-aware fetchJD dispatch; round-robin mode (TESTING flag — see code comments to remove later)
+- [x] extension/autofill.js FILL_SUBMIT — tightened captcha guard (visible iframe ≥200×200 + visibility/display/opacity/offsetParent check), submit selector chain: standard semantic → `.ashby-application-form-submit-button` → `#btn-submit`/`[data-qa="btn-submit"]` (Lever) → `button[class*="_primary_"]` (Ashby hash-rotation fallback) → text-match fallback (`^submit|apply|send|finish`)
+- [x] extension/autofill.js FILL_FORM — parallel `report.filledDetails: [{field, label, value}]` for audit (legacy `filled: [string]` preserved for popup/server consumers)
+- [x] Live-verified end-to-end on all three ATSes: Greenhouse (40 done), Ashby (Notable Staff Fullstack — submitted), Lever (Mistral AE — submitted)
+- [x] AI Q/A persistence to drain.jsonl on the drain path
+- [ ] AI Q/A persistence on the popup-autofill path (open)
 - [ ] V3 Playwright path — deferred; in-browser is the chosen architecture
 
 ### Session Anchors (read these first when picking up)
@@ -205,95 +208,66 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-28 (late session). **HEAD = `de79a92` "persist AI Q/A pairs to drain.jsonl".**
+**Date:** 2026-05-28 (multi-ATS widen session). **HEAD = `2cd2dd4` "feat: added chart for showing companies applied to".**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
 local pull → Chrome reload. **NOTE: I (Claude Code) am on the VPS with NO Chrome — I can smoke-test the
 server pipeline but the live DOM fill/submit runs in the user's local Chrome via the extension.**
 
-**STATUS: V3 in-browser drain loop LIVE-VERIFIED end-to-end.** First real submit (`target=1`) on a fillable
-Greenhouse job completed: claim → jd → tailor → pdf → open_tab → fill_form → fill_ai → submit → done.
-Architecture fork resolved in favor of in-browser persistent page (one dedicated Chrome tab runs
-`extension/drain.html`, opens job tabs in background, fills/submits, closes them). Three commits since
-the build went up:
-- `3af68fe` initial drain build (server endpoints + drain.html/drain.js + popup restyle)
-- `42ae475` captcha-guard fix (was false-positiving on Greenhouse's preloaded invisible hCaptcha iframe;
-  now requires a visibly-rendered challenge iframe >80×80 to abort — see today's DEVLOG entry)
-- `de79a92` AI Q/A persistence — `FILL_AI_FIELDS` returns the full `{label, fieldType, value, status}`
-  table; drain logs it as `data.fields` on the `fill_ai` step in `drain.jsonl` so post-hoc audits work
-  after the job tab closes. **No `jq` on the VPS — use node:**
-  `node -e "require('fs').readFileSync('server/data/drain.jsonl','utf8').trim().split('\n').map(l=>JSON.parse(l)).filter(e=>e.step==='fill_ai').forEach(e=>{console.log('\n=== '+e.company+' ===');(e.data.fields||[]).forEach(f=>console.log('  ['+f.status+'] '+f.label+' → '+f.value))})"`
+**STATUS: V3 drain works across Greenhouse + Ashby + Lever, all three submit-verified end-to-end.**
+Queue holds 1810 records: 931 GH + 292 Ashby + 568 Lever pending fillable. 42 submitted this session
+(40 GH + 1 Ashby Notable + 1 Lever Mistral). All three ATSes claim → jd → tailor → pdf → open_tab →
+fill_form → fill_ai → submit → done. Drain UI now shows a per-ATS + per-company breakdown of session
+submissions and a "Last Job — Details" panel with full per-field {label, value} audit (adapter-driven
+fields use real DOM labels via `getLabelText`, not the bare adapter keys).
 
-**New / modified this session (uncommitted):**
-- `server/services/drainLogger.js` — append-only JSONL to `server/data/drain.jsonl`, with `tail(n)` for UI.
-- `server/routes/queue.js` — `GET /queue/next` (atomic claim → in_progress), `POST /queue/update`,
-  `POST /queue/log`, `GET /queue/log?n=N`, `GET /queue/stats`. All under `apiKeyAuth`.
-- `server/routes/jd.js` — `GET /jd/greenhouse/:token/:id` → `{ jobDescription, title, company, location }`,
-  strips HTML, fetches from `boards-api.greenhouse.io/v1/boards/{token}/jobs/{id}?content=true`.
-- `server/server.js` — mounts the two new routes.
-- `extension/drain.html` — light-themed controller UI: start/stop, target count (default 10), dry-run
-  toggle (default OFF), progress bar, stats cards, current-job pill, dark log tail.
-- `extension/drain.js` — the loop. Claims → JD-fetch → `/apply` (tailor) → fetch PDF → open active=false tab →
-  inject `lib/match.js` + `autofill.js` → `FILL_FORM` → AI fallback (uses the same gated `localResolveField`
-  + `bestOptionMatch` as popup) → `FILL_AI_FIELDS` → `FILL_SUBMIT` (unless dry-run) → `/queue/update` →
-  close tab → jitter 25–45s → repeat. Defensive: each step's failure logs + bumps error counter + moves on.
-- `extension/autofill.js` — new `FILL_SUBMIT` handler: captcha guard (hCaptcha / reCAPTCHA / data-sitekey
-  iframe → abort with `reason: "captcha_present"`), then finds the visible non-cancel submit button and
-  pointer-clicks it. Returns `{ submitted, reason }`.
-- `extension/popup.html` — full restyle (light theme, white cards on `#f6f7fb`, indigo accent, raised
-  contrast across every text color; user said the old dark-gray-on-near-black was unreadable). Added
-  "Open Drain Controller" button in idle state.
-- `extension/popup.js` — wires the drain button (`chrome.tabs.create({url: chrome.runtime.getURL("drain.html")})`
-  + closes popup).
-- **This session (post-`de79a92`, uncommitted):** `extension/drain.html` + `extension/drain.js` —
-  "Show job tabs" checkbox (id=`watchMode`); when on, `chrome.tabs.create({active: state.watchMode})` so
-  each new job tab steals focus and the user can watch the fill live. Default off (backgrounded). When
-  the job tab closes after submit, focus falls back to the drain tab (it's the opener).
+**Commits this session (post-`de79a92`):**
+- `a801f29` add Ashby + Lever board sources, seedQueue `--source` flag, ats-aware drain claim/JD dispatch, ATS picker dropdown in drain.html
+- `5d9a637` + `8a41575` Ashby/Lever submit selectors + tighter captcha guard (was false-positiving on Lever's hCaptcha SDK iframe; now requires ≥200×200 + visible/displayed/non-zero-opacity/offsetParent — full post-mortem 2026-05-28 captcha-guard-v2 DEVLOG entry)
+- `daa2e05` + `8e7ca83` adapter-fields rich audit shape (`report.filledDetails: [{field, label, value}]`) + drain "Last Job" details panel
+- `2cd2dd4` session breakdown chart (per-ATS + per-company tallies on every successful submit) + round-robin ATS mode (TESTING flag, comments in code mark it removable later)
 
-**Next up:** (1) Commit + push the `watchMode` toggle. (2) Run a 5–10-job batch with watchMode ON to
-eyeball the fill on real forms — confirms the toggle works, no captcha-guard false-positives, and lets us
-spot any other staleness beyond the known GitLab `linkedin`/`website` selectors (those are optional, non-
-blocking). (3) Widen beyond Greenhouse: add `automation/sources/ashbyBoard.js` + `leverBoard.js` (their
-public board APIs), seed the queue, AND remove the `?ats=greenhouse` hardcode in `claimNextJob()`
-(`extension/drain.js:131`) — likely rotate or drop the filter. Lever still has hCaptcha-on-submit risk;
-the visible-only guard should correctly abort on a real challenge. (4) Then optional: add AI-Q/A
-persistence to the popup autofill flow; flip drain.html `target` default to something reasonable.
+**Submit selector chain (autofill.js FILL_SUBMIT — current order):**
+1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"]`
+2. `button[class*="_primary_"]` (Ashby CSS-module hash-rotation fallback)
+3. Text fallback — any visible button with text matching `/^(submit|apply|send|finish)\b/i`
+All stages exclude cancel/back/withdraw/save-draft/preview by text and require `visible(el) && !disabled`.
 
-**Earlier this session — autofill gate fix (`0d6ebf6`).** Greenhouse Discord smoke test exposed
-`localResolveField` short-circuiting on the label without checking field options — fixed by gating local
-answers through `bestOptionMatch(field.options, answer)` when options exist (else demote to AI); also
-layered `closeCombobox` with documentElement + dropdown-indicator fallbacks, and loosened `fillCombobox`
-verification to whitespace-normalized bidirectional substring. Live-verified. **Full post-mortem: 2026-05-28
-DEVLOG entry — read it if you're touching the resolver or the combobox close path.** All 24 unit tests
-green throughout.
+**Open bug — AI URL fabrication (HOT, partly mitigated, root not fixed):** the Lever Mistral submit went
+through with Google Scholar URL = `https://scholar.google.com/citations?user=zeshan-rehan` — a plausibly-shaped
+but completely invented URL. Profile has no scholar field. Same risk applies to any URL-shaped field the
+user lacks: Behance, Dribbble, ORCID, personal-site variants, etc. Root fix: harden `server/routes/ai-fallback.js`
+prompt to forbid URL fabrication and return empty string when no profile data matches. Defensive client-side
+filter (drop URL-shaped answers whose host isn't in `profileData.contact.*`) is a viable second layer.
+**This is the highest-priority bug heading into the next session — it ships bad data on every run.**
 
-**Prior session — the Ashby autofill saga (`d2cecd7` → `e0d09fd` → `93e4bf2`).** Ashby FULLY WORKING,
-live-verified — a real Ashby submit passes with every required field committed. Greenhouse live. Lever
-partial (hCaptcha on submit). Full post-mortem in
-DEVLOG (2026-05-27 entry). Three layered fixes, each surfaced by its own live run:
-1. **Location combobox** (`d2cecd7`) — it's an ARIA-listbox combobox (`role=combobox`, opens on type, portaled
-   `role=listbox #:r0:` with `role=option` rows), NOT react-select. Adapter location `type: "text"` →
-   `"combobox"`, routed through `fillCombobox` (generalized: open-on-type; verify via `input.value` since
-   there's no react-select chip). Split `fillText` → `setNativeValue` (no blur) so the typeahead doesn't
-   blur-close its own menu before options mount.
-2. **Commit on mousedown** (`e0d09fd`) — bare `.click()` updated Ashby's visual layer but never tripped its
-   commit (fires on mousedown). `pointerClick` = mousedown→mouseup→click. Radio clicks the INPUT (mousedown
-   bubbles input→container→option row to the handler; click still natively checks it); yesno/checkboxgroup
-   click their control. NOT an isTrusted gate — synthetic events DO commit here.
-3. **Fill-time race** (`93e4bf2`) — rapid synthetic events across the fill loop didn't all commit to React
-   state; a SHIFTING ~3-field subset read filled but was empty at submit (proof: number "0" passed one run,
-   failed the next, identical code+value). Fix: `await sleep(16)` (one frame) after each field in
-   FILL_AI_FIELDS + FILL_FORM (in `finally`, covers every branch), plus a single verify+refill pass for
-   text-like fields that read empty post-fill. Escalation if it recurs on non-text fields: the React-fiber
-   path (see Background below).
+**Round-robin status:** code shipped (`2cd2dd4`) and traces correctly (rrIndex 0→1→2→0 cycles
+greenhouse→ashby→lever, falls through on empty bucket). **Not yet live-verified** — user's 12-job run
+that triggered the "didn't rotate" question was on the `all` filter, not `round_robin` (verified via
+drain.jsonl: 20 consecutive `gh_*` job IDs). `?ats=all` uses queue file order via `findIndex`, and the
+queue holds all 948 GH records before any Ashby/Lever — so `all` is GH-heavy until those exhaust.
+Round-robin needs an explicit dropdown selection. To live-verify next session: pick "Round-robin (test)",
+target=6, expect 2 of each ATS.
 
-**Dead ends — don't repeat (full detail in DEVLOG):** the yesno hidden-`<input type=checkbox>` probe was a RED
-HERRING — that checkbox is Ashby's visual/internal state, not its validation source (read byte-identical across
-a passing AND a failing run); removed it. Label-click on radios missed the commit (mousedown didn't reach the
-handler) — click the input. The prior blur fix (`c9fbc12`) was necessary but not sufficient.
+**Next up (in priority order):**
+1. **Harden `ai-fallback.js` prompt** to forbid URL fabrication for fields the profile has no data for — root fix for the Google Scholar hallucination above
+2. Live-verify round-robin mode (target=6, expect 2 of each ATS in the breakdown card)
+3. Add AI Q/A persistence to the popup-autofill flow (drain has it, popup still doesn't)
+4. Widen seed company list (currently 4 Ashby + 3 Lever orgs)
+5. V4 dashboard — apps table, search, status, resume links
+6. (Deferred indefinitely) Strip the round-robin code path once scraper diversity makes forced rotation moot — comments in `extension/drain.js` mark every line to remove
 
-**Roadmap after Ashby (unchanged priority):** V3 job queue + Greenhouse Job Board API → autonomous in-browser
-drain loop (MV3 SW dies ~30s, needs a persistent page) → flip dry-run off (hCaptcha on Lever is the known
-risk) → V4 dashboard. Workday is a separate project, not soon.
+**Useful one-liners (no `jq` on VPS — node only):**
+```
+# All AI Q/A from drain.jsonl
+node -e "require('fs').readFileSync('server/data/drain.jsonl','utf8').trim().split('\n').map(l=>JSON.parse(l)).filter(e=>e.step==='fill_ai').forEach(e=>{console.log('\n=== '+e.company+' ===');(e.data.fields||[]).forEach(f=>console.log('  ['+f.status+'] '+f.label+' → '+f.value))})"
+
+# Queue distribution by ATS / status
+node -e "const q=require('./automation/queue/queue').readQueue();const by={};q.forEach(r=>{const k=r.ats+'/'+r.status;by[k]=(by[k]||0)+1});console.log(by)"
+```
+
+**Older session pointers (still load-bearing if you're touching those areas):**
+- `0d6ebf6` autofill gate fix — local resolver now gated through `bestOptionMatch(field.options, answer)` when options exist, demoted to AI otherwise. `closeCombobox` layered with documentElement + dropdown-indicator fallbacks; `fillCombobox` verify uses whitespace-normalized bidirectional substring. Full post-mortem: 2026-05-28 DEVLOG entry.
+- Ashby autofill saga (`d2cecd7` → `e0d09fd` → `93e4bf2`) — location combobox path, mousedown commit, fill-time race. Full post-mortem: 2026-05-27 DEVLOG entry.
 
 **Local harness** (`.harness/`, untracked) validates react-select DOM mechanics only — it greenlit two passes
 that died on the real form. **For DOM behavior, the real-form test is the only source of truth.** `npm test`

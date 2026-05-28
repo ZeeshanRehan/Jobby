@@ -9,6 +9,159 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-28 — FILL_FORM race with SPA mount: empty scan when tab "complete" fires before React mounts  ·  FIXED (unverified live)
+
+Three Ashby Notable jobs in a row submitted clean. The fourth — "Customer Success Lead" — errored at
+the submit step (`submit_button_not_found`). Same form shape, same selectors that worked seconds
+earlier. The user flagged it as inconsistent and asked for the log.
+
+**Symptom in drain.jsonl.** Pipeline trace for the failed job:
+- `open_tab` → `fill_form` gap: **0ms** (same millisecond)
+- `fill_form` duration: **131ms** total, returned `0 filled + 0 errors + 0 unknowns`
+- `fill_ai`: ran on the empty unknown list, fine
+- `submit`: `submit_button_not_found`
+
+For comparison the next Ashby Notable job that succeeded showed open_tab→fill_form gap of 1635ms,
+fill_form duration ~18s, 4 filled + 15 unknowns.
+
+**Root cause.** Chrome's `chrome.tabs.onUpdated → status: "complete"` event fires when the initial
+HTML document has finished loading, NOT when the SPA's React tree has mounted. For
+server-rendered forms (some Greenhouse pages) this is fine. For SPA forms (Ashby + Lever
+frontends) the React tree mounts after `complete` — usually 1-2s later.
+
+Most of the time the script-injection RTT + `executeScript` + first message round-trip absorbs
+that 1-2s before FILL_FORM's scan runs. But a tab that loads from cache or completes in <100ms
+can race the mount. When that happens: scanner sees an empty document → 0 fields found → submit
+button also not in the DOM → `submit_button_not_found` downstream.
+
+**Fix.** Adaptive single-retry in `extension/drain.js` step 5. If the first FILL_FORM returns
+`0 filled + 0 errors + 0 unknowns` — an unambiguous "form not in DOM yet" signature — wait
+1500ms and re-send the same FILL_FORM message. The autofill content script is already injected,
+so it's a cheap re-scan. Logged as a separate `fill_form_retry` step in drain.jsonl so the rate
+is observable. No fixed delay penalty on the happy path.
+
+**Why not a flat sleep before FILL_FORM.** It costs ~2s per job (most don't need it). The
+0/0/0 signature is unambiguous (a populated form will always have *some* fields detected or
+*some* adapter selectors firing), so the retry only triggers on actual races.
+
+**Why not adapter-anchor polling.** Most robust option, but requires per-adapter
+configuration of an anchor selector (`input[name="_systemfield_email"]` for Ashby,
+`input[name="email"]` for Lever, etc.) and a poll loop. The retry covers the same cases with
+zero adapter-side change and is straightforward to upgrade later if 0/0/0 starts firing
+on real empty forms.
+
+**Verification status.** **UNVERIFIED LIVE.** Code shipped, syntax-checked, traces correctly,
+but the race window is small and not deterministically reproducible from the VPS. Next batch
+will surface `fill_form_retry` events in drain.jsonl if the race fires — that's the
+confirmation. If retries happen and the subsequent fill_form scan still returns 0/0/0, the
+race is wider than 1.5s and the wait needs lengthening or escalating to adapter-anchor
+polling.
+
+---
+
+## 2026-05-28 — AI fabricates plausible URLs for missing-profile fields  ·  OPEN
+
+First live Lever submit (Mistral AE) went through with `Google Scholar URL → https://scholar.google.com/citations?user=zeshan-rehan` populated by the AI-fallback. The user has no Google Scholar account and the profile has no scholar field. AI invented a plausibly-shaped URL rather than returning an empty string.
+
+**Why it happened.** `server/routes/ai-fallback.js` prompts Claude Haiku with the field label + profile JSON + JD context and asks for an answer. There's no instruction forbidding URL fabrication. The model defaults to producing something — and for URL fields with no exact profile match, the plausible-shape failure mode is exactly what URL hallucination looks like. Drain's adapter path can't catch this either: the field is not in any adapter and the unknown-field scanner correctly surfaces it as needing AI help — but "the AI guessed" is not distinguishable from "the AI found the right value" downstream.
+
+**Blast radius.** Every URL-typed unknown field with no profile match: Behance, Dribbble, ORCID, personal blog URL, Medium, Stack Overflow, alt portfolio fields. Each one ships bad data to a real application. Already-shipped applications have at minimum one bogus URL — that data is now on Mistral's record.
+
+**Planned fix (not yet implemented).** Two complementary layers:
+1. **Prompt-level (root):** add an explicit rule in `ai-fallback.js` system prompt — "If the field asks for a URL/link/profile/handle and the user's profile contains no matching value, return an empty string. Never invent, guess, or compose a URL from the user's name."
+2. **Client-side defense:** in `extension/drain.js` `resolveAndFillUnknowns`, drop any AI answer that LOOKS like a URL but whose host is not present in `profileData.contact.*`. Cheap belt-and-braces; survives prompt drift.
+
+**Why this is top of next session's queue.** It's the only known bug actively shipping garbage to real applications. The autofill pipeline otherwise works end-to-end across all three ATSes.
+
+**Dead end already avoided.** Did NOT chase "add Google Scholar to defaultAnswers" — that fixes one field, doesn't address the class. Hardening the prompt is the right level.
+
+---
+
+## 2026-05-28 — Multi-ATS widen: Ashby + Lever sources, dispatch, submit, audit  ·  FIXED (live-verified)
+
+Drain was Greenhouse-only at session start. Goal: claim/fill/submit Ashby and Lever jobs through the
+same loop, with a UI control to scope by ATS or rotate across all three for testing. Three live
+submits proved each ATS works (40 GH continuing + 1 Ashby Notable + 1 Lever Mistral). Surfaced two
+follow-on bugs that got their own fixes in the same session — `submit_button_not_found` and a
+hCaptcha false-positive on Lever — see the two entries that follow.
+
+**Commits:** `a801f29` (sources + dispatch + seed flag) → `5d9a637`/`8a41575` (submit + captcha fixes
+covered separately below) → `daa2e05`/`8e7ca83` (richer logging shape) → `2cd2dd4` (breakdown chart +
+round-robin mode).
+
+**What shipped.**
+- `automation/sources/ashbyBoard.js` — fetches `https://api.ashbyhq.com/posting-api/job-board/{org}?includeCompensation=false`, normalizes to the shared queue record shape with `ats: "ashby"`, `id: "ashby_${jobId}"`, `apply_url` = `job.applyUrl` (or fallback to `${jobUrl}/application`). Filters out `isListed: false` (Ashby exposes drafts via the same endpoint). `fillable` = host is `jobs.ashbyhq.com`.
+- `automation/sources/leverBoard.js` — fetches `https://api.lever.co/v0/postings/{org}?mode=json`, normalizes with `ats: "lever"`, `id: "lever_${id}"`, `apply_url` = `job.applyUrl` (or `${hostedUrl}/apply`). `fillable` = host is `jobs.lever.co`.
+- `automation/seedQueue.js` — gained a `--source greenhouse|ashby|lever` flag with per-source default token lists (`DEFAULTS`). Default = all three. Tokens override after `--source`.
+- `server/routes/jd.js` — added `/jd/ashby/:org/:id` (re-lists the org and `find(j.id === id)` since Ashby's single-job endpoint requires auth) and `/jd/lever/:org/:id` (direct fetch with `descriptionPlain`).
+- `server/routes/queue.js` — `/next` lost its hardcoded `ats=greenhouse` default. Now accepts `?ats=greenhouse|ashby|lever|all`. Omitted or `all` = no filter (claim first pending fillable across all sources, FIFO file order).
+- `extension/drain.js` — `claimNextJob()` passes the selected ATS through (`?ats=${state.ats}`). `fetchJD(job)` dispatches per `job.ats` against an `ID_PREFIX` map (`gh_`, `ashby_`, `lever_`). Added round-robin mode: when `state.ats === "round_robin"`, rotates through `["greenhouse", "ashby", "lever"]` via `state.rrIndex`, falls through to the next bucket if the current one has nothing pending. **Round-robin code is marked `TESTING ONLY` in three places (state field, order constant, claim branch) so it can be ripped cleanly once scraper diversity makes forced rotation pointless.**
+- `extension/drain.html` — ATS dropdown (All / Round-robin (test) / Greenhouse / Ashby / Lever), header pill reflects selection. New "By ATS" + "By Company" breakdown card under the session stats — fills as `tallyApplied(job)` runs on each successful submit, sorts desc by count.
+
+**Verification.** Seeded: 293 Ashby fetched, 292 added (one dup-applied), 570 Lever fetched and added. Smoke-tested both JD endpoints via curl — returned title/company/location/JD as expected. Live drain runs:
+- Ashby Notable Staff Fullstack — full pipeline green, **but failed at submit with `reason: "submit_button_not_found"` on first run**. Selectors widened (see next entry) → second run submitted successfully.
+- Lever Mistral AE — full pipeline green, **first run hit `captcha_present` on submit despite no visible challenge**. Guard tightened (see entry after next) → second run submitted (with the URL hallucination bug noted in the entry above).
+- Greenhouse drained 12 more in a single batch with the new UI; everything green.
+
+**Round-robin live-verification deferred.** User ran the 12-job batch with `ats=all`, not `round_robin`. All 12 were Greenhouse — which is the expected behavior of `all` given queue file order (948 GH records before any Ashby/Lever). Round-robin code traces correctly (rrIndex 0→1→2→0 = greenhouse→ashby→lever); needs explicit dropdown selection to verify.
+
+---
+
+## 2026-05-28 — `submit_button_not_found` on Ashby + Lever (`type=button` instead of `type=submit`)  ·  FIXED (live-verified)
+
+After the multi-ATS widen above, first real Ashby submit (Notable) hit `submit_button_not_found`. Lever
+ran into the same selector gap on a different button shape.
+
+**Commit:** `5d9a637` (Ashby selector) → `8a41575` (Lever selector + text fallback consolidation).
+
+**Root cause.** The submit guard was looking for semantic submits only:
+```
+button[type="submit"], input[type="submit"], button[data-source="submit"]
+```
+Neither Ashby nor Lever ships a `type="submit"` button on its hosted forms. Ashby's button is a CSS-modules `<button class="_button_… _primary_… _submitButton_… ashby-application-form-submit-button"><span>Submit Application</span>…</button>` — `type` defaults to `"submit"` only when omitted on a `<form>`-nested button, but on these SPA forms the click handler is JS-attached and the button is `type="button"`. Lever's is `<button id="btn-submit" type="button" class="postings-btn template-btn-submit golden-poppy" data-qa="btn-submit">Submit application</button>` — explicit `type="button"`.
+
+**Fix.** Layered selector chain in `extension/autofill.js` `FILL_SUBMIT`, cheapest/most-precise first:
+1. Standard semantic submits + Ashby stable class + Lever stable selectors:
+   `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"]`
+2. Ashby CSS-modules fallback for hash-rotation: `button[class*="_primary_"]`
+3. Text fallback: any visible button whose `textContent.trim()` matches `/^(submit|apply|send|finish)\b/i`, excluded by the same cancel/back/withdraw/save-draft/preview regex as the earlier stages
+
+**Why the layered chain rather than just the text fallback.** The text fallback alone is robust but ambiguous — a Lever form with both "Submit application" and "Apply with LinkedIn" can collide. Stable IDs/classes win first, hash-rotating classes second, text last so a build that loses every stable hook still recovers.
+
+**Verification.** Live submits on Ashby Notable + Lever Mistral both pass with the chain in place.
+The user supplied the actual button outerHTML for both ATSes — selectors were chosen against that
+HTML, not inferred. **Lesson:** for unfamiliar submit-button shapes, ask for the outerHTML before
+writing the selector — it costs nothing and removes a guessing step.
+
+---
+
+## 2026-05-28 — Captcha guard v2: false-positive on Lever's hCaptcha SDK iframe (size check insufficient)  ·  FIXED (live-verified)
+
+Captcha guard v1 (2026-05-28 first entry below) fixed the Greenhouse invisible-mode iframe false-positive
+by requiring iframe dimensions ≥ 80×80. That cleared Greenhouse but broke on Lever — `captcha_present`
+fired with no visible challenge on the page.
+
+**Commit:** `8a41575`.
+
+**Root cause.** Lever embeds the hCaptcha SDK on every form. The SDK loads an iframe matching
+`iframe[src*="hcaptcha.com"]` whose bounding box is in the SDK's lazy-mode "ready" state — large
+enough to clear the 80×80 threshold but NOT a real challenge (which only renders on suspicious
+traffic). The frame is also CSS-hidden / detached from layout / zero-opacity in this state; the
+v1 guard only looked at `getBoundingClientRect()`.
+
+**Fix.** Layered visibility checks in addition to the size bump:
+- Size threshold raised to `≥ 200 × 200` (real challenge ≈ 400×600 hCaptcha bframe, ≈ 300×400 reCAPTCHA bframe; badge widgets are ≤ 302×76; loaders are 0–1px)
+- `getComputedStyle(iframe).visibility !== "hidden"`
+- `getComputedStyle(iframe).display !== "none"`
+- `getComputedStyle(iframe).opacity !== "0"`
+- `iframe.offsetParent !== null` — catches detached / display-none-via-ancestor cases
+
+Only an iframe that survives ALL of these counts as a real challenge requiring user interaction.
+
+**Verification.** Live Lever Mistral submit passes; same Greenhouse jobs that worked under v1 still pass under v2 (no regression). The pre-click-only limitation from v1 still applies (a delayed post-click challenge would let the drain report `submitted: true` while the form sits on a challenge page); deferred until it bites.
+
+---
+
 ## 2026-05-28 — Drain captcha guard: false-positive on Greenhouse's preloaded invisible hCaptcha  ·  FIXED (live-verified)
 
 First V3 drain run aborted at the submit step with `reason: "captcha_present"` on a fillable Greenhouse

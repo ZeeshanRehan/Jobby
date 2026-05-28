@@ -531,14 +531,32 @@ async function processJob(job) {
   try {
     setCurrent(job, "filling form");
     await injectAutofill(tabId);
-    const resp = await sendMessage(tabId, {
+    const sendFill = () => sendMessage(tabId, {
       type: "FILL_FORM",
       adapter: applyData.adapter,
       profileData: applyData.profileData,
       resumePdf,
     }, AUTOFILL_TIMEOUT_MS);
+
+    let resp = await sendFill();
     report = resp?.report || { filled: [], errors: [] };
     unknownFields = resp?.unknownFields || [];
+
+    // SPA mount race — Chrome's tab "complete" fires when the HTML loads, not when React
+    // mounts. A fast tab can return 0 filled + 0 errors + 0 unknowns because the form
+    // wasn't in the DOM when the scanner ran. Retry once after a 1.5s wait — adaptive,
+    // no penalty on the happy path. (Ashby "Customer Success Lead" failure, 2026-05-28.)
+    const emptyScan = report.filled.length === 0
+                   && (report.errors?.length || 0) === 0
+                   && unknownFields.length === 0;
+    if (emptyScan) {
+      await logStep(job, "fill_form_retry", true, "empty scan — waiting 1500ms for SPA mount");
+      await new Promise((r) => setTimeout(r, 1500));
+      resp = await sendFill();
+      report = resp?.report || { filled: [], errors: [] };
+      unknownFields = resp?.unknownFields || [];
+    }
+
     setDetailsForm(report, unknownFields.length);
     await logStep(job, "fill_form", true,
       `filled=${report.filled.length} errors=${report.errors.length} unknowns=${unknownFields.length}`,

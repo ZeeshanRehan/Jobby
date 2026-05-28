@@ -502,11 +502,12 @@
     "location": "Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8537793002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:49:53.901Z",
+    "applicationId": "57c95bb4-620c-4f71-8257-10e4435b6a32"
   },
   {
     "id": "gh_8510488002",
@@ -518,11 +519,12 @@
     "location": "Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8510488002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:50:49.468Z",
+    "applicationId": "8535c1c7-bdc7-4c71-b067-db59d2038660"
   },
   {
     "id": "gh_8195921002",
@@ -534,11 +536,12 @@
     "location": "Remote, Canada; Remote, Israel; Remote, United Kingdom; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8195921002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:52:01.481Z",
+    "applicationId": "b2583895-381b-4a4c-bd75-89482d871cfc"
   },
   {
     "id": "gh_8537864002",
@@ -550,11 +553,12 @@
     "location": "Remote, Canada; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8537864002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:53:12.508Z",
+    "applicationId": "8fc1f2d8-21df-4949-8a2a-495bbc1ca078"
   },
   {
     "id": "gh_8500092002",
@@ -566,11 +570,12 @@
     "location": "Remote, Canada; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8500092002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:54:18.960Z",
+    "applicationId": "cfb121df-c0d4-42d2-a94e-4271cd168807"
   },
   {
     "id": "gh_8512133002",
@@ -582,11 +587,12 @@
     "location": "Remote, France",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8512133002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:55:24.526Z",
+    "applicationId": "43e0f481-f80b-4993-b7fb-0a47f239a137"
   },
   {
     "id": "gh_8326610002",
@@ -598,11 +604,12 @@
     "location": "Remote, Italy",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8326610002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:56:39.618Z",
+    "applicationId": "cb6adce4-6f89-41de-af72-02a348c4a214"
   },
   {
     "id": "gh_8537853002",
@@ -614,11 +621,12 @@
     "location": "Remote, Canada; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8537853002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:57:45.213Z",
+    "applicationId": "cbe141de-a564-4e19-971b-696a1a9a5551"
   },
   {
     "id": "gh_8418604002",
@@ -630,11 +638,12 @@
     "location": "Remote, Germany",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8418604002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:58:51.539Z",
+    "applicationId": "9d019114-4132-41ae-af6e-52fb74d312df"
   },
   {
     "id": "gh_8494601002",
@@ -646,11 +655,12 @@
     "location": "Remote, Singapore",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8494601002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T18:59:59.787Z",
+    "applicationId": "2fc67780-eca2-4e19-8ad3-f1262694adef"
   },
   {
     "id": "gh_8505529002",
@@ -662,11 +672,12 @@
     "location": "Remote, United Kingdom",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8505529002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T19:01:06.095Z",
+    "applicationId": "cba4c9f6-e87d-4775-8ec2-d5ffc8dced3f"
   },
   {
     "id": "gh_8467462002",
@@ -678,11 +689,12 @@
     "location": "Remote",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8467462002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-28T19:02:18.461Z",
+    "applicationId": "406961bc-8a55-4052-b72b-affe93c39260"
   },
   {
     "id": "gh_8482744002",
@@ -694,11 +706,12 @@
     "location": "Remote, India",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8482744002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-28T19:15:09.729Z",
+    "applicationId": "16eb33ee-53f3-4d47-9d1a-0c35d07e2215"
   },
   {
     "id": "gh_8489179002",
@@ -710,11 +723,12 @@
     "location": "Remote, India",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8489179002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-28T19:18:19.031Z",
+    "applicationId": "2f5cd402-3a0d-4f4e-bf5c-86d2d33e5f9e"
   },
   {
     "id": "gh_8337454002",
@@ -726,11 +740,12 @@
     "location": "Remote, Canada; Remote, Ireland; Remote, Israel; Remote, Netherlands; Remote, United Kingdom; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8337454002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-28T19:21:52.796Z",
+    "applicationId": "b72abd3b-b239-4264-a896-4f05c225750c"
   },
   {
     "id": "gh_8463917002",
@@ -742,11 +757,12 @@
     "location": "Remote, India",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8463917002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-28T19:24:58.509Z",
+    "applicationId": "15603752-49af-4df6-be4b-912670c9b6db"
   },
   {
     "id": "gh_8339221002",
@@ -15224,10 +15240,11 @@
     "apply_url": "https://jobs.ashbyhq.com/notable/5eec7409-19b2-4fea-9cce-424122438394/application",
     "fillable": true,
     "status": "pending",
-    "attempts": 1,
+    "attempts": 2,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:24.427Z",
-    "updated_at": "2026-05-28T15:58:22.646Z"
+    "updated_at": "2026-05-28T19:37:27.978Z",
+    "applicationId": "607f7fe7-6d41-40b6-b7f1-42ec86a92b98"
   },
   {
     "id": "ashby_eb1d08a0-0e38-4140-a6e3-f0638e66b45c",
@@ -15239,11 +15256,12 @@
     "location": "San Mateo, CA",
     "apply_url": "https://jobs.ashbyhq.com/notable/eb1d08a0-0e38-4140-a6e3-f0638e66b45c/application",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:24.427Z",
-    "updated_at": "2026-05-28T15:55:24.427Z"
+    "updated_at": "2026-05-28T19:19:43.507Z",
+    "applicationId": "fc63230a-8bd5-456d-a345-1d2ce3df65f5"
   },
   {
     "id": "ashby_983a9f2c-d317-4c17-92e5-caac02978097",
@@ -15255,11 +15273,12 @@
     "location": "San Mateo, CA",
     "apply_url": "https://jobs.ashbyhq.com/notable/983a9f2c-d317-4c17-92e5-caac02978097/application",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:24.427Z",
-    "updated_at": "2026-05-28T15:55:24.427Z"
+    "updated_at": "2026-05-28T19:22:52.109Z",
+    "applicationId": "c3f08482-39db-438a-9172-7307da8dc8f3"
   },
   {
     "id": "ashby_13c10a39-9042-4aec-961e-253ada5e4aa5",
@@ -15271,11 +15290,12 @@
     "location": "San Mateo, CA",
     "apply_url": "https://jobs.ashbyhq.com/notable/13c10a39-9042-4aec-961e-253ada5e4aa5/application",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:24.427Z",
-    "updated_at": "2026-05-28T15:55:24.427Z"
+    "updated_at": "2026-05-28T19:26:05.734Z",
+    "applicationId": "576e288b-ab1e-4ca5-a99c-a48fd2344ced"
   },
   {
     "id": "ashby_2829d8d7-a58d-478a-bdec-99c93da7e8f6",
@@ -19913,11 +19933,12 @@
     "location": "New York, NY",
     "apply_url": "https://jobs.lever.co/mistral/ed08b81f-9c52-4f86-addd-c4c06f3b114a/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T19:16:57.391Z",
+    "applicationId": "de980b36-de47-4de2-a398-c7df0bd4fd3a"
   },
   {
     "id": "lever_25757afe-9b9d-4be7-87e1-e744eaa01105",
@@ -19929,11 +19950,12 @@
     "location": "Palo Alto",
     "apply_url": "https://jobs.lever.co/mistral/25757afe-9b9d-4be7-87e1-e744eaa01105/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T19:20:36.460Z",
+    "applicationId": "8857034d-caa0-4b1f-a2df-a4f65bc13bb3"
   },
   {
     "id": "lever_5fb6179e-74ae-46c8-9cde-95b71890e76a",
@@ -19945,11 +19967,12 @@
     "location": "Munich",
     "apply_url": "https://jobs.lever.co/mistral/5fb6179e-74ae-46c8-9cde-95b71890e76a/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T19:23:56.812Z",
+    "applicationId": "d7c18926-98d1-427e-b1a8-973b730788ca"
   },
   {
     "id": "lever_46bf0c1c-cca2-4941-bd8d-18024fa59afa",
@@ -19961,11 +19984,12 @@
     "location": "Paris",
     "apply_url": "https://jobs.lever.co/mistral/46bf0c1c-cca2-4941-bd8d-18024fa59afa/apply",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-28T15:55:28.736Z",
-    "updated_at": "2026-05-28T15:55:28.736Z"
+    "updated_at": "2026-05-28T19:27:05.906Z",
+    "applicationId": "1b5a1f8b-d67d-49e8-87bc-99d849d0d55b"
   },
   {
     "id": "lever_04a3a058-aff8-4cc4-a419-eb09e83fa947",
