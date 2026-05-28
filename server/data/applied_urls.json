@@ -86,5 +86,53 @@
   "https://jobs.lever.co/mistral/618c9763-cb22-4343-baca-cf1cf6b05f5c/apply": {
     "timestamp": "2026-05-28T17:11:04.624Z",
     "applicationId": "a1cb5e0b-c0fa-4883-9d88-8532439e703f"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8543383002": {
+    "timestamp": "2026-05-28T17:37:31.406Z",
+    "applicationId": "99a69b51-c6fd-46c9-92a0-2cc374638fbb"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8532381002": {
+    "timestamp": "2026-05-28T17:38:47.416Z",
+    "applicationId": "9f5a806c-dffd-47c7-85ef-bf51077dd5d3"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8536477002": {
+    "timestamp": "2026-05-28T17:39:54.500Z",
+    "applicationId": "6fe17e47-4767-480f-8c80-a0178c326602"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8498481002": {
+    "timestamp": "2026-05-28T17:41:04.564Z",
+    "applicationId": "92e06483-5374-4579-a167-9e0ed79d8fc8"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8476852002": {
+    "timestamp": "2026-05-28T17:42:25.727Z",
+    "applicationId": "fc47d8e5-1449-4a9e-acbc-daed40c0f3a5"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8497728002": {
+    "timestamp": "2026-05-28T17:43:29.874Z",
+    "applicationId": "bf24683a-a66e-479f-a4be-c25b67a31bd4"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8550268002": {
+    "timestamp": "2026-05-28T17:44:41.127Z",
+    "applicationId": "45be54dd-8162-4c4d-af8c-2e358ae3bbd8"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8512758002": {
+    "timestamp": "2026-05-28T17:45:43.152Z",
+    "applicationId": "3f5195ab-68b4-48cf-b7a8-d8ff8d0f4e78"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8548980002": {
+    "timestamp": "2026-05-28T17:46:51.473Z",
+    "applicationId": "1d1019a8-262e-4199-b952-be36747d048b"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8478618002": {
+    "timestamp": "2026-05-28T17:48:07.868Z",
+    "applicationId": "e9c00789-e3d8-4846-b5c0-b7feb93633bf"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8558222002": {
+    "timestamp": "2026-05-28T17:49:29.523Z",
+    "applicationId": "e8a41225-bd3e-477e-9727-0c594c49f7e8"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8504801002": {
+    "timestamp": "2026-05-28T17:50:36.767Z",
+    "applicationId": "4f94a711-3c7f-452a-a1c9-ea4b4b08924a"
   }
 }

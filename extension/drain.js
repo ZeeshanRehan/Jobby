@@ -33,6 +33,8 @@ const els = {
   curStep:      $("curStep"),
   log:          $("log"),
   errBanner:    $("errBanner"),
+  bdAts:        $("bdAts"),
+  bdCompany:    $("bdCompany"),
   detailsToggle:$("detailsToggle"),
   detailsBody:  $("detailsBody"),
   detailsEmpty: $("detailsEmpty"),
@@ -60,10 +62,20 @@ const state = {
   watchMode:     false,
   counts:        { applied: 0, skipped: 0, errors: 0 },
   current:       null,
+  byAts:         {},       // { greenhouse: 4, ashby: 2, ... } — successful submits per ATS
+  byCompany:     {},       // { GitLab: 3, notable: 1, ... }
+  // TESTING ONLY — index that cycles greenhouse → ashby → lever per claim when
+  // ats === "round_robin". Remove once the scraper provides natural ATS diversity
+  // and we no longer need to force-interleave for proof-of-coverage runs.
+  rrIndex:       0,
 };
 
-const ATS_LABELS = { all: "All ATS", greenhouse: "Greenhouse", ashby: "Ashby", lever: "Lever" };
+const ATS_LABELS = {
+  all: "All ATS", round_robin: "Round-robin", greenhouse: "Greenhouse", ashby: "Ashby", lever: "Lever",
+};
 const ID_PREFIX  = { greenhouse: "gh_", ashby: "ashby_", lever: "lever_" };
+// TESTING ONLY — see state.rrIndex comment above.
+const ROUND_ROBIN_ORDER = ["greenhouse", "ashby", "lever"];
 
 // ─── UI helpers ───────────────────────────────────────────────────────────────
 function setStatus(kind, text) {
@@ -79,6 +91,35 @@ function updateStats() {
   const done = state.counts.applied + state.counts.skipped + state.counts.errors;
   const pct  = Math.min(100, Math.round((done / Math.max(1, state.target)) * 100));
   els.progressBar.style.width = pct + "%";
+  renderBreakdown();
+}
+
+function renderBreakdown() {
+  const fillCol = (el, map, emptyMsg, labelFn) => {
+    const entries = Object.entries(map).sort((a, b) => b[1] - a[1]);
+    if (entries.length === 0) {
+      el.innerHTML = `<div class="breakdown-empty">${emptyMsg}</div>`;
+      return;
+    }
+    el.innerHTML = "";
+    for (const [k, v] of entries) {
+      const row = document.createElement("div");
+      row.className = "breakdown-row";
+      const lbl = document.createElement("span"); lbl.className = "lbl"; lbl.textContent = labelFn ? labelFn(k) : k;
+      const cnt = document.createElement("span"); cnt.className = "cnt"; cnt.textContent = v;
+      row.appendChild(lbl); row.appendChild(cnt);
+      el.appendChild(row);
+    }
+  };
+  fillCol(els.bdAts,     state.byAts,     "No submissions yet.", (k) => ATS_LABELS[k] || k);
+  fillCol(els.bdCompany, state.byCompany, "No submissions yet.");
+}
+
+function tallyApplied(job) {
+  const ats = job?.ats || "unknown";
+  const co  = job?.company || "unknown";
+  state.byAts[ats]     = (state.byAts[ats]     || 0) + 1;
+  state.byCompany[co]  = (state.byCompany[co]  || 0) + 1;
 }
 
 function setCurrent(job, step) {
@@ -262,6 +303,21 @@ async function logStep(job, step, ok, message, data = null) {
 }
 
 async function claimNextJob() {
+  // Round-robin: rotate greenhouse → ashby → lever. If the picked ATS has no
+  // pending fillable jobs left, fall through to the next in the cycle so the
+  // loop doesn't stall on an empty bucket.
+  // TESTING ONLY — remove once scraper diversity makes forced rotation pointless.
+  if (state.ats === "round_robin") {
+    for (let i = 0; i < ROUND_ROBIN_ORDER.length; i++) {
+      const ats = ROUND_ROBIN_ORDER[(state.rrIndex + i) % ROUND_ROBIN_ORDER.length];
+      const { job } = await api(`/queue/next?ats=${encodeURIComponent(ats)}`);
+      if (job) {
+        state.rrIndex = (state.rrIndex + i + 1) % ROUND_ROBIN_ORDER.length;
+        return job;
+      }
+    }
+    return null;
+  }
   const { job } = await api(`/queue/next?ats=${encodeURIComponent(state.ats)}`);
   return job;
 }
@@ -523,6 +579,7 @@ async function processJob(job) {
         await updateQueue(job.id, "done", null, applyData.applicationId);
         try { await markApplied(job.apply_url, applyData.applicationId); } catch (_) { /* queue status is source of truth */ }
         state.counts.applied += 1;
+        tallyApplied(job);
         setDetailsResult("ok", "Submitted");
       } else {
         const reason = resp?.reason || "unknown";
@@ -607,6 +664,9 @@ els.startBtn.addEventListener("click", async () => {
   state.dryRun = els.dryRun.checked;
   state.watchMode = els.watchMode.checked;
   state.counts = { applied: 0, skipped: 0, errors: 0 };
+  state.byAts = {};
+  state.byCompany = {};
+  state.rrIndex = 0;
   els.statTarget.textContent = state.target;
   els.atsPill.textContent = ATS_LABELS[state.ats] || state.ats;
   updateStats();

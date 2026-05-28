@@ -2042,5 +2042,574 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "99a69b51-c6fd-46c9-92a0-2cc374638fbb",
+    "timestamp": "2026-05-28T17:37:14.722Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8543383002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_99a69b51-c6fd-46c9-92a0-2cc374638fbb.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85OWE2OWI1MS1jNmZkLTQ2YzktOTJhMC0yY2MzNzQ2MzhmYmIucGRmIiwiaWF0IjoxNzc5OTg5ODM0LCJleHAiOjE3Nzk5OTM0MzR9.eHJXh075aYq83d1SSYy0OQTZorlHd6skTQoyMLnRQX4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/99a69b51-c6fd-46c9-92a0-2cc374638fbb.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevOps",
+        "SaaS",
+        "MEDPICC",
+        "Command of the Message",
+        "Application Lifecycle Management"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevOps",
+      "SaaS",
+      "MEDPICC",
+      "Command of the Message",
+      "Application Lifecycle Management"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "9f5a806c-dffd-47c7-85ef-bf51077dd5d3",
+    "timestamp": "2026-05-28T17:38:24.142Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8532381002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_9f5a806c-dffd-47c7-85ef-bf51077dd5d3.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85ZjVhODA2Yy1kZmZkLTQ3YzctODVlZi1iZjUxMDc3ZGQ1ZDMucGRmIiwiaWF0IjoxNzc5OTg5OTA0LCJleHAiOjE3Nzk5OTM1MDR9.5cStLCt69kswjpFaaeBrw39E51WEyeKKkOg2cWqye28",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/9f5a806c-dffd-47c7-85ef-bf51077dd5d3.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Greenhouse",
+        "LinkedIn Recruiter",
+        "Applicant Tracking Systems",
+        "Talent Mapping",
+        "Passive Candidate Sourcing",
+        "Market Research",
+        "Candidate Screening",
+        "Recruiting Workflows"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Greenhouse",
+      "LinkedIn Recruiter",
+      "Applicant Tracking Systems",
+      "Talent Mapping",
+      "Passive Candidate Sourcing",
+      "Market Research",
+      "Candidate Screening",
+      "Recruiting Workflows"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "6fe17e47-4767-480f-8c80-a0178c326602",
+    "timestamp": "2026-05-28T17:39:34.453Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8536477002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_6fe17e47-4767-480f-8c80-a0178c326602.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82ZmUxN2U0Ny00NzY3LTQ4MGYtOGM4MC1hMDE3OGMzMjY2MDIucGRmIiwiaWF0IjoxNzc5OTg5OTc0LCJleHAiOjE3Nzk5OTM1NzR9.e0e5jdyA4O6THumRep67g6TQhS49v07o_Q2yfhuq3r0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/6fe17e47-4767-480f-8c80-a0178c326602.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "CI/CD",
+        "DevSecOps",
+        "Continuous Integration",
+        "Continuous Deployment"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, translating business objectives into clear success criteria."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform, guiding adoption and maturity across the user base."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members through hands-on technical enablement and strategic engagement."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, guiding adoption and user engagement."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "CI/CD",
+      "DevSecOps",
+      "Continuous Integration",
+      "Continuous Deployment"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "92e06483-5374-4579-a167-9e0ed79d8fc8",
+    "timestamp": "2026-05-28T17:40:43.485Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8498481002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_92e06483-5374-4579-a167-9e0ed79d8fc8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85MmUwNjQ4My01Mzc0LTQ1NzktYTE2Ny05ZTBlZDc5ZDhmYzgucGRmIiwiaWF0IjoxNzc5OTkwMDQzLCJleHAiOjE3Nzk5OTM2NDN9.gMNrW4lfyv0pTPyHH00Hvm9K6BnLMnSoP0Ybdbb7hTU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/92e06483-5374-4579-a167-9e0ed79d8fc8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "GitLab",
+        "Continuous Integration",
+        "Continuous Delivery",
+        "DevSecOps",
+        "Source Code Management",
+        "Agile Planning",
+        "Kubernetes",
+        "Jenkins",
+        "SonarQube",
+        "OWASP"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "GitLab",
+      "Continuous Integration",
+      "Continuous Delivery",
+      "DevSecOps",
+      "Source Code Management",
+      "Agile Planning",
+      "Kubernetes",
+      "Jenkins",
+      "SonarQube",
+      "OWASP"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "fc47d8e5-1449-4a9e-acbc-daed40c0f3a5",
+    "timestamp": "2026-05-28T17:42:03.775Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8476852002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_fc47d8e5-1449-4a9e-acbc-daed40c0f3a5.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mYzQ3ZDhlNS0xNDQ5LTRhOWUtYWNiYy1kYWVkNDBjMGYzYTUucGRmIiwiaWF0IjoxNzc5OTkwMTIzLCJleHAiOjE3Nzk5OTM3MjN9.IDkk8uPS7YHP6ejr1_fHpjBYiYueNAWl7SFQtLrTbsM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/fc47d8e5-1449-4a9e-acbc-daed40c0f3a5.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "GitLab",
+        "DevSecOps",
+        "SCM",
+        "Kubernetes",
+        "Jenkins",
+        "Ansible",
+        "SonarQube",
+        "Vault"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack with CI/CD integration to help communities share skills, services, and help."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "GitLab",
+      "DevSecOps",
+      "SCM",
+      "Kubernetes",
+      "Jenkins",
+      "Ansible",
+      "SonarQube",
+      "Vault"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "bf24683a-a66e-479f-a4be-c25b67a31bd4",
+    "timestamp": "2026-05-28T17:43:13.988Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8497728002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_bf24683a-a66e-479f-a4be-c25b67a31bd4.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iZjI0NjgzYS1hNjZlLTQ3OWYtYTRiZS1jMjViNjdhMzFiZDQucGRmIiwiaWF0IjoxNzc5OTkwMTkzLCJleHAiOjE3Nzk5OTM3OTN9.LdNI1yYUHpBXDWk6zeIhSSZlE_-9sAYJ5mrvfsNHcZg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/bf24683a-a66e-479f-a4be-c25b67a31bd4.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "GitLab",
+        "Source Code Management",
+        "DevSecOps",
+        "Kubernetes",
+        "Helm",
+        "Prometheus",
+        "ELK Stack",
+        "Vault",
+        "SonarQube"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, DevSecOps-aligned prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "GitLab",
+      "Source Code Management",
+      "DevSecOps",
+      "Kubernetes",
+      "Helm",
+      "Prometheus",
+      "ELK Stack",
+      "Vault",
+      "SonarQube"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "45be54dd-8162-4c4d-af8c-2e358ae3bbd8",
+    "timestamp": "2026-05-28T17:44:25.479Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8550268002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_45be54dd-8162-4c4d-af8c-2e358ae3bbd8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80NWJlNTRkZC04MTYyLTRjNGQtYWY4Yy0yZTM1OGFlM2JiZDgucGRmIiwiaWF0IjoxNzc5OTkwMjY1LCJleHAiOjE3Nzk5OTM4NjV9.cxiHWhjtnMB8eh1ilmoDelvBA6ux1r8GLrvfQDjAMcQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/45be54dd-8162-4c4d-af8c-2e358ae3bbd8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "GitLab",
+        "Kubernetes",
+        "Jenkins",
+        "Helm",
+        "Prometheus",
+        "ELK Stack",
+        "Vault",
+        "SonarQube"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "GitLab",
+      "Kubernetes",
+      "Jenkins",
+      "Helm",
+      "Prometheus",
+      "ELK Stack",
+      "Vault",
+      "SonarQube"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "3f5195ab-68b4-48cf-b7a8-d8ff8d0f4e78",
+    "timestamp": "2026-05-28T17:45:27.753Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8512758002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_3f5195ab-68b4-48cf-b7a8-d8ff8d0f4e78.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zZjUxOTVhYi02OGI0LTQ4Y2YtYjdhOC1kOGZmOGQwZjRlNzgucGRmIiwiaWF0IjoxNzc5OTkwMzI3LCJleHAiOjE3Nzk5OTM5Mjd9.PstT6XaEb_2KrS7TYbAWtT6F0O14FEi1gojp0R6fqzk",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/3f5195ab-68b4-48cf-b7a8-d8ff8d0f4e78.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "CI/CD",
+        "DevSecOps",
+        "Version Control",
+        "Software Development Lifecycle",
+        "Continuous Integration",
+        "Continuous Deployment"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "CI/CD",
+      "DevSecOps",
+      "Version Control",
+      "Software Development Lifecycle",
+      "Continuous Integration",
+      "Continuous Deployment"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "1d1019a8-262e-4199-b952-be36747d048b",
+    "timestamp": "2026-05-28T17:46:34.994Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8548980002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1d1019a8-262e-4199-b952-be36747d048b.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xZDEwMTlhOC0yNjJlLTQxOTktYjk1Mi1iZTM2NzQ3ZDA0OGIucGRmIiwiaWF0IjoxNzc5OTkwMzk0LCJleHAiOjE3Nzk5OTM5OTR9.yxQX29k9tj3UykFFEFTX2ELvQnfqUqjVYtPCYmxLSwg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/1d1019a8-262e-4199-b952-be36747d048b.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "CI/CD",
+        "DevSecOps",
+        "Version Control",
+        "Continuous Integration",
+        "Continuous Deployment",
+        "Software Development Lifecycle",
+        "Workshop Facilitation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "CI/CD",
+      "DevSecOps",
+      "Version Control",
+      "Continuous Integration",
+      "Continuous Deployment",
+      "Software Development Lifecycle",
+      "Workshop Facilitation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "e9c00789-e3d8-4846-b5c0-b7feb93633bf",
+    "timestamp": "2026-05-28T17:47:47.704Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8478618002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_e9c00789-e3d8-4846-b5c0-b7feb93633bf.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lOWMwMDc4OS1lM2Q4LTQ4NDYtYjVjMC1iN2ZlYjkzNjMzYmYucGRmIiwiaWF0IjoxNzc5OTkwNDY3LCJleHAiOjE3Nzk5OTQwNjd9.Pmhc3RHy7LwEkSQQ8MFsXZFDlC7f8GFpwcPQUWc58TQ",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/e9c00789-e3d8-4846-b5c0-b7feb93633bf.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "CI/CD",
+        "DevSecOps",
+        "Version Control",
+        "Software Development Lifecycle",
+        "Continuous Integration",
+        "Continuous Deployment"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, translating user feedback into clear, actionable recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "CI/CD",
+      "DevSecOps",
+      "Version Control",
+      "Software Development Lifecycle",
+      "Continuous Integration",
+      "Continuous Deployment"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "e8a41225-bd3e-477e-9727-0c594c49f7e8",
+    "timestamp": "2026-05-28T17:49:09.836Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8558222002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_e8a41225-bd3e-477e-9727-0c594c49f7e8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lOGE0MTIyNS1iZDNlLTQ3N2UtOTcyNy0wYzU5NGM0OWY3ZTgucGRmIiwiaWF0IjoxNzc5OTkwNTQ5LCJleHAiOjE3Nzk5OTQxNDl9.Bp2PlWaSsMsZrEVzczMfIoWVQCl1s5vgDVb_U7pgtBs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/e8a41225-bd3e-477e-9727-0c594c49f7e8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kantata",
+        "Professional Services Operations",
+        "Resource Planning",
+        "Capacity Planning",
+        "Workforce Planning",
+        "Staffing Coordination",
+        "Allocation Management",
+        "PSA Systems",
+        "CRM Systems",
+        "Spreadsheet Analysis",
+        "Dashboard Development"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, improving operational visibility and resource allocation accuracy."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Kantata",
+      "Professional Services Operations",
+      "Resource Planning",
+      "Capacity Planning",
+      "Workforce Planning",
+      "Staffing Coordination",
+      "Allocation Management",
+      "PSA Systems",
+      "CRM Systems",
+      "Spreadsheet Analysis",
+      "Dashboard Development"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "4f94a711-3c7f-452a-a1c9-ea4b4b08924a",
+    "timestamp": "2026-05-28T17:50:15.204Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8504801002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_4f94a711-3c7f-452a-a1c9-ea4b4b08924a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV80Zjk0YTcxMS0zYzdmLTQ1MmEtYTFjOS1lYTRiNGIwODkyNGEucGRmIiwiaWF0IjoxNzc5OTkwNjE1LCJleHAiOjE3Nzk5OTQyMTV9.ZHuKIXq6Mt6gjFV6-RICSWKGTnT4Z-o9m9TzhnH8PwU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/4f94a711-3c7f-452a-a1c9-ea4b4b08924a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Ruby on Rails",
+        "Go",
+        "GitLab CI/CD",
+        "YAML",
+        "Ansible",
+        "Helm",
+        "Gitaly",
+        "AI Gateway",
+        "Agentic patterns",
+        "Self-managed deployment"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Ruby on Rails",
+      "Go",
+      "GitLab CI/CD",
+      "YAML",
+      "Ansible",
+      "Helm",
+      "Gitaly",
+      "AI Gateway",
+      "Agentic patterns",
+      "Self-managed deployment"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

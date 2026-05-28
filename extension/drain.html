@@ -184,6 +184,15 @@
       0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.5); }
       50%     { box-shadow: 0 0 0 6px rgba(5,150,105,0); }
     }
+    .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+    @media (max-width: 640px) { .breakdown { grid-template-columns: 1fr; } }
+    .breakdown-col { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+    .breakdown-h { font-size: 11px; font-weight: 600; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .breakdown-list { display: flex; flex-direction: column; gap: 3px; }
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text); padding: 2px 0; }
+    .breakdown-row .lbl { color: var(--text-soft); }
+    .breakdown-row .cnt { font-weight: 700; color: var(--text); }
+    .breakdown-empty { font-size: 12px; color: var(--text-mute); font-style: italic; padding: 2px 0; }
     .details-empty { color: var(--text-mute); font-style: italic; padding: 4px 0; }
     .details-grid { display: flex; flex-direction: column; gap: 18px; }
     .details-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 18px; }
@@ -245,6 +254,7 @@
         <label class="field">
           ATS&nbsp;<select id="atsSelect">
             <option value="all">All</option>
+            <option value="round_robin">Round-robin (test)</option>
             <option value="greenhouse">Greenhouse</option>
             <option value="ashby">Ashby</option>
             <option value="lever">Lever</option>
@@ -274,6 +284,16 @@
         <div class="stat"><div class="k">Skipped</div><div class="v warn"    id="statSkipped">0</div></div>
         <div class="stat"><div class="k">Errors</div> <div class="v error"   id="statErrors">0</div></div>
         <div class="stat"><div class="k">Target</div> <div class="v"         id="statTarget">1</div></div>
+      </div>
+      <div class="breakdown" id="breakdown">
+        <div class="breakdown-col">
+          <div class="breakdown-h">By ATS</div>
+          <div class="breakdown-list" id="bdAts"><div class="breakdown-empty">No submissions yet.</div></div>
+        </div>
+        <div class="breakdown-col">
+          <div class="breakdown-h">By Company</div>
+          <div class="breakdown-list" id="bdCompany"><div class="breakdown-empty">No submissions yet.</div></div>
+        </div>
       </div>
     </div>
 

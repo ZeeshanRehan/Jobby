@@ -298,11 +298,12 @@
     "location": "Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8543383002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:37:31.278Z",
+    "applicationId": "99a69b51-c6fd-46c9-92a0-2cc374638fbb"
   },
   {
     "id": "gh_8532381002",
@@ -314,11 +315,12 @@
     "location": "Remote, Canada; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8532381002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:38:47.291Z",
+    "applicationId": "9f5a806c-dffd-47c7-85ef-bf51077dd5d3"
   },
   {
     "id": "gh_8536477002",
@@ -330,11 +332,12 @@
     "location": "Remote, North America",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8536477002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:39:54.373Z",
+    "applicationId": "6fe17e47-4767-480f-8c80-a0178c326602"
   },
   {
     "id": "gh_8498481002",
@@ -346,11 +349,12 @@
     "location": "Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8498481002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:41:04.427Z",
+    "applicationId": "92e06483-5374-4579-a167-9e0ed79d8fc8"
   },
   {
     "id": "gh_8476852002",
@@ -362,11 +366,12 @@
     "location": "Remote, Germany; Remote, Ireland; Remote, United Kingdom",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8476852002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:42:25.602Z",
+    "applicationId": "fc47d8e5-1449-4a9e-acbc-daed40c0f3a5"
   },
   {
     "id": "gh_8497728002",
@@ -378,11 +383,12 @@
     "location": "Remote, Japan",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8497728002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:43:29.753Z",
+    "applicationId": "bf24683a-a66e-479f-a4be-c25b67a31bd4"
   },
   {
     "id": "gh_8550268002",
@@ -394,11 +400,12 @@
     "location": "Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8550268002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:44:40.991Z",
+    "applicationId": "45be54dd-8162-4c4d-af8c-2e358ae3bbd8"
   },
   {
     "id": "gh_8512758002",
@@ -410,11 +417,12 @@
     "location": "Remote, North America",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8512758002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:45:43.025Z",
+    "applicationId": "3f5195ab-68b4-48cf-b7a8-d8ff8d0f4e78"
   },
   {
     "id": "gh_8548980002",
@@ -426,11 +434,12 @@
     "location": "Remote, Australia",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8548980002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:46:51.350Z",
+    "applicationId": "1d1019a8-262e-4199-b952-be36747d048b"
   },
   {
     "id": "gh_8478618002",
@@ -442,11 +451,12 @@
     "location": "Remote, Japan",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8478618002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:48:07.739Z",
+    "applicationId": "e9c00789-e3d8-4846-b5c0-b7feb93633bf"
   },
   {
     "id": "gh_8558222002",
@@ -458,11 +468,12 @@
     "location": "Remote, United Kingdom",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8558222002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:49:29.397Z",
+    "applicationId": "e8a41225-bd3e-477e-9727-0c594c49f7e8"
   },
   {
     "id": "gh_8504801002",
@@ -474,11 +485,12 @@
     "location": "Remote, Australia; Remote, Singapore",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8504801002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.750Z",
-    "updated_at": "2026-05-27T20:49:56.750Z"
+    "updated_at": "2026-05-28T17:50:36.642Z",
+    "applicationId": "4f94a711-3c7f-452a-a1c9-ea4b4b08924a"
   },
   {
     "id": "gh_8537793002",
