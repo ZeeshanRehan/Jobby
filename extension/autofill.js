@@ -819,7 +819,13 @@ if (!window.__jobbyAutofillInjected) {
         for (let iter = 0; iter < MAX_PAGES; iter++) {
           const page = iter === 0 ? detectPage() : await waitForAnyPage();
           if (!page) {
-            sendResponse({ report, unknownFields, pagesVisited, reason: "mount_timeout" });
+            // No known page mounted. Most common cause after the Apply-Manually click
+            // is Workday's sign-in wall (an unknown page) — distinguish it from a true
+            // timeout so the user knows to auth once rather than chase a phantom mount.
+            const reason = (adapter.auth?.loginAnchor && document.querySelector(adapter.auth.loginAnchor))
+              ? "needs_login"
+              : "mount_timeout";
+            sendResponse({ report, unknownFields, pagesVisited, reason });
             return;
           }
           pagesVisited.push(page.id);
