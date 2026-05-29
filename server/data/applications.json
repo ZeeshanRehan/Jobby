@@ -4189,5 +4189,66 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "d8d7e57b-bf55-4e3b-b468-f06eb5303e3e",
+    "timestamp": "2026-05-29T21:27:52.640Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-WA-Redmond/Senior-Software-Engineer--Developer-Tools-for-Cloud_JR2011154",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d8d7e57b-bf55-4e3b-b468-f06eb5303e3e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kOGQ3ZTU3Yi1iZjU1LTRlM2ItYjQ2OC1mMDZlYjUzMDNlM2UucGRmIiwiaWF0IjoxNzgwMDkwMDcyLCJleHAiOjE3ODAwOTM2NzJ9.eqgB-CWMDYPnnemXR7C1-LWAGh0uUfkDX0YLMnlp6gs",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d8d7e57b-bf55-4e3b-b468-f06eb5303e3e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Rust",
+        "Go",
+        "Kubernetes",
+        "Datadog",
+        "ClickHouse",
+        "Grafana",
+        "CUDA",
+        "Microservices",
+        "HPC",
+        "Performance optimization",
+        "Distributed systems",
+        "Web APIs"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, JavaScript-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Python, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Rust",
+      "Go",
+      "Kubernetes",
+      "Datadog",
+      "ClickHouse",
+      "Grafana",
+      "CUDA",
+      "Microservices",
+      "HPC",
+      "Performance optimization",
+      "Distributed systems",
+      "Web APIs"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
