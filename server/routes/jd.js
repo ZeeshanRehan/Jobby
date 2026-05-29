@@ -87,12 +87,14 @@ router.get("/lever/:org/:id", async (req, res) => {
 // Workday's job-detail endpoint sits next to the listing endpoint:
 //   GET https://{tenant}.{wd}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/job/{externalPath}
 // We pass the externalPath as a single URL-encoded segment to avoid path-parsing it.
-router.get("/workday/:tenant/:wd/:site/*", async (req, res) => {
+router.get("/workday/:tenant/:wd/:site/*splat", async (req, res) => {
   const { tenant, wd, site } = req.params;
   // Everything after /:site/ is the externalPath (which itself contains slashes).
-  const externalPath = "/" + req.params[0];
+  // Express 5 named wildcard → req.params.splat is an array of segments.
+  const externalPath = "/" + (req.params.splat || []).join("/");
   try {
-    const url = `https://${tenant}.${wd}.myworkdayjobs.com/wday/cxs/${tenant}/${site}/job${externalPath}`;
+    // externalPath already starts with /job/... — don't prepend another /job (was → 406)
+    const url = `https://${tenant}.${wd}.myworkdayjobs.com/wday/cxs/${tenant}/${site}${externalPath}`;
     const r = await fetch(url, { headers: { Accept: "application/json" } });
     if (!r.ok) return res.status(r.status).json({ error: `workday API ${r.status}` });
     const job = await r.json();
