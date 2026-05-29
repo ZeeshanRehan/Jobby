@@ -4250,5 +4250,68 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "6feb329a-c33e-41b9-8ee4-9002fa5fe8a0",
+    "timestamp": "2026-05-29T22:03:18.316Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-VLSI-Library-Methodology-Engineer_JR2009899-1",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_6feb329a-c33e-41b9-8ee4-9002fa5fe8a0.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82ZmViMzI5YS1jMzNlLTQxYjktOGVlNC05MDAyZmE1ZmU4YTAucGRmIiwiaWF0IjoxNzgwMDkyMTk4LCJleHAiOjE3ODAwOTU3OTh9.5hHO5RFheR3zECFlY-EWu7hRv7n-fwD69xcVgcncugc",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/6feb329a-c33e-41b9-8ee4-9002fa5fe8a0.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Perl",
+        "Innovus",
+        "Fusion Compiler",
+        "Crosscheck",
+        "Virtuoso",
+        "EDA tools",
+        "Library modeling",
+        "Physical design",
+        "CAD methodology",
+        "Data pipelines",
+        "Dashboard development",
+        "Scripting",
+        "Tool integration"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Python, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Perl",
+      "Innovus",
+      "Fusion Compiler",
+      "Crosscheck",
+      "Virtuoso",
+      "EDA tools",
+      "Library modeling",
+      "Physical design",
+      "CAD methodology",
+      "Data pipelines",
+      "Dashboard development",
+      "Scripting",
+      "Tool integration"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
