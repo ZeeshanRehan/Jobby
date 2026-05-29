@@ -1,0 +1,88 @@
+{
+  "platform": "workday",
+  "version": "2026-05-28-v1-skeleton",
+  "detect": ["myworkdayjobs.com"],
+  "schema": "pages",
+  "_notes": [
+    "Per-page schema — Workday is a multi-step wizard, not a single-page form.",
+    "Status: v1 scaffold. Only `my_information` page has selectors. Other pages",
+    "are TODOs surfaced so the wizard handler can detect them as 'not implemented'",
+    "and abort cleanly (instead of silently skipping).",
+    "Selectors below use Workday's data-automation-id attributes — stable across",
+    "tenants for the standard application wizard."
+  ],
+  "auth": {
+    "loginRequired": true,
+    "loginAnchor":   "[data-automation-id='signInLink'], [data-automation-id='accountLink']",
+    "_note":         "Drain detects the login wall via these selectors and fails-fast the job with reason='needs_login'. v1.5 will add watchMode SSO assist; v2 will auto-click Google OAuth (manifest grant for accounts.google.com required)."
+  },
+  "pages": [
+    {
+      "id":     "my_information",
+      "status": "ready",
+      "anchor": "[data-automation-id='legalNameSection']",
+      "fields": {
+        "firstName": { "selector": "input[data-automation-id='legalNameSection_firstName']", "type": "text", "source": "identity.firstName" },
+        "lastName":  { "selector": "input[data-automation-id='legalNameSection_lastName']",  "type": "text", "source": "identity.lastName" },
+        "email":     { "selector": "input[data-automation-id='email']",                       "type": "text", "source": "contact.email" },
+        "phone":     { "selector": "input[data-automation-id='phone-number']",                "type": "text", "source": "contact.phone" },
+        "addressLine1":{ "selector":"input[data-automation-id='addressSection_addressLine1']","type": "text", "source": "contact.address.street" },
+        "city":      { "selector": "input[data-automation-id='addressSection_city']",         "type": "text", "source": "contact.address.city" },
+        "postalCode":{ "selector": "input[data-automation-id='addressSection_postalCode']",   "type": "text", "source": "contact.address.zip" }
+      },
+      "next": {
+        "selector": "button[data-automation-id='bottom-navigation-next-button'], button[data-automation-id='pageFooterNextButton']",
+        "expectedNextAnchor": "[data-automation-id='myExperiencePage'], [data-automation-id='resumePage']"
+      }
+    },
+    {
+      "id":     "my_experience",
+      "status": "todo",
+      "anchor": "[data-automation-id='myExperiencePage'], [data-automation-id='resumePage']",
+      "_todo":  "Resume upload + Workday-parsed-into-form verify/edit loop. Trust the parse, only fix required missing fields. See DEVLOG planned 2026-XX entry.",
+      "fields": {},
+      "next":   { "selector": "button[data-automation-id='bottom-navigation-next-button']" }
+    },
+    {
+      "id":     "application_questions",
+      "status": "todo",
+      "anchor": "[data-automation-id='applicationQuestionsSection'], [data-automation-id='applicationQuestionsPage']",
+      "_todo":  "Tenant-custom dropdowns + free-text. Route fully through unknown-field scanner + AI fallback (same as Ashby/Lever path).",
+      "fields": {},
+      "next":   { "selector": "button[data-automation-id='bottom-navigation-next-button']" }
+    },
+    {
+      "id":     "voluntary_disclosures",
+      "status": "todo",
+      "anchor": "[data-automation-id='voluntaryDisclosuresPage'], [data-automation-id='voluntaryDisclosures']",
+      "_todo":  "EEO / disability / veteran / pronouns — radios + selects. localResolveField + bestOptionMatch should handle most without AI.",
+      "fields": {},
+      "next":   { "selector": "button[data-automation-id='bottom-navigation-next-button']" }
+    },
+    {
+      "id":     "self_identification",
+      "status": "todo",
+      "anchor": "[data-automation-id='selfIdentificationPage']",
+      "_todo":  "Gender / race / ethnicity questions, US-formatted. Same resolver as voluntary_disclosures.",
+      "fields": {},
+      "next":   { "selector": "button[data-automation-id='bottom-navigation-next-button']" }
+    },
+    {
+      "id":     "review",
+      "status": "ready",
+      "anchor": "[data-automation-id='reviewPage'], button[data-automation-id='submitButton']",
+      "_note":  "Final page. No fields to fill — just click Submit. v1 wizard reaches this page only when intermediate pages are 'ready' (else aborts at the first 'todo' page). Submit selector is in the global FILL_SUBMIT chain too.",
+      "fields": {},
+      "next":   {
+        "selector": "button[data-automation-id='submitButton']",
+        "isSubmit": true
+      }
+    }
+  ],
+  "_v1_known_gaps": [
+    "Only my_information + review pages have ready=true selectors. The wizard handler will abort with reason='page_not_implemented' on the first todo page reached.",
+    "Resume upload page (my_experience) needs its own design — Workday auto-parses the PDF and pre-fills the form, which conflicts with our 'fill from profile' model.",
+    "Application Questions vary heavily per tenant — drain through unknown-field scanner, not adapter selectors.",
+    "Submit button click is the existing global FILL_SUBMIT path; the wizard's per-page next-button click is new code."
+  ]
+}

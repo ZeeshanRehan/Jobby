@@ -226,5 +226,17 @@
   "https://jobs.lever.co/mistral/46bf0c1c-cca2-4941-bd8d-18024fa59afa/apply": {
     "timestamp": "2026-05-28T19:27:06.029Z",
     "applicationId": "1b5a1f8b-d67d-49e8-87bc-99d849d0d55b"
+  },
+  "https://jobs.ashbyhq.com/notable/5eec7409-19b2-4fea-9cce-424122438394/application": {
+    "timestamp": "2026-05-28T19:41:18.119Z",
+    "applicationId": "3018cca8-c1b3-4995-87ea-45a1d91de58f"
+  },
+  "https://jobs.ashbyhq.com/notable/2829d8d7-a58d-478a-bdec-99c93da7e8f6/application": {
+    "timestamp": "2026-05-28T19:42:30.267Z",
+    "applicationId": "a869c503-ac1b-4af4-84ff-647a5e3e43f7"
+  },
+  "https://jobs.ashbyhq.com/notable/2fbc50e2-8dc6-4380-bbad-a503cb80f7ff/application": {
+    "timestamp": "2026-05-28T19:43:26.990Z",
+    "applicationId": "82c63c56-59dd-4060-a21d-cf14ee5b5443"
   }
 }

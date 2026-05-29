@@ -3959,5 +3959,235 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "3018cca8-c1b3-4995-87ea-45a1d91de58f",
+    "timestamp": "2026-05-28T19:40:52.680Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/5eec7409-19b2-4fea-9cce-424122438394/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_3018cca8-c1b3-4995-87ea-45a1d91de58f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zMDE4Y2NhOC1jMWIzLTQ5OTUtODdlYS00NWExZDkxZGU1OGYucGRmIiwiaWF0IjoxNzc5OTk3MjUyLCJleHAiOjE3ODAwMDA4NTJ9.xMpW1QxS2VRC_gqCl-ZgRdIbvBrZEwfjLAFGThKO84Y",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/3018cca8-c1b3-4995-87ea-45a1d91de58f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Healthcare Operations",
+        "Healthcare IT Systems",
+        "Enterprise Workflow",
+        "QBR Facilitation",
+        "Account Planning",
+        "Value Roadmapping",
+        "Executive Presence",
+        "Stakeholder Management",
+        "Risk Management",
+        "Healthcare Technology"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, establishing governance structures and accountability frameworks."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, developing value roadmaps aligned to customer priorities."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members and demonstrating measurable ROI."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, establishing clear governance and systems of record."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, demonstrating accountability for operational outcomes."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, establishing governance and stakeholder engagement across multiple user groups."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases.",
+          "tailored": "Gained 50+ active users from university by presenting at campus Hackathon and student-led showcases, demonstrating ability to build relationships and drive adoption."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Launched a crypto alt-token $EAGLES as a form of currency amongst members.",
+          "tailored": "Launched a crypto alt-token $EAGLES as a form of currency amongst members, translating strategy into measurable value for community stakeholders."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, establishing clear systems and user engagement frameworks."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating strong value realization and user outcomes."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Healthcare Operations",
+      "Healthcare IT Systems",
+      "Enterprise Workflow",
+      "QBR Facilitation",
+      "Account Planning",
+      "Value Roadmapping",
+      "Executive Presence",
+      "Stakeholder Management",
+      "Risk Management",
+      "Healthcare Technology"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "a869c503-ac1b-4af4-84ff-647a5e3e43f7",
+    "timestamp": "2026-05-28T19:42:10.638Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/2829d8d7-a58d-478a-bdec-99c93da7e8f6/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_a869c503-ac1b-4af4-84ff-647a5e3e43f7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hODY5YzUwMy1hYzFiLTRhZjQtODRmZi02NDdhNWUzZTQzZjcucGRmIiwiaWF0IjoxNzc5OTk3MzMwLCJleHAiOjE3ODAwMDA5MzB9.21RTCrTVKo0PocNXs73YddSoCEJGjMa5ZWRDcm1pIf8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/a869c503-ac1b-4af4-84ff-647a5e3e43f7.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Asana",
+        "Jira",
+        "MS Project",
+        "PMP",
+        "Six Sigma",
+        "Epic",
+        "Cerner",
+        "Oracle Health",
+        "Risk Management",
+        "Change Management",
+        "SWAG Estimation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace.",
+          "tailored": "Leading a cross-functional team of 6 designers and product contributors to architect a new end-to-end communication system for involveMINT's mutual-credit marketplace, managing scope, timelines, and resource allocation across design and implementation phases."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform, driving accountability for design milestones and user experience validation."
+        },
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members.",
+          "tailored": "Collaborated with product and engineering teams to remove friction in the discovery-to-deal pipeline, projected to increase transaction conversion rates from ~35% to over 60%, directly impacting 2,500–10,000 community members by managing dependencies and facilitating communication across technical and business stakeholders."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems, ensuring accurate resource allocation and timeline adherence."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%.",
+          "tailored": "Identified and corrected 100+ database inconsistencies, improving the accuracy of housing reports and reducing last-minute room change requests by 35%, demonstrating attention to scope and risk mitigation."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help, managing end-to-end project execution from concept through launch."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, managing project timelines and cross-functional handoffs to deliver a working product within sprint cycles."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes.",
+          "tailored": "Delivered 2,000+ personalized song suggestions to early users in the first week of beta, with average session durations exceeding 4.5 minutes, demonstrating successful go-live execution and post-launch performance."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Asana",
+      "Jira",
+      "MS Project",
+      "PMP",
+      "Six Sigma",
+      "Epic",
+      "Cerner",
+      "Oracle Health",
+      "Risk Management",
+      "Change Management",
+      "SWAG Estimation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "82c63c56-59dd-4060-a21d-cf14ee5b5443",
+    "timestamp": "2026-05-28T19:43:13.191Z",
+    "jobUrl": "https://jobs.ashbyhq.com/notable/2fbc50e2-8dc6-4380-bbad-a503cb80f7ff/application",
+    "jobTitle": null,
+    "company": null,
+    "platform": "ashby",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_82c63c56-59dd-4060-a21d-cf14ee5b5443.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84MmM2M2M1Ni01OWRkLTQwNjAtYTIxZC1jZjE0ZWU1YjU0NDMucGRmIiwiaWF0IjoxNzc5OTk3MzkzLCJleHAiOjE3ODAwMDA5OTN9.VfUk8C7JqyqqNpz1GbQ_HV981hzwZjgl1IXicAwYdyA",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/82c63c56-59dd-4060-a21d-cf14ee5b5443.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Vue",
+        "Ruby",
+        "GCP",
+        "Kubernetes",
+        "NLP",
+        "Machine Learning",
+        "RESTful APIs",
+        "Testing",
+        "Software Development Best Practices"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Vue",
+      "Ruby",
+      "GCP",
+      "Kubernetes",
+      "NLP",
+      "Machine Learning",
+      "RESTful APIs",
+      "Testing",
+      "Software Development Best Practices"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

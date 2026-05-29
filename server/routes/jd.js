@@ -11,6 +11,7 @@ const router = express.Router();
 const GH_BOARDS_API = "https://boards-api.greenhouse.io/v1/boards";
 const ASHBY_API     = "https://api.ashbyhq.com/posting-api/job-board";
 const LEVER_API     = "https://api.lever.co/v0/postings";
+// Workday: per-tenant data-center prefix (wd1-wd12) + site slug — see jd.js workday route below.
 
 function stripHtml(html) {
   return (html || "")
@@ -77,6 +78,29 @@ router.get("/lever/:org/:id", async (req, res) => {
       company:  org,
       location: job.categories?.location || null,
       jobDescription: job.descriptionPlain || stripHtml(job.description || ""),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Workday's job-detail endpoint sits next to the listing endpoint:
+//   GET https://{tenant}.{wd}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/job/{externalPath}
+// We pass the externalPath as a single URL-encoded segment to avoid path-parsing it.
+router.get("/workday/:tenant/:wd/:site/*", async (req, res) => {
+  const { tenant, wd, site } = req.params;
+  // Everything after /:site/ is the externalPath (which itself contains slashes).
+  const externalPath = "/" + req.params[0];
+  try {
+    const url = `https://${tenant}.${wd}.myworkdayjobs.com/wday/cxs/${tenant}/${site}/job${externalPath}`;
+    const r = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!r.ok) return res.status(r.status).json({ error: `workday API ${r.status}` });
+    const job = await r.json();
+    res.json({
+      title:    job.jobPostingInfo?.title || null,
+      company:  tenant,
+      location: job.jobPostingInfo?.location || null,
+      jobDescription: stripHtml(job.jobPostingInfo?.jobDescription || ""),
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

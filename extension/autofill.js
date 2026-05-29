@@ -706,6 +706,179 @@ if (!window.__jobbyAutofillInjected) {
       return true;
     }
 
+    // ── FILL_FORM_WORKDAY — multi-page wizard fill (v1 skeleton) ──────────
+    // Workday is a paginated wizard, not a single-page form. The flow:
+    //   detect login wall    → abort with reason='needs_login' (user must SSO once)
+    //   detect current page  → look up adapter.pages[].anchor matches in DOM
+    //   if page.status='todo'→ abort with reason='page_not_implemented' (clean exit)
+    //   fill page.fields     → same shape as FILL_FORM (text/combobox/file)
+    //   scan unknowns        → same scanner — but ONLY on this page (drained per-page)
+    //   click page.next      → wait for next page's anchor → loop
+    //   on review page       → return ready-to-submit (drain's FILL_SUBMIT then clicks Submit)
+    //
+    // v1 STATUS: my_information + review are 'ready' in workday.json. Everything in
+    // between is 'todo' and aborts. This proves the wizard loop works end-to-end on
+    // the easy bookends before tackling experience-page resume-parse-edit logic.
+    //
+    // Returns: { report, unknownFields, pagesVisited, reason? }
+    // - report.filled / filledDetails / errors aggregated across all visited pages
+    // - unknownFields aggregated, surfaced to drain for AI fallback after the loop
+    // - reason set when aborting (needs_login / page_not_implemented / next_button_missing / mount_timeout)
+    if (message.type === "FILL_FORM_WORKDAY") {
+      (async () => {
+        const { adapter, profileData, resumePdf } = message;
+        const report = { filled: [], filledDetails: [], stale: [], skipped: [], errors: [] };
+        const unknownFields = [];
+        const handledEls = new WeakSet();
+        const pagesVisited = [];
+
+        // Login wall guard — if the login anchor renders, user hasn't authed on
+        // this tenant yet. Fail-fast so drain marks 'needs_login' and the user
+        // can open the tab manually, click Google SSO once, then re-run.
+        if (adapter.auth?.loginAnchor && document.querySelector(adapter.auth.loginAnchor)) {
+          sendResponse({ report, unknownFields, pagesVisited, reason: "needs_login" });
+          return;
+        }
+
+        // Resolve a human-readable label for a filled element (reused from FILL_FORM).
+        const labelFor = (el, fieldName) => {
+          try { return getLabelText(el) || fieldName; } catch { return fieldName; }
+        };
+
+        // ── Page detection ──────────────────────────────────────────────────
+        // Match the FIRST adapter.pages entry whose `anchor` resolves in the DOM.
+        // Returns null if no page matches (likely an unknown page variant).
+        const detectPage = () => {
+          for (const page of adapter.pages) {
+            if (!page.anchor) continue;
+            if (document.querySelector(page.anchor)) return page;
+          }
+          return null;
+        };
+
+        // ── Wait for any page to mount ──────────────────────────────────────
+        // After a Next-button click, the SPA tears down the old page and mounts
+        // the next. Polls every 200ms up to 15s for any adapter.pages anchor.
+        const waitForAnyPage = async (timeoutMs = 15000) => {
+          const start = Date.now();
+          while (Date.now() - start < timeoutMs) {
+            const page = detectPage();
+            if (page) return page;
+            await sleep(200);
+          }
+          return null;
+        };
+
+        // ── Fill one page's adapter.fields (subset of FILL_FORM logic) ──────
+        // Returns a list of {field, label, value, status} for the audit trail.
+        const fillPage = async (page) => {
+          const pageReport = [];
+          for (const [fieldName, fieldDef] of Object.entries(page.fields || {})) {
+            const { selector, type, source } = fieldDef;
+            const el = document.querySelector(selector);
+            if (!el) { report.stale.push(`${page.id}.${fieldName}`); continue; }
+            handledEls.add(el);
+            try {
+              if (type === "text") {
+                const value = resolvePath(profileData, source);
+                if (value == null || value === "") { report.skipped.push(`${page.id}.${fieldName}`); continue; }
+                fillText(el, String(value));
+                report.filled.push(`${page.id}.${fieldName}`);
+                const entry = { field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: String(value) };
+                report.filledDetails.push(entry);
+                pageReport.push(entry);
+              } else if (type === "combobox") {
+                const value = resolvePath(profileData, source);
+                if (value == null || value === "") { report.skipped.push(`${page.id}.${fieldName}`); continue; }
+                const ok = await fillCombobox(el, String(value));
+                if (ok) {
+                  report.filled.push(`${page.id}.${fieldName}`);
+                  const entry = { field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: String(value) };
+                  report.filledDetails.push(entry); pageReport.push(entry);
+                } else {
+                  report.errors.push({ field: `${page.id}.${fieldName}`, message: "combobox pick failed" });
+                }
+              } else if (type === "file") {
+                fillFile(el, resumePdf);
+                report.filled.push(`${page.id}.${fieldName}`);
+                report.filledDetails.push({ field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: "(resume.pdf)" });
+              }
+            } catch (err) {
+              report.errors.push({ field: `${page.id}.${fieldName}`, message: err.message });
+            } finally {
+              await sleep(16); // same anti-race yield as FILL_FORM
+            }
+          }
+          return pageReport;
+        };
+
+        // ── Wizard loop ─────────────────────────────────────────────────────
+        // Safety cap: real Workday wizards are 5-8 pages; cap at 12 to catch
+        // a runaway loop (e.g. Next button that re-renders the same page).
+        const MAX_PAGES = 12;
+        for (let iter = 0; iter < MAX_PAGES; iter++) {
+          const page = iter === 0 ? detectPage() : await waitForAnyPage();
+          if (!page) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: "mount_timeout" });
+            return;
+          }
+          pagesVisited.push(page.id);
+
+          // Page marked 'todo' in workday.json — clean exit. Drain logs this as an
+          // error and moves on; user knows that page needs adapter expansion.
+          if (page.status === "todo") {
+            sendResponse({ report, unknownFields, pagesVisited, reason: `page_not_implemented:${page.id}` });
+            return;
+          }
+
+          await fillPage(page);
+
+          // Per-page unknowns — same scanner, scoped to the current DOM only.
+          // (Workday tears down old pages on Next, so unhandled elements from
+          // previous pages won't leak in.)
+          try {
+            const pageUnknowns = await scanUnknownFields(adapter, handledEls);
+            unknownFields.push(...pageUnknowns);
+          } catch (err) {
+            console.warn(`[Jobby/workday] unknown scan failed on ${page.id}:`, err.message);
+          }
+
+          // Review page = end of wizard. The drain.js step 7 (FILL_SUBMIT) will
+          // click the submit button on the existing global submit chain — which
+          // already includes [data-automation-id*='submit'] candidates? Not yet —
+          // FILL_SUBMIT needs a Workday selector added too. Tracked as a known
+          // gap in workday.json _v1_known_gaps.
+          if (page.id === "review" || page.next?.isSubmit) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: null });
+            return;
+          }
+
+          // Click Next button — same pointerClick path that fixed Ashby's mousedown
+          // commit (see 2026-05-27 DEVLOG). The Next button is typically right at
+          // the bottom of the viewport; scroll into view to be safe.
+          const nextBtn = page.next?.selector ? document.querySelector(page.next.selector) : null;
+          if (!nextBtn) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: `next_button_missing:${page.id}` });
+            return;
+          }
+          try {
+            nextBtn.scrollIntoView({ block: "center", behavior: "instant" });
+            await sleep(80);
+            pointerClick(nextBtn);
+          } catch (err) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: `next_click_failed:${page.id}:${err.message}` });
+            return;
+          }
+
+          // Brief settle — give Workday a moment to start the next-page mount
+          // before waitForAnyPage's poll loop takes over.
+          await sleep(500);
+        }
+        sendResponse({ report, unknownFields, pagesVisited, reason: "max_pages_exceeded" });
+      })();
+      return true;
+    }
+
     // ── FILL_SUBMIT — captcha guard + click the form's submit button ──────
     if (message.type === "FILL_SUBMIT") {
       (async () => {
@@ -749,7 +922,7 @@ if (!window.__jobbyAutofillInjected) {
         const okBtn     = (el) => visible(el) && !SKIP_RE.test(el.textContent || "");
 
         let submitBtn = Array.from(document.querySelectorAll(
-          'button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"]'
+          'button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"], button[data-automation-id="submitButton"], button[data-automation-id*="submit"]'
         )).find(okBtn);
 
         if (!submitBtn) {

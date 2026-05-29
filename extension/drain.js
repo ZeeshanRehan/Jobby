@@ -71,10 +71,13 @@ const state = {
 };
 
 const ATS_LABELS = {
-  all: "All ATS", round_robin: "Round-robin", greenhouse: "Greenhouse", ashby: "Ashby", lever: "Lever",
+  all: "All ATS", round_robin: "Round-robin",
+  greenhouse: "Greenhouse", ashby: "Ashby", lever: "Lever", workday: "Workday",
 };
-const ID_PREFIX  = { greenhouse: "gh_", ashby: "ashby_", lever: "lever_" };
-// TESTING ONLY — see state.rrIndex comment above.
+const ID_PREFIX  = { greenhouse: "gh_", ashby: "ashby_", lever: "lever_", workday: "workday_" };
+// TESTING ONLY — see state.rrIndex comment above. Workday excluded from the rotation
+// until v1 stabilizes (wizard handler is new code path; don't interleave it with the
+// single-page ATSes until it's proven on solo runs).
 const ROUND_ROBIN_ORDER = ["greenhouse", "ashby", "lever"];
 
 // ─── UI helpers ───────────────────────────────────────────────────────────────
@@ -325,6 +328,19 @@ async function claimNextJob() {
 async function fetchJD(job) {
   const prefix = ID_PREFIX[job.ats];
   if (!prefix) throw new Error(`JD fetch not implemented for ${job.ats}`);
+
+  // Workday URL shape: /jd/workday/:tenant/:wd/:site/{externalPath}
+  // The externalPath is parsed back out of apply_url since we didn't store it raw.
+  if (job.ats === "workday") {
+    const m = String(job.apply_url || "").match(/myworkdayjobs\.com\/[^/]+(\/job\/.+)$/);
+    if (!m) throw new Error(`workday apply_url shape unrecognized: ${job.apply_url}`);
+    const externalPath = m[1]; // starts with /job/
+    const { jobDescription, title, company } = await api(
+      `/jd/workday/${encodeURIComponent(job.workday_tenant)}/${encodeURIComponent(job.workday_wd)}/${encodeURIComponent(job.workday_site)}${externalPath}`
+    );
+    return { jobDescription, title, company };
+  }
+
   const rawId = String(job.id).replace(new RegExp(`^${prefix}`), "");
   const { jobDescription, title, company } = await api(
     `/jd/${job.ats}/${encodeURIComponent(job.board_token)}/${encodeURIComponent(rawId)}`
@@ -526,13 +542,19 @@ async function processJob(job) {
     return;
   }
 
-  // 5. Inject + FILL_FORM
+  // 5. Inject + FILL_FORM (or FILL_FORM_WORKDAY for multi-page Workday wizards)
+  // Workday is a multi-step wizard: detect page anchor → fill page fields → click
+  // Next → wait for next anchor → repeat → click Submit. New code path because the
+  // existing single-page handler can't loop pages. v1 only implements my_information
+  // + review; intermediate pages are TODOs in workday.json and the handler aborts
+  // cleanly with reason='page_not_implemented' on those.
+  const fillMsgType = job.ats === "workday" ? "FILL_FORM_WORKDAY" : "FILL_FORM";
   let report, unknownFields;
   try {
     setCurrent(job, "filling form");
     await injectAutofill(tabId);
     const sendFill = () => sendMessage(tabId, {
-      type: "FILL_FORM",
+      type: fillMsgType,
       adapter: applyData.adapter,
       profileData: applyData.profileData,
       resumePdf,
@@ -555,6 +577,22 @@ async function processJob(job) {
       resp = await sendFill();
       report = resp?.report || { filled: [], errors: [] };
       unknownFields = resp?.unknownFields || [];
+    }
+
+    // Workday-wizard abort paths: needs_login / page_not_implemented:* / next_button_missing /
+    // mount_timeout / max_pages_exceeded. The handler still returns a report + unknownFields
+    // for any pages it DID complete — we log those for the audit panel but skip submit and
+    // mark the queue record so the user can act on the reason.
+    if (job.ats === "workday" && resp?.reason) {
+      setDetailsForm(report, unknownFields.length);
+      await logStep(job, "fill_form", false,
+        `workday wizard halted: ${resp.reason}`,
+        { report, unknownCount: unknownFields.length, pagesVisited: resp.pagesVisited });
+      await updateQueue(job.id, "error", `workday: ${resp.reason}`, applyData.applicationId);
+      state.counts.errors += 1;
+      setDetailsResult("err", `Workday halted — ${resp.reason}`);
+      if (tabId) await closeTab(tabId);
+      return;
     }
 
     setDetailsForm(report, unknownFields.length);
