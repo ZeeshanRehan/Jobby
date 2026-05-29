@@ -817,7 +817,12 @@ if (!window.__jobbyAutofillInjected) {
         // a runaway loop (e.g. Next button that re-renders the same page).
         const MAX_PAGES = 12;
         for (let iter = 0; iter < MAX_PAGES; iter++) {
-          const page = iter === 0 ? detectPage() : await waitForAnyPage();
+          // Always poll (was: instant detectPage on iter 0). The first page is the
+          // heaviest — a full nav to apply_url — and Workday's SPA paints the Apply
+          // button ~2-3s in, after the drain's 1500ms pre-wait. Instant-checking it
+          // missed every time → mount_timeout. waitForAnyPage returns instantly when
+          // a page is already mounted, so there's no penalty on later iterations.
+          const page = await waitForAnyPage();
           if (!page) {
             // No known page mounted. Most common cause after the Apply-Manually click
             // is Workday's sign-in wall (an unknown page) — distinguish it from a true
