@@ -441,6 +441,26 @@ async function isLoginWall(tabId, adapter, errMsg) {
     const tab = await chrome.tabs.get(tabId);
     if (tab?.url && LOGIN_URL_RE.test(tab.url)) return true;
   } catch (_) { /* tab gone — fall through */ }
+
+  // Positive past-login discriminator — if a wizard-page wrapper is in the live DOM
+  // we're demonstrably INSIDE the application flow (past the SSO wall), so a teardown
+  // here is in-wizard navigation, NOT a login redirect. Probe BEFORE the teardown
+  // heuristic so an unvalidatable form page can't masquerade as needs_login (the
+  // my_information false-login bug). A literal SSO URL still wins (checked above). The
+  // in-flight-redirect catch is preserved: mid-redirect this anchor is gone, so we
+  // fall through to the heuristic exactly as before.
+  const postSel = adapter?.auth?.postLoginAnchor;
+  if (postSel) {
+    try {
+      const [res] = await chrome.scripting.executeScript({
+        target: { tabId },
+        func: (s) => !!document.querySelector(s),
+        args: [postSel],
+      });
+      if (res?.result) return false;
+    } catch (_) { /* tab/script gone mid-redirect — fall through */ }
+  }
+
   const sel = adapter?.auth?.loginAnchor;
   if (sel) {
     try {
@@ -466,8 +486,12 @@ function focusTab(tabId) {
 }
 
 // Shared bail-out: keep tab open + focused, mark needs_login, stop the loop.
-async function bailNeedsLogin(job, tabId, applyData) {
-  await logStep(job, "needs_login", false, "login wall — tab kept open for sign-in");
+// `info` carries diagnostics ({ report, pagesVisited, errMsg }) so the JSONL trace
+// shows WHAT filled + WHERE it stopped — on a teardown the handler's response is lost,
+// so this is the only record of how far the wizard got before the wall.
+async function bailNeedsLogin(job, tabId, applyData, info = {}) {
+  await logStep(job, "needs_login", false, "login wall — tab kept open for sign-in",
+    { report: info.report || null, pagesVisited: info.pagesVisited || null, errMsg: info.errMsg || null });
   await updateQueue(job.id, "needs_login", "login wall", applyData?.applicationId || null);
   state.counts.skipped += 1;
   setDetailsResult("skip", "Login required — sign in, then Reactivate + Start");
@@ -650,7 +674,7 @@ async function processJob(job) {
       setDetailsForm(report, unknownFields.length);
       // Login wall (anchor was present at scan time) — park, don't burn.
       if (resp.reason === "needs_login") {
-        await bailNeedsLogin(job, tabId, applyData);
+        await bailNeedsLogin(job, tabId, applyData, { report, pagesVisited: resp.pagesVisited });
         return;
       }
       await logStep(job, "fill_form", false,
@@ -671,7 +695,7 @@ async function processJob(job) {
     // A full-page nav to a login wall tears down the content script mid-fill, surfacing
     // as a generic "message channel closed" error. Inspect the tab before calling it a crash.
     if (tabId && await isLoginWall(tabId, applyData.adapter, err.message)) {
-      await bailNeedsLogin(job, tabId, applyData);
+      await bailNeedsLogin(job, tabId, applyData, { errMsg: err.message, report });
       return;
     }
     await logStep(job, "fill_form", false, err.message);

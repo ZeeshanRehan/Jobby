@@ -114,6 +114,77 @@ if (!window.__jobbyAutofillInjected) {
     commitBlur(el); // validation often only clears on blur
   }
 
+  // ─── Radio (grouped) ──────────────────────────────────────────────────────
+  // Picks the radio in a named group whose value matches (e.g. Workday's
+  // candidateIsPreviousWorker → "false" for No). Native click so React sees it.
+  function fillRadio(name, value) {
+    if (!name) return false;
+    const radio = document.querySelector(`input[name="${CSS.escape(name)}"][value="${CSS.escape(String(value))}"]`);
+    if (!radio) return false;
+    if (!radio.checked) radio.click();
+    return radio.checked;
+  }
+
+  // ─── Field value transforms ───────────────────────────────────────────────
+  // phoneNational: strip a leading +1 / 1 country code — Workday keeps the code in a
+  // separate (prefilled) Country Phone Code field, so the number field wants the rest.
+  function applyTransform(value, transform) {
+    if (transform === "phoneNational") return String(value).replace(/^\+?1[\s().-]*/, "").trim();
+    return value;
+  }
+
+  // ─── Workday prompt widgets (NOT react-select) ────────────────────────────
+  // Workday's selects portal their options to the body as [data-automation-id=
+  // 'promptOption'] (label in textContent / data-automation-label). One prompt is
+  // open at a time, so a document-wide query is safe here (unlike react-select).
+  // Each returns { ok, why?, shown? } so a miss is legible in report.errors —
+  // "0 options" vs "no match for X in [...]" tells us, on the next live run,
+  // whether the open failed or the match did. DOM-guess — needs live verify.
+  const WD_OPTION_SEL = "[data-automation-id='promptOption'], ul[role='listbox'] [role='option'], div[role='option']";
+
+  function readWdOptions() {
+    return Array.from(document.querySelectorAll(WD_OPTION_SEL)).filter((o) => o.offsetParent !== null);
+  }
+  function wdOptionText(o) {
+    return (o.getAttribute("data-automation-label") || o.textContent || "").trim();
+  }
+
+  // Single-select: click the trigger button → poll for the portalled listbox → pick.
+  async function fillWorkdayListbox(triggerEl, value) {
+    pointerClick(triggerEl);
+    let opts = [];
+    for (let t = 0; t < 12; t++) { await sleep(150); opts = readWdOptions(); if (opts.length) break; }
+    if (!opts.length) return { ok: false, why: "no options mounted" };
+    const texts = opts.map(wdOptionText);
+    const idx = bestOptionMatch(texts, value);
+    if (idx < 0) return { ok: false, why: `no match for '${value}' in [${texts.slice(0, 8).join(", ")}]` };
+    pointerClick(opts[idx]); opts[idx].click();
+    await sleep(120);
+    return { ok: true, shown: texts[idx] };
+  }
+
+  // Type-to-filter multiselect (e.g. How Did You Hear): focus → type the seed →
+  // poll until the filtered prompt settles → pick the best match (becomes a pill).
+  async function fillWorkdayMultiselect(inputEl, value) {
+    inputEl.focus(); pointerClick(inputEl);
+    setNativeValue(inputEl, String(value));
+    let opts = [];
+    for (let t = 0; t < 14; t++) {
+      await sleep(180);
+      opts = readWdOptions();
+      const txts = opts.map((o) => (o.textContent || "").trim());
+      const settling = txts.length === 0 || txts.some((x) => /^(loading|searching)/i.test(x));
+      if (!settling) break;
+    }
+    if (!opts.length) return { ok: false, why: "no options after typing" };
+    const texts = opts.map(wdOptionText);
+    const idx = bestOptionMatch(texts, value);
+    if (idx < 0) return { ok: false, why: `no match for '${value}' in [${texts.slice(0, 8).join(", ")}]` };
+    pointerClick(opts[idx]); opts[idx].click();
+    await sleep(120);
+    return { ok: true, shown: texts[idx] };
+  }
+
   // Full pointer sequence — Ashby (and react widgets) commit on mousedown, not a bare .click()
   function pointerClick(el) {
     el.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
@@ -774,37 +845,54 @@ if (!window.__jobbyAutofillInjected) {
         const fillPage = async (page) => {
           const pageReport = [];
           for (const [fieldName, fieldDef] of Object.entries(page.fields || {})) {
-            const { selector, type, source } = fieldDef;
+            const { selector, type, source, transform } = fieldDef;
             const el = document.querySelector(selector);
             if (!el) { report.stale.push(`${page.id}.${fieldName}`); continue; }
             handledEls.add(el);
+
+            const fieldKey = `${page.id}.${fieldName}`;
+            const recordFilled = (shown) => {
+              report.filled.push(fieldKey);
+              const entry = { field: fieldKey, label: labelFor(el, fieldName), value: shown };
+              report.filledDetails.push(entry); pageReport.push(entry);
+            };
+
+            // Value precedence: a literal `value` (radios / fixed picks like phoneType=Mobile)
+            // overrides the profile `source` path. Apply any field transform after resolving.
+            let value = fieldDef.value != null ? fieldDef.value : resolvePath(profileData, source);
+            if (value != null && transform) value = applyTransform(value, transform);
+
             try {
-              if (type === "text") {
-                const value = resolvePath(profileData, source);
-                if (value == null || value === "") { report.skipped.push(`${page.id}.${fieldName}`); continue; }
-                fillText(el, String(value));
-                report.filled.push(`${page.id}.${fieldName}`);
-                const entry = { field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: String(value) };
-                report.filledDetails.push(entry);
-                pageReport.push(entry);
-              } else if (type === "combobox") {
-                const value = resolvePath(profileData, source);
-                if (value == null || value === "") { report.skipped.push(`${page.id}.${fieldName}`); continue; }
-                const ok = await fillCombobox(el, String(value));
-                if (ok) {
-                  report.filled.push(`${page.id}.${fieldName}`);
-                  const entry = { field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: String(value) };
-                  report.filledDetails.push(entry); pageReport.push(entry);
-                } else {
-                  report.errors.push({ field: `${page.id}.${fieldName}`, message: "combobox pick failed" });
-                }
-              } else if (type === "file") {
+              if (type === "file") {
                 fillFile(el, resumePdf);
-                report.filled.push(`${page.id}.${fieldName}`);
-                report.filledDetails.push({ field: `${page.id}.${fieldName}`, label: labelFor(el, fieldName), value: "(resume.pdf)" });
+                recordFilled("(resume.pdf)");
+                continue;
+              }
+              if (value == null || value === "") { report.skipped.push(fieldKey); continue; }
+
+              if (type === "text") {
+                fillText(el, String(value));
+                recordFilled(String(value));
+              } else if (type === "radio") {
+                // el is the first radio of the group; pick the option whose value matches.
+                fillRadio(el.name, value)
+                  ? recordFilled(String(value))
+                  : report.errors.push({ field: fieldKey, message: `radio value '${value}' not found` });
+              } else if (type === "combobox") {
+                (await fillCombobox(el, String(value)))
+                  ? recordFilled(String(value))
+                  : report.errors.push({ field: fieldKey, message: "combobox pick failed" });
+              } else if (type === "workdayListbox") {
+                const r = await fillWorkdayListbox(el, value);
+                r.ok ? recordFilled(String(r.shown ?? value))
+                     : report.errors.push({ field: fieldKey, message: `listbox: ${r.why}` });
+              } else if (type === "workdayMultiselect") {
+                const r = await fillWorkdayMultiselect(el, value);
+                r.ok ? recordFilled(String(r.shown ?? value))
+                     : report.errors.push({ field: fieldKey, message: `multiselect: ${r.why}` });
               }
             } catch (err) {
-              report.errors.push({ field: `${page.id}.${fieldName}`, message: err.message });
+              report.errors.push({ field: fieldKey, message: err.message });
             } finally {
               await sleep(16); // same anti-race yield as FILL_FORM
             }
@@ -816,6 +904,7 @@ if (!window.__jobbyAutofillInjected) {
         // Safety cap: real Workday wizards are 5-8 pages; cap at 12 to catch
         // a runaway loop (e.g. Next button that re-renders the same page).
         const MAX_PAGES = 12;
+        let lastFilledPageId = null;
         for (let iter = 0; iter < MAX_PAGES; iter++) {
           // Always poll (was: instant detectPage on iter 0). The first page is the
           // heaviest — a full nav to apply_url — and Workday's SPA paints the Apply
@@ -831,6 +920,19 @@ if (!window.__jobbyAutofillInjected) {
               ? "needs_login"
               : "mount_timeout";
             sendResponse({ report, unknownFields, pagesVisited, reason });
+            return;
+          }
+
+          // Stuck guard — we filled this exact field-page last iteration and clicked
+          // Next, yet here it is again → Workday's validation blocked the advance (a
+          // required field we couldn't satisfy). Return WITH the report so drain logs
+          // what filled + the per-field errors, instead of silently re-looping into a
+          // 60s message-timeout teardown — which isLoginWall would then mis-read as
+          // needs_login (the my_information false-login bug). Gated to field-pages so
+          // the field-less nav pages (posting/start_application) keep relying on the
+          // reorder + MAX_PAGES cap, not this.
+          if (page.id === lastFilledPageId && Object.keys(page.fields || {}).length > 0) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: `stuck_on:${page.id}` });
             return;
           }
           pagesVisited.push(page.id);
@@ -880,6 +982,7 @@ if (!window.__jobbyAutofillInjected) {
             sendResponse({ report, unknownFields, pagesVisited, reason: `next_click_failed:${page.id}:${err.message}` });
             return;
           }
+          lastFilledPageId = page.id; // for the stuck guard — if this page re-detects, Next didn't take
 
           // Brief settle — give Workday a moment to start the next-page mount
           // before waitForAnyPage's poll loop takes over.

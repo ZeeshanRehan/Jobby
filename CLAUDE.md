@@ -208,17 +208,21 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-30 (Workday 4th-ATS session). **HEAD = `96bd12f`.**
+**Date:** 2026-05-30 (Workday session, cont'd). **HEAD = tip of this session (my_information widgets + false-needs_login fix — see git log top).**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; **adapter JSON is read fresh per
 request (`readFileSync` in apply.js), so adapter edits are live with NO restart/reload.** Extension edits
 (autofill.js, drain.js) need git push → local pull → Chrome reload. **I'm on the VPS, NO Chrome — server
 pipeline I smoke-test; live DOM fill/submit runs in user's local Chrome.**
 
-**STATUS: GH + Ashby + Lever still submit-verified. Workday = 4th ATS, IN PROGRESS — read+fill path built,
-NOT submit-verified.** Workday is structurally different: multi-page wizard behind a **per-tenant login
-wall**; `apply_url` is the job POSTING page, not the form. **Zero-touch impossible** — best case = one-time
-manual login per tenant, then unattended (session persists in Chrome profile). This is the cred-custody
-SaaS blocker showing early. Seed tuple: nvidia/wd5/NVIDIAExternalCareerSite (live, 2000 jobs).
+**STATUS: GH + Ashby + Lever still submit-verified. Workday = 4th ATS, IN PROGRESS.** Reorder `96bd12f`
+**VERIFIED LIVE this session** — drain reached my_information through the method menu, no loop, no
+`max_pages_exceeded`. my_information now has handlers for **all 6 required fields** (text/radio + the new
+`workdayMultiselect` for How-Did-You-Hear, `workdayListbox` for Phone Device Type) — **UNVERIFIED live;
+DOM-guess against Workday's `promptOption` portal pattern, needs one run.** Workday is structurally
+different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the job POSTING page, not
+the form. **Zero-touch impossible** — one-time manual login per tenant, then unattended (session persists
+in Chrome profile). This is the cred-custody SaaS blocker showing early. Seed tuple:
+nvidia/wd5/NVIDIAExternalCareerSite (live, 2000 jobs).
 
 **Workday flow:** posting → click Apply (`adventureButton`) → method menu → click Apply Manually
 (`applyManually`) → sign-in wall (→ `needs_login`) OR my_information → fill → Next → my_experience
@@ -233,8 +237,17 @@ my_information, review`; 4 middle pages = todo stubs that abort clean.
 - mount_timeout: wizard iter-0 used instant `detectPage()`, missed Workday's ~3s SPA paint → now polls
   `waitForAnyPage()`. (`e01e4a0`)
 - max_pages_exceeded (menu re-opened forever): `/apply` keeps `adventureButton` in DOM beside the menu,
-  `posting` re-matched first → reordered `start_application` before `posting`. (`96bd12f`, **UNVERIFIED —
-  user cleared right after; re-run to confirm it advances past the menu**)
+  `posting` re-matched first → reordered `start_application` before `posting`. (`96bd12f`, **VERIFIED LIVE
+  2026-05-30 — drain advanced posting→menu→Apply Manually→my_information, no loop.**)
+
+**False-needs_login on my_information (FIXED this session, unverified live — 2026-05-30 DEVLOG):** once past
+the wall, an unvalidatable my_information (2 required widgets had NO handler) looped → script teardown /
+60s `message timeout` → `isLoginWall` layer-3 teardown heuristic mis-read it as a login wall (logged
+`needs_login`, dropped the fill report). Three fixes shipped together: (1) built the 2 widget handlers; (2)
+`isLoginWall` now probes `auth.postLoginAnchor` (`applyFlowPage`, wraps every wizard page) FIRST — present =
+past login = teardown was in-wizard, return false; (3) wizard loop `stuck_on:<page>` guard returns WITH the
+report when a field-page re-detects after Next, so a validation block is a clean logged abort, not a silent
+loop. `bailNeedsLogin` now logs report+pagesVisited+errMsg.
 
 **Submit selector chain (autofill.js FILL_SUBMIT — current order):**
 1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"], button[data-automation-id="submitButton"], button[data-automation-id*="submit"]` (last two = Workday)
@@ -259,12 +272,23 @@ Round-robin needs an explicit dropdown selection. To live-verify next session: p
 target=6, expect 2 of each ATS.
 
 **Next up (in priority order):**
-1. **Verify Workday reorder (`96bd12f`)** — re-run drain Workday target=1. Expect: Apply → Apply Manually (once, no loop) → `needs_login` first run (auth NVIDIA Workday manually in Chrome profile once) → re-run → my_information fills → `page_not_implemented:my_experience` = v1 milestone. Open snags: `applyManually` click may not navigate; addressSection may force a required country/state combobox (not in adapter) blocking Next.
-2. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages (questions/voluntary/self-id) through the existing unknown-scan + AI-fallback path. Add Workday SSO assist (v1.5) for the login wall.
-3. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT, unaddressed; ships bad data on every GH/Ashby/Lever run)
-4. Live-verify round-robin mode (target=6, expect 2 of each ATS); note ROUND_ROBIN_ORDER excludes workday on purpose
-5. AI Q/A persistence on popup-autofill flow (drain has it, popup doesn't)
-6. Widen seed list; V4 dashboard; strip round-robin path (deferred)
+1. **Live-verify Workday my_information full fill (THIS session's build — UNVERIFIED).** Needs push → local
+   pull → Chrome reload (extension code changed). Then drain Workday target=1 (NVIDIA already authed → goes
+   straight to my_information; else `needs_login` once, sign in, re-run). Expect: all 6 fill incl.
+   How-Did-You-Hear=LinkedIn (`workdayMultiselect`), Phone Device Type=Mobile (`workdayListbox`),
+   previously-worked=No (`radio`) → advances → `page_not_implemented:my_experience` = **v1 milestone.** If a
+   widget misses, drain.jsonl now logs WHY (`listbox: no options mounted` / `multiselect: no match for
+   'LinkedIn' in [...]`) and the loop returns `stuck_on:my_information` WITH the report — read that, don't
+   re-read it as a login wall. **Likely snag:** NVIDIA may require Address (deferred from the adapter on
+   purpose) → `stuck_on:my_information` (legible) → add `addressSection` fields back + handle the
+   country/state combobox.
+2. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages
+   (questions/voluntary/self-id) through the existing unknown-scan + AI-fallback path. Workday SSO assist (v1.5).
+3. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT,
+   unaddressed; ships bad data on every GH/Ashby/Lever run).
+4. Live-verify round-robin mode (target=6, expect 2 of each ATS); ROUND_ROBIN_ORDER excludes workday on purpose.
+5. AI Q/A persistence on popup-autofill flow (drain has it, popup doesn't).
+6. Widen seed list; V4 dashboard; strip round-robin path (deferred).
 
 **Useful one-liners (no `jq` on VPS — node only):**
 ```

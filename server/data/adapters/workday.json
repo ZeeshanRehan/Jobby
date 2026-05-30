@@ -1,6 +1,6 @@
 {
   "platform": "workday",
-  "version": "2026-05-28-v1-skeleton",
+  "version": "2026-05-30-v1-myinfo",
   "detect": ["myworkdayjobs.com"],
   "schema": "pages",
   "_notes": [
@@ -12,9 +12,10 @@
     "tenants for the standard application wizard."
   ],
   "auth": {
-    "loginRequired": true,
-    "loginAnchor":   "[data-automation-id='signInLink'], [data-automation-id='accountLink']",
-    "_note":         "Drain detects the login wall via these selectors and fails-fast the job with reason='needs_login'. v1.5 will add watchMode SSO assist; v2 will auto-click Google OAuth (manifest grant for accounts.google.com required)."
+    "loginRequired":   true,
+    "loginAnchor":     "[data-automation-id='signInLink'], [data-automation-id='accountLink']",
+    "postLoginAnchor": "[data-automation-id='applyFlowPage']",
+    "_note":           "loginAnchor → fail-fast needs_login. postLoginAnchor wraps EVERY in-wizard page: drain.isLoginWall probes it on a teardown error — present means we're past the SSO wall, so the teardown was in-wizard nav, NOT a login redirect (kills the my_information false-needs_login bug, 2026-05-30 DEVLOG). v1.5 watchMode SSO assist; v2 auto-click Google OAuth (manifest grant for accounts.google.com)."
   },
   "pages": [
     {
@@ -25,7 +26,7 @@
       "fields": {},
       "next": {
         "selector": "a[data-automation-id='applyManually']",
-        "expectedNextAnchor": "[data-automation-id='legalNameSection']"
+        "expectedNextAnchor": "[data-automation-id='applyFlowMyInfoPage']"
       }
     },
     {
@@ -42,18 +43,18 @@
     {
       "id":     "my_information",
       "status": "ready",
-      "anchor": "[data-automation-id='legalNameSection']",
+      "anchor": "[data-automation-id='applyFlowMyInfoPage']",
+      "_note":  "Selectors verified against real NVIDIA my_information DOM (2026-05-30). Anchor = applyFlowMyInfoPage (specific to this page; applyFlowPage wraps EVERY wizard page → would false-match). v1 fills REQUIRED fields only — Country + Country Phone Code are pre-filled by Workday (USA / +1) so untouched, Email is read-only text. Address (city/state/zip) is DEFERRED to step 2: profile.contact.address.street is empty, and a partial address can trip Workday's address validation and block Save & Continue — which would mask whether a required field failed. Prove required-only advances first.",
       "fields": {
-        "firstName": { "selector": "input[data-automation-id='legalNameSection_firstName']", "type": "text", "source": "identity.firstName" },
-        "lastName":  { "selector": "input[data-automation-id='legalNameSection_lastName']",  "type": "text", "source": "identity.lastName" },
-        "email":     { "selector": "input[data-automation-id='email']",                       "type": "text", "source": "contact.email" },
-        "phone":     { "selector": "input[data-automation-id='phone-number']",                "type": "text", "source": "contact.phone" },
-        "addressLine1":{ "selector":"input[data-automation-id='addressSection_addressLine1']","type": "text", "source": "contact.address.street" },
-        "city":      { "selector": "input[data-automation-id='addressSection_city']",         "type": "text", "source": "contact.address.city" },
-        "postalCode":{ "selector": "input[data-automation-id='addressSection_postalCode']",   "type": "text", "source": "contact.address.zip" }
+        "source":         { "selector": "[data-automation-id='formField-source'] input[data-uxi-widget-type='selectinput']", "type": "workdayMultiselect", "value": "LinkedIn", "_note": "How Did You Hear About Us — required. value is a search seed; handler bestOptionMatches the live filtered options." },
+        "previousWorker": { "selector": "input[name='candidateIsPreviousWorker']", "type": "radio", "value": "false", "_note": "Have you previously worked for NVIDIA — default No (value=false)." },
+        "firstName":      { "selector": "input[name='legalName--firstName']", "type": "text", "source": "identity.firstName" },
+        "lastName":       { "selector": "input[name='legalName--lastName']",  "type": "text", "source": "identity.lastName" },
+        "phoneType":      { "selector": "[data-automation-id='formField-phoneType'] button[aria-haspopup='listbox']", "type": "workdayListbox", "value": "Mobile", "_note": "Phone Device Type — required." },
+        "phoneNumber":    { "selector": "input[name='phoneNumber']", "type": "text", "source": "contact.phone", "transform": "phoneNational", "_note": "Strip the +1 country code — it lives in the separate prefilled Country Phone Code field." }
       },
       "next": {
-        "selector": "button[data-automation-id='bottom-navigation-next-button'], button[data-automation-id='pageFooterNextButton']",
+        "selector": "button[data-automation-id='pageFooterNextButton'], button[data-automation-id='bottom-navigation-next-button']",
         "expectedNextAnchor": "[data-automation-id='myExperiencePage'], [data-automation-id='resumePage']"
       }
     },

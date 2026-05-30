@@ -9,6 +9,74 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-30 — Workday my_information: reorder VERIFIED, false-needs_login on a stuck form, + the 2 missing widget handlers  ·  FIXED (unverified live)
+
+**What we set out to do.** Verify the menu-reorder fix (`96bd12f`, prior entry left it UNVERIFIED). Re-ran
+drain Workday target=1.
+
+**Reorder = VERIFIED.** Run 1 hit the Google SSO wall (`needs_login`, correct). User signed in manually,
+Reactivated, re-ran. Run 2 sailed posting → Apply → method menu → **Apply Manually once, no loop** → landed
+on **my_information** and started filling. No `max_pages_exceeded`. The `start_application`-before-`posting`
+order does win the menu click. Done.
+
+**Then the real bug (user-visible).** my_information filled *something* (user saw "Country: United States of
+America") then "broke saying it needs a submit or login wall — which is FALSE, it was ON my_information."
+drain.jsonl backed the complaint: **every nvidia run logged `needs_login` with NO `fill_form` entry** — so
+the fill happened but was recorded as a login wall and the report was thrown away.
+
+**Root cause (chain).**
+1. **my_information had 3 unsatisfiable required fields.** The adapter (rewritten last session against the
+   real NVIDIA DOM) declares `source` (How Did You Hear → `workdayMultiselect`) and `phoneType` (Phone Device
+   Type → `workdayListbox`) — **neither widget type had a handler in `fillPage`** (the code literally said
+   `// workdayListbox / workdayMultiselect handlers land with the open-state DOM capture.`). Plus
+   `previousWorker` (radio) — its handler existed in the working tree but was **uncommitted/unpushed**, so the
+   user's Chrome ran an older autofill.js without it. Three required fields blank → Workday won't validate →
+   Next does nothing.
+2. **Stuck form → teardown → mislabeled as login.** The wizard loop re-detected my_information every iteration
+   and re-clicked Next, until either the content script tore down or the drain's 60s `AUTOFILL_TIMEOUT_MS`
+   elapsed → `message timeout`. Both match `SCRIPT_TEARDOWN_RE`.
+3. **`isLoginWall` layer-3 false-fired.** On my_information layer-1 (URL) and layer-2 (loginAnchor DOM probe)
+   both come back negative — there's no `signInLink` on the form — so it fell straight to layer-3
+   (`loginRequired && SCRIPT_TEARDOWN_RE.test(errMsg)`) and returned **true**. That heuristic exists for a real
+   reason (the SSO redirect tears the script down before URL/anchor have updated), but it can't tell an
+   in-wizard teardown from a login redirect. → `bailNeedsLogin`, which logged only the string and dropped the
+   report.
+
+**Diagnosis was by elimination, off the log — not the verbal report.** The handler only RETURNS
+`reason:'needs_login'` when `loginAnchor` is in the DOM (impossible on my_information), so a no-`fill_form`
+needs_login could only come from the drain catch → `isLoginWall` teardown path. Confirmed.
+
+**Advisor steer that reordered the work.** First instinct was "build the 2 handlers, the false-login is then
+moot." Wrong: the handlers are an **unverified DOM guess**; if they miss, my_information stays stuck and emits
+the *identical* `needs_login` lie — and now you can't tell "handler missed" from "real login," burning another
+scarce live run. So **legibility had to ship in the same push as the handlers.** Also: stuck-detection alone
+only covers the loop→timeout mechanism, not die-on-first-Next (`message channel closed` before iter+1) — so
+the `isLoginWall` fix is not redundant with it.
+
+**Fix (all one push).**
+- **Built the 2 widget handlers** (`fillWorkdayListbox`, `fillWorkdayMultiselect`, autofill.js) against
+  Workday's `[data-automation-id='promptOption']` portal pattern. Each returns `{ ok, why?, shown? }` so a miss
+  is legible in `report.errors`: `no options mounted` (open failed) vs `no match for 'Mobile' in [...]` (match
+  failed). DOM-guess — flagged unverified.
+- **`isLoginWall` positive discriminator** (drain.js): probes `auth.postLoginAnchor`
+  (`[data-automation-id='applyFlowPage']`, wraps every in-wizard page) BEFORE the teardown heuristic. Present →
+  past the wall → return false regardless of errMsg. The in-flight-redirect catch is preserved (mid-redirect
+  that anchor is gone → falls through to the heuristic as before).
+- **`stuck_on:<page>` guard** in the wizard loop: track `lastFilledPageId`; if a *field-page* re-detects after
+  a Next click, return with the report instead of re-looping into a timeout. Gated to field-pages so the
+  field-less nav pages keep relying on the reorder + MAX_PAGES cap.
+- **`bailNeedsLogin` now logs** `{ report, pagesVisited, errMsg }` — on a teardown the handler response is lost,
+  so this is the only record of how far it got.
+
+**Verification status.** Reorder = verified live. The 4 fixes above = **NOT verified live** (VPS has no Chrome;
+DOM behavior is live-only truth). Next run proves whether the widgets open+pick and whether the false-login is
+gone. If a widget still misses, the new diagnostics + `stuck_on` say exactly where — that's the point.
+
+**Known follow-on.** Address (city/state/zip) was deferred from the adapter; if NVIDIA requires it, expect a
+clean `stuck_on:my_information` (not a crash) → add `addressSection` back + the country/state combobox.
+
+---
+
 ## 2026-05-30 — Workday login wall burned jobs as crashes + skipped to next on re-run  ·  FIXED (unverified live)
 
 **Symptom (user).** Drain auto-opens, tailors, opens the apply tab; the moment the "Sign in with Google" wall appears it closes the tab, returns to the controller, and re-running grabs a *different* job — "like it thinks it already applied."
