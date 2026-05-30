@@ -4313,5 +4313,201 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "7f1fc480-3c63-4291-adad-5e2a16826f89",
+    "timestamp": "2026-05-29T22:25:45.878Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Materials-Manager_JR2016675",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7f1fc480-3c63-4291-adad-5e2a16826f89.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83ZjFmYzQ4MC0zYzYzLTQyOTEtYWRhZC01ZTJhMTY4MjZmODkucGRmIiwiaWF0IjoxNzgwMDkzNTQ1LCJleHAiOjE3ODAwOTcxNDV9.ZkvH8U6zsySJNoy8nYJ8EZ2ysJIs1GlycZthaM8c7V8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7f1fc480-3c63-4291-adad-5e2a16826f89.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "SAP",
+        "MRP",
+        "ERP",
+        "Lean",
+        "Six Sigma",
+        "Supply Chain Management",
+        "Procurement",
+        "Inventory Management",
+        "Demand Forecasting",
+        "Supplier Management"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "SAP",
+      "MRP",
+      "ERP",
+      "Lean",
+      "Six Sigma",
+      "Supply Chain Management",
+      "Procurement",
+      "Inventory Management",
+      "Demand Forecasting",
+      "Supplier Management"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "da17c68f-00e0-4785-adb4-8012d5f03538",
+    "timestamp": "2026-05-29T22:32:45.829Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/System-Speed-and-Reliability-Co-Design-Engineer_JR2018911-1",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_da17c68f-00e0-4785-adb4-8012d5f03538.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kYTE3YzY4Zi0wMGUwLTQ3ODUtYWRiNC04MDEyZDVmMDM1MzgucGRmIiwiaWF0IjoxNzgwMDkzOTY1LCJleHAiOjE3ODAwOTc1NjV9.bD0FfVNOi_p0glEDiGl3ZyIrd9M0uaOAFAUh-XbHgIM",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/da17c68f-00e0-4785-adb4-8012d5f03538.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Perl",
+        "JMP",
+        "Claude",
+        "Copilot",
+        "ChatGPT",
+        "Oscilloscopes",
+        "Multimeters",
+        "DAQ",
+        "PPA analysis",
+        "Silicon bring-up",
+        "Frequency characterization",
+        "Power characterization",
+        "Log analysis",
+        "Pattern detection",
+        "Prompt engineering",
+        "Agentic scripting",
+        "Android",
+        "Windows",
+        "Statistical analysis"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack and Python scripting to help communities share skills, services, and help."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and Claude, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Perl",
+      "JMP",
+      "Claude",
+      "Copilot",
+      "ChatGPT",
+      "Oscilloscopes",
+      "Multimeters",
+      "DAQ",
+      "PPA analysis",
+      "Silicon bring-up",
+      "Frequency characterization",
+      "Power characterization",
+      "Log analysis",
+      "Pattern detection",
+      "Prompt engineering",
+      "Agentic scripting",
+      "Android",
+      "Windows",
+      "Statistical analysis"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "b02e10da-c85b-48e9-8a11-d14dd6870c2b",
+    "timestamp": "2026-05-30T00:49:36.307Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8339221002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_b02e10da-c85b-48e9-8a11-d14dd6870c2b.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iMDJlMTBkYS1jODViLTQ4ZTktOGExMS1kMTRkZDY4NzBjMmIucGRmIiwiaWF0IjoxNzgwMTAyMTc2LCJleHAiOjE3ODAxMDU3NzZ9.Oq1I-8Hd0X5Uq8W5q-JuYM-HG-mFWacQFNiPs9CnxZ8",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/b02e10da-c85b-48e9-8a11-d14dd6870c2b.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "SLSA",
+        "SBOM",
+        "Software Composition Analysis",
+        "Artifact Provenance",
+        "Secrets Management",
+        "Container Security",
+        "Vulnerability Management",
+        "GitLab CI/CD",
+        "Attestation",
+        "Verification"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "SLSA",
+      "SBOM",
+      "Software Composition Analysis",
+      "Artifact Provenance",
+      "Secrets Management",
+      "Container Security",
+      "Vulnerability Management",
+      "GitLab CI/CD",
+      "Attestation",
+      "Verification"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "3b6215ae-0f95-489d-8e46-b8edeb201ae6",
+    "timestamp": "2026-05-30T00:49:41.284Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/China-Shanghai/Senior-System-Validation-Methodology-Engineer_JR2014734",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_3b6215ae-0f95-489d-8e46-b8edeb201ae6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zYjYyMTVhZS0wZjk1LTQ4OWQtOGU0Ni1iOGVkZWIyMDFhZTYucGRmIiwiaWF0IjoxNzgwMTAyMTgxLCJleHAiOjE3ODAxMDU3ODF9.2T11plCkjpVafXEg39f5sUFnKJXVHYETsz29UMhKGcg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/3b6215ae-0f95-489d-8e46-b8edeb201ae6.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

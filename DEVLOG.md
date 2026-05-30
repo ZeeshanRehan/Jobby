@@ -9,6 +9,31 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-30 — Workday login wall burned jobs as crashes + skipped to next on re-run  ·  FIXED (unverified live)
+
+**Symptom (user).** Drain auto-opens, tailors, opens the apply tab; the moment the "Sign in with Google" wall appears it closes the tab, returns to the controller, and re-running grabs a *different* job — "like it thinks it already applied."
+
+**What the log actually showed.** All nvidia/Workday. Last two runs died at `fill_form` with `A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received` — **not** the clean `needs_login`. Timing: `open_tab 22:32:48 → fill_form ERR 22:32:51` (~3s).
+
+**Root cause (two-layer).**
+1. **Wall invisible as a crash.** The whole multi-page wizard runs inside one in-flight `sendMessage` to the content script. "Apply Manually" triggers a **full-page nav to the sign-in wall**, which **tears down the content script** before the wizard's `loginAnchor` check (autofill.js:738/830) can run → the reply never comes → drain gets the generic "message channel closed" error → caught at the step-5 catch → marked `error` → **unconditionally `closeTab`**. The `needs_login` path existed but could never fire on a real nav.
+2. **Job silently burned, not "applied."** `/queue/next` only returns `status === "pending"` (queue.js:27). The walled job was marked `error` → no longer pending → next claim returns the *next* job. User read "skips to a new job" as "thinks it applied"; really the job was consumed.
+
+**Dead end avoided.** Didn't design off the verbal "sign in with Google" — read the log first (advisor steer). It disambiguated Workday-nav-teardown from a non-Workday submit failure; the fixes differ.
+
+**Fix (hybrid — chosen over in-place loop-suspend/resume for ~3× less code, no state machine).**
+- **Detect the wall even when the script dies:** new `isLoginWall(tabId, adapter)` in drain.js — `chrome.tabs.get().url` vs `LOGIN_URL_RE`, plus a fresh `executeScript` probe of the adapter's `loginAnchor` (re-injects into the post-nav page). URL is the reliable layer; the anchor is best-effort (can race the ~3s paint).
+- **Don't burn, don't close:** `bailNeedsLogin()` marks the job `needs_login` (re-claimable, not `error`), focuses the tab so the user can sign in, and stops the loop. Wired into both the step-5 catch (nav-teardown path) and the Workday `resp.reason === "needs_login"` branch (anchor-present path).
+- **Re-arm after one login:** `POST /queue/reactivate` (queue.js route) flips `needs_login → pending`, scoped to an optional `ats`. New "Reactivate login-blocked" button in drain.html. Session persists in the Chrome profile, so one sign-in per tenant unblocks all that tenant's jobs.
+
+**Why hybrid not in-place resume:** Workday's session persists profile-wide, so login is a one-time event the drain needn't orchestrate. Cost vs option 1 = one extra click (Start again) instead of an in-place Resume; saves loop-suspension + deferred-promise + re-inject-mid-flight machinery and its edge cases.
+
+**UNVERIFIED — the linchpin to check live:** does `isLoginWall` actually fire on NVIDIA's wall? `LOGIN_URL_RE` is a guess (can't see the real sign-in URL from the VPS); the anchor probe may run before the wall paints. **Discriminating check next run:** capture the wall tab's URL — confirm it matches `LOGIN_URL_RE` *or* `signInLink`/`accountLink` is present. If it misses, fallback (don't build yet): `job.ats === "workday"` + channel-closed *after* the Apply step has no other plausible cause → classify `needs_login` without the URL guess. **Expectation-setting:** detection working only gets *past* the wall — the very next run then advances to `my_information` and aborts `page_not_implemented:my_experience` (marked `error`). That error is the **next milestone, not a regression.** Minor: the parked wall tab is left open (orphan clutter; cookies are profile-wide so it's harmless).
+
+Files: `extension/drain.js`, `extension/drain.html`, `server/routes/queue.js`. Not yet committed.
+
+---
+
 ## 2026-05-30 — Workday 4th-ATS: crash-loop + 3 wizard bugs (apply-preamble, iter-0 race, menu loop)  ·  FIXED (Workday unverified live past my_information)
 
 Adding Workday as 4th ATS. Picked up a half-built scaffold (workdayBoard.js, workday.json, FILL_FORM_WORKDAY handler). Four distinct bugs, each surfaced by a separate live drain run.

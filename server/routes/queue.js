@@ -69,6 +69,26 @@ router.post("/mark-applied", (req, res) => {
   res.json({ ok: true });
 });
 
+// Flip login-blocked jobs back to pending after a one-time manual sign-in. A login
+// wall (e.g. Workday's per-tenant SSO) can't be crossed unattended, so the drain
+// parks those jobs as `needs_login` instead of burning them as `error`. Once the
+// session persists in the Chrome profile, this re-arms them for the next run.
+// Body: { ats? } — scope to one ATS, or omit/`all` for every source. Returns { reactivated }.
+router.post("/reactivate", (req, res) => {
+  const { ats } = req.body || {};
+  const queue = readQueue();
+  let reactivated = 0;
+  for (const r of queue) {
+    if (r.status !== "needs_login") continue;
+    if (ats && ats !== "all" && r.ats !== ats) continue;
+    r.status     = "pending";
+    r.updated_at = new Date().toISOString();
+    reactivated += 1;
+  }
+  if (reactivated) writeQueue(queue);
+  res.json({ reactivated });
+});
+
 // Summary for the controller's header — total / pending / in_progress / done / error
 router.get("/stats", (req, res) => {
   const ats = req.query.ats;

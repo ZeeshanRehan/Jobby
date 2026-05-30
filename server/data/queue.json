@@ -774,11 +774,11 @@
     "location": "Remote, Canada; Remote, Israel; Remote, United Kingdom; Remote, US",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8339221002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "in_progress",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-30T00:49:20.249Z"
   },
   {
     "id": "gh_8478405002",
@@ -29067,14 +29067,15 @@
     "location": "US, CA, Santa Clara",
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Materials-Manager_JR2016675",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "workday: max_pages_exceeded",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-05-29T22:26:08.954Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "7f1fc480-3c63-4291-adad-5e2a16826f89"
   },
   {
     "id": "workday_nvidia_JR2018911__job_US_CA_Santa_Clara_System_Speed_and_Reliability_Co_Design_Engineer_JR2018911_1",
@@ -29086,14 +29087,15 @@
     "location": "US, CA, Santa Clara",
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/System-Speed-and-Reliability-Co-Design-Engineer_JR2018911-1",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "fill_form: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-05-29T22:32:51.817Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "da17c68f-00e0-4785-adb4-8012d5f03538"
   },
   {
     "id": "workday_nvidia_JR2014734__job_China_Shanghai_Senior_System_Validation_Methodology_Engineer_JR2014734",
@@ -29105,14 +29107,15 @@
     "location": "China, Shanghai",
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/China-Shanghai/Senior-System-Validation-Methodology-Engineer_JR2014734",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "fill_form: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-05-30T00:49:47.597Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "3b6215ae-0f95-489d-8e46-b8edeb201ae6"
   },
   {
     "id": "workday_nvidia_JR2018056__job_Israel_Tel_Aviv_Senior_Lab_DSP_Communication_Engineer_JR2018056",

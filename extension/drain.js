@@ -16,6 +16,7 @@ const $ = (id) => document.getElementById(id);
 const els = {
   startBtn:     $("startBtn"),
   stopBtn:      $("stopBtn"),
+  reactivateBtn:$("reactivateBtn"),
   targetCount:  $("targetCount"),
   atsSelect:    $("atsSelect"),
   atsPill:      $("atsPill"),
@@ -413,6 +414,55 @@ function closeTab(tabId) {
   return new Promise((resolve) => chrome.tabs.remove(tabId, resolve));
 }
 
+// ─── Login-wall handling ────────────────────────────────────────────────────────
+// A login wall (Workday's per-tenant sign-in, "Sign in with Google", etc) can't be
+// crossed unattended. When we hit one we DON'T close the tab or burn the job: we
+// focus the tab so the user can sign in once (session persists in the Chrome
+// profile), mark the job 'needs_login' (re-claimable via Reactivate, not 'error'),
+// and stop the loop. After one sign-in per tenant, re-running sails through.
+const LOGIN_URL_RE = /\/(login|sign[-_]?in|signin|authn)\b|accounts\.google\.com|login\.microsoftonline\.com|okta\.com/i;
+
+// True if the tab is parked on a login/SSO wall. A full-page nav to the wall tears
+// down the in-flight content script, so we re-inject a one-off probe for the
+// adapter's loginAnchor (survives teardown) and fall back to a URL heuristic for
+// off-origin SSO pages (Google, Microsoft, Okta) where the anchor won't exist.
+async function isLoginWall(tabId, adapter) {
+  try {
+    const tab = await chrome.tabs.get(tabId);
+    if (tab?.url && LOGIN_URL_RE.test(tab.url)) return true;
+  } catch (_) { /* tab gone — fall through */ }
+  const sel = adapter?.auth?.loginAnchor;
+  if (!sel) return false;
+  try {
+    const [res] = await chrome.scripting.executeScript({
+      target: { tabId },
+      func: (s) => !!document.querySelector(s),
+      args: [sel],
+    });
+    return !!res?.result;
+  } catch (_) { return false; }
+}
+
+function focusTab(tabId) {
+  return new Promise((resolve) => {
+    chrome.tabs.update(tabId, { active: true }, (tab) => {
+      if (tab && tab.windowId != null) chrome.windows.update(tab.windowId, { focused: true }, () => resolve());
+      else resolve();
+    });
+  });
+}
+
+// Shared bail-out: keep tab open + focused, mark needs_login, stop the loop.
+async function bailNeedsLogin(job, tabId, applyData) {
+  await logStep(job, "needs_login", false, "login wall — tab kept open for sign-in");
+  await updateQueue(job.id, "needs_login", "login wall", applyData?.applicationId || null);
+  state.counts.skipped += 1;
+  setDetailsResult("skip", "Login required — sign in, then Reactivate + Start");
+  if (tabId) await focusTab(tabId); // keep open, bring to front so the user can sign in
+  state.stopRequested = true;
+  showError("Login wall hit. Sign in to this ATS in the focused tab, then click “Reactivate login-blocked” and Start again. (One login per tenant — future jobs sail through.)");
+}
+
 async function injectAutofill(tabId) {
   await chrome.scripting.executeScript({
     target: { tabId },
@@ -585,6 +635,11 @@ async function processJob(job) {
     // mark the queue record so the user can act on the reason.
     if (job.ats === "workday" && resp?.reason) {
       setDetailsForm(report, unknownFields.length);
+      // Login wall (anchor was present at scan time) — park, don't burn.
+      if (resp.reason === "needs_login") {
+        await bailNeedsLogin(job, tabId, applyData);
+        return;
+      }
       await logStep(job, "fill_form", false,
         `workday wizard halted: ${resp.reason}`,
         { report, unknownCount: unknownFields.length, pagesVisited: resp.pagesVisited });
@@ -600,6 +655,12 @@ async function processJob(job) {
       `filled=${report.filled.length} errors=${report.errors.length} unknowns=${unknownFields.length}`,
       { report, unknownCount: unknownFields.length });
   } catch (err) {
+    // A full-page nav to a login wall tears down the content script mid-fill, surfacing
+    // as a generic "message channel closed" error. Inspect the tab before calling it a crash.
+    if (tabId && await isLoginWall(tabId, applyData.adapter)) {
+      await bailNeedsLogin(job, tabId, applyData);
+      return;
+    }
     await logStep(job, "fill_form", false, err.message);
     await updateQueue(job.id, "error", `fill_form: ${err.message}`, applyData.applicationId);
     state.counts.errors += 1;
@@ -742,6 +803,22 @@ els.detailsToggle.addEventListener("click", () => {
 els.stopBtn.addEventListener("click", () => {
   state.stopRequested = true;
   setStatus("stopped", "Stopping after current job…");
+});
+
+// Flip login-blocked jobs back to pending after a one-time manual sign-in. Scopes to
+// the selected ATS so logging into one tenant doesn't re-arm unrelated walls.
+els.reactivateBtn.addEventListener("click", async () => {
+  try {
+    const ats = els.atsSelect.value || "all";
+    const { reactivated } = await api("/queue/reactivate", {
+      method: "POST",
+      body: JSON.stringify({ ats }),
+    });
+    clearError();
+    setStatus("stopped", `Reactivated ${reactivated} login-blocked job(s) → pending. Click Start.`);
+  } catch (err) {
+    showError(`Reactivate failed: ${err.message}`);
+  }
 });
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
