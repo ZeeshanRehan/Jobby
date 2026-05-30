@@ -790,11 +790,12 @@
     "location": "Remote, India",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8478405002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-30T03:56:11.043Z",
+    "applicationId": "213ce683-5ee4-4ac6-ba5e-f6a9af6c3a28"
   },
   {
     "id": "gh_8522195002",
@@ -806,11 +807,12 @@
     "location": "Remote, Germany",
     "apply_url": "https://job-boards.greenhouse.io/gitlab/jobs/8522195002",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
+    "status": "done",
+    "attempts": 1,
     "last_error": null,
     "discovered_at": "2026-05-27T20:49:56.751Z",
-    "updated_at": "2026-05-27T20:49:56.751Z"
+    "updated_at": "2026-05-30T17:31:30.339Z",
+    "applicationId": "acdda0a7-5e45-4aeb-babf-0c3eb049a21f"
   },
   {
     "id": "gh_8523640002",
@@ -29168,13 +29170,14 @@
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
     "fillable": true,
     "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "attempts": 9,
+    "last_error": "login wall",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-05-30T18:06:44.426Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "581fe9ee-453d-4ab5-bd8e-8c13f18206b7"
   },
   {
     "id": "workday_nvidia_JR2018888__job_US_CA_Santa_Clara_Senior_Digital_Design_Engineer_JR2018888",
@@ -29187,13 +29190,14 @@
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Digital-Design-Engineer_JR2018888",
     "fillable": true,
     "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "attempts": 1,
+    "last_error": "login wall",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-05-30T17:07:41.959Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "739af906-f12e-4a59-99bc-eb54756e271c"
   },
   {
     "id": "workday_nvidia_JR2015674__job_US_OR_Hillsboro_Senior_Fortran_Compiler_Engineer_JR2015674",

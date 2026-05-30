@@ -238,5 +238,17 @@
   "https://jobs.ashbyhq.com/notable/2fbc50e2-8dc6-4380-bbad-a503cb80f7ff/application": {
     "timestamp": "2026-05-28T19:43:26.990Z",
     "applicationId": "82c63c56-59dd-4060-a21d-cf14ee5b5443"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8478405002": {
+    "timestamp": "2026-05-30T03:56:11.173Z",
+    "applicationId": "213ce683-5ee4-4ac6-ba5e-f6a9af6c3a28"
+  },
+  "https://job-boards.greenhouse.io/gitlab/jobs/8522195002": {
+    "timestamp": "2026-05-30T17:31:30.473Z",
+    "applicationId": "acdda0a7-5e45-4aeb-babf-0c3eb049a21f"
+  },
+  "https://nvidia.wd5.myworkdayjobs.com/en-us/nvidiaexternalcareersite/job/israel%2c-tel-aviv/senior-dsp-python-engineer_jr2018360/apply/applymanually": {
+    "timestamp": "2026-05-30T17:33:19.321Z",
+    "applicationId": "6bedc2e7-ed89-4ac0-bc0f-3ddbfe06bdd9"
   }
 }

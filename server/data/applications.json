@@ -4626,5 +4626,652 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "213ce683-5ee4-4ac6-ba5e-f6a9af6c3a28",
+    "timestamp": "2026-05-30T03:54:34.531Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8478405002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_213ce683-5ee4-4ac6-ba5e-f6a9af6c3a28.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yMTNjZTY4My01ZWU0LTRhYzYtYmE1ZS1mNmE5YWY2YzNhMjgucGRmIiwiaWF0IjoxNzgwMTEzMjc0LCJleHAiOjE3ODAxMTY4NzR9.c59n2htSWxLwwiLFBpr9Q7kjHLDbEZTnLWIgzcDfSUg",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/213ce683-5ee4-4ac6-ba5e-f6a9af6c3a28.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "SLSA",
+        "Sigstore",
+        "Package registries",
+        "Artifact signing",
+        "CI/CD pipeline security",
+        "Dependency management",
+        "Malicious package detection",
+        "Build provenance",
+        "Compliance frameworks"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "SLSA",
+      "Sigstore",
+      "Package registries",
+      "Artifact signing",
+      "CI/CD pipeline security",
+      "Dependency management",
+      "Malicious package detection",
+      "Build provenance",
+      "Compliance frameworks"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "f541d5c5-9f18-49c2-a171-149dfb38542a",
+    "timestamp": "2026-05-30T03:56:48.013Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_f541d5c5-9f18-49c2-a171-149dfb38542a.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mNTQxZDVjNS05ZjE4LTQ5YzItYTE3MS0xNDlkZmIzODU0MmEucGRmIiwiaWF0IjoxNzgwMTEzNDA3LCJleHAiOjE3ODAxMTcwMDd9.CK-C3xHi5EvErrsPUwf7GRLt4MOzOcJ4unjIHgzHKOI",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/f541d5c5-9f18-49c2-a171-149dfb38542a.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "MATLAB",
+        "Signal Processing",
+        "Concurrency",
+        "Parallelism",
+        "Multi-threading",
+        "Performance Profiling",
+        "Fixed-point Arithmetic",
+        "Data Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Python, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "MATLAB",
+      "Signal Processing",
+      "Concurrency",
+      "Parallelism",
+      "Multi-threading",
+      "Performance Profiling",
+      "Fixed-point Arithmetic",
+      "Data Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "e5abd485-68df-47b3-afba-73dc6523236e",
+    "timestamp": "2026-05-30T16:38:52.515Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_e5abd485-68df-47b3-afba-73dc6523236e.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9lNWFiZDQ4NS02OGRmLTQ3YjMtYWZiYS03M2RjNjUyMzIzNmUucGRmIiwiaWF0IjoxNzgwMTU5MTMyLCJleHAiOjE3ODAxNjI3MzJ9.22LlQeRp16bizR7OcbAhFwAQqo9HObuqCtu2ymfN0Qc",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/e5abd485-68df-47b3-afba-73dc6523236e.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "Fixed-point Arithmetic",
+        "Data Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "Fixed-point Arithmetic",
+      "Data Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "983acdc7-1630-4a52-a78d-175b47a8fe7f",
+    "timestamp": "2026-05-30T16:40:36.207Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_983acdc7-1630-4a52-a78d-175b47a8fe7f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85ODNhY2RjNy0xNjMwLTRhNTItYTc4ZC0xNzViNDdhOGZlN2YucGRmIiwiaWF0IjoxNzgwMTU5MjM2LCJleHAiOjE3ODAxNjI4MzZ9.GHsdgiB-Tkp851j6LV0CZg5RTkywycOw-zYpgLT2048",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/983acdc7-1630-4a52-a78d-175b47a8fe7f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "Fixed-point Arithmetic",
+        "Data Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "Fixed-point Arithmetic",
+      "Data Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "739af906-f12e-4a59-99bc-eb54756e271c",
+    "timestamp": "2026-05-30T17:07:05.364Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Digital-Design-Engineer_JR2018888",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_739af906-f12e-4a59-99bc-eb54756e271c.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83MzlhZjkwNi1mMTJlLTRhNTktOTliYy1lYjU0NzU2ZTI3MWMucGRmIiwiaWF0IjoxNzgwMTYwODI1LCJleHAiOjE3ODAxNjQ0MjV9.I_Y3EEYOTETNzefPCO8RQSwY0l71_P8EfyRmnxvZZ5Q",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/739af906-f12e-4a59-99bc-eb54756e271c.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "60e08de3-95bf-42ef-893e-f3c380a63ee9",
+    "timestamp": "2026-05-30T17:08:03.864Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_60e08de3-95bf-42ef-893e-f3c380a63ee9.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82MGUwOGRlMy05NWJmLTQyZWYtODkzZS1mM2MzODBhNjNlZTkucGRmIiwiaWF0IjoxNzgwMTYwODgzLCJleHAiOjE3ODAxNjQ0ODN9.KkG0xelZw9MizEG9uTRGk-bKfqW2Z65WieyhE4mZ-q0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/60e08de3-95bf-42ef-893e-f3c380a63ee9.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "DSP",
+        "Visualization",
+        "Numerical Computing",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "DSP",
+      "Visualization",
+      "Numerical Computing",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "d1b84c3d-0154-4bed-9604-4ecdd3aee162",
+    "timestamp": "2026-05-30T17:08:58.949Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d1b84c3d-0154-4bed-9604-4ecdd3aee162.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMWI4NGMzZC0wMTU0LTRiZWQtOTYwNC00ZWNkZDNhZWUxNjIucGRmIiwiaWF0IjoxNzgwMTYwOTM4LCJleHAiOjE3ODAxNjQ1Mzh9.9WAKbcnof3e861WaB4lmJS0oMlpIfdSLEKD3GMFS6io",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d1b84c3d-0154-4bed-9604-4ecdd3aee162.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Visualization",
+        "Debugging",
+        "CI/CD",
+        "Modular Architecture",
+        "Fixed-Point Arithmetic"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Visualization",
+      "Debugging",
+      "CI/CD",
+      "Modular Architecture",
+      "Fixed-Point Arithmetic"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "acdda0a7-5e45-4aeb-babf-0c3eb049a21f",
+    "timestamp": "2026-05-30T17:31:17.618Z",
+    "jobUrl": "https://job-boards.greenhouse.io/gitlab/jobs/8522195002",
+    "jobTitle": null,
+    "company": null,
+    "platform": "greenhouse",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_acdda0a7-5e45-4aeb-babf-0c3eb049a21f.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9hY2RkYTBhNy01ZTQ1LTRhZWItYmFiZi0wYzNlYjA0OWEyMWYucGRmIiwiaWF0IjoxNzgwMTYyMjc3LCJleHAiOjE3ODAxNjU4Nzd9.n45_OcGZ6zdi6ARL5G00eim0naCQtKTR4ChvEraTGWw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/acdda0a7-5e45-4aeb-babf-0c3eb049a21f.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Git",
+        "DevSecOps",
+        "Application Lifecycle Management",
+        "Sales Pipeline Management",
+        "Win/Loss Analysis"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Git-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Git",
+      "DevSecOps",
+      "Application Lifecycle Management",
+      "Sales Pipeline Management",
+      "Win/Loss Analysis"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "b6c306f3-8035-4736-b049-7b0e5ff4cbfc",
+    "timestamp": "2026-05-30T17:31:59.331Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_b6c306f3-8035-4736-b049-7b0e5ff4cbfc.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iNmMzMDZmMy04MDM1LTQ3MzYtYjA0OS03YjBlNWZmNGNiZmMucGRmIiwiaWF0IjoxNzgwMTYyMzE5LCJleHAiOjE3ODAxNjU5MTl9.LX2HzWM8hai6bo72ZwUe1X4Y7p8MiVJHZcVNsqc0sRU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/b6c306f3-8035-4736-b049-7b0e5ff4cbfc.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Numerical Modeling",
+        "Multi-threading",
+        "Data Visualization",
+        "Fixed-point Arithmetic",
+        "Hardware/Software Co-design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Numerical Modeling",
+      "Multi-threading",
+      "Data Visualization",
+      "Fixed-point Arithmetic",
+      "Hardware/Software Co-design"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "d1b0a949-aae4-412f-9214-7510c87d7f3c",
+    "timestamp": "2026-05-30T17:32:51.315Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d1b0a949-aae4-412f-9214-7510c87d7f3c.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kMWIwYTk0OS1hYWU0LTQxMmYtOTIxNC03NTEwYzg3ZDdmM2MucGRmIiwiaWF0IjoxNzgwMTYyMzcxLCJleHAiOjE3ODAxNjU5NzF9.EDFUzbIWA01Kh3CcSNuiUIJG1HSEtrrQhS1BAZwTZDc",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d1b0a949-aae4-412f-9214-7510c87d7f3c.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Numerical Modeling",
+        "Data Visualization",
+        "Multi-threading",
+        "Fixed-point Arithmetic",
+        "Hardware/Software Co-design"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Numerical Modeling",
+      "Data Visualization",
+      "Multi-threading",
+      "Fixed-point Arithmetic",
+      "Hardware/Software Co-design"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "6bedc2e7-ed89-4ac0-bc0f-3ddbfe06bdd9",
+    "timestamp": "2026-05-30T17:33:19.318Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/Israel%2C-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360/apply/applyManually",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_6bedc2e7-ed89-4ac0-bc0f-3ddbfe06bdd9.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82YmVkYzJlNy1lZDg5LTRhYzAtYmMwZi0zZGRiZmUwNmJkZDkucGRmIiwiaWF0IjoxNzgwMTYyMzk5LCJleHAiOjE3ODAxNjU5OTl9.USHL7gLJ8EzprZlfuKIVk4ogFuuZlwr3CYzdfiLz0T0",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/6bedc2e7-ed89-4ac0-bc0f-3ddbfe06bdd9.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "d89ef722-ea15-4868-ab0d-4c9b5520f513",
+    "timestamp": "2026-05-30T18:05:13.136Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d89ef722-ea15-4868-ab0d-4c9b5520f513.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kODllZjcyMi1lYTE1LTQ4NjgtYWIwZC00YzliNTUyMGY1MTMucGRmIiwiaWF0IjoxNzgwMTY0MzEzLCJleHAiOjE3ODAxNjc5MTN9.8lEeRdGbWpUmHzzEHXHQ4rGBe9lvguSuoQwIChR0Cqw",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/d89ef722-ea15-4868-ab0d-4c9b5520f513.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "Fixed-point Arithmetic",
+        "Data Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "Fixed-point Arithmetic",
+      "Data Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "581fe9ee-453d-4ab5-bd8e-8c13f18206b7",
+    "timestamp": "2026-05-30T18:06:22.368Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_581fe9ee-453d-4ab5-bd8e-8c13f18206b7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81ODFmZTllZS00NTNkLTRhYjUtYmQ4ZS04YzEzZjE4MjA2YjcucGRmIiwiaWF0IjoxNzgwMTY0MzgyLCJleHAiOjE3ODAxNjc5ODJ9.xwVpmzc8F-jNFLY2f8pCymc8lfT9CZVygWpQtzPrkq4",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/581fe9ee-453d-4ab5-bd8e-8c13f18206b7.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "Fixed-point Arithmetic",
+        "Data Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "Fixed-point Arithmetic",
+      "Data Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
