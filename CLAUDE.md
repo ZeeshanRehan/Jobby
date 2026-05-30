@@ -208,21 +208,24 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-30 (Workday session, cont'd). **HEAD = tip of this session (my_information widgets + false-needs_login fix — see git log top).**
+**Date:** 2026-05-30 (Workday session, cont'd). **HEAD = tip of this session (Workday re-inject across full-nav + my_information widgets — see git log top).**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; **adapter JSON is read fresh per
 request (`readFileSync` in apply.js), so adapter edits are live with NO restart/reload.** Extension edits
 (autofill.js, drain.js) need git push → local pull → Chrome reload. **I'm on the VPS, NO Chrome — server
 pipeline I smoke-test; live DOM fill/submit runs in user's local Chrome.**
 
 **STATUS: GH + Ashby + Lever still submit-verified. Workday = 4th ATS, IN PROGRESS.** Reorder `96bd12f`
-**VERIFIED LIVE this session** — drain reached my_information through the method menu, no loop, no
-`max_pages_exceeded`. my_information now has handlers for **all 6 required fields** (text/radio + the new
-`workdayMultiselect` for How-Did-You-Hear, `workdayListbox` for Phone Device Type) — **UNVERIFIED live;
-DOM-guess against Workday's `promptOption` portal pattern, needs one run.** Workday is structurally
-different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the job POSTING page, not
-the form. **Zero-touch impossible** — one-time manual login per tenant, then unattended (session persists
-in Chrome profile). This is the cred-custody SaaS blocker showing early. Seed tuple:
-nvidia/wd5/NVIDIAExternalCareerSite (live, 2000 jobs).
+**VERIFIED LIVE** (drain reaches my_information through the menu, no loop). **my_information fill itself has
+NEVER worked** — root cause found this session: **Apply Manually does a full-page NAV that destroys the
+single injected content script**, so the wizard handler dies (~2s, "message channel closed") *before*
+my_information paints. The page renders (you see it) but unfilled; the "Country: USA" seen earlier was
+Workday's prefill, never us. **Fix shipped (UNVERIFIED live): `runWorkdayFill` re-injects on each teardown**
+(treats a full-nav as an expected page boundary → wait for load → re-inject → handler resumes on the now-
+painted page). The 6 my_information field handlers (text/radio + `workdayMultiselect`/`workdayListbox`) are
+correct but were **unreachable until this re-inject fix** — still DOM-guesses, need one run. Workday is
+structurally different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the job POSTING
+page. **Zero-touch impossible** — one-time manual login per tenant, then unattended (session persists in
+Chrome profile). Cred-custody SaaS blocker showing early. Seed: nvidia/wd5/NVIDIAExternalCareerSite (2000 jobs).
 
 **Workday flow:** posting → click Apply (`adventureButton`) → method menu → click Apply Manually
 (`applyManually`) → sign-in wall (→ `needs_login`) OR my_information → fill → Next → my_experience
@@ -240,14 +243,14 @@ my_information, review`; 4 middle pages = todo stubs that abort clean.
   `posting` re-matched first → reordered `start_application` before `posting`. (`96bd12f`, **VERIFIED LIVE
   2026-05-30 — drain advanced posting→menu→Apply Manually→my_information, no loop.**)
 
-**False-needs_login on my_information (FIXED this session, unverified live — 2026-05-30 DEVLOG):** once past
-the wall, an unvalidatable my_information (2 required widgets had NO handler) looped → script teardown /
-60s `message timeout` → `isLoginWall` layer-3 teardown heuristic mis-read it as a login wall (logged
-`needs_login`, dropped the fill report). Three fixes shipped together: (1) built the 2 widget handlers; (2)
-`isLoginWall` now probes `auth.postLoginAnchor` (`applyFlowPage`, wraps every wizard page) FIRST — present =
-past login = teardown was in-wizard, return false; (3) wizard loop `stuck_on:<page>` guard returns WITH the
-report when a field-page re-detects after Next, so a validation block is a clean logged abort, not a silent
-loop. `bailNeedsLogin` now logs report+pagesVisited+errMsg.
+**False-needs_login on my_information — REAL cause was nav-teardown, not a stuck form (2026-05-30 DEVLOG,
+top entry).** First theory (unvalidatable form loops → timeout → mislabel) was WRONG: the script dies at the
+**Apply Manually full-nav**, ~2s in, before my_information even paints. `postLoginAnchor` alone does NOT fix
+it — the probe runs mid-nav before `applyFlowPage` paints, so it falls through to the teardown heuristic.
+Real fix = `runWorkdayFill` re-inject (above); the discriminator is now used **post-settle** inside that loop
+(reliable there) to tell a real login redirect from an in-wizard nav. Still-useful belt-and-braces from the
+first pass, all shipped: the 2 widget handlers, the `stuck_on:<page>` guard (for in-place validation blocks),
+and `bailNeedsLogin` logging report+pagesVisited+errMsg.
 
 **Submit selector chain (autofill.js FILL_SUBMIT — current order):**
 1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"], button[data-automation-id="submitButton"], button[data-automation-id*="submit"]` (last two = Workday)
@@ -272,16 +275,19 @@ Round-robin needs an explicit dropdown selection. To live-verify next session: p
 target=6, expect 2 of each ATS.
 
 **Next up (in priority order):**
-1. **Live-verify Workday my_information full fill (THIS session's build — UNVERIFIED).** Needs push → local
-   pull → Chrome reload (extension code changed). Then drain Workday target=1 (NVIDIA already authed → goes
-   straight to my_information; else `needs_login` once, sign in, re-run). Expect: all 6 fill incl.
-   How-Did-You-Hear=LinkedIn (`workdayMultiselect`), Phone Device Type=Mobile (`workdayListbox`),
-   previously-worked=No (`radio`) → advances → `page_not_implemented:my_experience` = **v1 milestone.** If a
-   widget misses, drain.jsonl now logs WHY (`listbox: no options mounted` / `multiselect: no match for
-   'LinkedIn' in [...]`) and the loop returns `stuck_on:my_information` WITH the report — read that, don't
-   re-read it as a login wall. **Likely snag:** NVIDIA may require Address (deferred from the adapter on
-   purpose) → `stuck_on:my_information` (legible) → add `addressSection` fields back + handle the
-   country/state combobox.
+1. **Live-verify Workday my_information full fill via the re-inject path (THIS session's build — UNVERIFIED).**
+   Needs push → local pull → Chrome reload (extension code changed). Then drain Workday target=1 (NVIDIA
+   already authed → goes straight through; else `needs_login` once, sign in, re-run). **First read the
+   `wd_reinject` log lines** — they reveal the transition model: drain re-injects after Apply Manually's
+   full-nav so the handler resumes on my_information. Expect: all 6 fill incl. How-Did-You-Hear=LinkedIn
+   (`workdayMultiselect`), Phone Device Type=Mobile (`workdayListbox`), previously-worked=No (`radio`) →
+   advances → `page_not_implemented:my_experience` = **v1 milestone.** Diagnostics if a widget misses:
+   `listbox: no options mounted` / `multiselect: no match for 'LinkedIn' in [...]`; an in-place validation
+   block → `stuck_on:my_information` WITH the report (NOT a login wall). Use the one-liner below to read the
+   `jobby_wd_progress` beacon + `wd_reinject` trace. **Likely snag:** NVIDIA may require Address (deferred on
+   purpose) → clean `stuck_on:my_information` → add `addressSection` fields back + handle the country/state combobox.
+   **Open question the trace answers:** does my_information's Save & Continue ALSO full-nav (→ another re-inject)
+   or re-render in place? If full-nav on every page, the bounded re-inject loop already handles it.
 2. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages
    (questions/voluntary/self-id) through the existing unknown-scan + AI-fallback path. Workday SSO assist (v1.5).
 3. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT,
@@ -297,6 +303,10 @@ node -e "require('fs').readFileSync('server/data/drain.jsonl','utf8').trim().spl
 
 # Queue distribution by ATS / status
 node -e "const q=require('./automation/queue/queue').readQueue();const by={};q.forEach(r=>{const k=r.ats+'/'+r.status;by[k]=(by[k]||0)+1});console.log(by)"
+
+# Workday re-inject trace + progress beacon (transition model — does each page full-nav?)
+# NOTE the try/catch — drain.jsonl has historically held a malformed line (raw HTML), so guard every parse.
+node -e "require('fs').readFileSync('server/data/drain.jsonl','utf8').trim().split('\n').map(l=>{try{return JSON.parse(l)}catch{return null}}).filter(Boolean).filter(e=>['wd_reinject','fill_form','needs_login'].includes(e.step)).slice(-12).forEach(e=>{console.log('\n['+e.step+'] '+(e.message||''));const p=e.data&&e.data.progress;if(p)console.log('  beacon: visited='+JSON.stringify(p.pagesVisited)+' last='+p.lastPageId);if(e.data&&e.data.report)console.log('  filled='+JSON.stringify(e.data.report.filled)+' errors='+JSON.stringify(e.data.report.errors));if(e.data&&e.data.errMsg)console.log('  errMsg: '+e.data.errMsg)})"
 ```
 
 **Older session pointers (still load-bearing if you're touching those areas):**

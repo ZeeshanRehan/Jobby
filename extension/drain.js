@@ -518,6 +518,60 @@ function sendMessage(tabId, payload, timeoutMs) {
   });
 }
 
+// ─── Workday wizard: re-inject across full-page navigations ──────────────────
+// Workday full-navs between some wizard steps (Apply Manually for sure; Save & Continue
+// TBD), and a full nav destroys the single injected content script → the running handler
+// dies before sendResponse → drain sees "message channel closed". The fix: treat that
+// teardown as an EXPECTED page boundary — wait for the new page to land, re-inject, and
+// re-send. The handler resumes by detecting whatever page is now painted (detectPage is
+// stateless), so my_information gets filled on the injection AFTER Apply Manually's nav.
+// This can't spin: a teardown only fires on a real navigation (forward progress or a login
+// redirect), never on a stuck in-place page (that returns stuck_on cleanly). Bounded anyway.
+const WD_PROGRESS_KEY = "jobby_wd_progress";
+const clearWdProgress = async () => { try { await chrome.storage.local.remove(WD_PROGRESS_KEY); } catch (_) {} };
+const readWdProgress  = async () => { try { return (await chrome.storage.local.get(WD_PROGRESS_KEY))[WD_PROGRESS_KEY] || null; } catch (_) { return null; } };
+
+// Poll the tab to "complete" after a nav starts. A small pre-delay lets the nav register
+// as "loading" first so we don't read the dying page's stale "complete".
+async function waitForTabComplete(tabId, timeoutMs = 15000) {
+  await new Promise((r) => setTimeout(r, 500));
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try { if ((await chrome.tabs.get(tabId)).status === "complete") return true; }
+    catch (_) { return false; } // tab gone
+    await new Promise((r) => setTimeout(r, 200));
+  }
+  return false;
+}
+
+async function runWorkdayFill(tabId, applyData, resumePdf, job) {
+  const MAX_REINJECT = 6;
+  await clearWdProgress();
+  for (let attempt = 1; attempt <= MAX_REINJECT; attempt++) {
+    try {
+      await injectAutofill(tabId); // inside the try — a mid-nav inject failure is retryable too
+      return { resp: await sendMessage(tabId, {
+        type: "FILL_FORM_WORKDAY",
+        adapter: applyData.adapter,
+        profileData: applyData.profileData,
+        resumePdf,
+      }, AUTOFILL_TIMEOUT_MS) };
+    } catch (err) {
+      if (!SCRIPT_TEARDOWN_RE.test(err.message)) throw err; // genuine error → outer catch
+      await waitForTabComplete(tabId);                       // let the nav land (probe is reliable post-settle)
+      if (await isLoginWall(tabId, applyData.adapter, err.message)) {
+        return { resp: { reason: "needs_login", report: null, errMsg: err.message } };
+      }
+      const prog = await readWdProgress();
+      await logStep(job, "wd_reinject", true,
+        `teardown after ${prog?.lastPageId || "?"} (attempt ${attempt}/${MAX_REINJECT}) → re-inject`,
+        { progress: prog, errMsg: err.message });
+    }
+  }
+  const prog = await readWdProgress();
+  return { resp: { reason: "max_reinject_exceeded", report: prog?.partialReport || null, pagesVisited: prog?.pagesVisited } };
+}
+
 // ─── AI fallback (re-use shared lib/resolve.js localResolveField + bestOptionMatch) ─────
 async function resolveAndFillUnknowns(tabId, unknownFields, jobDescription, profileData) {
   const resolved = [];
@@ -635,36 +689,44 @@ async function processJob(job) {
   // existing single-page handler can't loop pages. v1 only implements my_information
   // + review; intermediate pages are TODOs in workday.json and the handler aborts
   // cleanly with reason='page_not_implemented' on those.
-  const fillMsgType = job.ats === "workday" ? "FILL_FORM_WORKDAY" : "FILL_FORM";
   let report, unknownFields;
   try {
     setCurrent(job, "filling form");
-    await injectAutofill(tabId);
-    const sendFill = () => sendMessage(tabId, {
-      type: fillMsgType,
-      adapter: applyData.adapter,
-      profileData: applyData.profileData,
-      resumePdf,
-    }, AUTOFILL_TIMEOUT_MS);
 
-    let resp = await sendFill();
-    report = resp?.report || { filled: [], errors: [] };
-    unknownFields = resp?.unknownFields || [];
+    let resp;
+    if (job.ats === "workday") {
+      // Wizard pages full-nav between steps → the single injection can't span them.
+      // runWorkdayFill re-injects on each teardown so the handler resumes per page.
+      resp = (await runWorkdayFill(tabId, applyData, resumePdf, job)).resp;
+    } else {
+      await injectAutofill(tabId);
+      const sendFill = () => sendMessage(tabId, {
+        type: "FILL_FORM",
+        adapter: applyData.adapter,
+        profileData: applyData.profileData,
+        resumePdf,
+      }, AUTOFILL_TIMEOUT_MS);
 
-    // SPA mount race — Chrome's tab "complete" fires when the HTML loads, not when React
-    // mounts. A fast tab can return 0 filled + 0 errors + 0 unknowns because the form
-    // wasn't in the DOM when the scanner ran. Retry once after a 1.5s wait — adaptive,
-    // no penalty on the happy path. (Ashby "Customer Success Lead" failure, 2026-05-28.)
-    const emptyScan = report.filled.length === 0
-                   && (report.errors?.length || 0) === 0
-                   && unknownFields.length === 0;
-    if (emptyScan) {
-      await logStep(job, "fill_form_retry", true, "empty scan — waiting 1500ms for SPA mount");
-      await new Promise((r) => setTimeout(r, 1500));
       resp = await sendFill();
       report = resp?.report || { filled: [], errors: [] };
       unknownFields = resp?.unknownFields || [];
+
+      // SPA mount race — Chrome's tab "complete" fires when the HTML loads, not when React
+      // mounts. A fast tab can return 0 filled + 0 errors + 0 unknowns because the form
+      // wasn't in the DOM when the scanner ran. Retry once after a 1.5s wait — adaptive,
+      // no penalty on the happy path. (Ashby "Customer Success Lead" failure, 2026-05-28.)
+      const emptyScan = report.filled.length === 0
+                     && (report.errors?.length || 0) === 0
+                     && unknownFields.length === 0;
+      if (emptyScan) {
+        await logStep(job, "fill_form_retry", true, "empty scan — waiting 1500ms for SPA mount");
+        await new Promise((r) => setTimeout(r, 1500));
+        resp = await sendFill();
+      }
     }
+
+    report = resp?.report || { filled: [], errors: [] };
+    unknownFields = resp?.unknownFields || [];
 
     // Workday-wizard abort paths: needs_login / page_not_implemented:* / next_button_missing /
     // mount_timeout / max_pages_exceeded. The handler still returns a report + unknownFields

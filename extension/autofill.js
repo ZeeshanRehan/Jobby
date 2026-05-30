@@ -803,6 +803,20 @@ if (!window.__jobbyAutofillInjected) {
         const handledEls = new WeakSet();
         const pagesVisited = [];
 
+        // Progress beacon — Workday full-navs between some wizard steps (Apply Manually,
+        // maybe Save & Continue), which destroys this injected script mid-flight so the
+        // sendResponse never lands (drain sees "message channel closed"). chrome.storage
+        // is the ONE channel that survives that teardown: write a breadcrumb before each
+        // risky click so drain can (a) see how far we got and (b) learn which transitions
+        // full-nav. Best-effort — a storage failure must never break the fill.
+        const writeProgress = async (lastPageId, aboutToClick) => {
+          try {
+            await chrome.storage.local.set({
+              jobby_wd_progress: { pagesVisited: [...pagesVisited], lastPageId, aboutToClick, partialReport: report, ts: Date.now() },
+            });
+          } catch (_) { /* storage unavailable — non-fatal */ }
+        };
+
         // Login wall guard — if the login anchor renders, user hasn't authed on
         // this tenant yet. Fail-fast so drain marks 'needs_login' and the user
         // can open the tab manually, click Google SSO once, then re-run.
@@ -974,6 +988,7 @@ if (!window.__jobbyAutofillInjected) {
             sendResponse({ report, unknownFields, pagesVisited, reason: `next_button_missing:${page.id}` });
             return;
           }
+          await writeProgress(page.id, page.next?.selector); // breadcrumb survives a full-nav teardown
           try {
             nextBtn.scrollIntoView({ block: "center", behavior: "instant" });
             await sleep(80);

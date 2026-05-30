@@ -9,7 +9,61 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
-## 2026-05-30 — Workday my_information: reorder VERIFIED, false-needs_login on a stuck form, + the 2 missing widget handlers  ·  FIXED (unverified live)
+## 2026-05-30 — Workday my_information never actually filled: the single injection dies at the Apply-Manually full-nav  ·  FIXED (unverified live)  ·  CORRECTS the entry below
+
+**This corrects the entry immediately below.** That entry claimed the false-needs_login was fixed by the
+`postLoginAnchor` discriminator + stuck-guard. The next live run **falsified that** — and revealed the fixes
+below were aimed at the wrong mechanism. The widget handlers and stuck-guard are still correct; they were just
+**unreachable.**
+
+**Symptom (run after pushing the widget handlers).** Tab opens, *visibly reaches my_information*, but **nothing
+fills** (worse than the prior run's "Country: United States" — which we now know was Workday's own prefill, never
+us). drain.jsonl: every nvidia run `needs_login`, and — thanks to the new diagnostic logging — with
+`errMsg: "A listener indicated an asynchronous response by returning true, but the message channel closed before
+a response was received"`. Timing: **open_tab → needs_login ≈ 2s.**
+
+**Root cause — architectural.** `injectAutofill` does ONE `executeScript` of autofill.js, then drain sends ONE
+`FILL_FORM_WORKDAY` that runs the *entire* wizard inside that single injected context. But **Apply Manually
+triggers a full-page navigation** (already documented in the login-wall entry). A full nav destroys the content
+script → the running handler dies before `sendResponse` → "message channel closed". Timeline fits exactly:
+iter0 posting → click Apply → method menu opens **in-place (SPA)**, script lives; iter1 start_application →
+click **Apply Manually → FULL NAV → script dies** (~2s). The tab *does* land on my_information (clicks fired) but
+**the handler that would fill it is dead before my_information paints.** So my_information fill had **never** worked.
+
+**Why the previous session's fixes missed.** The handler's `waitForAnyPage` was built assuming every inter-page
+transition is an **in-place SPA re-render** — but the posting→apply-flow boundary is a **full document nav**, which
+the injected script cannot survive. The `postLoginAnchor` discriminator couldn't catch it either: it probes
+`applyFlowPage`, but the probe runs *during* the nav, before `applyFlowPage` has painted → falls through to the
+teardown heuristic → mislabels the in-wizard nav as a login wall. (Probed *post-settle* it IS reliable — which is
+exactly where the re-inject path now uses it.)
+
+**Advisor steer.** Don't size the redesign on an unproven assumption ("every page full-navs"). It might be only
+posting→apply-flow that navs, with my_information→my_experience→review being in-place. Get the fact empirically
+before building the big version, and use `chrome.storage` (the one channel that survives a teardown) to learn it —
+which is also the exact state channel a resume needs, so it's not throwaway.
+
+**Fix (minimal crosser, generalised cheaply, all instrumented).**
+- **Re-inject across the teardown** (`runWorkdayFill`, drain.js): a teardown matching `SCRIPT_TEARDOWN_RE` is
+  treated as an EXPECTED page boundary — `waitForTabComplete` (let the nav land) → re-probe `isLoginWall`
+  (post-settle, so `postLoginAnchor` is reliable → real login vs in-wizard nav) → re-inject + re-send. The handler
+  resumes by detecting whatever page is now painted (detectPage is stateless), so my_information fills on the
+  injection *after* Apply Manually. Bounded `MAX_REINJECT=6`. Can't spin: a teardown only fires on a real
+  navigation (forward progress or a login redirect), never on a stuck in-place page (that returns `stuck_on`).
+- **Progress beacon** (autofill.js): the handler writes `{pagesVisited, lastPageId, aboutToClick, partialReport,
+  ts}` to `chrome.storage.local` before each next-click. drain reads it after a teardown → logs `wd_reinject` with
+  how far it got. This is what tells us, on the very next run, whether my_information's Save & Continue *also*
+  full-navs or re-renders in place — i.e. whether the minimal crosser is already enough or needs generalising.
+
+**Expected next run.** my_information fills on the post-Apply-Manually injection → advances → either the handler's
+own loop reaches my_experience (if SPA) or another teardown→re-inject lands on it (if full-nav); my_experience is
+`todo` → `page_not_implemented:my_experience` = the v1 milestone. The `wd_reinject` log lines reveal the
+transition model. Likely snag unchanged: NVIDIA may require Address (deferred) → clean `stuck_on:my_information`.
+
+**Status.** NOT verified live (VPS has no Chrome). This is the run that finally proves whether my_information fills.
+
+---
+
+## 2026-05-30 — Workday my_information: reorder VERIFIED, false-needs_login on a stuck form, + the 2 missing widget handlers  ·  FIXED (unverified live)  ·  SUPERSEDED in part — see entry above
 
 **What we set out to do.** Verify the menu-reorder fix (`96bd12f`, prior entry left it UNVERIFIED). Re-ran
 drain Workday target=1.
