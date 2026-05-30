@@ -420,27 +420,40 @@ function closeTab(tabId) {
 // focus the tab so the user can sign in once (session persists in the Chrome
 // profile), mark the job 'needs_login' (re-claimable via Reactivate, not 'error'),
 // and stop the loop. After one sign-in per tenant, re-running sails through.
-const LOGIN_URL_RE = /\/(login|sign[-_]?in|signin|authn)\b|accounts\.google\.com|login\.microsoftonline\.com|okta\.com/i;
+const LOGIN_URL_RE = /\/(login|sign[-_]?in|signin|authn|oidc|oauth|authgwy)\b|accounts\.google\.|login\.microsoftonline\.com|okta\.com|wd5?-identity|myworkday\.com\/wday\/authgwy/i;
 
-// True if the tab is parked on a login/SSO wall. A full-page nav to the wall tears
-// down the in-flight content script, so we re-inject a one-off probe for the
-// adapter's loginAnchor (survives teardown) and fall back to a URL heuristic for
-// off-origin SSO pages (Google, Microsoft, Okta) where the anchor won't exist.
-async function isLoginWall(tabId, adapter) {
+// Teardown errors that mean "the page navigated away under us" — the content script
+// died mid-message so the reply never came. On a login-gated ATS this is the wall.
+const SCRIPT_TEARDOWN_RE = /message channel closed|message timeout|context invalidated|frame.*removed/i;
+
+// True if the tab is parked on a login/SSO wall. Three layers, cheapest-first:
+//   1. tab URL matches a login/SSO host or path
+//   2. adapter's loginAnchor present in the live DOM (re-probed via executeScript,
+//      survives the content-script teardown a full nav causes)
+//   3. fallback — on a loginRequired adapter, a script-teardown error IS the signal:
+//      the only thing that full-navs away mid-wizard on an unauthed tenant is the SSO
+//      wall, and the redirect chain (applyManually → wd-identity → accounts.google)
+//      often hasn't landed when layers 1-2 run, so the URL/anchor still show the
+//      pre-nav page. A false positive here only parks the job (recoverable via
+//      Reactivate) — far better than burning it as a crash.
+async function isLoginWall(tabId, adapter, errMsg) {
   try {
     const tab = await chrome.tabs.get(tabId);
     if (tab?.url && LOGIN_URL_RE.test(tab.url)) return true;
   } catch (_) { /* tab gone — fall through */ }
   const sel = adapter?.auth?.loginAnchor;
-  if (!sel) return false;
-  try {
-    const [res] = await chrome.scripting.executeScript({
-      target: { tabId },
-      func: (s) => !!document.querySelector(s),
-      args: [sel],
-    });
-    return !!res?.result;
-  } catch (_) { return false; }
+  if (sel) {
+    try {
+      const [res] = await chrome.scripting.executeScript({
+        target: { tabId },
+        func: (s) => !!document.querySelector(s),
+        args: [sel],
+      });
+      if (res?.result) return true;
+    } catch (_) { /* cross-origin SSO page — fall through to teardown heuristic */ }
+  }
+  if (adapter?.auth?.loginRequired && SCRIPT_TEARDOWN_RE.test(errMsg || "")) return true;
+  return false;
 }
 
 function focusTab(tabId) {
@@ -657,7 +670,7 @@ async function processJob(job) {
   } catch (err) {
     // A full-page nav to a login wall tears down the content script mid-fill, surfacing
     // as a generic "message channel closed" error. Inspect the tab before calling it a crash.
-    if (tabId && await isLoginWall(tabId, applyData.adapter)) {
+    if (tabId && await isLoginWall(tabId, applyData.adapter, err.message)) {
       await bailNeedsLogin(job, tabId, applyData);
       return;
     }
