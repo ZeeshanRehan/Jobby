@@ -4509,5 +4509,122 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "7a8cfb60-f261-4483-b59e-2e8d802e47cc",
+    "timestamp": "2026-05-30T03:37:03.999Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-Lab-DSP-Communication-Engineer_JR2018056",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_7a8cfb60-f261-4483-b59e-2e8d802e47cc.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83YThjZmI2MC1mMjYxLTQ0ODMtYjU5ZS0yZThkODAyZTQ3Y2MucGRmIiwiaWF0IjoxNzgwMTEyMjIzLCJleHAiOjE3ODAxMTU4MjN9.gWmplMBFVEoscLTHFhK4Fqb3iZSm2y3xAHlLvMrt8rY",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/7a8cfb60-f261-4483-b59e-2e8d802e47cc.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "MATLAB",
+        "Python",
+        "Signal Integrity",
+        "SerDes",
+        "Mixed-Signal Design",
+        "High-Speed Communications",
+        "Lab Instrumentation",
+        "Simulation Modeling"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, Python, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "MATLAB",
+      "Python",
+      "Signal Integrity",
+      "SerDes",
+      "Mixed-Signal Design",
+      "High-Speed Communications",
+      "Lab Instrumentation",
+      "Simulation Modeling"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "76808c09-26f7-499c-aa1c-2a47ed4728c5",
+    "timestamp": "2026-05-30T03:41:07.071Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/System-Software-Engineer--Engineering-Workflow-Platform_JR2018371",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_76808c09-26f7-499c-aa1c-2a47ed4728c5.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV83NjgwOGMwOS0yNmY3LTQ5OWMtYWExYy0yYTQ3ZWQ0NzI4YzUucGRmIiwiaWF0IjoxNzgwMTEyNDY2LCJleHAiOjE3ODAxMTYwNjZ9.bxznk6mcAwlR8wfPbVmvVP-jDUzVB00u62UGF1J0xqU",
+    "resumeLocalPath": "/root/Jobby/server/data/resumes/76808c09-26f7-499c-aa1c-2a47ed4728c5.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Tcl",
+        "Make",
+        "Perl",
+        "YAML",
+        "JSON",
+        "Shell scripting",
+        "Go",
+        "CI/CD",
+        "Build systems",
+        "Job schedulers",
+        "Observability"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured YAML configuration templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Rowan University Housing Department",
+          "original": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems.",
+          "tailored": "Assisted in preparing 500+ residential units for incoming students by managing room assignments and verifying occupancy data using internal housing management systems with shell scripting and automation."
+        },
+        {
+          "section": "SkillSwap – Community Works for All",
+          "original": "Spearheaded a hyper-local webapp using the MERN stack to help communities share skills, services, and help.",
+          "tailored": "Spearheaded a hyper-local webapp using the MERN stack with Python and shell-based automation to help communities share skills, services, and help."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Tcl",
+      "Make",
+      "Perl",
+      "YAML",
+      "JSON",
+      "Shell scripting",
+      "Go",
+      "CI/CD",
+      "Build systems",
+      "Job schedulers",
+      "Observability"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
