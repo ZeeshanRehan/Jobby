@@ -18,25 +18,25 @@
   },
   "pages": [
     {
-      "id":     "posting",
-      "status": "ready",
-      "anchor": "a[data-automation-id='adventureButton']",
-      "_note":  "Landing page is the job posting, not the form. Click Apply → opens the 'Start Your Application' method menu. No fields here.",
-      "fields": {},
-      "next": {
-        "selector": "a[data-automation-id='adventureButton']",
-        "expectedNextAnchor": "[data-automation-id='applyManually']"
-      }
-    },
-    {
       "id":     "start_application",
       "status": "ready",
       "anchor": "[data-automation-id='applyManually']",
-      "_note":  "Apply-method menu. Pick Apply Manually — autofillWithResume triggers Workday's resume auto-parse which conflicts with fill-from-profile. After this: sign-in wall (→ needs_login) if not authed, else my_information.",
+      "_note":  "Apply-method menu. MUST come before `posting` in this list: Workday's /apply page keeps the job-summary Apply button (adventureButton) in the DOM alongside the menu, so detectPage would otherwise re-match `posting` and re-click Apply forever (max_pages_exceeded). Pick Apply Manually — autofillWithResume triggers Workday's resume auto-parse which conflicts with fill-from-profile. After this: sign-in wall (→ needs_login) if not authed, else my_information.",
       "fields": {},
       "next": {
         "selector": "a[data-automation-id='applyManually']",
         "expectedNextAnchor": "[data-automation-id='legalNameSection']"
+      }
+    },
+    {
+      "id":     "posting",
+      "status": "ready",
+      "anchor": "a[data-automation-id='adventureButton']",
+      "_note":  "Landing page is the job posting, not the form. Click Apply → opens the 'Start Your Application' method menu. No fields here. Listed AFTER start_application on purpose — see that page's note.",
+      "fields": {},
+      "next": {
+        "selector": "a[data-automation-id='adventureButton']",
+        "expectedNextAnchor": "[data-automation-id='applyManually']"
       }
     },
     {
