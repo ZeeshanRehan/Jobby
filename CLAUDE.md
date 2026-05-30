@@ -208,26 +208,36 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-28 (multi-ATS widen session). **HEAD = `2cd2dd4` "feat: added chart for showing companies applied to".**
-Claude Code runs on the VPS — server edits live after `pm2 restart all`; extension edits need git push →
-local pull → Chrome reload. **NOTE: I (Claude Code) am on the VPS with NO Chrome — I can smoke-test the
-server pipeline but the live DOM fill/submit runs in the user's local Chrome via the extension.**
+**Date:** 2026-05-30 (Workday 4th-ATS session). **HEAD = `96bd12f`.**
+Claude Code runs on the VPS — server edits live after `pm2 restart all`; **adapter JSON is read fresh per
+request (`readFileSync` in apply.js), so adapter edits are live with NO restart/reload.** Extension edits
+(autofill.js, drain.js) need git push → local pull → Chrome reload. **I'm on the VPS, NO Chrome — server
+pipeline I smoke-test; live DOM fill/submit runs in user's local Chrome.**
 
-**STATUS: V3 drain works across Greenhouse + Ashby + Lever, all three submit-verified end-to-end.**
-Queue holds 1810 records: 931 GH + 292 Ashby + 568 Lever pending fillable. 42 submitted this session
-(40 GH + 1 Ashby Notable + 1 Lever Mistral). All three ATSes claim → jd → tailor → pdf → open_tab →
-fill_form → fill_ai → submit → done. Drain UI now shows a per-ATS + per-company breakdown of session
-submissions and a "Last Job — Details" panel with full per-field {label, value} audit (adapter-driven
-fields use real DOM labels via `getLabelText`, not the bare adapter keys).
+**STATUS: GH + Ashby + Lever still submit-verified. Workday = 4th ATS, IN PROGRESS — read+fill path built,
+NOT submit-verified.** Workday is structurally different: multi-page wizard behind a **per-tenant login
+wall**; `apply_url` is the job POSTING page, not the form. **Zero-touch impossible** — best case = one-time
+manual login per tenant, then unattended (session persists in Chrome profile). This is the cred-custody
+SaaS blocker showing early. Seed tuple: nvidia/wd5/NVIDIAExternalCareerSite (live, 2000 jobs).
 
-**Commits this session (post-`de79a92`):**
-- `a801f29` add Ashby + Lever board sources, seedQueue `--source` flag, ats-aware drain claim/JD dispatch, ATS picker dropdown in drain.html
-- `5d9a637` + `8a41575` Ashby/Lever submit selectors + tighter captcha guard (was false-positiving on Lever's hCaptcha SDK iframe; now requires ≥200×200 + visible/displayed/non-zero-opacity/offsetParent — full post-mortem 2026-05-28 captcha-guard-v2 DEVLOG entry)
-- `daa2e05` + `8e7ca83` adapter-fields rich audit shape (`report.filledDetails: [{field, label, value}]`) + drain "Last Job" details panel
-- `2cd2dd4` session breakdown chart (per-ATS + per-company tallies on every successful submit) + round-robin ATS mode (TESTING flag, comments in code mark it removable later)
+**Workday flow:** posting → click Apply (`adventureButton`) → method menu → click Apply Manually
+(`applyManually`) → sign-in wall (→ `needs_login`) OR my_information → fill → Next → my_experience
+(status:todo) → aborts `page_not_implemented:my_experience`. Handler = `FILL_FORM_WORKDAY` in autofill.js
+(separate from single-page FILL_FORM). `workday.json` pages ready: `start_application, posting,
+my_information, review`; 4 middle pages = todo stubs that abort clean.
+
+**Workday session — 4 bugs fixed live (each a separate run), full post-mortem in 2026-05-30 DEVLOG:**
+- crash-loop (whole API down, ALL ATSes): jd.js bare `*` route rejected by Express 5 path-to-regexp v8 →
+  named `*splat` + `req.params.splat`; also double-`/job` in workday JD URL (406). (`b404b40`)
+- workday.json address fields pulled non-existent `address.*` → `contact.address.{street,city,zip}`. (`b404b40`)
+- mount_timeout: wizard iter-0 used instant `detectPage()`, missed Workday's ~3s SPA paint → now polls
+  `waitForAnyPage()`. (`e01e4a0`)
+- max_pages_exceeded (menu re-opened forever): `/apply` keeps `adventureButton` in DOM beside the menu,
+  `posting` re-matched first → reordered `start_application` before `posting`. (`96bd12f`, **UNVERIFIED —
+  user cleared right after; re-run to confirm it advances past the menu**)
 
 **Submit selector chain (autofill.js FILL_SUBMIT — current order):**
-1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"]`
+1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"], button[data-automation-id="submitButton"], button[data-automation-id*="submit"]` (last two = Workday)
 2. `button[class*="_primary_"]` (Ashby CSS-module hash-rotation fallback)
 3. Text fallback — any visible button with text matching `/^(submit|apply|send|finish)\b/i`
 All stages exclude cancel/back/withdraw/save-draft/preview by text and require `visible(el) && !disabled`.
@@ -249,12 +259,12 @@ Round-robin needs an explicit dropdown selection. To live-verify next session: p
 target=6, expect 2 of each ATS.
 
 **Next up (in priority order):**
-1. **Harden `ai-fallback.js` prompt** to forbid URL fabrication for fields the profile has no data for — root fix for the Google Scholar hallucination above
-2. Live-verify round-robin mode (target=6, expect 2 of each ATS in the breakdown card)
-3. Add AI Q/A persistence to the popup-autofill flow (drain has it, popup still doesn't)
-4. Widen seed company list (currently 4 Ashby + 3 Lever orgs)
-5. V4 dashboard — apps table, search, status, resume links
-6. (Deferred indefinitely) Strip the round-robin code path once scraper diversity makes forced rotation moot — comments in `extension/drain.js` mark every line to remove
+1. **Verify Workday reorder (`96bd12f`)** — re-run drain Workday target=1. Expect: Apply → Apply Manually (once, no loop) → `needs_login` first run (auth NVIDIA Workday manually in Chrome profile once) → re-run → my_information fills → `page_not_implemented:my_experience` = v1 milestone. Open snags: `applyManually` click may not navigate; addressSection may force a required country/state combobox (not in adapter) blocking Next.
+2. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages (questions/voluntary/self-id) through the existing unknown-scan + AI-fallback path. Add Workday SSO assist (v1.5) for the login wall.
+3. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT, unaddressed; ships bad data on every GH/Ashby/Lever run)
+4. Live-verify round-robin mode (target=6, expect 2 of each ATS); note ROUND_ROBIN_ORDER excludes workday on purpose
+5. AI Q/A persistence on popup-autofill flow (drain has it, popup doesn't)
+6. Widen seed list; V4 dashboard; strip round-robin path (deferred)
 
 **Useful one-liners (no `jq` on VPS — node only):**
 ```

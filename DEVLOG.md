@@ -9,6 +9,22 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-30 — Workday 4th-ATS: crash-loop + 3 wizard bugs (apply-preamble, iter-0 race, menu loop)  ·  FIXED (Workday unverified live past my_information)
+
+Adding Workday as 4th ATS. Picked up a half-built scaffold (workdayBoard.js, workday.json, FILL_FORM_WORKDAY handler). Four distinct bugs, each surfaced by a separate live drain run.
+
+**Bug 0 — the whole API was down (not Workday-specific).** User reported "failed to fetch". `pm2 list` → `jobby-api` **errored, 171 restarts** = crash-loop. Root: the new `jd.js` route `router.get("/workday/:tenant/:wd/:site/*", ...)`. Express 5 uses path-to-regexp v8, which **rejects the bare `*` wildcard** at module load: `PathError: Missing parameter name at index 28`. The throw happened at `require` time → server never booted → **every ATS down, not just Workday.** Fix: named wildcard `*splat`, and `req.params[0]` → `req.params.splat` (which is an **array** of segments — verified with a one-off `match()` call before editing). Dead end avoided: did NOT guess the param shape; tested it. Same commit also fixed a **double `/job`** in the workday JD URL (route prepended `/job` but `externalPath` already starts `/job/...` → Workday API returned **406**; confirmed by curling both URL shapes from the VPS, 406 vs 200). (`b404b40`)
+
+**Bug 1 — `mount_timeout`, take 1: apply_url is the posting page, not the form.** Drain reached `fill_form` then halted `mount_timeout` (no adapter page anchor matched). Asked the user what the tab showed → **job posting page with an "Apply" button**, not the application form. Workday's real flow is `posting → Apply → method menu (Apply Manually / Autofill with Resume / Use My Last App) → sign-in wall → my_information`. v1 assumed the tab lands directly on `my_information`. Fix: added two no-field click-through pages (`posting` clicks `adventureButton`, `start_application` clicks `applyManually`) before `my_information`, and moved the login-wall check into the loop's `!page` branch so the sign-in wall after Apply-Manually reports `needs_login` instead of `mount_timeout`. Chose Apply Manually over Autofill-with-Resume on purpose — the resume auto-parse fights our fill-from-profile model. (`86197db`)
+
+**Bug 2 — `mount_timeout`, take 2: iter-0 didn't poll.** Posting page now in the adapter, but still `mount_timeout`. The user had pasted DOM proving `adventureButton` exists → not a selector bug → timing. The wizard loop used `iter === 0 ? detectPage() : await waitForAnyPage()` — **iter 0 checked instantly, no poll.** The first page is the heaviest (full nav to apply_url); Workday's SPA paints the Apply button ~2-3s in, past the drain's 1500ms pre-wait. Both the initial check and the 1500ms-retry check missed. Fix: iter 0 also uses `waitForAnyPage()` (15s poll; returns instantly when already mounted, so later iters pay nothing). `AUTOFILL_TIMEOUT_MS=60s` > 15s, safe. (`e01e4a0`)
+
+**Bug 3 — `max_pages_exceeded`: the menu re-opened forever.** Poll fix worked — Apply clicked, menu opened — but the user watched the method menu "keep opening, opening, opening" → 12 iters → `max_pages_exceeded`. Root: `detectPage()` returns the **first-matching page in array order**, and `posting` was first. Workday's `/apply` page **keeps the job-summary Apply button (`adventureButton`) in the DOM alongside the menu**, so every iter re-matched `posting`, re-clicked Apply, re-opened the menu — never reaching the `applyManually` click. Fix: reorder so `start_application` (menu) comes **before** `posting`; once the menu is up, `applyManually` wins. (`96bd12f`)
+
+**Status.** Bugs 0-2 verified (server back online, route 200, posting/menu reached). Bug 3 reorder shipped but **UNVERIFIED on a live run** — user cleared context immediately after. Next session: re-run drain Workday target=1, confirm it clicks Apply Manually once (no loop) and reaches `needs_login` / `my_information`. **Structural takeaway:** Workday cannot be zero-touch — per-tenant login wall means best case is one-time manual auth per tenant, then unattended. This is the cred-custody SaaS blocker arriving early; weigh Workday's ROI against the 3 working zero-auth ATSes.
+
+---
+
 ## 2026-05-28 — FILL_FORM race with SPA mount: empty scan when tab "complete" fires before React mounts  ·  FIXED (unverified live)
 
 Three Ashby Notable jobs in a row submitted clean. The fourth — "Customer Success Lead" — errored at
