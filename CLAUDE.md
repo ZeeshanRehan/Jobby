@@ -208,49 +208,59 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-30 (Workday session, cont'd). **HEAD = tip of this session (Workday re-inject across full-nav + my_information widgets — see git log top).**
+**Date:** 2026-05-30 (Workday my_information session). **HEAD = `24f2fe3`, branch `main`.**
 Claude Code runs on the VPS — server edits live after `pm2 restart all`; **adapter JSON is read fresh per
 request (`readFileSync` in apply.js), so adapter edits are live with NO restart/reload.** Extension edits
 (autofill.js, drain.js) need git push → local pull → Chrome reload. **I'm on the VPS, NO Chrome — server
 pipeline I smoke-test; live DOM fill/submit runs in user's local Chrome.**
 
-**STATUS: GH + Ashby + Lever still submit-verified. Workday = 4th ATS, IN PROGRESS.** Reorder `96bd12f`
-**VERIFIED LIVE** (drain reaches my_information through the menu, no loop). **my_information fill itself has
-NEVER worked** — root cause found this session: **Apply Manually does a full-page NAV that destroys the
-single injected content script**, so the wizard handler dies (~2s, "message channel closed") *before*
-my_information paints. The page renders (you see it) but unfilled; the "Country: USA" seen earlier was
-Workday's prefill, never us. **Fix shipped (UNVERIFIED live): `runWorkdayFill` re-injects on each teardown**
-(treats a full-nav as an expected page boundary → wait for load → re-inject → handler resumes on the now-
-painted page). The 6 my_information field handlers (text/radio + `workdayMultiselect`/`workdayListbox`) are
-correct but were **unreachable until this re-inject fix** — still DOM-guesses, need one run. Workday is
-structurally different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the job POSTING
-page. **Zero-touch impossible** — one-time manual login per tenant, then unattended (session persists in
-Chrome profile). Cred-custody SaaS blocker showing early. Seed: nvidia/wd5/NVIDIAExternalCareerSite (2000 jobs).
+**STATUS: GH + Ashby + Lever submit-verified (unchanged). Workday = 4th ATS, IN PROGRESS.**
+- Reorder `96bd12f` **VERIFIED LIVE** — drain reaches my_information through posting→menu→Apply Manually, no loop.
+- **my_information fill: BUILT, NOT verified live.** Three blocker layers found + fixed THIS session, each
+  revealed by the next live run (full saga = DEVLOG top entry). In order:
+  1. **`270f27d`** — 2 missing widget handlers `workdayMultiselect` (How-Did-You-Hear=LinkedIn) +
+     `workdayListbox` (Phone Device Type=Mobile), plus `radio` (previousWorker=No) + `stuck_on:<page>` guard
+     + `postLoginAnchor` discriminator + `bailNeedsLogin` now logs report/pagesVisited/errMsg.
+  2. **`d4a2de3`** — ROOT of "my_information never filled": **Apply Manually does a FULL-PAGE NAV** that
+     destroys the single injected content script (~2s, `"message channel closed"`) BEFORE my_information
+     paints → handler dies, page renders unfilled (the "Country: USA" ever seen = Workday's prefill, never
+     us). Fix: `runWorkdayFill` (drain.js) treats a teardown as an expected page boundary → wait for tab
+     `complete` → re-probe login post-settle → re-inject + re-send; handler resumes by detecting the now-
+     painted page. Bounded `MAX_REINJECT=6`. Plus a `chrome.storage.local` progress beacon (the only channel
+     surviving a teardown), logged as the `wd_reinject` step.
+  3. **`4d8488e`** — `loginAnchor` included `accountLink` = the SIGNED-IN account menu (present *when authed*)
+     → the handler's iter-0 login guard false-fired `needs_login` on every authed page, esp. my_information
+     (Workday redirects straight there for an in-progress app). Fix: `loginAnchor` → `signInLink` only +
+     `isLoginPage()` veto (a login anchor only counts as a wall when `applyFlowPage` is ABSENT = not in-flow).
+- **PENDING — DO THIS FIRST NEXT SESSION:** the post-`4d8488e` build is pushed but **NOT yet run** (user is
+  clearing context first; all 3 fixes above are UNVERIFIED live). Steps: (1) confirm user did `git pull` +
+  **hard** extension reload (a silent no-reload = chasing a ghost); (2) run per "Next up #1" below; (3) read
+  `drain.jsonl` tail (Workday one-liner below) — did my_information FILL? what do `report.errors` /
+  `wd_reinject` / `stuck_on` say? → that names the next layer. The widgets are an **unverified DOM-guess —
+  expect them to be the next reveal** (`listbox: no options mounted` = open failed; `multiselect: no match for
+  'X' in [...]` = match failed). Every fix is instrumented, so the run REPORTS the layer instead of lying.
+- Workday is structurally different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the
+  POSTING page, not the form. **Zero-touch impossible** — one manual login per tenant, then unattended
+  (session persists in Chrome profile). Cred-custody SaaS blocker showing early. Seed:
+  nvidia/wd5/NVIDIAExternalCareerSite (2000 jobs; 135 in queue, all same tenant).
 
-**Workday flow:** posting → click Apply (`adventureButton`) → method menu → click Apply Manually
-(`applyManually`) → sign-in wall (→ `needs_login`) OR my_information → fill → Next → my_experience
-(status:todo) → aborts `page_not_implemented:my_experience`. Handler = `FILL_FORM_WORKDAY` in autofill.js
-(separate from single-page FILL_FORM). `workday.json` pages ready: `start_application, posting,
-my_information, review`; 4 middle pages = todo stubs that abort clean.
+**Workday flow / mechanism (read before touching the wizard):**
+- `apply_url` = the POSTING page. posting → click Apply (`adventureButton`) → method menu (**SPA, in-place**;
+  `adventureButton` STAYS in DOM beside the menu → why `start_application` must sort before `posting` in the
+  pages array) → click Apply Manually (`applyManually`) → **FULL-PAGE NAV** → real sign-in wall (→ `needs_login`)
+  OR my_information.
+- **In-progress applications redirect `apply_url` STRAIGHT to my_information** (skipping Apply/Apply Manually).
+  So an oft-poked job tests the *direct* my_information path; a **FRESH never-started** job is required to test
+  the *Apply-Manually crosser* (`runWorkdayFill` re-inject). These are TWO code paths — verify both.
+- Pages: my_information → Next → my_experience (`status:todo`) → handler aborts `page_not_implemented:my_experience`
+  = the **v1 milestone target**. Handler = `FILL_FORM_WORKDAY` (autofill.js, separate from single-page
+  `FILL_FORM`); drain owns re-injection via `runWorkdayFill`. `workday.json` pages `ready`: posting,
+  start_application, my_information, review; middle pages = `todo` stubs that abort clean. Whether each Next is a
+  full-nav (→ re-inject) or in-place SPA is **unknown until the `wd_reinject` trace shows it**.
 
-**Workday session — 4 bugs fixed live (each a separate run), full post-mortem in 2026-05-30 DEVLOG:**
-- crash-loop (whole API down, ALL ATSes): jd.js bare `*` route rejected by Express 5 path-to-regexp v8 →
-  named `*splat` + `req.params.splat`; also double-`/job` in workday JD URL (406). (`b404b40`)
-- workday.json address fields pulled non-existent `address.*` → `contact.address.{street,city,zip}`. (`b404b40`)
-- mount_timeout: wizard iter-0 used instant `detectPage()`, missed Workday's ~3s SPA paint → now polls
-  `waitForAnyPage()`. (`e01e4a0`)
-- max_pages_exceeded (menu re-opened forever): `/apply` keeps `adventureButton` in DOM beside the menu,
-  `posting` re-matched first → reordered `start_application` before `posting`. (`96bd12f`, **VERIFIED LIVE
-  2026-05-30 — drain advanced posting→menu→Apply Manually→my_information, no loop.**)
-
-**False-needs_login on my_information — REAL cause was nav-teardown, not a stuck form (2026-05-30 DEVLOG,
-top entry).** First theory (unvalidatable form loops → timeout → mislabel) was WRONG: the script dies at the
-**Apply Manually full-nav**, ~2s in, before my_information even paints. `postLoginAnchor` alone does NOT fix
-it — the probe runs mid-nav before `applyFlowPage` paints, so it falls through to the teardown heuristic.
-Real fix = `runWorkdayFill` re-inject (above); the discriminator is now used **post-settle** inside that loop
-(reliable there) to tell a real login redirect from an in-wizard nav. Still-useful belt-and-braces from the
-first pass, all shipped: the 2 widget handlers, the `stuck_on:<page>` guard (for in-place validation blocks),
-and `bailNeedsLogin` logging report+pagesVisited+errMsg.
+**Earlier Workday fixes (PRIOR session, full post-mortems in DEVLOG): crash-loop (Express 5 `*`→`*splat`,
+`b404b40`), address source paths (`b404b40`), mount_timeout (instant detect → `waitForAnyPage`, `e01e4a0`),
+max_pages menu-loop (reorder `start_application` before `posting`, `96bd12f` — VERIFIED LIVE).**
 
 **Submit selector chain (autofill.js FILL_SUBMIT — current order):**
 1. `button[type="submit"], input[type="submit"], button[data-source="submit"], button.ashby-application-form-submit-button, button#btn-submit, button[data-qa="btn-submit"], button[data-automation-id="submitButton"], button[data-automation-id*="submit"]` (last two = Workday)
