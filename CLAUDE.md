@@ -275,11 +275,14 @@ Round-robin needs an explicit dropdown selection. To live-verify next session: p
 target=6, expect 2 of each ATS.
 
 **Next up (in priority order):**
-1. **Live-verify Workday my_information full fill via the re-inject path (THIS session's build — UNVERIFIED).**
-   Needs push → local pull → Chrome reload (extension code changed). Then drain Workday target=1 (NVIDIA
-   already authed → goes straight through; else `needs_login` once, sign in, re-run). **First read the
-   `wd_reinject` log lines** — they reveal the transition model: drain re-injects after Apply Manually's
-   full-nav so the handler resumes on my_information. Expect: all 6 fill incl. How-Did-You-Hear=LinkedIn
+1. **Live-verify Workday my_information full fill (THIS session's build — UNVERIFIED).** Needs push → local
+   pull → **hard** Chrome reload (extension code changed). **TWO paths, two runs (don't conflate):**
+   (a) the **in-progress** DSP job redirects STRAIGHT to my_information (skips Apply Manually) → tests the
+   login-guard fix + widgets + my_info→next, but NOT the re-inject crosser; (b) a **fresh never-started**
+   NVIDIA job (one of the 127 pending, not the poked DSP one) goes posting→Apply→Apply Manually→nav → tests
+   the d4a2de3 re-inject crosser (watch for the `wd_reinject` log line — EXPECTED + good). Easiest: Reactivate
+   → Start **target=2** (job 1 = DSP direct path; once it ends as milestone/stuck/error → job 2 = fresh →
+   crosser). Expect: all 6 fill incl. How-Did-You-Hear=LinkedIn
    (`workdayMultiselect`), Phone Device Type=Mobile (`workdayListbox`), previously-worked=No (`radio`) →
    advances → `page_not_implemented:my_experience` = **v1 milestone.** Diagnostics if a widget misses:
    `listbox: no options mounted` / `multiselect: no match for 'LinkedIn' in [...]`; an in-place validation

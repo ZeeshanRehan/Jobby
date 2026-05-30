@@ -61,6 +61,16 @@ transition model. Likely snag unchanged: NVIDIA may require Address (deferred) �
 
 **Status.** NOT verified live (VPS has no Chrome). This is the run that finally proves whether my_information fills.
 
+**Follow-up (same day, next run) — `accountLink` peeled the next layer (`4d8488e`).** With re-inject shipped, the
+run still logged `needs_login` — but now *clean*: report present, **no errMsg, no `wd_reinject`, ~3s** = the
+handler's **iter-0 login guard** returning, not a teardown. Cause: `loginAnchor` included
+`[data-automation-id='accountLink']` — the **signed-in account menu**, present *because authed*. Workday
+redirects an in-progress application **straight to my_information**, so the handler injected there, saw
+`accountLink`, and false-fired `needs_login` before filling anything. Fix: drop `accountLink` (→ `signInLink`
+only) + an `isLoginPage()` veto (a login anchor only counts when `applyFlowPage` is ABSENT — inside the flow is
+never a wall). **Note for next session:** the in-progress job redirects past Apply Manually, so it does NOT
+exercise the d4a2de3 re-inject crosser — a **fresh, never-started** NVIDIA job is still needed to prove that path.
+
 ---
 
 ## 2026-05-30 — Workday my_information: reorder VERIFIED, false-needs_login on a stuck form, + the 2 missing widget handlers  ·  FIXED (unverified live)  ·  SUPERSEDED in part — see entry above
