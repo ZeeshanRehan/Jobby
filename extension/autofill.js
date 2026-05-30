@@ -817,10 +817,22 @@ if (!window.__jobbyAutofillInjected) {
           } catch (_) { /* storage unavailable — non-fatal */ }
         };
 
-        // Login wall guard — if the login anchor renders, user hasn't authed on
-        // this tenant yet. Fail-fast so drain marks 'needs_login' and the user
-        // can open the tab manually, click Google SSO once, then re-run.
-        if (adapter.auth?.loginAnchor && document.querySelector(adapter.auth.loginAnchor)) {
+        // True ONLY on the real sign-in wall: a login anchor present AND we're not inside
+        // the application flow. postLoginAnchor (applyFlowPage) wraps every wizard page, so
+        // its presence vetoes the guard — defends against authed-state anchors (e.g. the
+        // account menu) false-firing when Workday redirects straight to my_information for an
+        // in-progress app (the 2026-05-30 false-needs_login bug).
+        const isLoginPage = () => {
+          const la = adapter.auth?.loginAnchor;
+          if (!la || !document.querySelector(la)) return false;
+          const pa = adapter.auth?.postLoginAnchor;
+          if (pa && document.querySelector(pa)) return false; // inside the flow → not a wall
+          return true;
+        };
+
+        // Login wall guard — if the sign-in wall renders, user hasn't authed on this tenant
+        // yet. Fail-fast so drain marks 'needs_login' and the user signs in once, then re-runs.
+        if (isLoginPage()) {
           sendResponse({ report, unknownFields, pagesVisited, reason: "needs_login" });
           return;
         }
@@ -930,9 +942,7 @@ if (!window.__jobbyAutofillInjected) {
             // No known page mounted. Most common cause after the Apply-Manually click
             // is Workday's sign-in wall (an unknown page) — distinguish it from a true
             // timeout so the user knows to auth once rather than chase a phantom mount.
-            const reason = (adapter.auth?.loginAnchor && document.querySelector(adapter.auth.loginAnchor))
-              ? "needs_login"
-              : "mount_timeout";
+            const reason = isLoginPage() ? "needs_login" : "mount_timeout";
             sendResponse({ report, unknownFields, pagesVisited, reason });
             return;
           }

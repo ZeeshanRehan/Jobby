@@ -13,9 +13,9 @@
   ],
   "auth": {
     "loginRequired":   true,
-    "loginAnchor":     "[data-automation-id='signInLink'], [data-automation-id='accountLink']",
+    "loginAnchor":     "[data-automation-id='signInLink']",
     "postLoginAnchor": "[data-automation-id='applyFlowPage']",
-    "_note":           "loginAnchor → fail-fast needs_login. postLoginAnchor wraps EVERY in-wizard page: drain.isLoginWall probes it on a teardown error — present means we're past the SSO wall, so the teardown was in-wizard nav, NOT a login redirect (kills the my_information false-needs_login bug, 2026-05-30 DEVLOG). v1.5 watchMode SSO assist; v2 auto-click Google OAuth (manifest grant for accounts.google.com)."
+    "_note":           "loginAnchor → fail-fast needs_login. ONLY signInLink — 'accountLink' was REMOVED 2026-05-30: it's the SIGNED-IN account menu, present when authed, so it false-fired needs_login on every authed page (esp. my_information when Workday redirects straight there for an in-progress app). postLoginAnchor wraps EVERY in-wizard page: it both (a) vetoes the handler's login guard (inside the flow = never a wall) and (b) lets drain.isLoginWall tell an in-wizard nav teardown from a real SSO redirect (2026-05-30 DEVLOG). v1.5 watchMode SSO assist; v2 auto-click Google OAuth."
   },
   "pages": [
     {
