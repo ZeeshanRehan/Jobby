@@ -29388,14 +29388,15 @@
     "location": "2 Locations",
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-System-Software-Engineer_JR2018913",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "workday: stuck_on:my_information",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-06-01T03:35:22.901Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "d96b6a20-4230-417f-98e2-628f62d927d1"
   },
   {
     "id": "workday_nvidia_JR2018784__job_Israel_Yokneam_Senior_Opto_Mechanical_Failure_Analysis_Engineer_JR2018784",
@@ -29407,14 +29408,15 @@
     "location": "Israel, Yokneam",
     "apply_url": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Yokneam/Senior-Opto-Mechanical-Failure-Analysis-Engineer_JR2018784",
     "fillable": true,
-    "status": "pending",
-    "attempts": 0,
-    "last_error": null,
+    "status": "error",
+    "attempts": 1,
+    "last_error": "workday: stuck_on:my_information",
     "discovered_at": "2026-05-28T23:02:27.647Z",
-    "updated_at": "2026-05-28T23:02:27.647Z",
+    "updated_at": "2026-06-01T03:36:26.849Z",
     "workday_tenant": "nvidia",
     "workday_wd": "wd5",
-    "workday_site": "NVIDIAExternalCareerSite"
+    "workday_site": "NVIDIAExternalCareerSite",
+    "applicationId": "fa39268a-f1cb-4d9b-aa52-f492a04b2aee"
   },
   {
     "id": "workday_nvidia_JR2018937__job_Israel_Yokneam_Physical_Design_Signoff_CAD_Engineer_JR2018937",

@@ -1071,12 +1071,17 @@ if (!window.__jobbyAutofillInjected) {
           try { return getLabelText(el) || fieldName; } catch { return fieldName; }
         };
 
+        // Pages filled AND advanced past — detectPage skips them so a lingering old-page anchor
+        // during an SPA swap can't re-match a completed page (which made the loop re-detect
+        // my_information mid-transition and bail stuck while it was actually advancing).
+        const completedPages = new Set();
+
         // ── Page detection ──────────────────────────────────────────────────
-        // Match the FIRST adapter.pages entry whose `anchor` resolves in the DOM.
+        // Match the FIRST not-yet-completed adapter.pages entry whose `anchor` resolves.
         // Returns null if no page matches (likely an unknown page variant).
         const detectPage = () => {
           for (const page of adapter.pages) {
-            if (!page.anchor) continue;
+            if (!page.anchor || completedPages.has(page.id)) continue;
             if (document.querySelector(page.anchor)) return page;
           }
           return null;
@@ -1093,6 +1098,26 @@ if (!window.__jobbyAutofillInjected) {
             await sleep(200);
           }
           return null;
+        };
+
+        // ── Wait for the page to actually CHANGE after clicking Next ─────────
+        // Workday's Next is sometimes an in-place SPA swap, sometimes a full-nav that tears us
+        // down (→ re-inject). Either way the page we just left lingers for a beat. Deciding
+        // stuck-vs-advanced the instant after Next caught my_information still present DURING its
+        // advance to my_experience → false stuck_on:my_information. Wait until the expected next
+        // anchor appears, or ANY known page other than the one we left mounts. Timeout = genuinely
+        // blocked (a required-field validation we couldn't satisfy).
+        const waitForPageChange = async (fromId, expectedAnchor, timeoutMs = 12000) => {
+          const start = Date.now();
+          while (Date.now() - start < timeoutMs) {
+            if (expectedAnchor && document.querySelector(expectedAnchor)) return true;
+            for (const pg of adapter.pages) {
+              if (!pg.anchor || pg.id === fromId || completedPages.has(pg.id)) continue;
+              if (document.querySelector(pg.anchor)) return true;
+            }
+            await sleep(200);
+          }
+          return false;
         };
 
         // ── Wait for a field-page's inputs to SETTLE ────────────────────────
@@ -1237,7 +1262,6 @@ if (!window.__jobbyAutofillInjected) {
         // Safety cap: real Workday wizards are 5-8 pages; cap at 12 to catch
         // a runaway loop (e.g. Next button that re-renders the same page).
         const MAX_PAGES = 12;
-        let lastFilledPageId = null;
         for (let iter = 0; iter < MAX_PAGES; iter++) {
           // Always poll (was: instant detectPage on iter 0). The first page is the
           // heaviest — a full nav to apply_url — and Workday's SPA paints the Apply
@@ -1254,18 +1278,6 @@ if (!window.__jobbyAutofillInjected) {
             return;
           }
 
-          // Stuck guard — we filled this exact field-page last iteration and clicked
-          // Next, yet here it is again → Workday's validation blocked the advance (a
-          // required field we couldn't satisfy). Return WITH the report so drain logs
-          // what filled + the per-field errors, instead of silently re-looping into a
-          // 60s message-timeout teardown — which isLoginWall would then mis-read as
-          // needs_login (the my_information false-login bug). Gated to field-pages so
-          // the field-less nav pages (posting/start_application) keep relying on the
-          // reorder + MAX_PAGES cap, not this.
-          if (page.id === lastFilledPageId && Object.keys(page.fields || {}).length > 0) {
-            sendResponse({ report, unknownFields, pagesVisited, reason: `stuck_on:${page.id}` });
-            return;
-          }
           pagesVisited.push(page.id);
 
           // Page marked 'todo' in workday.json — clean exit. Drain logs this as an
@@ -1339,11 +1351,16 @@ if (!window.__jobbyAutofillInjected) {
             sendResponse({ report, unknownFields, pagesVisited, reason: `next_click_failed:${page.id}:${err.message}` });
             return;
           }
-          lastFilledPageId = page.id; // for the stuck guard — if this page re-detects, Next didn't take
-
-          // Brief settle — give Workday a moment to start the next-page mount
-          // before waitForAnyPage's poll loop takes over.
-          await sleep(500);
+          // Wait for the transition to resolve before the next iteration decides anything. If the
+          // page genuinely doesn't change (validation blocked Next), waitForPageChange times out →
+          // report stuck WITH the report (drain logs what filled + field errors) instead of silently
+          // re-looping into a 60s message-timeout that isLoginWall mis-reads as needs_login.
+          const advanced = await waitForPageChange(page.id, page.next?.expectedNextAnchor);
+          if (!advanced) {
+            sendResponse({ report, unknownFields, pagesVisited, reason: `stuck_on:${page.id}` });
+            return;
+          }
+          completedPages.add(page.id); // filled + advanced — never re-detect its lingering anchor
         }
         sendResponse({ report, unknownFields, pagesVisited, reason: "max_pages_exceeded" });
       })();

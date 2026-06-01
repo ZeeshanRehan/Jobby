@@ -5788,5 +5788,81 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "d96b6a20-4230-417f-98e2-628f62d927d1",
+    "timestamp": "2026-06-01T03:35:10.744Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-System-Software-Engineer_JR2018913",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_d96b6a20-4230-417f-98e2-628f62d927d1.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9kOTZiNmEyMC00MjMwLTQxN2YtOThlMi02MjhmNjJkOTI3ZDEucGRmIiwiaWF0IjoxNzgwMjg0OTEyLCJleHAiOjE3ODAyODg1MTJ9.ameyPx97ChtRSJlZnXGLgjnOALjWJu3umPhO9NBO0BQ",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\d96b6a20-4230-417f-98e2-628f62d927d1.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Microcode",
+        "Kernel Development",
+        "Firmware",
+        "NVLink",
+        "GPU Architecture",
+        "Pre-Silicon Verification",
+        "Hardware Bring-Up",
+        "Device Drivers",
+        "System Architecture",
+        "Bash"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, C/C++-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Microcode",
+      "Kernel Development",
+      "Firmware",
+      "NVLink",
+      "GPU Architecture",
+      "Pre-Silicon Verification",
+      "Hardware Bring-Up",
+      "Device Drivers",
+      "System Architecture",
+      "Bash"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "fa39268a-f1cb-4d9b-aa52-f492a04b2aee",
+    "timestamp": "2026-06-01T03:36:15.619Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Yokneam/Senior-Opto-Mechanical-Failure-Analysis-Engineer_JR2018784",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_fa39268a-f1cb-4d9b-aa52-f492a04b2aee.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mYTM5MjY4YS1mMWNiLTRkOWItYWE1Mi1mNDkyYTA0YjJhZWUucGRmIiwiaWF0IjoxNzgwMjg0OTc3LCJleHAiOjE3ODAyODg1Nzd9.jTwyDabrUn8Mo1z1sa-0zLxOEY522Ci5tLYX7Br760k",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\fa39268a-f1cb-4d9b-aa52-f492a04b2aee.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]
