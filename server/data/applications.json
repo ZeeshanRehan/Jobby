@@ -5273,5 +5273,472 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "87a45541-e774-4824-bc8a-7de10c6700d2",
+    "timestamp": "2026-05-31T16:10:51.109Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_87a45541-e774-4824-bc8a-7de10c6700d2.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV84N2E0NTU0MS1lNzc0LTQ4MjQtYmM4YS03ZGUxMGM2NzAwZDIucGRmIiwiaWF0IjoxNzgwMjQzODUxLCJleHAiOjE3ODAyNDc0NTF9.ZyHNUj9wDlXI3kDraP2CLmQg-GzWOanh55BaCgRfNiM",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\87a45541-e774-4824-bc8a-7de10c6700d2.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Data Visualization",
+        "Fixed-Point Arithmetic",
+        "Debugging",
+        "Multi-threading",
+        "Scientific Computing"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Data Visualization",
+      "Fixed-Point Arithmetic",
+      "Debugging",
+      "Multi-threading",
+      "Scientific Computing"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "2582c68a-df89-4bf4-b740-d3e7f1744491",
+    "timestamp": "2026-05-31T16:12:25.850Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Tel-Aviv/Senior-DSP-Python-Engineer_JR2018360",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_2582c68a-df89-4bf4-b740-d3e7f1744491.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNTgyYzY4YS1kZjg5LTRiZjQtYjc0MC1kM2U3ZjE3NDQ0OTEucGRmIiwiaWF0IjoxNzgwMjQzOTQ2LCJleHAiOjE3ODAyNDc1NDZ9.3pHziRdgEINa-RYdRZl3ggU6hsKGjCZh_qMhDWgGxq8",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\2582c68a-df89-4bf4-b740-d3e7f1744491.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Signal Processing",
+        "MATLAB",
+        "Concurrency",
+        "Parallelism",
+        "Performance Profiling",
+        "Multi-threading",
+        "DSP",
+        "Visualization",
+        "Debugging",
+        "CI/CD Pipelines"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using Python, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "Signal Processing",
+      "MATLAB",
+      "Concurrency",
+      "Parallelism",
+      "Performance Profiling",
+      "Multi-threading",
+      "DSP",
+      "Visualization",
+      "Debugging",
+      "CI/CD Pipelines"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "5b109508-e685-40f2-8ec5-16e2ffcf8689",
+    "timestamp": "2026-05-31T16:32:30.585Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Digital-Design-Engineer_JR2018888",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_5b109508-e685-40f2-8ec5-16e2ffcf8689.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV81YjEwOTUwOC1lNjg1LTQwZjItOGVjNS0xNmUyZmZjZjg2ODkucGRmIiwiaWF0IjoxNzgwMjQ1MTUxLCJleHAiOjE3ODAyNDg3NTF9.wpD8JGwnapNU5wSkYsD1kI02W5Q1rPhz0Vyf3aRbtsg",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\5b109508-e685-40f2-8ec5-16e2ffcf8689.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "1ca13941-80e0-4a4b-9402-567a035edb6d",
+    "timestamp": "2026-05-31T16:33:41.370Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-OR-Hillsboro/Senior-Fortran-Compiler-Engineer_JR2015674",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_1ca13941-80e0-4a4b-9402-567a035edb6d.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8xY2ExMzk0MS04MGUwLTRhNGItOTQwMi01NjdhMDM1ZWRiNmQucGRmIiwiaWF0IjoxNzgwMjQ1MjIxLCJleHAiOjE3ODAyNDg4MjF9.SXb9nnrZmAaDzi9e6y2e3qh9kyJ45sc8ZrLK1uejCa4",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\1ca13941-80e0-4a4b-9402-567a035edb6d.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Fortran",
+        "LLVM",
+        "Flang",
+        "OpenACC",
+        "OpenMP",
+        "CUDA",
+        "Semantic Analysis",
+        "Compiler Internals"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Fortran",
+      "LLVM",
+      "Flang",
+      "OpenACC",
+      "OpenMP",
+      "CUDA",
+      "Semantic Analysis",
+      "Compiler Internals"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "36c81f7e-3cd6-4cec-b4cb-9532351a2990",
+    "timestamp": "2026-05-31T16:41:47.007Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/Israel-Yokneam/Firmware-Engineer_JR2016359",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_36c81f7e-3cd6-4cec-b4cb-9532351a2990.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8zNmM4MWY3ZS0zY2Q2LTRjZWMtYjRjYi05NTMyMzUxYTI5OTAucGRmIiwiaWF0IjoxNzgwMjQ1NzA3LCJleHAiOjE3ODAyNDkzMDd9.i9_C4JwUxdAxuJoeS_0DYV5Gm2x79RR-Jwa7Dje1QH0",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\36c81f7e-3cd6-4cec-b4cb-9532351a2990.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "PCIe",
+        "I2C",
+        "SPI",
+        "Hardware Emulation",
+        "System Validation",
+        "Embedded Systems",
+        "Hardware Debugging",
+        "Telemetry",
+        "Network Protocols",
+        "Storage Protocols"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python and C++-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "PCIe",
+      "I2C",
+      "SPI",
+      "Hardware Emulation",
+      "System Validation",
+      "Embedded Systems",
+      "Hardware Debugging",
+      "Telemetry",
+      "Network Protocols",
+      "Storage Protocols"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "bc2ee50d-e069-49eb-ae69-05ceb6ff80f8",
+    "timestamp": "2026-05-31T16:54:59.303Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Power-Integrity-Methodology-CAD-Engineer_JR2017642-1",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_bc2ee50d-e069-49eb-ae69-05ceb6ff80f8.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9iYzJlZTUwZC1lMDY5LTQ5ZWItYWU2OS0wNWNlYjZmZjgwZjgucGRmIiwiaWF0IjoxNzgwMjQ2NDk5LCJleHAiOjE3ODAyNTAwOTl9.77l0cbLl_xTkGmU4jUHKfw9cGcuSRKL1laCY-nWAZzA",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\bc2ee50d-e069-49eb-ae69-05ceb6ff80f8.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "TCL",
+        "Perl",
+        "EMIR",
+        "IR analysis",
+        "Power integrity",
+        "Cadence",
+        "Synopsys",
+        "Mentor Graphics"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "TCL",
+      "Perl",
+      "EMIR",
+      "IR analysis",
+      "Power integrity",
+      "Cadence",
+      "Synopsys",
+      "Mentor Graphics"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "26f96c7a-4242-436b-9733-a270e7d58691",
+    "timestamp": "2026-05-31T17:16:06.780Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/UK-Cambridge/Solution-Architect--Financial-Services_JR2006144",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_26f96c7a-4242-436b-9733-a270e7d58691.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8yNmY5NmM3YS00MjQyLTQzNmItOTczMy1hMjcwZTdkNTg2OTEucGRmIiwiaWF0IjoxNzgwMjQ3NzY3LCJleHAiOjE3ODAyNTEzNjd9.1X1xA-gVfF2-fa8v7kItplpuJ1l0lIZq4CP5Sv2zJeU",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\26f96c7a-4242-436b-9733-a270e7d58691.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "Kubernetes",
+        "OpenStack",
+        "Google Cloud",
+        "InfiniBand",
+        "CUDA",
+        "HPC",
+        "Quantitative Finance",
+        "GPU Computing",
+        "Hybrid Cloud"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "Kubernetes",
+      "OpenStack",
+      "Google Cloud",
+      "InfiniBand",
+      "CUDA",
+      "HPC",
+      "Quantitative Finance",
+      "GPU Computing",
+      "Hybrid Cloud"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "0078d4f5-944c-4c89-9b1c-ed4c6ff685f7",
+    "timestamp": "2026-05-31T20:26:48.368Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Product-Manager---Networking-Platform-Product-Group_JR2018231",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_0078d4f5-944c-4c89-9b1c-ed4c6ff685f7.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV8wMDc4ZDRmNS05NDRjLTRjODktOWIxYy1lZDRjNmZmNjg1ZjcucGRmIiwiaWF0IjoxNzgwMjU5MjA4LCJleHAiOjE3ODAyNjI4MDh9.wq2ikW3Nbm2zUqlyLso5bidvXZi7QTfAcdcagJI-iY8",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\0078d4f5-944c-4c89-9b1c-ed4c6ff685f7.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "9fd5772b-0cbf-458f-a0be-49a154ba13ed",
+    "timestamp": "2026-05-31T20:30:10.735Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-AI-Frameworks-Engineer_JR2017423",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_9fd5772b-0cbf-458f-a0be-49a154ba13ed.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV85ZmQ1NzcyYi0wY2JmLTQ1OGYtYTBiZS00OWExNTRiYTEzZWQucGRmIiwiaWF0IjoxNzgwMjU5NDExLCJleHAiOjE3ODAyNjMwMTF9.GbI44JzY6VsrxZBrPAKE_px95-deWw5zsTcDlDdqVS8",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\9fd5772b-0cbf-458f-a0be-49a154ba13ed.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "CUDA",
+        "CUTLASS",
+        "LLVM",
+        "MLIR",
+        "AST",
+        "JIT compilation",
+        "GPU architecture",
+        "FFI",
+        "Compiler design",
+        "Intermediate representation"
+      ],
+      "bulletsReworded": [
+        {
+          "section": "InvolveMINT Inc.",
+          "original": "Redesigned inquiry, response, and negotiation flows using Figma, React-based prototypes, and structured UX templates for 100+ active small businesses on the platform.",
+          "tailored": "Redesigned inquiry, response, and negotiation flows using Figma, Python-based prototypes, and structured UX templates for 100+ active small businesses on the platform."
+        },
+        {
+          "section": "Lyra – AI-Powered Music Discovery",
+          "original": "Built a full-stack music recommendation platform using React.js, Node.js, Express, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations.",
+          "tailored": "Built a full-stack music recommendation platform using React.js, Node.js, C++, MongoDB, and GPT-4, allowing users to describe feelings and receive curated YouTube song recommendations."
+        }
+      ]
+    },
+    "keywordsInjected": [
+      "CUDA",
+      "CUTLASS",
+      "LLVM",
+      "MLIR",
+      "AST",
+      "JIT compilation",
+      "GPU architecture",
+      "FFI",
+      "Compiler design",
+      "Intermediate representation"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "659ca7ed-0dfe-4bd8-a5f3-8265f177b4d5",
+    "timestamp": "2026-05-31T20:45:51.629Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/Senior-Physical-Design-Methodology-Engineer--Innovus-Flows_JR2011617-1",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_659ca7ed-0dfe-4bd8-a5f3-8265f177b4d5.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV82NTljYTdlZC0wZGZlLTRiZDgtYTVmMy04MjY1ZjE3N2I0ZDUucGRmIiwiaWF0IjoxNzgwMjYwMzUyLCJleHAiOjE3ODAyNjM5NTJ9.FPoUnW5ZCroNpOhzxnJGqglZz79s9CM1YF5bY21di5w",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\659ca7ed-0dfe-4bd8-a5f3-8265f177b4d5.pdf",
+    "changesMade": {
+      "skillsAdded": [
+        "TCL",
+        "Perl",
+        "Cadence Innovus",
+        "Cadence Genus",
+        "Cadence Tempus",
+        "Cadence Quantus",
+        "NumPy",
+        "SciPy",
+        "scikit-learn",
+        "PyTorch",
+        "UPF",
+        "FSDB",
+        "SAIF",
+        "STA",
+        "RC extraction",
+        "EM analysis",
+        "IR analysis",
+        "Power distribution networks",
+        "Design for Yield",
+        "Manufacturability",
+        "Thermal management"
+      ],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [
+      "TCL",
+      "Perl",
+      "Cadence Innovus",
+      "Cadence Genus",
+      "Cadence Tempus",
+      "Cadence Quantus",
+      "NumPy",
+      "SciPy",
+      "scikit-learn",
+      "PyTorch",
+      "UPF",
+      "FSDB",
+      "SAIF",
+      "STA",
+      "RC extraction",
+      "EM analysis",
+      "IR analysis",
+      "Power distribution networks",
+      "Design for Yield",
+      "Manufacturability",
+      "Thermal management"
+    ],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

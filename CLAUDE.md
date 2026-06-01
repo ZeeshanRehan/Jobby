@@ -208,41 +208,56 @@ Two complementary records — keep both current:
   changelog duplicate.
 
 ### Last Session Cutoff
-**Date:** 2026-05-30 (Workday my_information session). **HEAD = `24f2fe3`, branch `main`.**
-Claude Code runs on the VPS — server edits live after `pm2 restart all`; **adapter JSON is read fresh per
-request (`readFileSync` in apply.js), so adapter edits are live with NO restart/reload.** Extension edits
-(autofill.js, drain.js) need git push → local pull → Chrome reload. **I'm on the VPS, NO Chrome — server
-pipeline I smoke-test; live DOM fill/submit runs in user's local Chrome.**
+**Date:** 2026-05-31 (Workday my_information — got to 5/6 fields filling live). **HEAD = `e5a48e8`; ALL this
+session's work is UNCOMMITTED + LOCAL, branch `main`.**
+**⚠️ ENV CHANGED THIS SESSION: I was on the USER'S LOCAL WINDOWS machine, not the VPS.** So: I edited local
+files directly, started the local server myself, and read the **local** `server/data/drain.jsonl` directly.
+`config.js` `DEV=true` (intentional, uncommitted — do NOT commit) → extension talks to **localhost:3000**.
+Local server is NOT auto-running: start with **`node --env-file=server/.env server/server.js`** (plain
+`node server.js` crashes — dotenv reads CWD `.env` = 0 vars → Supabase throws; `--env-file` fixes it).
+Extension edits (autofill.js, drain.js) need a **hard** Chrome reload (toggle off/on) to load. **Adapter JSON
+(`workday.json`) is read fresh server-side per request → adapter edits are live with NO reload** (I patched
+phoneType on BOTH local file AND the VPS via ssh sed so it works whichever server the extension hits).
 
-**STATUS: GH + Ashby + Lever submit-verified (unchanged). Workday = 4th ATS, IN PROGRESS.**
-- Reorder `96bd12f` **VERIFIED LIVE** — drain reaches my_information through posting→menu→Apply Manually, no loop.
-- **my_information fill: BUILT, NOT verified live.** Three blocker layers found + fixed THIS session, each
-  revealed by the next live run (full saga = DEVLOG top entry). In order:
-  1. **`270f27d`** — 2 missing widget handlers `workdayMultiselect` (How-Did-You-Hear=LinkedIn) +
-     `workdayListbox` (Phone Device Type=Mobile), plus `radio` (previousWorker=No) + `stuck_on:<page>` guard
-     + `postLoginAnchor` discriminator + `bailNeedsLogin` now logs report/pagesVisited/errMsg.
-  2. **`d4a2de3`** — ROOT of "my_information never filled": **Apply Manually does a FULL-PAGE NAV** that
-     destroys the single injected content script (~2s, `"message channel closed"`) BEFORE my_information
-     paints → handler dies, page renders unfilled (the "Country: USA" ever seen = Workday's prefill, never
-     us). Fix: `runWorkdayFill` (drain.js) treats a teardown as an expected page boundary → wait for tab
-     `complete` → re-probe login post-settle → re-inject + re-send; handler resumes by detecting the now-
-     painted page. Bounded `MAX_REINJECT=6`. Plus a `chrome.storage.local` progress beacon (the only channel
-     surviving a teardown), logged as the `wd_reinject` step.
-  3. **`4d8488e`** — `loginAnchor` included `accountLink` = the SIGNED-IN account menu (present *when authed*)
-     → the handler's iter-0 login guard false-fired `needs_login` on every authed page, esp. my_information
-     (Workday redirects straight there for an in-progress app). Fix: `loginAnchor` → `signInLink` only +
-     `isLoginPage()` veto (a login anchor only counts as a wall when `applyFlowPage` is ABSENT = not in-flow).
-- **PENDING — DO THIS FIRST NEXT SESSION:** the post-`4d8488e` build is pushed but **NOT yet run** (user is
-  clearing context first; all 3 fixes above are UNVERIFIED live). Steps: (1) confirm user did `git pull` +
-  **hard** extension reload (a silent no-reload = chasing a ghost); (2) run per "Next up #1" below; (3) read
-  `drain.jsonl` tail (Workday one-liner below) — did my_information FILL? what do `report.errors` /
-  `wd_reinject` / `stuck_on` say? → that names the next layer. The widgets are an **unverified DOM-guess —
-  expect them to be the next reveal** (`listbox: no options mounted` = open failed; `multiselect: no match for
-  'X' in [...]` = match failed). Every fix is instrumented, so the run REPORTS the layer instead of lying.
+**STATUS: GH + Ashby + Lever submit-verified (unchanged). Workday my_information = 5 of 6 fields VERIFIED
+FILLING LIVE this session. `source` (How Did You Hear) = the last blocker, handler just rewritten, UNVERIFIED.**
+Full saga = DEVLOG 2026-05-31 entry + its 3 follow-ups. This session's wins (all uncommitted):
+- **`isLoginWall` layer-4 URL-driven fix** (drain.js) — **VERIFIED LIVE**: `wd_reinject` now fires (was 0
+  forever); the Apply-Manually teardown re-injects instead of false-parking `needs_login`. Genuine Google-SSO
+  wall still parks correctly (settled URL = `accounts.google.com` → caught). `settledUrl` now in the logs.
+- **mount-race fix** (autofill.js `waitForPageFields`) — **VERIFIED**: waits for the field COUNT to stabilize
+  (phone section mounts ~1s after name section) before `fillPage`; killed the all-stale bug.
+- **option cross-contamination fix** (autofill.js `readWdOptions(root)` + `findWdMenu` via `aria-controls`) —
+  **VERIFIED**: scopes option reads to the opened menu; killed the country-code list bleeding into phoneType/
+  source. phoneType (button-listbox, exposes aria-controls) now fills.
+- **phoneType value** Mobile → **`Home Cellular`** (NVIDIA has no "Mobile") — local + VPS adapters. VERIFIED fills.
+- **`source` handler** (autofill.js `fillWorkdayMultiselect`) — REWRITTEN, **NOT yet run**. Discovered live:
+  the field input IS the search box (`placeholder="Search"`, `data-uxi-widget-type="selectinput"`), Workday is
+  **UXI not React** (no fiber hatch), typing does NOT live-filter, **ENTER** runs the search + LOADS
+  "LinkedIn Jobs" as a clickable option but does NOT auto-select. Handler now: focus → setNativeValue(seed) →
+  Enter (keyCode 13) → poll `readWdOptions` for the leaf → **click it** → verify a real `selectedItem` chip
+  (`readWdSelection` made STRICT — a prior version false-positived `"Expanded"` and reported source filled when
+  EMPTY). `node --check` clean.
+- **`DEBUG_KEEP_WD_TAB=true`** (drain.js) — keeps the halted Workday tab OPEN+focused for inspection (TODO:
+  flip false for unattended).
+- Diagnostics: `dumpFieldCandidates()` → `report.diag` (real control ids on stale/error).
+- Tooling reality this session: console-probe round-trips were painful (paste line-wrap splits string
+  literals; `document.activeElement` is the console after you click into it, not the field). Keep probe lines
+  SHORT and query elements by selector, not activeElement.
+- **PENDING — DO FIRST NEXT SESSION:** hard-reload extension + run Workday target 1. Does `source` commit
+  ("LinkedIn Jobs" chip)? → if synthetic Enter loads the leaf, all 6 fill → likely advances to
+  `page_not_implemented:my_experience` = **v1 milestone**. If `source` fails `no '<v>' leaf after Enter; saw
+  [<categories>]` → synthetic Enter isn't triggering the UXI search = trusted-event wall → pivot to
+  **chrome.debugger (CDP) trusted events** or a 1-click manual `source` assist. Read the local drain.jsonl
+  fill_form report (filled/errors/diag) to see. **Address/location NOT configured** (deferred): once source
+  commits we learn if NVIDIA requires Address (advances = optional; re-stuck = required). `profile.contact.
+  address` = Glassboro/NJ/08028/US but **`street` is BLANK** — if Address Line 1 is required, user must add a
+  street to profile.js (can't fill what's absent). Address fields seen in diag: addressLine1, city,
+  countryRegion(State, button-listbox), postalCode, country(button-listbox).
 - Workday is structurally different: multi-page wizard behind a **per-tenant login wall**; `apply_url` is the
   POSTING page, not the form. **Zero-touch impossible** — one manual login per tenant, then unattended
   (session persists in Chrome profile). Cred-custody SaaS blocker showing early. Seed:
-  nvidia/wd5/NVIDIAExternalCareerSite (2000 jobs; 135 in queue, all same tenant).
+  nvidia/wd5/NVIDIAExternalCareerSite (2000 jobs; 128 workday/pending in LOCAL queue, all same tenant).
 
 **Workday flow / mechanism (read before touching the wizard):**
 - `apply_url` = the POSTING page. posting → click Apply (`adventureButton`) → method menu (**SPA, in-place**;
@@ -285,29 +300,25 @@ Round-robin needs an explicit dropdown selection. To live-verify next session: p
 target=6, expect 2 of each ATS.
 
 **Next up (in priority order):**
-1. **Live-verify Workday my_information full fill (THIS session's build — UNVERIFIED).** Needs push → local
-   pull → **hard** Chrome reload (extension code changed). **TWO paths, two runs (don't conflate):**
-   (a) the **in-progress** DSP job redirects STRAIGHT to my_information (skips Apply Manually) → tests the
-   login-guard fix + widgets + my_info→next, but NOT the re-inject crosser; (b) a **fresh never-started**
-   NVIDIA job (one of the 127 pending, not the poked DSP one) goes posting→Apply→Apply Manually→nav → tests
-   the d4a2de3 re-inject crosser (watch for the `wd_reinject` log line — EXPECTED + good). Easiest: Reactivate
-   → Start **target=2** (job 1 = DSP direct path; once it ends as milestone/stuck/error → job 2 = fresh →
-   crosser). Expect: all 6 fill incl. How-Did-You-Hear=LinkedIn
-   (`workdayMultiselect`), Phone Device Type=Mobile (`workdayListbox`), previously-worked=No (`radio`) →
-   advances → `page_not_implemented:my_experience` = **v1 milestone.** Diagnostics if a widget misses:
-   `listbox: no options mounted` / `multiselect: no match for 'LinkedIn' in [...]`; an in-place validation
-   block → `stuck_on:my_information` WITH the report (NOT a login wall). Use the one-liner below to read the
-   `jobby_wd_progress` beacon + `wd_reinject` trace. **Likely snag:** NVIDIA may require Address (deferred on
-   purpose) → clean `stuck_on:my_information` → add `addressSection` fields back + handle the country/state combobox.
-   **Open question the trace answers:** does my_information's Save & Continue ALSO full-nav (→ another re-inject)
-   or re-render in place? If full-nav on every page, the bounded re-inject loop already handles it.
-2. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages
+1. **Verify `source` fill (THIS session's rewrite — UNVERIFIED).** Hard-reload extension → ensure local
+   server up (`node --env-file=server/.env server/server.js`) → Drain → Workday **target 1** → Start (tab
+   stays open on halt via `DEBUG_KEEP_WD_TAB`). Read local `drain.jsonl` fill_form report. **Win:** `source`
+   commits a `selectedItem` chip ("LinkedIn Jobs") → all 6 fill → advances → `page_not_implemented:my_experience`
+   = **v1 milestone.** **Fail mode:** `source — no 'LinkedIn' leaf after Enter; saw [<categories>]` = synthetic
+   Enter didn't trigger the UXI search (trusted-event wall) → pivot to **chrome.debugger CDP trusted events**
+   (heavier: new permission + "being debugged" banner) OR a 1-click manual `source` assist. The other 5 fields
+   are VERIFIED filling — only `source` is in question.
+2. **Address/location** (the user noticed it's empty). Once `source` commits, learn if NVIDIA requires Address:
+   advances = optional (done); re-`stuck_on:my_information` = required → add to workday.json my_information.fields:
+   `country` + `countryRegion`(State) = button-listboxes (reuse `workdayListbox` — now working), `city`/`postalCode`
+   = text. **`addressLine1` BLOCKED:** `profile.contact.address.street` is BLANK — user must add a street first.
+3. After milestone: build Workday `my_experience` (resume upload) page, then route the 3 todo pages
    (questions/voluntary/self-id) through the existing unknown-scan + AI-fallback path. Workday SSO assist (v1.5).
-3. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT,
+4. **Harden `ai-fallback.js` prompt** to forbid URL fabrication (Google Scholar hallucination — still HOT,
    unaddressed; ships bad data on every GH/Ashby/Lever run).
-4. Live-verify round-robin mode (target=6, expect 2 of each ATS); ROUND_ROBIN_ORDER excludes workday on purpose.
-5. AI Q/A persistence on popup-autofill flow (drain has it, popup doesn't).
-6. Widen seed list; V4 dashboard; strip round-robin path (deferred).
+5. Live-verify round-robin mode (target=6, expect 2 of each ATS); ROUND_ROBIN_ORDER excludes workday on purpose.
+6. AI Q/A persistence on popup-autofill flow (drain has it, popup doesn't).
+7. Widen seed list; V4 dashboard; strip round-robin path (deferred).
 
 **Useful one-liners (no `jq` on VPS — node only):**
 ```

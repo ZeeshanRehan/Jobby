@@ -142,47 +142,92 @@ if (!window.__jobbyAutofillInjected) {
   // whether the open failed or the match did. DOM-guess — needs live verify.
   const WD_OPTION_SEL = "[data-automation-id='promptOption'], ul[role='listbox'] [role='option'], div[role='option']";
 
-  function readWdOptions() {
-    return Array.from(document.querySelectorAll(WD_OPTION_SEL)).filter((o) => o.offsetParent !== null);
+  // Read option elements. Prefer scoping to a specific menu container (the listbox a
+  // trigger controls) — a document-wide read pulls in a SIBLING widget's options, which
+  // is how the country-code list bled into phoneType + source (2026-05-31 DEVLOG). Same
+  // trap the react-select path already guards against (see findComboboxMenu note below).
+  function readWdOptions(root) {
+    return Array.from((root || document).querySelectorAll(WD_OPTION_SEL)).filter((o) => o.offsetParent !== null);
   }
   function wdOptionText(o) {
     return (o.getAttribute("data-automation-label") || o.textContent || "").trim();
   }
+  // The menu a control owns while open — ARIA sets aria-controls/aria-owns to its id.
+  // null when the attr is absent → caller falls back to a (legacy) global read.
+  function findWdMenu(controllerEl) {
+    const id = controllerEl.getAttribute("aria-controls") || controllerEl.getAttribute("aria-owns");
+    return id ? document.getElementById(id) : null;
+  }
+  // Compact trigger fingerprint for failure diagnostics — shows if scoping was possible.
+  function wdTriggerDiag(el) {
+    return `aria-controls=${el.getAttribute("aria-controls") || el.getAttribute("aria-owns") || "none"} expanded=${el.getAttribute("aria-expanded") || "?"}`;
+  }
 
   // Single-select: click the trigger button → poll for the portalled listbox → pick.
+  // Scope reads to the menu the trigger controls so a sibling listbox can't leak in.
   async function fillWorkdayListbox(triggerEl, value) {
     pointerClick(triggerEl);
-    let opts = [];
-    for (let t = 0; t < 12; t++) { await sleep(150); opts = readWdOptions(); if (opts.length) break; }
-    if (!opts.length) return { ok: false, why: "no options mounted" };
+    let menu = null, opts = [];
+    for (let t = 0; t < 12; t++) {
+      await sleep(150);
+      menu = findWdMenu(triggerEl);
+      opts = readWdOptions(menu);
+      if (opts.length) break;
+    }
+    if (!opts.length) return { ok: false, why: `no options mounted (${wdTriggerDiag(triggerEl)})` };
     const texts = opts.map(wdOptionText);
     const idx = bestOptionMatch(texts, value);
-    if (idx < 0) return { ok: false, why: `no match for '${value}' in [${texts.slice(0, 8).join(", ")}]` };
+    if (idx < 0) return { ok: false, why: `no match for '${value}' in [${texts.slice(0, 10).join(", ")}] scoped=${!!menu}` };
     pointerClick(opts[idx]); opts[idx].click();
     await sleep(120);
     return { ok: true, shown: texts[idx] };
   }
 
-  // Type-to-filter multiselect (e.g. How Did You Hear): focus → type the seed →
-  // poll until the filtered prompt settles → pick the best match (becomes a pill).
+  // The committed selection of a Workday multiselect — picked items land as selectedItem
+  // chips inside the widget. STRICT: only a real chip (or the prompt label) counts, never
+  // an aria/expanded state — that false-positived as "Expanded" and masked an empty field
+  // (2026-05-31). Returns "" when nothing is actually selected.
+  function readWdSelection(inputEl) {
+    const box = inputEl.closest("[data-automation-id='multiSelectContainer']") || document;
+    const chips = box.querySelectorAll("[data-automation-id='selectedItem']");
+    if (chips.length) return Array.from(chips).map((c) => c.textContent.trim()).filter(Boolean).join(", ");
+    const label = box.querySelector("[data-automation-id='promptSelectionLabel']");
+    return label && label.textContent.trim() ? label.textContent.trim() : "";
+  }
+
+  // How Did You Hear About Us — Workday multiselect. The field input IS the search box
+  // (placeholder="Search", data-uxi-widget-type="selectinput"). Typing does NOT live-filter;
+  // ENTER runs the search and LOADS the matching leaf as a clickable option but does NOT
+  // select it (the "loads LinkedIn Jobs as an option" behaviour, verified 2026-05-31). So:
+  // focus → set seed → Enter → poll for the loaded leaf → CLICK it → verify a chip committed.
   async function fillWorkdayMultiselect(inputEl, value) {
     inputEl.focus(); pointerClick(inputEl);
+    await sleep(120);
     setNativeValue(inputEl, String(value));
-    let opts = [];
-    for (let t = 0; t < 14; t++) {
+    await sleep(220);
+    const key = { bubbles: true, key: "Enter", code: "Enter", keyCode: 13, which: 13 };
+    inputEl.dispatchEvent(new KeyboardEvent("keydown",  key));
+    inputEl.dispatchEvent(new KeyboardEvent("keypress", key));
+    inputEl.dispatchEvent(new KeyboardEvent("keyup",    key));
+
+    // Poll for the leaf the search loaded, then click it. Match by text so a category
+    // ("Job Board") never wins over the leaf ("LinkedIn Jobs").
+    let opts = [], texts = [], idx = -1;
+    for (let t = 0; t < 18; t++) {
       await sleep(180);
       opts = readWdOptions();
-      const txts = opts.map((o) => (o.textContent || "").trim());
-      const settling = txts.length === 0 || txts.some((x) => /^(loading|searching)/i.test(x));
-      if (!settling) break;
+      texts = opts.map(wdOptionText);
+      idx = bestOptionMatch(texts, value);
+      if (idx >= 0) break;
     }
-    if (!opts.length) return { ok: false, why: "no options after typing" };
-    const texts = opts.map(wdOptionText);
-    const idx = bestOptionMatch(texts, value);
-    if (idx < 0) return { ok: false, why: `no match for '${value}' in [${texts.slice(0, 8).join(", ")}]` };
+    if (idx < 0) return { ok: false, why: `no '${value}' leaf after Enter; saw [${texts.slice(0, 10).join(", ")}]` };
     pointerClick(opts[idx]); opts[idx].click();
-    await sleep(120);
-    return { ok: true, shown: texts[idx] };
+    await sleep(250);
+
+    // Verify a chip actually committed — guards against the expand-without-select false positive.
+    const shown = readWdSelection(inputEl);
+    if (!shown) return { ok: false, why: `clicked '${texts[idx]}' but no selection chip committed` };
+    return { ok: true, shown };
   }
 
   // Full pointer sequence — Ashby (and react widgets) commit on mousedown, not a bare .click()
@@ -798,7 +843,7 @@ if (!window.__jobbyAutofillInjected) {
     if (message.type === "FILL_FORM_WORKDAY") {
       (async () => {
         const { adapter, profileData, resumePdf } = message;
-        const report = { filled: [], filledDetails: [], stale: [], skipped: [], errors: [] };
+        const report = { filled: [], filledDetails: [], stale: [], skipped: [], errors: [], notes: [], diag: {} };
         const unknownFields = [];
         const handledEls = new WeakSet();
         const pagesVisited = [];
@@ -864,6 +909,53 @@ if (!window.__jobbyAutofillInjected) {
             await sleep(200);
           }
           return null;
+        };
+
+        // ── Wait for a field-page's inputs to SETTLE ────────────────────────
+        // detectPage matches the page WRAPPER anchor, which Workday's React paints
+        // BEFORE the field widgets — and the widgets themselves mount in waves (name
+        // section first, phone section ~1s later). Waiting for the FIRST selector was
+        // too eager: it filled before the phone fields mounted → those went stale
+        // (2026-05-31). So poll until the count of resolving selectors STOPS climbing
+        // (≈600ms steady) or all are present, whichever first. A permanently-wrong
+        // selector just caps the max below total → the stabilize path still releases.
+        const waitForPageFields = async (page, timeoutMs = 8000) => {
+          const sels = Object.values(page.fields || {}).map((f) => f.selector).filter(Boolean);
+          if (!sels.length) return true; // nav-only page (posting / start_application)
+          const start = Date.now();
+          let prev = -1, stable = 0;
+          while (Date.now() - start < timeoutMs) {
+            const count = sels.filter((s) => document.querySelector(s)).length;
+            if (count === sels.length) return true;          // all mounted → go now
+            if (count > 0 && count === prev) { if (++stable >= 3) return true; } // settled
+            else { stable = 0; prev = count; }
+            await sleep(200);
+          }
+          return false; // timed out — some selectors never resolved (wrong selectors)
+        };
+
+        // ── Diagnostic: dump the page's real form-control identifiers ────────
+        // When a configured selector stays stale we can't fix it blind (no DOM access
+        // from the VPS). This lists the actual controls Workday rendered — automation-id,
+        // name, tag/role, label — so the adapter selector can be corrected from one run.
+        // Scoped to the apply-flow wrapper, capped at 50, read-only.
+        const dumpFieldCandidates = () => {
+          try {
+            const wrap = document.querySelector(adapter.auth?.postLoginAnchor) || document.body;
+            const sel = "input,select,textarea,button,[role='listbox'],[role='combobox'],[role='radiogroup'],[aria-haspopup='listbox']";
+            const out = [];
+            for (const el of wrap.querySelectorAll(sel)) {
+              if (out.length >= 50) break;
+              if (el.type === "hidden") continue;
+              const aid = el.getAttribute("data-automation-id") || "-";
+              const name = el.getAttribute("name") || "-";
+              const role = el.getAttribute("role") || "";
+              const tag = el.tagName.toLowerCase();
+              let label = ""; try { label = (getLabelText(el) || "").replace(/\s+/g, " ").trim().slice(0, 40); } catch {}
+              out.push(`${aid} | ${name} | ${tag}${role ? ":" + role : ""}${el.type ? "[" + el.type + "]" : ""} | ${label}`);
+            }
+            return out;
+          } catch (e) { return ["dump failed: " + e.message]; }
         };
 
         // ── Fill one page's adapter.fields (subset of FILL_FORM logic) ──────
@@ -968,7 +1060,23 @@ if (!window.__jobbyAutofillInjected) {
             return;
           }
 
+          // Wait for the field widgets to settle before filling — the wrapper anchor
+          // paints first and fields mount in waves (see waitForPageFields). A timeout =
+          // some selectors never resolved, so the stale result that follows is a selector
+          // problem, not a race.
+          if (!(await waitForPageFields(page))) {
+            report.notes.push(`${page.id}: field set never fully resolved within 8s (some selectors likely stale)`);
+          }
           await fillPage(page);
+
+          // Any stale field on a field-page = a wrong selector we can't fix blind. Dump
+          // the page's real control identifiers ONCE so the next run hands us the fix.
+          const pageStale = report.stale.filter((s) => s.startsWith(`${page.id}.`));
+          const pageErrs  = report.errors.filter((e) => (e.field || "").startsWith(`${page.id}.`));
+          if ((pageStale.length || pageErrs.length) && !report.diag[page.id]) {
+            if (pageStale.length) report.notes.push(`${page.id}: stale=[${pageStale.join(", ")}] — see report.diag.${page.id}`);
+            report.diag[page.id] = dumpFieldCandidates();
+          }
 
           // Per-page unknowns — same scanner, scoped to the current DOM only.
           // (Workday tears down old pages on Next, so unhandled elements from

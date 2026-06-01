@@ -9,6 +9,122 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-31 — `isLoginWall` layer-3 ate every authed Apply-Manually crossing → wd_reinject never fired  ·  FIXED (unverified live)
+
+**Symptom (off the trace, not a live run).** New session, picking up the PENDING run. The whole 602-entry
+`drain.jsonl` has **`wd_reinject` count = 0** — the re-inject crosser (`d4a2de3`) has *no evidence of ever
+executing* — yet the teardown it exists to handle clearly happens: three nvidia runs bail `needs_login`
+carrying the exact `"message channel closed before a response was received"` signature. So the teardown is
+firing and the response is `needs_login`, not re-injection. (Caveat logged at the time: the log ends 18:06,
+20 min BEFORE HEAD `e5a48e8` was committed, so it doesn't reflect HEAD code — but the layer-3 trap is
+unchanged in HEAD, so the same misfire stands. User confirmed they were authed + pointed at the VPS for the
+"breaks at my info" run, which itself never logged.)
+
+**Root cause.** `runWorkdayFill` catches a teardown → `waitForTabComplete` → calls `isLoginWall` to decide
+re-inject vs. bail. `isLoginWall` layer 4 was `loginRequired && SCRIPT_TEARDOWN_RE.test(errMsg) ⇒ true`. For
+Workday `loginRequired` is true and Apply Manually full-navs **every time**, so layer 4 fired on *every*
+crossing unless an earlier layer vetoed. The only authed-user veto is layer 2 (`postLoginAnchor` =
+`applyFlowPage`) — and that rests on an **unverified DOM assumption** (the page's own anchor is
+`applyFlowMyInfoPage`; whether a parent `applyFlowPage` wrapper also exists/has-painted at probe time was
+never confirmed). When the veto missed, layer 4 mislabeled the in-wizard nav as `needs_login` → `bailNeedsLogin`,
+and the re-inject branch (where `wd_reinject` logs) was never reached. Hence the 0.
+
+**Why URL, not DOM, is the fix.** Every `isLoginWall` caller runs it AFTER `waitForTabComplete`, and the
+prior entry already established the settled URL/anchor are reliable *post-settle*. Post-settle the tab URL is
+authoritative: a login/SSO host = wall; a readable NON-login URL = proof the redirect landed on a real page.
+The blunt `loginRequired && teardown` catch-all is only justified when the URL **can't** be read (tab gone /
+mid-redirect before the host resolved) — exactly the in-flight case the old comment described, which does NOT
+apply to the post-settle re-inject call.
+
+**Fix (`isLoginWall` restructure, `drain.js`).** Layer 1 now records `urlReadable` (true once `tab.url` is
+read, regardless of match) and still returns `true` on a login-URL match. Layers 2/3 (postLoginAnchor veto,
+loginAnchor wall) unchanged. Layer 4 gated to `!urlReadable && loginRequired && teardown` — so a settled
+non-login URL falls through to re-inject instead of parking. Both call sites safe: line 562 (Workday,
+post-settle — the fix target); line 759 (single-page ATSes have `loginRequired:false`, so layer 4 never fired
+there, and Workday only reaches it via a *non-teardown* throw which layer 4 ignores → no regression).
+
+**Legibility (same push).** `runWorkdayFill` now reads the settled URL once post-`waitForTabComplete` and
+threads it into the `wd_reinject` log line (`teardown after <page> → <url>`), the `needs_login` return, and
+`bailNeedsLogin`'s logged data (`settledUrl`). So the next run SHOWS where each teardown landed instead of us
+inferring it — if a real wall still parks, the log proves it was a login host; if a crossing re-injects, the
+log proves it was the tenant page.
+
+**Known trade-off.** A tenant whose SSO host escapes `LOGIN_URL_RE` (NVIDIA's is `wd-identity`/
+`accounts.google`, both already matched) would now fall through to a bounded re-inject loop →
+`max_reinject_exceeded` (logged with the settled URL) instead of a clean `needs_login` park. Acceptable +
+self-revealing: extend `LOGIN_URL_RE` when such a host appears in the trace. Defense-in-depth backstop: even
+if `isLoginWall` misses a real wall, the re-injected handler's own iter-0 login guard returns `needs_login`,
+and `MAX_REINJECT=6` bounds the loop.
+
+**Status.** NOT verified live (no Chrome on the VPS). `node --check` passes. Needs push → local pull → **hard**
+extension reload, then the two-path run (in-progress DSP = direct my_information; fresh NVIDIA = Apply-Manually
+crosser). The crosser is the one this fix unblocks — watch for the first-ever `wd_reinject` line.
+
+**Follow-up (same day) — VERIFIED working, and it peeled the next layer: my_information all-stale (mount race).**
+Ran local (DEV=true, authed NVIDIA tenant) against the DSP crosser. **`wd_reinject` fired for the first time
+ever** — twice, both `teardown after start_application → …/apply/applyManually → re-inject`. The layer-4 fix
+is confirmed: the in-wizard teardown now re-injects instead of false-parking. Two outcomes proved both
+branches: run 1 settled on `accounts.google.com/signin` (real Google OAuth) → `needs_login` with that URL in
+`settledUrl` = the genuine-wall branch working; run 2 (post-login) reached my_information. So the wall logic is
+now correct in both directions. **New blocker:** run 2 logged `stuck_on:my_information` with `filled:[]`,
+`errors:[]`, and **all 6 fields in `report.stale`** (`source, previousWorker, firstName, lastName, phoneType,
+phoneNumber`). Root cause: `detectPage` matches the page WRAPPER anchor (`applyFlowMyInfoPage`), which Workday's
+React paints BEFORE the field widgets; the loop called `fillPage` the instant `waitForAnyPage` returned → empty
+shell → every selector stale → Next on an empty form → re-detect → stuck. `waitForAnyPage` waited for the
+anchor, never the fields. **Fix:** `waitForPageFields(page)` (autofill.js) polls up to 8s for ANY of the page's
+field selectors before `fillPage`; on timeout it pushes a `report.notes` line so an all-stale result is
+distinguishable as "stale selectors" vs "mount race." Same class as the single-page empty-scan retry
+(`drain.js:714`). `node --check` clean; NOT verified — needs another hard-reload + DSP re-run. **Note on
+approach:** this run validates the whole in-browser re-inject architecture — each peeled layer (reorder →
+re-inject crosser → login-guard → layer-4 → mount race) has been a real, narrowing bug, not a dead end; we are
+last-mile on my_information, not mis-architected.
+
+**Follow-up 2 (same day) — mount-race fix worked; peeled the next two layers: option cross-contamination + wrong value.**
+With `waitForPageFields` (rewritten to wait for the field count to STABILIZE, not just the first selector —
+the phone section mounts ~1s after the name section), fields started filling: firstName, lastName,
+previousWorker, phoneNumber. But `phoneType` and `source` errored with option lists polluted by the sibling
+**Country-Phone-Code** listbox (`United States of America (+1)`). Root: `readWdOptions()` did a
+**document-wide** `[role=option]` query — the exact trap the react-select path already guarded against (the
+`findComboboxMenu` comment literally warns "the country-code list"). The Workday listbox/multiselect handlers
+never got that scoping. **Fix:** `readWdOptions(root)` + `findWdMenu(controllerEl)` (resolve `aria-controls`/
+`aria-owns` → scope to that menu). `phoneType` (a `button[aria-haspopup=listbox]`) DOES expose `aria-controls`
+→ scoped clean → and once the value was corrected (NVIDIA has no "Mobile"; device types are `Home / Home
+Cellular` → set `phoneType:"Home Cellular"` in workday.json, **both local AND VPS** via ssh sed) it fills.
+**5/6 now fill.** Diagnostics added: `dumpFieldCandidates()` dumps real control ids on stale/error into
+`report.diag`; `DEBUG_KEEP_WD_TAB` (drain.js) keeps the tab open on a Workday halt for inspection.
+
+**Follow-up 3 (same day) — `source` (How Did You Hear): the UXI multiselect saga. STILL UNVERIFIED.**
+`source`'s input wires NO `aria-controls`, so scoping fell back to global → still ate country codes
+(`scoped=false`). Live DOM inspection (user ran console probes — invaluable) revealed the truth:
+- The field input **IS** the search box: `<input placeholder="Search" data-uxi-widget-type="selectinput"
+  id="source--source">` inside `[data-automation-id='multiSelectContainer']`. No separate search box.
+- It's a **hierarchical prompt**: 6 categories (Associations, Event/Conference, Job Board, Social Media,
+  University, Website). Typing does **NOT** live-filter — the category list stays. **ENTER** runs the search
+  and **loads the matching leaf** ("LinkedIn Jobs") as a clickable option, but does **NOT** auto-select it.
+- Workday is its own **UXI framework** (`data-uxi-*`), NOT React — so the CLAUDE.md "react-select fiber" hatch
+  does NOT apply here.
+- Dead ends: (a) typing into the field input — no filter (needs Enter); (b) char-by-char keydown/keyup
+  (`typeLikeUser`) — still no filter; (c) a first handler that pressed Enter and assumed **auto-select** —
+  false-positived: `readWdSelection` returned `"Expanded"` (a category's expand state) so it logged
+  `source` filled when the field was actually EMPTY. The run logged all-6-filled / 0-errors but
+  `stuck_on:my_information`, and the user confirmed source was NOT filled.
+- **Current handler (latest, `node --check` clean, NOT yet run):** focus → `setNativeValue(seed)` → dispatch
+  Enter (keydown/keypress/keyup, keyCode 13) → poll `readWdOptions()` for the loaded leaf → `bestOptionMatch`
+  → **click it** (synthetic clicks DO commit on WD widgets — that's how phoneType selects) → verify a real
+  `[data-automation-id='selectedItem']` chip committed (`readWdSelection` made STRICT — no aria/expanded
+  fallback, so no more false positives). If synthetic Enter doesn't trigger the UXI search, it fails honestly
+  with `no '<v>' leaf after Enter; saw [<categories>]` → then the answer is the **chrome.debugger (CDP)
+  trusted-event** path or a 1-click manual assist (the trusted-event wall).
+
+**Status going into clear:** my_information = **5/6 verified-filling**; `source` handler rewritten to
+type→Enter→click-leaf→verify, **UNVERIFIED** (next run tells us if synthetic Enter loads the leaf). Address/
+location fields **not configured** (deferred) — `profile.contact.address` has Glassboro/NJ/08028/US but
+**`street` is BLANK**; unknown if NVIDIA requires Address (will know once source commits: advances = optional,
+re-stuck = required). All changes LOCAL/uncommitted (DEV=true), VPS adapter phoneType also patched. Local
+server must be started with `node --env-file=server/.env server/server.js` (dotenv reads CWD `.env` = 0 vars).
+
+---
+
 ## 2026-05-30 — Workday my_information never actually filled: the single injection dies at the Apply-Manually full-nav  ·  FIXED (unverified live)  ·  CORRECTS the entry below
 
 **This corrects the entry immediately below.** That entry claimed the false-needs_login was fixed by the

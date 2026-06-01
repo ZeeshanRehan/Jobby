@@ -426,29 +426,39 @@ const LOGIN_URL_RE = /\/(login|sign[-_]?in|signin|authn|oidc|oauth|authgwy)\b|ac
 // died mid-message so the reply never came. On a login-gated ATS this is the wall.
 const SCRIPT_TEARDOWN_RE = /message channel closed|message timeout|context invalidated|frame.*removed/i;
 
-// True if the tab is parked on a login/SSO wall. Three layers, cheapest-first:
-//   1. tab URL matches a login/SSO host or path
-//   2. adapter's loginAnchor present in the live DOM (re-probed via executeScript,
-//      survives the content-script teardown a full nav causes)
-//   3. fallback — on a loginRequired adapter, a script-teardown error IS the signal:
-//      the only thing that full-navs away mid-wizard on an unauthed tenant is the SSO
-//      wall, and the redirect chain (applyManually → wd-identity → accounts.google)
-//      often hasn't landed when layers 1-2 run, so the URL/anchor still show the
-//      pre-nav page. A false positive here only parks the job (recoverable via
-//      Reactivate) — far better than burning it as a crash.
+// DEBUG: keep the tab open (focused) instead of closing it when a Workday wizard halts
+// (stuck_on / page_not_implemented / etc.), so the my_information state can be inspected
+// in DevTools. Set false for unattended runs. TODO: remove once Workday fill is verified.
+const DEBUG_KEEP_WD_TAB = true;
+
+// True if the tab is parked on a login/SSO wall. Ordered most-reliable-first; every
+// caller invokes this only AFTER the nav has settled (waitForTabComplete), so the
+// settled URL — not a DOM probe that may not have painted yet — is the primary signal:
+//   1. settled URL matches a login/SSO host/path → definitive wall. A readable
+//      NON-login URL is the inverse proof — the redirect landed on a real page — so we
+//      remember `urlReadable` to gate the teardown fallback (layer 4).
+//   2. postLoginAnchor in the live DOM → demonstrably INSIDE the apply flow → not a wall.
+//   3. loginAnchor (signInLink) in the live DOM → a wall.
+//   4. teardown fallback — fires ONLY when the URL was unreadable (tab gone / mid-redirect
+//      before the host resolved). A bare `loginRequired && teardown` is too blunt once
+//      we've SEEN a settled non-login URL: Apply Manually full-navs every single time, so
+//      that teardown is in-wizard navigation, NOT an SSO redirect. Firing layer 4 there
+//      was the false-needs_login bug that pinned wd_reinject at 0 (2026-05-31 DEVLOG). A
+//      tenant whose SSO host escapes LOGIN_URL_RE now falls through to a bounded re-inject
+//      loop → max_reinject_exceeded (logged with the settled URL) rather than a clean park
+//      — extend LOGIN_URL_RE when such a host surfaces in the trace.
 async function isLoginWall(tabId, adapter, errMsg) {
+  let urlReadable = false;
   try {
     const tab = await chrome.tabs.get(tabId);
-    if (tab?.url && LOGIN_URL_RE.test(tab.url)) return true;
-  } catch (_) { /* tab gone — fall through */ }
+    if (tab?.url) {
+      urlReadable = true;
+      if (LOGIN_URL_RE.test(tab.url)) return true;
+    }
+  } catch (_) { /* tab gone — urlReadable stays false, teardown fallback re-enabled */ }
 
-  // Positive past-login discriminator — if a wizard-page wrapper is in the live DOM
-  // we're demonstrably INSIDE the application flow (past the SSO wall), so a teardown
-  // here is in-wizard navigation, NOT a login redirect. Probe BEFORE the teardown
-  // heuristic so an unvalidatable form page can't masquerade as needs_login (the
-  // my_information false-login bug). A literal SSO URL still wins (checked above). The
-  // in-flight-redirect catch is preserved: mid-redirect this anchor is gone, so we
-  // fall through to the heuristic exactly as before.
+  // Positive past-login discriminator — a wizard-page wrapper means we're INSIDE the
+  // application flow, so a teardown here is in-wizard navigation, not a login redirect.
   const postSel = adapter?.auth?.postLoginAnchor;
   if (postSel) {
     try {
@@ -470,9 +480,11 @@ async function isLoginWall(tabId, adapter, errMsg) {
         args: [sel],
       });
       if (res?.result) return true;
-    } catch (_) { /* cross-origin SSO page — fall through to teardown heuristic */ }
+    } catch (_) { /* cross-origin SSO page — fall through to teardown fallback */ }
   }
-  if (adapter?.auth?.loginRequired && SCRIPT_TEARDOWN_RE.test(errMsg || "")) return true;
+
+  // Teardown fallback — trustworthy only with no readable URL (see layer 4 note above)
+  if (!urlReadable && adapter?.auth?.loginRequired && SCRIPT_TEARDOWN_RE.test(errMsg || "")) return true;
   return false;
 }
 
@@ -491,7 +503,7 @@ function focusTab(tabId) {
 // so this is the only record of how far the wizard got before the wall.
 async function bailNeedsLogin(job, tabId, applyData, info = {}) {
   await logStep(job, "needs_login", false, "login wall — tab kept open for sign-in",
-    { report: info.report || null, pagesVisited: info.pagesVisited || null, errMsg: info.errMsg || null });
+    { report: info.report || null, pagesVisited: info.pagesVisited || null, errMsg: info.errMsg || null, settledUrl: info.settledUrl || null });
   await updateQueue(job.id, "needs_login", "login wall", applyData?.applicationId || null);
   state.counts.skipped += 1;
   setDetailsResult("skip", "Login required — sign in, then Reactivate + Start");
@@ -530,6 +542,8 @@ function sendMessage(tabId, payload, timeoutMs) {
 const WD_PROGRESS_KEY = "jobby_wd_progress";
 const clearWdProgress = async () => { try { await chrome.storage.local.remove(WD_PROGRESS_KEY); } catch (_) {} };
 const readWdProgress  = async () => { try { return (await chrome.storage.local.get(WD_PROGRESS_KEY))[WD_PROGRESS_KEY] || null; } catch (_) { return null; } };
+// Settled tab URL — authoritative once waitForTabComplete returns; feeds the wall decision and the trace
+const readTabUrl = async (tabId) => { try { return (await chrome.tabs.get(tabId)).url || null; } catch (_) { return null; } };
 
 // Poll the tab to "complete" after a nav starts. A small pre-delay lets the nav register
 // as "loading" first so we don't read the dying page's stale "complete".
@@ -558,14 +572,15 @@ async function runWorkdayFill(tabId, applyData, resumePdf, job) {
       }, AUTOFILL_TIMEOUT_MS) };
     } catch (err) {
       if (!SCRIPT_TEARDOWN_RE.test(err.message)) throw err; // genuine error → outer catch
-      await waitForTabComplete(tabId);                       // let the nav land (probe is reliable post-settle)
+      await waitForTabComplete(tabId);                       // let the nav land (URL reliable post-settle)
+      const settledUrl = await readTabUrl(tabId);            // authoritative post-settle — feeds the decision and the trace
       if (await isLoginWall(tabId, applyData.adapter, err.message)) {
-        return { resp: { reason: "needs_login", report: null, errMsg: err.message } };
+        return { resp: { reason: "needs_login", report: null, errMsg: err.message, settledUrl } };
       }
       const prog = await readWdProgress();
       await logStep(job, "wd_reinject", true,
-        `teardown after ${prog?.lastPageId || "?"} (attempt ${attempt}/${MAX_REINJECT}) → re-inject`,
-        { progress: prog, errMsg: err.message });
+        `teardown after ${prog?.lastPageId || "?"} → ${settledUrl || "?"} (attempt ${attempt}/${MAX_REINJECT}) → re-inject`,
+        { progress: prog, errMsg: err.message, settledUrl });
     }
   }
   const prog = await readWdProgress();
@@ -736,7 +751,7 @@ async function processJob(job) {
       setDetailsForm(report, unknownFields.length);
       // Login wall (anchor was present at scan time) — park, don't burn.
       if (resp.reason === "needs_login") {
-        await bailNeedsLogin(job, tabId, applyData, { report, pagesVisited: resp.pagesVisited });
+        await bailNeedsLogin(job, tabId, applyData, { report, pagesVisited: resp.pagesVisited, errMsg: resp.errMsg, settledUrl: resp.settledUrl });
         return;
       }
       await logStep(job, "fill_form", false,
@@ -745,7 +760,8 @@ async function processJob(job) {
       await updateQueue(job.id, "error", `workday: ${resp.reason}`, applyData.applicationId);
       state.counts.errors += 1;
       setDetailsResult("err", `Workday halted — ${resp.reason}`);
-      if (tabId) await closeTab(tabId);
+      // Keep the tab open for inspection while debugging Workday; else close it.
+      if (tabId) { DEBUG_KEEP_WD_TAB ? await focusTab(tabId) : await closeTab(tabId); }
       return;
     }
 
