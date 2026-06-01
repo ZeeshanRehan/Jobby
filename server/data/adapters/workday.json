@@ -1,6 +1,6 @@
 {
   "platform": "workday",
-  "version": "2026-05-30-v1-myinfo",
+  "version": "2026-05-31-v2-myinfo-address+experience",
   "detect": ["myworkdayjobs.com"],
   "schema": "pages",
   "_notes": [
@@ -44,27 +44,32 @@
       "id":     "my_information",
       "status": "ready",
       "anchor": "[data-automation-id='applyFlowMyInfoPage']",
-      "_note":  "Selectors verified against real NVIDIA my_information DOM (2026-05-30). Anchor = applyFlowMyInfoPage (specific to this page; applyFlowPage wraps EVERY wizard page → would false-match). v1 fills REQUIRED fields only — Country + Country Phone Code are pre-filled by Workday (USA / +1) so untouched, Email is read-only text. Address (city/state/zip) is DEFERRED to step 2: profile.contact.address.street is empty, and a partial address can trip Workday's address validation and block Save & Continue — which would mask whether a required field failed. Prove required-only advances first.",
+      "_note":  "Selectors verified against real NVIDIA my_information DOM (2026-05-30); address selectors from the 2026-05-31 diag dump. Anchor = applyFlowMyInfoPage (specific to this page; applyFlowPage wraps EVERY wizard page → would false-match). Country + Country Phone Code are pre-filled by Workday (USA / +1) so untouched; Email is read-only. Address is now filled COMPLETE (addressLine1/city/addrState/postalCode), gated on profile.contact.address.street being set — fillPage skips an empty street, so we never submit a PARTIAL address (NVIDIA advances even with none, but a partial block can trip Workday's address validation). State is a button-listbox; stateFull maps the 2-letter profile value to Workday's full state name.",
       "fields": {
         "source":         { "selector": "[data-automation-id='formField-source'] input[data-uxi-widget-type='selectinput']", "type": "workdayMultiselect", "value": "LinkedIn", "_note": "How Did You Hear About Us — required. value is a search seed; handler bestOptionMatches the live filtered options." },
         "previousWorker": { "selector": "input[name='candidateIsPreviousWorker']", "type": "radio", "value": "false", "_note": "Have you previously worked for NVIDIA — default No (value=false)." },
         "firstName":      { "selector": "input[name='legalName--firstName']", "type": "text", "source": "identity.firstName" },
         "lastName":       { "selector": "input[name='legalName--lastName']",  "type": "text", "source": "identity.lastName" },
         "phoneType":      { "selector": "[data-automation-id='formField-phoneType'] button[aria-haspopup='listbox']", "type": "workdayListbox", "value": "Home Cellular", "_note": "Phone Device Type — required. NVIDIA's options are Home / Home Cellular (no 'Mobile'); Home Cellular = personal cell. Confirmed from the live option list 2026-05-31." },
-        "phoneNumber":    { "selector": "input[name='phoneNumber']", "type": "text", "source": "contact.phone", "transform": "phoneNational", "_note": "Strip the +1 country code — it lives in the separate prefilled Country Phone Code field." }
+        "phoneNumber":    { "selector": "input[name='phoneNumber']", "type": "text", "source": "contact.phone", "transform": "phoneNational", "_note": "Strip the +1 country code — it lives in the separate prefilled Country Phone Code field." },
+        "addressLine1":   { "selector": "input[name='addressLine1']", "type": "text", "source": "contact.address.street", "_note": "Address Line 1 — fills only when profile.contact.address.street is set; fillPage skips an empty value. Filled together with city/addrState/postalCode so the address is COMPLETE, never partial." },
+        "city":           { "selector": "input[name='city']", "type": "text", "source": "contact.address.city" },
+        "addrState":      { "selector": "[data-automation-id='formField-countryRegion'] button[aria-haspopup='listbox'], button[name='countryRegion']", "type": "workdayListbox", "source": "contact.address.state", "transform": "stateFull", "_note": "State — Workday button-listbox (live automation-id countryRegion, diag 2026-05-31). Options are full state names → stateFull maps 'NJ'→'New Jersey'. Address Country is prefilled USA by Workday, left untouched." },
+        "postalCode":     { "selector": "input[name='postalCode']", "type": "text", "source": "contact.address.zip" }
       },
       "next": {
         "selector": "button[data-automation-id='pageFooterNextButton'], button[data-automation-id='bottom-navigation-next-button']",
-        "expectedNextAnchor": "[data-automation-id='myExperiencePage'], [data-automation-id='resumePage']"
+        "expectedNextAnchor": "[data-automation-id='applyFlowMyExpPage']"
       }
     },
     {
       "id":     "my_experience",
-      "status": "todo",
-      "anchor": "[data-automation-id='myExperiencePage'], [data-automation-id='resumePage']",
-      "_todo":  "Resume upload + Workday-parsed-into-form verify/edit loop. Trust the parse, only fix required missing fields. See DEVLOG planned 2026-XX entry.",
+      "status": "ready",
+      "builder": "workdayExperience",
+      "anchor": "[data-automation-id='applyFlowMyExpPage'], [data-automation-id='myExperiencePage'], [data-automation-id='resumePage']",
+      "_note":  "Real page wrapper = applyFlowMyExpPage (verified from live outerHTML 2026-05-31; the old myExperiencePage/resumePage guesses NEVER matched → wizard couldn't detect this page). Structurally unique (repeated Work Experience / Education panels, dual-spinbutton MM/YYYY dates, multiselect skills, file upload, URL fields) so it gets a dedicated code builder (`fillWorkdayExperience` in autofill.js) instead of the flat-field model — hence empty `fields` + `builder` flag. Required to advance: Work Experience 1 (Job Title, Company, From, To). Builder uploads resume first, fills WE panels from profile.workExperience, then auto-captures Education+Websites DOM to report.diag for the next build.",
       "fields": {},
-      "next":   { "selector": "button[data-automation-id='bottom-navigation-next-button']" }
+      "next":   { "selector": "button[data-automation-id='pageFooterNextButton'], button[data-automation-id='bottom-navigation-next-button']" }
     },
     {
       "id":     "application_questions",
@@ -103,8 +108,8 @@
     }
   ],
   "_v1_known_gaps": [
-    "Only my_information + review pages have ready=true selectors. The wizard handler will abort with reason='page_not_implemented' on the first todo page reached.",
-    "Resume upload page (my_experience) needs its own design — Workday auto-parses the PDF and pre-fills the form, which conflicts with our 'fill from profile' model.",
+    "my_information + my_experience + review have ready=true selectors. The wizard aborts with reason='page_not_implemented' on the first remaining todo page (application_questions / voluntary_disclosures / self_identification).",
+    "Resume upload (my_experience) is v1 upload+Next. On the Apply-Manually path Workday does NOT auto-parse the PDF into the form, so a REQUIRED Work Experience / Education section would block Next (stuck_on:my_experience) — the diag then shows those fields to build. The file-upload-input-ref selector is unverified until the first live my_experience run.",
     "Application Questions vary heavily per tenant — drain through unknown-field scanner, not adapter selectors.",
     "Submit button click is the existing global FILL_SUBMIT path; the wizard's per-page next-button click is new code."
   ]

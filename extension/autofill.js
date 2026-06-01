@@ -126,10 +126,31 @@ if (!window.__jobbyAutofillInjected) {
   }
 
   // ─── Field value transforms ───────────────────────────────────────────────
+  // US state abbreviation → full name. Workday's State button-listbox lists full names
+  // ("New Jersey"), but the profile stores the 2-letter code ("NJ") — map before matching.
+  const US_STATES = {
+    AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California",
+    CO: "Colorado", CT: "Connecticut", DE: "Delaware", FL: "Florida", GA: "Georgia",
+    HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa",
+    KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland",
+    MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri",
+    MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey",
+    NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio",
+    OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina",
+    SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont",
+    VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming",
+    DC: "District of Columbia",
+  };
+
   // phoneNational: strip a leading +1 / 1 country code — Workday keeps the code in a
   // separate (prefilled) Country Phone Code field, so the number field wants the rest.
+  // stateFull: 2-letter state code → full name for Workday's State listbox (NJ → New Jersey).
   function applyTransform(value, transform) {
     if (transform === "phoneNational") return String(value).replace(/^\+?1[\s().-]*/, "").trim();
+    if (transform === "stateFull") {
+      const v = String(value).trim();
+      return US_STATES[v.toUpperCase()] || v; // already-full names (or unknown) pass through
+    }
     return value;
   }
 
@@ -611,6 +632,169 @@ if (!window.__jobbyAutofillInjected) {
     tickConsentCheckboxes, typeAheadOptions, pickLocationOption,
   };
 
+  // ─── Workday "My Experience" page builder ─────────────────────────────────
+  // my_experience is structurally unique (repeated Work Experience / Education panels,
+  // dual-spinbutton MM/YYYY dates, multiselect skills, file upload, URL fields) — the flat
+  // one-selector-per-field model can't express it, so it gets a dedicated builder. Selectors
+  // are Workday-standard data-automation-ids (tenant-stable, verified from live outerHTML).
+  // Data comes from profileData. Sequence: upload résumé first (the async upload settles in the
+  // background) → Work Experience → Skills → LinkedIn → capture Education/Websites DOM. The
+  // wizard loop clicks Next afterward.
+
+  // Compact control inventory of a subtree — automation-id | name | tag:role[type] | label.
+  // Self-captures the Education/Websites panel structure we don't have DOM for yet.
+  function dumpControls(root) {
+    const sel = "input,select,textarea,button,[role='listbox'],[role='combobox'],[role='spinbutton'],[aria-haspopup='listbox']";
+    const out = [];
+    for (const el of (root || document).querySelectorAll(sel)) {
+      if (out.length >= 40) break;
+      if (el.type === "hidden") continue;
+      const aid  = el.getAttribute("data-automation-id")
+                || el.closest("[data-automation-id]")?.getAttribute("data-automation-id") || "-";
+      const name = el.getAttribute("name") || "-";
+      const role = el.getAttribute("role") || "";
+      const tag  = el.tagName.toLowerCase();
+      let label = ""; try { label = (getLabelText(el) || "").replace(/\s+/g, " ").trim().slice(0, 40); } catch {}
+      out.push(`${aid} | ${name} | ${tag}${role ? ":" + role : ""}${el.type ? "[" + el.type + "]" : ""} | ${label}`);
+    }
+    return out;
+  }
+
+  // Workday date section = two role="spinbutton" inputs (Month, Year) that ignore a plain value
+  // set unless the widget's keystroke model also sees it. SELF-VERIFYING: try native value-set,
+  // confirm the display flipped off its MM/YYYY placeholder; if not, simulate digit keystrokes.
+  // Returns { ok, why?, method? } so a miss is legible in report.errors for the next run.
+  async function fillWorkdayDate(wrap, value) {
+    const m = String(value).match(/(\d{1,2})\D+(\d{4})/);
+    if (!m) return { ok: false, why: `bad date '${value}' (want MM/YYYY)` };
+    const mm = m[1].padStart(2, "0"), yyyy = m[2];
+    const monthInp = wrap.querySelector("[data-automation-id='dateSectionMonth-input']");
+    const yearInp  = wrap.querySelector("[data-automation-id='dateSectionYear-input']");
+    if (!monthInp || !yearInp) return { ok: false, why: "month/year spinbutton inputs not found" };
+
+    const filledOk = (inp, digits) => {
+      const v = String(inp.value || "").replace(/^0+/, "");
+      if (v && v === String(digits).replace(/^0+/, "")) return true;
+      const disp = inp.closest("[id$='-dateSectionMonth'],[id$='-dateSectionYear']")
+        ?.querySelector("[data-automation-id$='-display']");
+      return !!(disp && disp.textContent.trim() !== "" && !/^[MY]+$/i.test(disp.textContent.trim()));
+    };
+
+    const setSection = async (inp, digits) => {
+      setNativeValue(inp, digits);              // method 1: native value + input/change
+      await sleep(70);
+      if (filledOk(inp, digits)) return "value";
+      inp.focus();                              // method 2: per-digit keystrokes (spinbuttons listen to keys)
+      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
+      let acc = "";
+      for (const ch of String(digits)) {
+        const kc = ch.charCodeAt(0);
+        inp.dispatchEvent(new KeyboardEvent("keydown", { key: ch, code: "Digit" + ch, keyCode: kc, which: kc, bubbles: true }));
+        acc += ch; setter.call(inp, acc);
+        inp.dispatchEvent(new Event("input", { bubbles: true }));
+        inp.dispatchEvent(new KeyboardEvent("keyup", { key: ch, code: "Digit" + ch, keyCode: kc, which: kc, bubbles: true }));
+        await sleep(40);
+      }
+      inp.dispatchEvent(new Event("change", { bubbles: true }));
+      await sleep(60);
+      return filledOk(inp, digits) ? "keys" : null;
+    };
+
+    const mMethod = await setSection(monthInp, mm);
+    const yMethod = await setSection(yearInp, yyyy);
+    if (mMethod && yMethod) return { ok: true, method: `${mMethod}/${yMethod}` };
+    return { ok: false, why: `month=${mMethod || "FAIL"} year=${yMethod || "FAIL"} (display didn't commit)` };
+  }
+
+  // Fill one Work Experience panel — scoped to the panel (the fkit index is dynamic; the
+  // formField-* automation-ids inside are stable).
+  async function fillWdWePanel(panel, data, idx, report) {
+    const rec = (f, v) => { report.filled.push(`my_experience.work${idx}.${f}`); report.filledDetails.push({ field: `my_experience.work${idx}.${f}`, label: `Work ${idx + 1} ${f}`, value: v }); };
+    const er  = (f, msg) => report.errors.push({ field: `my_experience.work${idx}.${f}`, message: msg });
+    const fld = (aid) => panel.querySelector(`[data-automation-id='${aid}']`);
+    const inp = (aid) => { const ff = fld(aid); return ff ? ff.querySelector("input, textarea") : null; };
+    const text = (aid, val, f) => { const el = inp(aid); if (el && val) { fillText(el, String(val)); rec(f, val); } };
+
+    text("formField-jobTitle",    data.jobTitle, "jobTitle");
+    text("formField-companyName", data.company,  "company");
+    if (data.location) text("formField-location", data.location, "location");
+
+    if (data.currentlyWorkHere) {
+      const cb = fld("formField-currentlyWorkHere")?.querySelector("input[type='checkbox']");
+      if (cb && !cb.checked) { cb.click(); rec("currentlyWorkHere", "true"); await sleep(120); }
+    }
+    if (data.startDate) {
+      const w = fld("formField-startDate");
+      if (w) { const r = await fillWorkdayDate(w, data.startDate); r.ok ? rec("startDate", `${data.startDate} (${r.method})`) : er("startDate", r.why); }
+    }
+    if (!data.currentlyWorkHere && data.endDate) {
+      const w = fld("formField-endDate");
+      if (w) { const r = await fillWorkdayDate(w, data.endDate); r.ok ? rec("endDate", `${data.endDate} (${r.method})`) : er("endDate", r.why); }
+    }
+    if (data.roleDescription) text("formField-roleDescription", data.roleDescription, "roleDescription");
+  }
+
+  // The my_experience builder. Mutates `report` (filled/filledDetails/errors/notes/diag).
+  async function fillWorkdayExperience(profileData, resumePdf, report) {
+    report.diag = report.diag || {};
+    const note = (s) => report.notes.push(`my_experience: ${s}`);
+    const section = (headingId) => document.querySelector(`[role='group'][aria-labelledby='${headingId}']`);
+
+    // 1. Résumé first — kick off the async upload so it settles while we fill the rest.
+    const fileInput = document.querySelector("input[data-automation-id='file-upload-input-ref'], [data-automation-id='file-upload-drop-zone'] input[type='file']");
+    if (fileInput && resumePdf) {
+      try { fillFile(fileInput, resumePdf); report.filled.push("my_experience.resume"); report.filledDetails.push({ field: "my_experience.resume", label: "Resume/CV", value: "(resume.pdf)" }); }
+      catch (e) { report.errors.push({ field: "my_experience.resume", message: e.message }); }
+    } else { note("resume file input not found"); }
+
+    // 2. Work Experience — repeated panels (Workday opens panel 1 by default; Add Another for more).
+    const weSec = section("Work-Experience-section");
+    const weData = Array.isArray(profileData.workExperience) ? profileData.workExperience : [];
+    if (weSec && weData.length) {
+      const panels = () => Array.from(weSec.querySelectorAll("[role='group'][aria-labelledby$='-panel']"));
+      for (let i = 0; i < weData.length; i++) {
+        if (panels().length <= i) {
+          const add = Array.from(weSec.querySelectorAll("button[data-automation-id='add-button']")).pop();
+          if (add) { pointerClick(add); await sleep(700); }
+        }
+        const panel = panels()[i];
+        if (!panel) { report.errors.push({ field: `my_experience.work${i}`, message: "panel did not mount" }); continue; }
+        await fillWdWePanel(panel, weData[i], i, report);
+      }
+    } else if (!weSec) { note("Work Experience section not found"); }
+
+    // 3. Skills — Workday multiselect (same widget as `source`). Best-effort, dormant until
+    //    profile.skillsList exists; the multiselect taxonomy behaviour is unverified for skills.
+    try {
+      const skills = Array.isArray(profileData.skillsList) ? profileData.skillsList : [];
+      const skillInput = document.querySelector("#skills--skills, [data-automation-id='formField-skills'] input[data-uxi-widget-type='selectinput']");
+      if (skillInput && skills.length) {
+        let added = 0;
+        for (const s of skills.slice(0, 8)) { const r = await fillWorkdayMultiselect(skillInput, s); if (r.ok) added++; await sleep(150); }
+        if (added) { report.filled.push("my_experience.skills"); report.filledDetails.push({ field: "my_experience.skills", label: "Skills", value: `${added} added` }); }
+      }
+    } catch (e) { note("skills fill skipped: " + e.message); }
+
+    // 4. LinkedIn URL.
+    const li = document.querySelector("#socialNetworkAccounts--linkedInAccount, [data-automation-id='formField-linkedInAccount'] input");
+    if (li && profileData.contact?.linkedinUrl) {
+      fillText(li, profileData.contact.linkedinUrl);
+      report.filled.push("my_experience.linkedIn"); report.filledDetails.push({ field: "my_experience.linkedIn", label: "LinkedIn", value: profileData.contact.linkedinUrl });
+    }
+
+    // 5. Education + Websites — DOM not captured yet. Click Add to open them, snapshot the control
+    //    structure into report.diag so the next build can fill them precisely. Done LAST so a
+    //    created-but-unfilled required Education panel doesn't block the earlier fills.
+    for (const [headingId, key] of [["Education-section", "education_panel"], ["Websites-section", "websites_panel"]]) {
+      const sec = section(headingId);
+      if (!sec) continue;
+      const add = sec.querySelector("button[data-automation-id='add-button']");
+      if (add) { pointerClick(add); await sleep(800); }
+      report.diag[key] = dumpControls(sec);
+      note(`captured ${key} structure (unhandled — builder pending its DOM)`);
+    }
+  }
+
   // ─── Message Handler ──────────────────────────────────────────────────────
   // Guarded so the file can be injected into a plain page (harness) where chrome is undefined
   if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.onMessage) {
@@ -934,6 +1118,20 @@ if (!window.__jobbyAutofillInjected) {
           return false; // timed out — some selectors never resolved (wrong selectors)
         };
 
+        // ── Wait for a Workday file upload to land ──────────────────────────
+        // fillFile assigns the PDF instantly, but Workday POSTs it (and may parse it) in the
+        // background; clicking Next before that completes can drop the attachment. Poll for an
+        // upload-success / remove affordance, bounded at 12s, then proceed best-effort.
+        const waitForUploadSettle = async (timeoutMs = 12000) => {
+          const DONE_SEL = "[data-automation-id='file-upload-successful'], [data-automation-id='delete-file'], [data-automation-id='deleteFile'], button[data-automation-id='delete'], [data-automation-id*='deleteFile']";
+          const start = Date.now();
+          while (Date.now() - start < timeoutMs) {
+            if (document.querySelector(DONE_SEL)) return true;
+            await sleep(300);
+          }
+          return false;
+        };
+
         // ── Diagnostic: dump the page's real form-control identifiers ────────
         // When a configured selector stays stale we can't fix it blind (no DOM access
         // from the VPS). This lists the actual controls Workday rendered — automation-id,
@@ -984,6 +1182,11 @@ if (!window.__jobbyAutofillInjected) {
               if (type === "file") {
                 fillFile(el, resumePdf);
                 recordFilled("(resume.pdf)");
+                // Workday uploads (and may parse) the file async — clicking Next before it lands
+                // can drop the attachment. Wait for a success/remove affordance, bounded.
+                if (!(await waitForUploadSettle())) {
+                  report.notes.push(`${page.id}.${fieldName}: upload-settle timed out (no success affordance in 12s) — clicking Next anyway`);
+                }
                 continue;
               }
               if (value == null || value === "") { report.skipped.push(fieldKey); continue; }
@@ -1014,6 +1217,18 @@ if (!window.__jobbyAutofillInjected) {
             } finally {
               await sleep(16); // same anti-race yield as FILL_FORM
             }
+          }
+
+          // Race guard — same as FILL_AI_FIELDS: a synthetic input can fail to commit before React
+          // re-renders, leaving the field empty at submit. This dropped addressLine1 (street) on the
+          // address section's late mount. Re-read text fields filled this pass; refill once if reset.
+          for (const [fieldName, fieldDef] of Object.entries(page.fields || {})) {
+            if (fieldDef.type !== "text") continue;
+            const el = document.querySelector(fieldDef.selector);
+            if (!el || String(el.value).trim() !== "") continue;
+            let v = fieldDef.value != null ? fieldDef.value : resolvePath(profileData, fieldDef.source);
+            if (v != null && fieldDef.transform) v = applyTransform(v, fieldDef.transform);
+            if (v != null && v !== "") { fillText(el, String(v)); await sleep(16); }
           }
           return pageReport;
         };
@@ -1067,7 +1282,13 @@ if (!window.__jobbyAutofillInjected) {
           if (!(await waitForPageFields(page))) {
             report.notes.push(`${page.id}: field set never fully resolved within 8s (some selectors likely stale)`);
           }
-          await fillPage(page);
+          // A page can opt into a dedicated code builder (e.g. my_experience: repeated panels +
+          // spinbutton dates the flat-field model can't express). Otherwise fill adapter.fields.
+          if (page.builder === "workdayExperience") {
+            await fillWorkdayExperience(profileData, resumePdf, report);
+          } else {
+            await fillPage(page);
+          }
 
           // Any stale field on a field-page = a wrong selector we can't fix blind. Dump
           // the page's real control identifiers ONCE so the next run hands us the fix.
@@ -1080,12 +1301,15 @@ if (!window.__jobbyAutofillInjected) {
 
           // Per-page unknowns — same scanner, scoped to the current DOM only.
           // (Workday tears down old pages on Next, so unhandled elements from
-          // previous pages won't leak in.)
-          try {
-            const pageUnknowns = await scanUnknownFields(adapter, handledEls);
-            unknownFields.push(...pageUnknowns);
-          } catch (err) {
-            console.warn(`[Jobby/workday] unknown scan failed on ${page.id}:`, err.message);
+          // previous pages won't leak in.) Skip on builder pages — the builder owns
+          // the whole page, so a scan would re-flag its own filled fields as unknown.
+          if (!page.builder) {
+            try {
+              const pageUnknowns = await scanUnknownFields(adapter, handledEls);
+              unknownFields.push(...pageUnknowns);
+            } catch (err) {
+              console.warn(`[Jobby/workday] unknown scan failed on ${page.id}:`, err.message);
+            }
           }
 
           // Review page = end of wizard. The drain.js step 7 (FILL_SUBMIT) will

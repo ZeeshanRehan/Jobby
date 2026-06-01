@@ -9,6 +9,48 @@ Entry tags: `FIXED` · `FIXED (unverified live)` · `WORKAROUND` · `OPEN` · `W
 
 ---
 
+## 2026-05-31 — Workday my_information address fill + my_experience resume-upload page (v2)  ·  FIXED (unverified live)
+
+**Context.** With login + the 6 required my_information fields verified filling live (`source` finally
+committing a real chip), the page advances. Two next steps: (1) fill the address block, which had been
+deferred, and (2) get the wizard past my_information onto the resume-upload page. User chose "fill the full
+address" + "resume upload, then verify" (incremental over the blind demographics-pipeline build).
+
+**Address — why COMPLETE, gated on street, never PARTIAL.** The my_information address fields
+(`addressLine1`/`city`/`countryRegion`=State/`postalCode`, plus a prefilled USA `country`) were sitting in
+the unknown-scan bucket UNFILLED, and the page advanced anyway → NVIDIA treats the whole address block as
+**optional**. That makes a PARTIAL address the one real risk: many Workday tenants run "if any address field
+is set, all are required" validation, so filling city/state/zip with a blank Address Line 1 could *regress*
+the advance we already have. `profile.contact.address.street` was empty (can't invent PII). Resolution: got
+the street from the user (`10 Beau Rivage Dr`), wired all four fields, and they fill **together** — and
+`fillPage` skips an empty value, so if street ever goes blank again the whole block stays empty (safe) rather
+than partial (risky). Selectors came from the live diag dump (`input[name='addressLine1']` etc.); State is a
+button-listbox reusing `fillWorkdayListbox`. New `stateFull` transform (+ 51-entry US map) maps the profile's
+2-letter `NJ` to Workday's full-name option `New Jersey` — the listbox lists full names, so a raw "NJ" would
+miss `bestOptionMatch`.
+
+**my_experience — why upload+Next, and the auto-parse trap that ISN'T one.** Flipped the page `todo → ready`
+with a single `file` field. The old `_todo` worried Workday's resume auto-parse would conflict with
+fill-from-profile — but we deliberately take the **Apply Manually** path (start_application picks
+`applyManually`, NOT `autofillWithResume`), and on that path Workday does **not** auto-parse the PDF into the
+form. So the conflict never materializes; the open question flips to the opposite: if my_experience has
+**required** Work Experience / Education sections, an upload alone won't satisfy them and Next will block
+(`stuck_on:my_experience`) — at which point the existing diag dump hands us those fields to build next. Added
+`waitForUploadSettle()` (poll ≤12s for an upload-success / delete affordance before Next) because `fillFile`
+assigns the file instantly but Workday POSTs it async — clicking Next mid-upload can silently drop the
+attachment. The `file-upload-input-ref` selector is the Workday standard but is **unverified for NVIDIA** until
+the first live my_experience run.
+
+**Verification status.** Offline only: `node --check` clean on autofill.js + drain.js, all 24 unit tests pass,
+workday.json + profile.js parse and the address values resolve (`10 Beau Rivage Dr` / Glassboro / New Jersey /
+08028). NOT yet live-run — needs a hard extension reload + a fresh Workday target. Two unknowns the live run
+resolves: (a) does the State button-listbox accept the `countryRegion` selector + commit "New Jersey", and
+(b) does my_experience advance on upload-only or block on a required experience section. Deliberately did NOT
+build the demographics pages (voluntary/self-id/questions) — no live DOM for them yet, and the per-page AI path
+would inherit the unfixed URL-fabrication bug; deferred until those pages can be seen + the AI prompt hardened.
+
+---
+
 ## 2026-05-31 — `isLoginWall` layer-3 ate every authed Apply-Manually crossing → wd_reinject never fired  ·  FIXED (unverified live)
 
 **Symptom (off the trace, not a live run).** New session, picking up the PENDING run. The whole 602-entry

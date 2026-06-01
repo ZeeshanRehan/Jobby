@@ -5740,5 +5740,53 @@
       "stale": [],
       "errors": []
     }
+  },
+  {
+    "applicationId": "f3534100-99f3-4741-83ee-6ce4f2faf8c6",
+    "timestamp": "2026-06-01T03:04:31.448Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/HR-Business-Partner_JR2009299",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_f3534100-99f3-4741-83ee-6ce4f2faf8c6.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9mMzUzNDEwMC05OWYzLTQ3NDEtODNlZS02Y2U0ZjJmYWY4YzYucGRmIiwiaWF0IjoxNzgwMjgzMDczLCJleHAiOjE3ODAyODY2NzN9.YTJdiWQ5nu761iV2MjxufFjCiacU93-_m76y3HkZavA",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\f3534100-99f3-4741-83ee-6ce4f2faf8c6.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
+  },
+  {
+    "applicationId": "caff2644-1e05-4043-855a-ae6587e27ea2",
+    "timestamp": "2026-06-01T03:05:10.828Z",
+    "jobUrl": "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite/job/US-CA-Santa-Clara/HR-Business-Partner_JR2009299",
+    "jobTitle": null,
+    "company": null,
+    "platform": "workday",
+    "status": "tailored",
+    "mode": "dry_run",
+    "resumeUrl": "https://klomikbkgnzbahmolvif.supabase.co/storage/v1/object/sign/Resumes/resume_caff2644-1e05-4043-855a-ae6587e27ea2.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mOGRlNWZmYS01ODY2LTQ4M2ItYmY5Yy02Zjk1MDNjNzlmOTkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJSZXN1bWVzL3Jlc3VtZV9jYWZmMjY0NC0xZTA1LTQwNDMtODU1YS1hZTY1ODdlMjdlYTIucGRmIiwiaWF0IjoxNzgwMjgzMTEyLCJleHAiOjE3ODAyODY3MTJ9.yuzTRRUlMxjGrekYr4BdbXSImI3wnvyGShBTiPTGZOo",
+    "resumeLocalPath": "C:\\Users\\zeesh\\OneDrive\\Desktop\\Projects\\Jobby\\server\\data\\resumes\\caff2644-1e05-4043-855a-ae6587e27ea2.pdf",
+    "changesMade": {
+      "skillsAdded": [],
+      "bulletsReworded": []
+    },
+    "keywordsInjected": [],
+    "coverageReport": {
+      "filled": [],
+      "skipped": [],
+      "unknown": [],
+      "stale": [],
+      "errors": []
+    }
   }
 ]

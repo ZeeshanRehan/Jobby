@@ -19,7 +19,7 @@ const profileData = {
     githubUrl: "https://github.com/ZeeshanRehan",
     portfolioUrl: "https://imzeshan.com",
     address: {
-      street: "",
+      street: "10 Beau Rivage Dr",
       city: "Glassboro",
       state: "NJ",
       zip: "08028",
@@ -42,6 +42,28 @@ const profileData = {
     expectedGraduation: "May 2026",
     location: "Glassboro, NJ",
   }],
+  // ─── Work Experience (autofill source of truth for ATS experience sections) ──
+  // Form-shaped, mirrors resumeData.experience in groqService.js. Dates are MM/YYYY for
+  // Workday's dual-spinbutton date sections. currentlyWorkHere=true → endDate left blank
+  // (Workday hides the "To" field when it's checked).
+  workExperience: [
+    {
+      jobTitle: "Design Manager",
+      company: "InvolveMINT Inc.",
+      location: "Remote",
+      currentlyWorkHere: true,
+      startDate: "10/2025",
+      endDate: "",
+    },
+    {
+      jobTitle: "Housing Preparation Assistant",
+      company: "Rowan University Housing Department",
+      location: "Glassboro, NJ",
+      currentlyWorkHere: false,
+      startDate: "05/2025",
+      endDate: "09/2025",
+    },
+  ],
   demographics: {
     gender: "Male",
     race: "Asian",
